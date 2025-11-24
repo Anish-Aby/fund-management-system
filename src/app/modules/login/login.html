@@ -1,0 +1,115 @@
+<main class="grid w-full h-full p-0 m-0">
+  <section class="col-4 p-0 h-full relative" aria-label="Brand banner">
+    <div class="banner h-full"></div>
+    <header class="top-1rem left-1rem absolute">
+      <div class="logo mb-2"></div>
+      <h2 class="text-white text-xl font-bold">Management System</h2>
+    </header>
+    <div class="absolute bottom-1rem left-1rem">
+      <p class="text-white text-xl w-26rem font-semibold mb-5">
+        Manage your funds effortlessly with our powerful fund management tool
+      </p>
+    </div>
+  </section>
+  <section class="col-8 flex align-items-center justify-content-center" aria-label="Login form">
+    <p-carousel
+      [value]="forms()"
+      [numVisible]="1"
+      [numScroll]="1"
+      [page]="currentPage()"
+      [showIndicators]="false"
+      [showNavigators]="false"
+    >
+      <ng-template let-form pTemplate="item">
+        <div class="flex align-items-center justify-content-center flex-column h-full">
+          @switch (form.type) { @case ('login') {
+          <div>
+            <h1 class="text-5xl font-medium">Welcome back to FinLab</h1>
+            <div class="flex align-items-center justify-content-center">
+              <p class="mt-2 mb-5 text-muted-color w-25rem text-center">
+                Manage your funds effortlessly with our powerful fund management tool
+              </p>
+            </div>
+            <form [formGroup]="loginForm" class="w-full" (keydown.enter)="onLogin()">
+              <label for="email" class="text-color-secondary mb-2 block">Email</label>
+              <input
+                class="mb-3"
+                id="email"
+                fluid
+                type="email"
+                pInputText
+                formControlName="email"
+              />
+              <label for="password" class="text-color-secondary mb-2 block">Password</label>
+              <p-password
+                id="password"
+                fluid
+                class="mb-6"
+                [toggleMask]="true"
+                [feedback]="false"
+                formControlName="password"
+              />
+              <p-button
+                type="button"
+                icon="pi pi-sign-in"
+                styleClass="w-full"
+                label="Login"
+                (onClick)="onLogin()"
+                [disabled]="!loginForm.valid"
+                [loading]="loginLoading()"
+              />
+            </form>
+          </div>
+          } @case ('otp') {
+          <div class="flex flex-column align-items-center justify-content-center">
+            <h1 class="text-5xl font-medium">Authenticate Your Account</h1>
+            <p class="mt-2 mb-5 text-muted-color">Please enter the code sent to your email.</p>
+            <p-inputotp [length]="6" [integerOnly]="true" (onChange)="onOtpChange($event)">
+              <ng-template #input let-token let-events="events" let-index="index">
+                <input
+                  type="text"
+                  [maxLength]="1"
+                  (input)="events.input($event)"
+                  (keydown)="events.keydown($event)"
+                  [attr.value]="token"
+                  class="custom-otp-input"
+                  tabindex="-1"
+                />
+                <div *ngIf="index === 3" class="px-4">
+                  <i class="pi pi-minus"></i>
+                </div>
+              </ng-template>
+            </p-inputotp>
+            <div class="flex w-25rem mt-6 justify-content-between">
+              <p-button
+                icon="pi pi-refresh"
+                label="Resend Code"
+                [link]="true"
+                class="p-0"
+                [disabled]="otpLoading()"
+              />
+              <p-button
+                type="button"
+                icon="pi pi-sign-in"
+                label="Submit Code"
+                [loading]="otpLoading()"
+                (onClick)="onVerifyOtp()"
+              />
+            </div>
+            <div class="flex w-full mt-8 align-items-center justify-content-start">
+              <p-button
+                type="button"
+                (onClick)="navigateToLogin()"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                label="Go Back"
+                [disabled]="otpLoading()"
+              />
+            </div>
+          </div>
+          } }
+        </div>
+      </ng-template>
+    </p-carousel>
+  </section>
+</main>

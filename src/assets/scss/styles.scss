@@ -1,0 +1,39 @@
+@use './base';
+@import 'primeicons/primeicons.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+html,
+body,
+main,
+section {
+  height: 100%;
+}
+
+:root {
+  --app-bg-light: #fbfbfb;
+  --app-bg-dark: #121212;
+  --app-text-light: #121212;
+  --app-text-dark: #fbfbfb;
+}
+
+.app-light {
+  background-color: var(--app-bg-light);
+  color: var(--app-text-light);
+}
+
+.app-dark {
+  background-color: var(--app-bg-dark);
+  color: var(--app-text-dark);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

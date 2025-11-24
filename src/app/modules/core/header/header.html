@@ -1,0 +1,18 @@
+<p-menubar [model]="items">
+  <ng-template #start>
+    <div class="logo invert mr-3"></div>
+  </ng-template>
+  <ng-template #end>
+    <div class="flex items-center align-items-center gap-2">
+      <input type="text" pInputText placeholder="Search" class="mr-3 w-20rem" />
+      <p-button
+        [icon]="themeService.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
+        (onClick)="toggleTheme()"
+        class="mr-3"
+        severity="secondary"
+        [text]="true"
+      />
+      <p-avatar icon="pi pi-user" class="mr-2 user-avatar" size="large" />
+    </div>
+  </ng-template>
+</p-menubar>

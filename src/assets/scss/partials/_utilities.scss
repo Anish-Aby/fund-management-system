@@ -1,0 +1,35 @@
+.banner {
+  background: url('../../imgs/banner.jpg') no-repeat center center;
+  background-size: cover;
+  transform: scaleX(-1);
+}
+
+.logo {
+  background: url(../../imgs/logo.svg) no-repeat center center;
+  background-size: contain;
+  height: 3rem;
+  width: 3rem;
+  filter: brightness(5);
+
+  &.invert {
+    filter: invert(1) brightness(0);
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.top-1rem {
+  top: 1rem !important;
+}
+
+.left-1rem {
+  left: 1rem !important;
+}
+
+.bottom-1rem {
+  bottom: 1rem !important;
+}
+
+.border-surface {
+  border-color: var(--p-content-border-color);
+}
