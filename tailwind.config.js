@@ -10,6 +10,7 @@ export default {
         'pastel-peach': '#FFE4B5',
         'pastel-pink': '#FFD6D6',
         'pastel-sky': '#E6F3FF',
+        'custom-blue': '#f0f9ff',
       },
     },
   },

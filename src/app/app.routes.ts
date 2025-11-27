@@ -18,6 +18,11 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./modules/dashboard/dashboard').then((m) => m.Dashboard),
       },
+      {
+        path: 'invoice-review',
+        loadComponent: () =>
+          import('./modules/invoice-review/invoice-review').then((m) => m.InvoiceReview),
+      },
     ],
   },
 ];

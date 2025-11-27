@@ -8,6 +8,8 @@ import { ButtonGroupModule } from 'primeng/buttongroup';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { StatCard } from '../shared/stat-card/stat-card';
 import { InputTextModule } from 'primeng/inputtext';
+import { Router } from '@angular/router';
+import { UtilityService } from '../shared/services/utility.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,11 +30,14 @@ import { InputTextModule } from 'primeng/inputtext';
 export class Dashboard implements OnInit {
   portfolio!: any[];
   invoices!: any[];
+  selectedInvoices: any[] = [];
   filteredTotal: number = 0;
 
   items: any[] = [{ label: 'Dashboard' }];
 
   home: any = { icon: 'pi pi-home', routerLink: '/' };
+
+  constructor(private router: Router, public utilityService: UtilityService) {}
 
   ngOnInit() {
     this.portfolio = [
@@ -185,27 +190,6 @@ export class Dashboard implements OnInit {
     this.calculateTotal();
   }
 
-  getSeverity(status: string) {
-    switch (status.toLowerCase()) {
-      case 'rejected':
-        return 'danger';
-
-      case 'approved':
-        return 'success';
-
-      case 'received':
-        return 'info';
-
-      case 'pending':
-        return 'warn';
-
-      case 'paid':
-        return 'secondary';
-      default:
-        return null;
-    }
-  }
-
   onTableFilter(event: any) {
     this.calculateTotal(event.filteredValue);
   }
@@ -213,5 +197,13 @@ export class Dashboard implements OnInit {
   calculateTotal(filteredData?: any[]) {
     const data = filteredData || this.invoices;
     this.filteredTotal = data.reduce((sum, invoice) => sum + invoice.grossAmount, 0);
+  }
+
+  onReviewInvoice() {
+    if (this.selectedInvoices.length === 0) {
+      return;
+    }
+    const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
+    this.router.navigate(['app/invoice-review']);
   }
 }
