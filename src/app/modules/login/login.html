@@ -1,5 +1,5 @@
 <main class="grid grid-cols-12 w-full h-full p-0 m-0">
-  <section class="col-span-4 p-0 h-full relative" aria-label="Brand banner">
+  <section class="hidden lg:block lg:col-span-4 p-0 h-full relative" aria-label="Brand banner">
     <div class="banner h-full"></div>
     <header class="absolute top-4 left-4">
       <div class="logo mb-2"></div>
@@ -11,7 +11,10 @@
       </p>
     </div>
   </section>
-  <section class="col-span-8 flex items-center justify-center" aria-label="Login form">
+  <section
+    class="col-span-12 px-4 lg:px-0 lg:col-span-8 flex items-center justify-center"
+    aria-label="Login form"
+  >
     <p-carousel
       [value]="forms()"
       [numVisible]="1"
@@ -68,8 +71,8 @@
             </form>
           </div>
           } @case ('otp') {
-          <div class="flex flex-col items-center justify-center">
-            <h1 class="text-4xl font-medium mb-1">Authenticate Your Account</h1>
+          <div class="flex w-90 lg:w-auto flex-col items-center justify-center">
+            <h1 class="text-4xl text-center font-medium mb-1">Authenticate Your Account</h1>
             <p class="mt-2 text-sm mb-8 text-muted-color max-w-md text-center">
               Please enter the code sent to your email.
             </p>
