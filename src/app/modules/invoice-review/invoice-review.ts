@@ -40,7 +40,7 @@ import { DialogModule } from 'primeng/dialog';
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',
 })
-export class InvoiceReview {
+export class InvoiceReview implements OnInit {
   invoiceData = signal<any[]>(InvoiceDataMock as any[]);
   editMode = signal(false);
   selectedInvoiceId = signal<string | null>(null);
@@ -50,6 +50,10 @@ export class InvoiceReview {
   reviewConfirmType = signal<string>('');
 
   constructor(public utilityService: UtilityService) {}
+
+  ngOnInit() {
+    window.scrollTo(0, 0);
+  }
 
   invoiceOptions = computed(() =>
     this.invoiceData().map((invoice) => ({

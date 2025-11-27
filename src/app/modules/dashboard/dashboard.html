@@ -128,6 +128,10 @@
           </app-stat-card>
         </div>
         <div class="relative col-span-6 lg:col-span-4">
+          <app-stat-card title="Pending Invoices" value="70" subtitle="Amount - $805" color="amber">
+          </app-stat-card>
+        </div>
+        <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card
             title="Approved Invoices"
             value="27"
@@ -138,17 +142,7 @@
         </div>
 
         <div class="relative col-span-6 lg:col-span-4">
-          <app-stat-card title="Pending Invoices" value="70" subtitle="Amount - $805" color="amber">
-          </app-stat-card>
-        </div>
-
-        <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card title="Rejected Invoices" value="4" subtitle="Amount - $1622" color="rose">
-          </app-stat-card>
-        </div>
-
-        <div class="relative col-span-6 lg:col-span-4">
-          <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
           </app-stat-card>
         </div>
 
@@ -159,6 +153,11 @@
             subtitle="Amount - $422"
             color="purple"
           >
+          </app-stat-card>
+        </div>
+
+        <div class="relative col-span-6 lg:col-span-4">
+          <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
           </app-stat-card>
         </div>
       </div>
@@ -217,13 +216,15 @@
         [scrollable]="true"
         scrollHeight="370px"
         class="table-dashboard-invoice"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
         (onFilter)="onTableFilter($event)"
         [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
       >
         <ng-template #header>
           <tr>
             <th><p-tableHeaderCheckbox /></th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Portfolio
                 <p-columnFilter
@@ -237,7 +238,7 @@
                 />
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Vendor
                 <p-columnFilter
@@ -251,7 +252,7 @@
                 />
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Invoice No
                 <p-columnFilter
@@ -265,7 +266,7 @@
                 />
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Invoice Date
                 <p-columnFilter
@@ -278,7 +279,7 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Due Date
                 <p-columnFilter
@@ -291,7 +292,7 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Expences Type
                 <p-columnFilter
@@ -305,7 +306,7 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Currency
                 <p-columnFilter
@@ -319,7 +320,7 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pResizableColumn>
               <div class="flex items-center justify-between">
                 Status
                 <p-columnFilter
@@ -354,20 +355,20 @@
             <td>
               <p-tableCheckbox [value]="invoice" />
             </td>
-            <td>{{ invoice.fundName }}</td>
-            <td>{{ invoice.vendorName }}</td>
-            <td>{{ invoice.invoiceNumber }}</td>
-            <td>{{ invoice.invoiceDate }}</td>
-            <td>{{ invoice.dueDate }}</td>
-            <td>{{ invoice.expenseType }}</td>
-            <td>{{ invoice.currency }}</td>
-            <td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.fundName }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.vendorName }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">
               <p-tag
                 [value]="invoice.status"
                 [severity]="utilityService.getSeverity(invoice.status)"
               />
             </td>
-            <td>
+            <td (click)="onInvoiceRowSelect(invoice)">
               <div class="text-right">${{ invoice.grossAmount }}</div>
             </td>
           </tr>

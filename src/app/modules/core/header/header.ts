@@ -42,10 +42,6 @@ export class Header {
             label: 'Vendors',
             icon: 'pi pi-shop',
           },
-          {
-            label: 'Vendor Bank Details',
-            icon: 'pi pi-building-columns',
-          },
         ],
       },
       {

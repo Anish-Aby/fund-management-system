@@ -139,6 +139,12 @@ export const INVOICE_FIELD_CONFIG: any[] = [
     editable: true,
   },
   {
+    key: 'reviewedBy',
+    label: 'Reviewed By',
+    type: 'textarea',
+    group: 'Approval & Comments',
+  },
+  {
     key: 'approvedBy',
     label: 'Approved by',
     type: 'text',
@@ -201,6 +207,7 @@ export const INVOICE_FIELD_CONFIG: any[] = [
     group: 'VAT Information',
     editable: true,
   },
+
   { key: 'period', label: 'Period', type: 'text', group: 'Approval & Comments', editable: true },
   {
     key: 'financeComment',
