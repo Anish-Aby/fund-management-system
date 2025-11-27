@@ -64,13 +64,13 @@
                 </div>
 
                 @for (group of fieldGroups(); track group.name) {
-                <div class="mb-8 border border-surface rounded-xl">
-                  <div [class]="getGroupColor(group.name) + ' rounded-xl rounded-b-none shadow-sm'">
+                <div class="mb-4 border border-surface rounded-xl">
+                  <div class="bg-slate-100 rounded-xl rounded-b-none shadow-sm">
                     <div class="text-xl font-medium pl-4 pt-2">{{ group.name }}</div>
                     <p-divider styleClass="mt-2!" />
                   </div>
 
-                  <div class="grid grid-cols-12 gap-6 mt-4 px-4 pb-2">
+                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
                     @for (field of group.fields; track field.key) {
                     <div class="col-span-12 lg:col-span-4 xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">{{ field.label }}</div>
@@ -147,14 +147,12 @@
                 <div class="flex justify-between">
                   <p-button
                     icon="pi pi-times-circle"
-                    variant="outlined"
                     severity="danger"
                     label="Reject Invoice"
                     class="mr-2"
                   />
                   <p-button
                     icon="pi pi-check-circle"
-                    variant="outlined"
                     severity="success"
                     label="Approve Invoice"
                     class="mr-2"
@@ -183,6 +181,7 @@
               [showDownloadButton]="false"
               [showPrintButton]="false"
               [showOpenFileButton]="false"
+              [zoom]="'page-width'"
             ></ngx-extended-pdf-viewer>
           </div>
         </div>

@@ -94,16 +94,4 @@ export class InvoiceReview {
   cancelEdit() {
     this.editMode.set(false);
   }
-
-  getGroupColor(groupName: string): string {
-    const colorMap: { [key: string]: string } = {
-      'Basic Information': 'bg-slate-100',
-      'Financial Details': 'bg-slate-100',
-      'Service Details': 'bg-slate-100',
-      'Payment Information': 'bg-slate-100',
-      'VAT Information': 'bg-slate-100',
-      'Approval & Comments': 'bg-slate-100',
-    };
-    return colorMap[groupName] || 'bg-slate-100';
-  }
 }
