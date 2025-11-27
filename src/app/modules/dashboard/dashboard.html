@@ -181,11 +181,22 @@
             (input)="dt.filterGlobal($event.target.value, 'contains')"
           />
           <p-button
+            icon="pi pi-file-check"
+            aria-label="Review Invoice"
+            variant="outlined"
+            severity="contrast"
+            label="Review Invoice"
+            class="mr-2"
+            [disabled]="selectedInvoices.length === 0"
+            (onClick)="onReviewInvoice()"
+          />
+          <p-button
             icon="pi pi-print"
             aria-label="Download PDF"
             variant="outlined"
             severity="contrast"
             label="Download PDF"
+            [disabled]="selectedInvoices.length === 0"
             class="mr-2"
           />
           <p-button
@@ -193,6 +204,7 @@
             aria-label="Download Excel"
             variant="outlined"
             severity="contrast"
+            [disabled]="selectedInvoices.length === 0"
             label="Download Excel"
           />
         </div>
@@ -200,6 +212,8 @@
       <p-table
         #dt
         [value]="invoices"
+        [(selection)]="selectedInvoices"
+        dataKey="invoiceNumber"
         stripedRows="true"
         size="small"
         showGridlines="true"
@@ -351,7 +365,10 @@
             <td>{{ invoice.expenseType }}</td>
             <td>{{ invoice.currency }}</td>
             <td>
-              <p-tag [value]="invoice.status" [severity]="getSeverity(invoice.status)" />
+              <p-tag
+                [value]="invoice.status"
+                [severity]="utilityService.getSeverity(invoice.status)"
+              />
             </td>
             <td>
               <div class="text-right">${{ invoice.grossAmount }}</div>
