@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
 import { SelectModule } from 'primeng/select';
@@ -15,7 +15,7 @@ import { INVOICE_FIELD_CONFIG } from '../core/config/invoice-fields.config';
 import InvoiceDataMock from '../core/mocks/invoice-review-mock.json';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../shared/services/utility.service';
-import { StatCard } from '../shared/stat-card/stat-card';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-invoice-review',
@@ -31,7 +31,7 @@ import { StatCard } from '../shared/stat-card/stat-card';
     FormsModule,
     CommonModule,
     TagModule,
-    StatCard,
+    NgxExtendedPdfViewerModule,
   ],
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',
@@ -40,7 +40,8 @@ export class InvoiceReview {
   invoiceData = signal<any[]>(InvoiceDataMock as any[]);
   editMode = signal(false);
   selectedInvoiceId = signal<string | null>(null);
-  selectedTabValue = signal<string>(InvoiceDataMock[0]?.invoiceNumber || ''); // Add this
+  selectedTabValue = signal<string>(InvoiceDataMock[0]?.invoiceNumber || '');
+  pdfSrc = signal<string>('');
 
   constructor(public utilityService: UtilityService) {}
 

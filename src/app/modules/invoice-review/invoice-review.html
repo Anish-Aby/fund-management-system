@@ -1,11 +1,5 @@
 <div class="p-5">
   <div class="grid grid-cols-12">
-    <!-- <div class="col-span-12 mb-4"> -->
-    <!-- <h1 class="text-4xl font-medium mb-1">Invoice Review</h1>
-      <p class="text-sm text-muted-color mb-2">
-        Review invoices, approve or reject them. Change tabs for viewing the invoices
-      </p> -->
-    <!-- </div> -->
     <div class="col-span-12 grid grid-cols-12 gap-4">
       <div class="col-span-7">
         <div
@@ -13,16 +7,9 @@
         >
           <div class="flex w-full justify-between items-center">
             <div class="flex flex-col">
-              <!-- <p-button
-                [label]="editMode() ? 'Cancel' : 'Edit'"
-                [severity]="editMode() ? 'secondary' : 'primary'"
-                (onClick)="editMode() ? cancelEdit() : toggleEditMode()"
-                size="small"
-              /> -->
               @if (editMode()) {
               <p-button label="Save" severity="success" (onClick)="saveChanges()" size="small" />
               }
-              <!-- <h1 class="text-3xl font-medium">Invoice List</h1> -->
               <h1 class="text-4xl font-medium mb-1">Invoice Review</h1>
               <p class="text-sm text-muted-color mb-2">
                 Review invoices, approve or reject them. Change tabs for viewing the invoices
@@ -54,14 +41,8 @@
                     <div class="mr-6">
                       {{ invoice.invoicedFundName }}
                     </div>
-                    <!-- <p-tag
-                      class="h-max capitalize"
-                      [value]="invoice.invoiceStatus"
-                      [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
-                    /> -->
                   </div>
                   <div class="col-span-1 flex justify-end text-primary">
-                    <!-- {{ formatCurrency(invoice.invoiceGrossAmountTotal, invoice.vendorCurrency) }} -->
                     <p-button
                       icon="pi pi-eye"
                       variant="outlined"
@@ -80,16 +61,8 @@
                     [value]="invoice.invoiceStatus"
                     [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
                   />
-                  <!-- <p-button
-                    icon="pi pi-eye"
-                    variant="outlined"
-                    severity="contrast"
-                    label="View Invoice PDF"
-                    class="mr-2"
-                  /> -->
                 </div>
 
-                <!-- Dynamic Field Groups -->
                 @for (group of fieldGroups(); track group.name) {
                 <div class="mb-8 border border-surface rounded-xl">
                   <div [class]="getGroupColor(group.name) + ' rounded-xl rounded-b-none shadow-sm'">
@@ -200,6 +173,17 @@
           <div class="flex flex-col">
             <h1 class="text-4xl font-medium mb-1">Invoice PDF View</h1>
             <p class="text-sm text-muted-color mb-2">Review the invoice PDF here</p>
+          </div>
+          <div class="h-full">
+            <ngx-extended-pdf-viewer
+              [src]="'assets/sample-invoice.pdf'"
+              [height]="'100%'"
+              [textLayer]="true"
+              [showSecondaryToolbarButton]="false"
+              [showDownloadButton]="false"
+              [showPrintButton]="false"
+              [showOpenFileButton]="false"
+            ></ngx-extended-pdf-viewer>
           </div>
         </div>
       </div>
