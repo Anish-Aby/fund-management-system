@@ -24,46 +24,38 @@ export class Header {
       {
         label: 'Dashboard',
         icon: 'pi pi-home',
+        routerLink: 'dashboard',
       },
       {
-        label: 'Features',
+        label: 'Masters',
         icon: 'pi pi-star',
-      },
-      {
-        label: 'Projects',
-        icon: 'pi pi-search',
         items: [
           {
-            label: 'Components',
+            label: 'Entities',
             icon: 'pi pi-bolt',
           },
           {
-            label: 'Blocks',
-            icon: 'pi pi-server',
+            label: 'Users',
+            icon: 'pi pi-users',
           },
           {
-            label: 'UI Kit',
-            icon: 'pi pi-pencil',
+            label: 'Vendors',
+            icon: 'pi pi-shop',
           },
           {
-            label: 'Templates',
-            icon: 'pi pi-palette',
-            items: [
-              {
-                label: 'Apollo',
-                icon: 'pi pi-palette',
-              },
-              {
-                label: 'Ultima',
-                icon: 'pi pi-palette',
-              },
-            ],
+            label: 'Vendor Bank Details',
+            icon: 'pi pi-building-columns',
           },
         ],
       },
       {
-        label: 'Contact',
-        icon: 'pi pi-envelope',
+        label: 'Reports',
+        icon: 'pi pi-search',
+        items: [],
+      },
+      {
+        label: 'Settings',
+        icon: 'pi pi-cog',
       },
     ];
   }

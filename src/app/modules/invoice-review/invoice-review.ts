@@ -9,6 +9,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TagModule } from 'primeng/tag';
+import { MessageModule } from 'primeng/message';
 
 // import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
 import { INVOICE_FIELD_CONFIG } from '../core/config/invoice-fields.config';
@@ -16,6 +17,7 @@ import InvoiceDataMock from '../core/mocks/invoice-review-mock.json';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-invoice-review',
@@ -32,6 +34,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     CommonModule,
     TagModule,
     NgxExtendedPdfViewerModule,
+    DialogModule,
+    MessageModule,
   ],
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',
@@ -41,7 +45,9 @@ export class InvoiceReview {
   editMode = signal(false);
   selectedInvoiceId = signal<string | null>(null);
   selectedTabValue = signal<string>(InvoiceDataMock[0]?.invoiceNumber || '');
-  pdfSrc = signal<string>('');
+  invoiceToApprove = signal<any | null>(null);
+  confirmDialogVisible = signal<boolean>(false);
+  reviewConfirmType = signal<string>('');
 
   constructor(public utilityService: UtilityService) {}
 
@@ -95,15 +101,26 @@ export class InvoiceReview {
     this.editMode.set(false);
   }
 
-  getGroupColor(groupName: string): string {
-    const colorMap: { [key: string]: string } = {
-      'Basic Information': 'bg-slate-100',
-      'Financial Details': 'bg-slate-100',
-      'Service Details': 'bg-slate-100',
-      'Payment Information': 'bg-slate-100',
-      'VAT Information': 'bg-slate-100',
-      'Approval & Comments': 'bg-slate-100',
-    };
-    return colorMap[groupName] || 'bg-slate-100';
+  showApproveDialog(invoice: any, reviewType: string): void {
+    if (reviewType === 'approve') {
+      this.reviewConfirmType.set('approve');
+    } else {
+      this.reviewConfirmType.set('reject');
+    }
+    this.invoiceToApprove.set(invoice);
+    this.confirmDialogVisible.set(true);
+  }
+
+  cancelApproveDialog(): void {
+    this.confirmDialogVisible.set(false);
+    this.invoiceToApprove.set(null);
+  }
+
+  approveInvoice(): void {
+    this.confirmDialogVisible.set(false);
+  }
+
+  rejectInvoice(): void {
+    this.confirmDialogVisible.set(false);
   }
 }
