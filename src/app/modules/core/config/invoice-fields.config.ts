@@ -1,5 +1,4 @@
 export const INVOICE_FIELD_CONFIG: any[] = [
-  // Basic Information
   {
     key: 'vendorName',
     label: 'Vendor Name',
@@ -18,7 +17,7 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'invoicedFundName',
-    label: 'Fund Name',
+    label: 'Invoiced Fund Name',
     type: 'text',
     group: 'Basic Information',
     editable: true,
@@ -26,7 +25,7 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'invoiceNumber',
-    label: 'Invoice Number',
+    label: 'Invoice No',
     type: 'text',
     group: 'Basic Information',
     editable: false,
@@ -47,16 +46,22 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'vendorCurrency',
-    label: 'Currency',
+    label: 'Vendor Ccy',
     type: 'text',
     group: 'Basic Information',
     editable: true,
   },
-
-  // Financial Details
+  { key: 'feeType', label: 'Fee type', type: 'text', group: 'Service Details', editable: true },
+  {
+    key: 'adminExpenses',
+    label: 'Admin/Expences',
+    type: 'text',
+    group: 'Service Details',
+    editable: true,
+  },
   {
     key: 'invoiceNetAmount',
-    label: 'Net Amount',
+    label: 'Invoice Net Amount',
     type: 'currency',
     group: 'Financial Details',
     editable: true,
@@ -64,71 +69,100 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'invoiceTaxAmount',
-    label: 'Tax Amount',
+    label: 'Invoice VAT amount',
     type: 'currency',
     group: 'Financial Details',
+    editable: true,
+  },
+  {
+    key: 'reverseChargeVATPaidByFirm',
+    label: 'Reverse Charge VAT Paid by Firm',
+    type: 'currency',
+    group: 'VAT Information',
     editable: true,
   },
   {
     key: 'invoiceGrossAmount',
-    label: 'Gross Amount',
+    label: 'Invoice Gross Amount',
     type: 'currency',
     group: 'Financial Details',
     editable: true,
   },
   {
-    key: 'invoiceGrossAmountTotal',
-    label: 'Total Gross Amount',
+    key: 'invoiceAmountFundPortion',
+    label: 'Invoice amount ( Fund Portion)',
     type: 'currency',
     group: 'Financial Details',
     editable: true,
   },
-  { key: 'fxRate', label: 'FX Rate', type: 'number', group: 'Financial Details', editable: true },
+  {
+    key: 'fxRate',
+    label: 'FX(Per ECB Fixing on Invoice Date)',
+    type: 'number',
+    group: 'Financial Details',
+    editable: true,
+  },
   {
     key: 'translatedAmountEUR',
-    label: 'Amount (EUR)',
+    label: 'Translated Amount (EUR)',
     type: 'currency',
     group: 'Financial Details',
-    editable: true,
-  },
-
-  // Service Details
-  { key: 'feeType', label: 'Fee Type', type: 'text', group: 'Service Details', editable: true },
-  {
-    key: 'adminExpenses',
-    label: 'Admin Expenses',
-    type: 'text',
-    group: 'Service Details',
     editable: true,
   },
   {
     key: 'descriptionPerInvoice',
-    label: 'Invoice Description',
+    label: 'Description Per Invoice',
     type: 'textarea',
     group: 'Service Details',
     editable: true,
   },
   {
     key: 'descriptionService',
-    label: 'Service Description',
+    label: 'Description Service',
     type: 'textarea',
     group: 'Service Details',
     editable: true,
   },
   {
     key: 'classificationForAccounting',
-    label: 'Accounting Classification',
+    label: 'Classification for Accounting',
     type: 'text',
     group: 'Service Details',
     editable: true,
   },
-
-  // Payment Information
   { key: 'paidBy', label: 'Paid By', type: 'text', group: 'Payment Information', editable: true },
   {
     key: 'amountPaid',
     label: 'Amount Paid',
     type: 'currency',
+    group: 'Payment Information',
+    editable: true,
+  },
+  {
+    key: 'approvedBy',
+    label: 'Approved by',
+    type: 'text',
+    group: 'Approval & Comments',
+    editable: true,
+  },
+  {
+    key: 'sentFinanceBy',
+    label: 'Sent to Finnance by',
+    type: 'text',
+    group: 'Approval & Comments',
+    editable: true,
+  },
+  {
+    key: 'sentToFinanceForPayment',
+    label: 'Sent to Finance for Payment',
+    type: 'date',
+    group: 'Payment Information',
+    editable: true,
+  },
+  {
+    key: 'dateSentToAdministratorForPayment',
+    label: 'Date sent to administrator for payment',
+    type: 'date',
     group: 'Payment Information',
     editable: true,
   },
@@ -140,29 +174,6 @@ export const INVOICE_FIELD_CONFIG: any[] = [
     editable: true,
   },
   {
-    key: 'sentToFinanceForPayment',
-    label: 'Sent to Finance',
-    type: 'date',
-    group: 'Payment Information',
-    editable: true,
-  },
-  {
-    key: 'dateSentToAdministratorForPayment',
-    label: 'Sent to Administrator',
-    type: 'date',
-    group: 'Payment Information',
-    editable: true,
-  },
-
-  // VAT Information
-  {
-    key: 'reverseChargeVATPaidByFirm',
-    label: 'Reverse Charge VAT',
-    type: 'currency',
-    group: 'VAT Information',
-    editable: true,
-  },
-  {
     key: 'vatReturnEntity',
     label: 'VAT Return Entity',
     type: 'text',
@@ -171,7 +182,7 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'vatPaidByPanERO',
-    label: 'VAT Paid by PanERO',
+    label: 'VAT paid by pan ERO I',
     type: 'currency',
     group: 'VAT Information',
     editable: true,
@@ -185,25 +196,9 @@ export const INVOICE_FIELD_CONFIG: any[] = [
   },
   {
     key: 'vatLiabilityAccruedAtEntity',
-    label: 'VAT Liability Accrued',
+    label: 'VAT liability accrued at entity',
     type: 'currency',
     group: 'VAT Information',
-    editable: true,
-  },
-
-  // Approval & Comments
-  {
-    key: 'approvedBy',
-    label: 'Approved By',
-    type: 'text',
-    group: 'Approval & Comments',
-    editable: true,
-  },
-  {
-    key: 'sentFinanceBy',
-    label: 'Sent Finance By',
-    type: 'text',
-    group: 'Approval & Comments',
     editable: true,
   },
   { key: 'period', label: 'Period', type: 'text', group: 'Approval & Comments', editable: true },

@@ -150,12 +150,14 @@
                     severity="danger"
                     label="Reject Invoice"
                     class="mr-2"
+                    (onClick)="showApproveDialog(invoice, 'reject')"
                   />
                   <p-button
                     icon="pi pi-check-circle"
                     severity="success"
                     label="Approve Invoice"
                     class="mr-2"
+                    (onClick)="showApproveDialog(invoice, 'approve')"
                   />
                 </div>
               </p-tabpanel>
@@ -189,3 +191,76 @@
     </div>
   </div>
 </div>
+
+<p-dialog [modal]="true" [visible]="confirmDialogVisible()">
+  <ng-template #headless>
+    <div class="min-w-150">
+      <div class="py-3 shadow-3xl px-3 flex justify-between items-center border-b border-surface">
+        <span class="text-2xl font-semibold">Approve Invoice</span>
+        <p-button
+          (onClick)="cancelApproveDialog()"
+          icon="pi pi-times"
+          size="small"
+          variant="outlined"
+          severity="contrast"
+        />
+      </div>
+      <div class="">
+        <div
+          [ngClass]="{
+            'bg-emerald-100': reviewConfirmType() === 'approve',
+            'bg-red-100': reviewConfirmType() === 'reject'
+          }"
+          class="px-3 py-3 flex items-center"
+        >
+          <div
+            [ngClass]="{
+              'text-emerald-600 pi-verified': reviewConfirmType() === 'approve',
+              'text-red-600 pi-times-circle': reviewConfirmType() === 'reject'
+            }"
+            class="pi mr-4 text-5xl!"
+          ></div>
+          @if (reviewConfirmType() === 'approve') {
+          <div class="font-semibold">
+            Are you sure you want to approve {{ invoiceToApprove().invoiceNumber }}
+          </div>
+          } @else {
+          <div class="font-semibold">
+            Are you sure you want to reject {{ invoiceToApprove().invoiceNumber }}
+          </div>
+          }
+        </div>
+      </div>
+      <div class="px-3">
+        <div class="mt-4 text-muted-color mb-1">Please provide your comments below</div>
+        <textarea fluid rows="5" cols="30" pTextarea></textarea>
+      </div>
+      <div class="mt-4 px-3 py-2">
+        <div class="flex justify-between">
+          <p-button
+            icon="pi pi-times-circle"
+            variant="outlined"
+            severity="contrast"
+            label="Cancel"
+            (onClick)="cancelApproveDialog()"
+          />
+          @if (reviewConfirmType() === 'approve') {
+          <p-button
+            (onClick)="approveInvoice()"
+            icon="pi pi-check-circle"
+            severity="contrast"
+            label="Approve"
+          />
+          } @if (reviewConfirmType() === 'reject') {
+          <p-button
+            (onClick)="rejectInvoice()"
+            icon="pi pi-times-circle"
+            severity="contrast"
+            label="Reject"
+          />
+          }
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
