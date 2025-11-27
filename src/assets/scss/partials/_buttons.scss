@@ -1,3 +1,12 @@
 :root .p-button {
   border-radius: 8px;
 }
+
+.btn-menu {
+  display: flex !important;
+  justify-content: start !important;
+  padding-left: 0 !important;
+  border: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}

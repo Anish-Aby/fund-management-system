@@ -1,0 +1,33 @@
+p-table {
+  .p-datatable-thead > tr {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15) !important;
+    position: relative;
+  }
+
+  .p-datatable-thead > tr > th {
+    // Light theme
+    .app-light & {
+      background-color: #f0f9ff !important;
+      color: #1f2937 !important;
+    }
+
+    // Dark theme
+    .app-dark & {
+      background-color: #1e293b !important;
+      color: #f1f5f9 !important;
+    }
+  }
+
+  .p-datatable-tbody tr {
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.table-dashboard-invoice {
+    min-height: 370px;
+  }
+}

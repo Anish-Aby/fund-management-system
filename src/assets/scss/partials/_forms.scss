@@ -1,3 +1,11 @@
 :root .p-inputtext {
   border-radius: 8px;
 }
+
+p-table {
+  p-columnfilterformelement {
+    input {
+      font-size: 10px !important;
+    }
+  }
+}

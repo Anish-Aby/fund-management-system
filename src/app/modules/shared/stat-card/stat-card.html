@@ -1,0 +1,8 @@
+<div [class]="getCardClasses()" (click)="onCardClick()">
+  <div class="flex justify-between">
+    <div class="text-base mb-3">{{ title }}</div>
+    <span [class]="iconClass"></span>
+  </div>
+  <div class="text-3xl font-semibold mb-3">{{ value }}</div>
+  <div class="text-sm">{{ subtitle }}</div>
+</div>

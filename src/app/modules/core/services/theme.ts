@@ -29,11 +29,11 @@ export class ThemeService {
   private applyTheme() {
     const element = document.documentElement;
     if (this.isDarkMode()) {
-      element.classList.add('app-dark');
+      element.classList.add('app-dark', 'tailwind-dark');
       element.classList.remove('app-light');
     } else {
       element.classList.add('app-light');
-      element.classList.remove('app-dark');
+      element.classList.remove('app-dark', 'tailwind-dark');
     }
   }
 }

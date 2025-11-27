@@ -1,4 +1,53 @@
-<main>
+<main class="h-screen flex flex-col">
   <app-header></app-header>
-  <router-outlet></router-outlet>
+  <div class="flex-1 relative min-h-0">
+    <aside
+      [class.collapsed]="collapsed"
+      [class.expanded]="!collapsed"
+      class="sidebar border-r border-surface bg-primary-contrast py-3"
+      [class.px-4]="!collapsed"
+      [class.px-2]="collapsed"
+      (mouseenter)="onSidebarHover()"
+      (mouseleave)="onSidebarLeave()"
+    >
+      <div class="flex justify-between">
+        @if (!collapsed) {
+        <div class="flex items-center gap-4">
+          <span class="text-2xl font-semibold leading-none">FinLab</span>
+        </div>
+        }
+        <button (click)="toggleSidebar()" class="toggle-btn">
+          <i class="pi pi-bars"></i>
+        </button>
+      </div>
+
+      <nav class="flex flex-col overflow-hidden">
+        @for (item of menuItems; track item) {
+        <div ngClass="{'mb-4': !collapsed}">
+          @if (item.title) { @if (!collapsed) {
+          <span class="text-sm text-muted-color pointer-events-none">{{ item.title }}</span>
+          } } @if (item.children) { @for (child of item.children; track child) {
+          <div>
+            <div class="min-w-0">
+              <p-button
+                class="mb-2"
+                [icon]="child.icon"
+                [label]="!collapsed ? child.label : ''"
+                variant="outlined"
+                [styleClass]="collapsed ? 'mb-2' : 'btn-menu'"
+                fluid
+              />
+            </div>
+          </div>
+
+          } }
+        </div>
+        }
+      </nav>
+    </aside>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </main>
