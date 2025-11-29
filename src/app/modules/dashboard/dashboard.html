@@ -1,26 +1,32 @@
-<div class="p-5">
+<div class="p-1 sm:p-2 md:p-3 lg:p-4 xl:p-5">
   <div class="grid grid-cols-12">
-    <div class="col-span-12 grid grid-cols-12 mb-3 lg:mb-0">
+    <div class="col-span-12 grid grid-cols-12 mb-2 lg:mb-0">
       <div class="col-span-12 lg:col-span-6">
-        <p class="text-sm text-muted-color mb-1">Wednesday, 25 November</p>
-        <h1 class="text-4xl mb-5 font-medium">Welcome In, Aby George</h1>
+        <p class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color mb-1">
+          Wednesday, 25 November
+        </p>
+        <h1 class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-3 font-medium">
+          Welcome In, Aby George
+        </h1>
       </div>
       <div class="col-span-12 lg:col-span-6 flex justify-end items-center">
         <p-button icon="pi pi-building" label="Add Entity" class="mr-2" />
         <p-button icon="pi pi-user-plus" label="Add User" />
       </div>
-      <!-- <h1 class="text-4xl font-medium">Dashboard</h1>
-      <p-breadcrumb styleClass="p-0! mb-4" [home]="home" [model]="items" /> -->
     </div>
   </div>
-  <div class="grid grid-cols-12 gap-4">
+  <div class="grid grid-cols-12 gap-2 sm:gap-3 md:gap-4">
     <div class="col-span-12 lg:col-span-6">
       <div
-        class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col h-full"
+        class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col h-full"
       >
-        <div class="items-center gap-6 mb-2">
-          <div class="text-2xl font-medium">Portfolio</div>
-          <div class="text-sm text-muted-color">Get quick insights to invoice details</div>
+        <div class="items-center gap-4 mb-2">
+          <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+            Portfolio
+          </div>
+          <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+            Get quick insights to invoice details
+          </div>
         </div>
         <p-table
           #dtPortfolio
@@ -29,7 +35,7 @@
           size="small"
           showGridlines="true"
           [scrollable]="true"
-          scrollHeight="265px"
+          scrollHeight="230px"
           (onFilter)="onTableFilter($event)"
           [globalFilterFields]="['code', 'name', 'region', 'amount']"
         >
@@ -108,16 +114,16 @@
     </div>
     <div class="col-span-12 lg:col-span-6">
       <div
-        class="border grid gap-2 grid-cols-12 border-surface bg-primary-contrast rounded-2xl h-full py-5 px-5"
+        class="border grid gap-1 sm:gap-2 grid-cols-12 border-surface bg-primary-contrast rounded-2xl h-full py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5"
       >
         <div class="col-span-12 flex-1">
-          <div class="text-2xl font-medium">Summary</div>
-          <div class="text-sm text-muted-color">Get quick insights to invoice details</div>
+          <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+            Summary
+          </div>
+          <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+            Get quick insights to invoice details
+          </div>
         </div>
-        <!-- <div
-          class="relative col-span-6 lg:col-span-4 border rounded-2xl px-4 py-3 flex flex-col justify-between cursor-pointer hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 ease-in-out border-blue-200 bg-blue-50 hover:border-blue-300 dark:border-blue-700/50 dark:bg-blue-900/20 dark:hover:border-blue-600 dark:text-blue-100"
-        > -->
-        <!-- Replace the card divs with: -->
         <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card
             title="Received Invoices"
@@ -140,12 +146,10 @@
           >
           </app-stat-card>
         </div>
-
         <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card title="Rejected Invoices" value="4" subtitle="Amount - $1622" color="rose">
           </app-stat-card>
         </div>
-
         <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card
             title="Scheduled For Release"
@@ -155,7 +159,6 @@
           >
           </app-stat-card>
         </div>
-
         <div class="relative col-span-6 lg:col-span-4">
           <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
           </app-stat-card>
@@ -163,12 +166,18 @@
       </div>
     </div>
   </div>
-  <div class="col-span-12 mt-4">
-    <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col">
+  <div class="col-span-12 mt-2 sm:mt-3 md:mt-4">
+    <div
+      class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col"
+    >
       <div class="grid grid-cols-12 mb-2">
         <div class="col-span-12 mb-2 lg:mb-0 lg:col-span-3 flex justify-centercenter flex-col">
-          <h3 class="text-2xl font-medium">Invoices</h3>
-          <p class="text-sm text-muted-color">Manage all your invoices here</p>
+          <h3 class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+            Invoices
+          </h3>
+          <p class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+            Manage all your invoices here
+          </p>
         </div>
         <div class="col-span-12 lg:col-span-9 lg:justify-end flex items-center">
           <input
@@ -375,7 +384,12 @@
         </ng-template>
         <ng-template #footer>
           <tr>
-            <td colspan="9" class="font-semibold text-xl">Total</td>
+            <td
+              colspan="9"
+              class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
+            >
+              Total
+            </td>
             <td>
               <div class="text-right font-semibold">${{ filteredTotal }}</div>
             </td>
