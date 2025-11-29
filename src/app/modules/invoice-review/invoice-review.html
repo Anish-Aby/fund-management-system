@@ -199,7 +199,9 @@
   <ng-template #headless>
     <div class="min-w-150">
       <div class="py-3 shadow-3xl px-3 flex justify-between items-center border-b border-surface">
-        <span class="text-2xl font-semibold">Approve Invoice</span>
+        <span class="text-2xl font-semibold">
+          @if (reviewConfirmType() === 'approve') { Approve Invoice } @else { Reject Invoice }
+        </span>
         <p-button
           (onClick)="cancelApproveDialog()"
           icon="pi pi-times"
