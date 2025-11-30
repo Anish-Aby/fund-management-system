@@ -10,6 +10,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
+import { SplitterModule } from 'primeng/splitter';
 
 // import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
 import { INVOICE_FIELD_CONFIG } from '../core/config/invoice-fields.config';
@@ -36,6 +37,7 @@ import { DialogModule } from 'primeng/dialog';
     NgxExtendedPdfViewerModule,
     DialogModule,
     MessageModule,
+    SplitterModule,
   ],
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',

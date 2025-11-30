@@ -1,10 +1,12 @@
 <div class="p-5">
-  <div class="grid grid-cols-12">
-    <div class="col-span-12 grid grid-cols-12 gap-4">
-      <div class="col-span-7">
-        <div
-          class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col h-full"
-        >
+  <p-splitter
+    [minSizes]="[30, 30]"
+    [panelSizes]="[60, 40]"
+    class="w-full h-[88dvh] splitter-invoice"
+  >
+    <ng-template #panel>
+      <div class="h-full overflow-y-auto">
+        <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col">
           <div class="flex w-full justify-between items-center">
             <div class="flex flex-col">
               @if (editMode()) {
@@ -73,7 +75,9 @@
                   <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
                     @for (field of group.fields; track field.key) {
                     <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">{{ field.label }}</div>
+                      <div class="text-muted-color uppercase text-xs mb-1">
+                        {{ field.label }}
+                      </div>
 
                       <!-- View Mode -->
                       @if (!editMode()) {
@@ -166,7 +170,9 @@
           </p-tabs>
         </div>
       </div>
-      <div class="col-span-5 max-h-[90dvh] sticky top-2">
+    </ng-template>
+    <ng-template #panel>
+      <div class="">
         <div
           class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col h-full"
         >
@@ -187,12 +193,14 @@
               [showDrawEditor]="true"
               [showTextEditor]="true"
               [showHighlightEditor]="true"
+              [showRotateButton]="false"
+              [showStampEditor]="false"
             ></ngx-extended-pdf-viewer>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </ng-template>
+  </p-splitter>
 </div>
 
 <p-dialog [modal]="true" [visible]="confirmDialogVisible()">
