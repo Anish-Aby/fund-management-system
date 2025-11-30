@@ -27,6 +27,8 @@ import { ThemeService } from '../services/theme';
 export class Header {
   items: any[] | undefined;
   userMenuItems: MenuItem[] = [];
+  notificationItems: MenuItem[] = [];
+  notificationCount: number = 3;
 
   constructor(public themeService: ThemeService, private router: Router) {}
 
@@ -49,6 +51,32 @@ export class Header {
         label: 'Logout',
         icon: 'pi pi-sign-out',
         command: () => this.onLogout(),
+      },
+    ];
+
+    this.notificationItems = [
+      {
+        label: 'New invoice received',
+        icon: 'pi pi-file',
+        command: () => this.onNotificationClick('invoice'),
+      },
+      {
+        label: 'Reconciliation completed',
+        icon: 'pi pi-check-circle',
+        command: () => this.onNotificationClick('reconciliation'),
+      },
+      {
+        label: 'System backup scheduled',
+        icon: 'pi pi-calendar',
+        command: () => this.onNotificationClick('backup'),
+      },
+      {
+        separator: true,
+      },
+      {
+        label: 'View All',
+        icon: 'pi pi-list',
+        command: () => this.onViewAllNotifications(),
       },
     ];
 
@@ -163,5 +191,14 @@ export class Header {
 
   onLogout() {
     this.router.navigate(['app/login']);
+  }
+
+  onNotificationClick(type: string) {
+    console.log(`Notification clicked: ${type}`);
+    this.notificationCount = Math.max(0, this.notificationCount - 1);
+  }
+
+  onViewAllNotifications() {
+    console.log('View all notifications');
   }
 }

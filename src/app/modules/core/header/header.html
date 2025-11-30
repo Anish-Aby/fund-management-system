@@ -9,10 +9,29 @@
       <p-button
         [icon]="themeService.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
         (onClick)="toggleTheme()"
-        class="mr-3"
+        class="mr-1"
         severity="secondary"
         [text]="true"
       />
+      <div class="relative mr-4">
+        <p-button
+          icon="pi pi-bell"
+          (onClick)="notificationMenu.toggle($event)"
+          severity="secondary"
+          [text]="true"
+          [badge]="notificationCount > 0 ? notificationCount.toString() : undefined"
+          badgeSeverity="danger"
+          class="notification-button"
+        />
+
+        <p-menu
+          #notificationMenu
+          [model]="notificationItems"
+          [popup]="true"
+          appendTo="body"
+          styleClass="notification-menu"
+        />
+      </div>
       <div class="flex items-center cursor-pointer">
         <p-avatar label="AG" class="mr-2 user-avatar" size="large" />
         <div class="flex flex-col justify-center mr-2">
@@ -26,7 +45,7 @@
           (onClick)="userMenu.toggle($event)"
           #menuButton
         />
-        <p-menu #userMenu [model]="userMenuItems" [popup]="true" />
+        <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body" />
       </div>
     </div>
   </ng-template>

@@ -1,0 +1,9 @@
+.notification-button {
+  position: relative;
+
+  ::ng-deep .p-badge {
+    top: 2px;
+    right: 2px;
+    position: absolute;
+  }
+}
