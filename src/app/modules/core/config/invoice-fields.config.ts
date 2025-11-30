@@ -38,6 +38,13 @@ export const INVOICE_FIELD_CONFIG: any[] = [
     editable: true,
   },
   {
+    key: 'invoiceDueDate',
+    label: 'Invoice Due Date',
+    type: 'date',
+    group: 'Basic Information',
+    editable: true,
+  },
+  {
     key: 'vendorLocation',
     label: 'Vendor Location',
     type: 'text',

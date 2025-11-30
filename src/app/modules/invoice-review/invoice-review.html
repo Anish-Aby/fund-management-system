@@ -12,37 +12,52 @@
               @if (editMode()) {
               <p-button label="Save" severity="success" (onClick)="saveChanges()" size="small" />
               }
-              <h1 class="text-4xl font-medium mb-1">Invoice Review</h1>
+              <h1 class="text-3xl font-medium mb-1">Invoice Review</h1>
               <p class="text-sm text-muted-color mb-2">
                 Review invoices, approve or reject them. Change tabs for viewing the invoices
               </p>
             </div>
             <p-select
-              class="mb-4 max-w-60"
+              class="mb-4 w-80"
+              panelStyleClass="w-60"
               [options]="invoiceOptions()"
               [ngModel]="selectedInvoiceId()"
               (ngModelChange)="onInvoiceSelect($event)"
               [filter]="true"
               [showClear]="true"
-              placeholder="Select Invoice"
+              placeholder="Select Vendor"
             />
           </div>
           <p-tabs [value]="selectedTabValue()" scrollable>
             <p-tablist>
               @for(invoice of invoiceData(); track invoice.invoiceNumber){
-              <p-tab [value]="invoice.invoiceNumber">
-                {{ invoice.invoiceNumber }}
+              <p-tab
+                [value]="invoice.invoiceNumber"
+                [pTooltip]="invoice.vendorName"
+                tooltipPosition="top"
+              >
+                {{
+                  invoice.vendorName.length > 15
+                    ? invoice.vendorName.substring(0, 15) + '...'
+                    : invoice.vendorName
+                }}
               </p-tab>
+
               }
             </p-tablist>
             <p-tabpanels>
               @for(invoice of invoiceData(); track invoice.invoiceNumber){
               <p-tabpanel [value]="invoice.invoiceNumber">
-                <div class="text-4xl grid grid-cols-2 py-2 font-medium">
+                <div class="text-3xl grid grid-cols-2 py-2 font-medium mb-3">
                   <div class="col-span-1 flex items-center">
                     <div class="mr-6">
-                      {{ invoice.invoicedFundName }}
+                      {{ invoice.vendorName }}
                     </div>
+                    <p-tag
+                      class="h-max capitalize"
+                      [value]="invoice.invoiceStatus"
+                      [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
+                    />
                   </div>
                   <div class="col-span-1 flex justify-end text-primary">
                     <p-button
@@ -54,20 +69,18 @@
                     />
                   </div>
                 </div>
-                <div class="mb-6">
-                  <div class="text-lg text-muted-color font-medium mb-2">
+                <!-- <div class="text-lg text-muted-color font-medium mb-2">
                     {{ invoice.invoiceNumber }}
-                  </div>
-                  <p-tag
+                  </div> -->
+                <!-- <p-tag
                     class="h-max capitalize"
                     [value]="invoice.invoiceStatus"
                     [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
-                  />
-                </div>
+                  /> -->
 
                 @for (group of fieldGroups(); track group.name) {
                 <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 rounded-xl rounded-b-none shadow-sm">
+                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
                     <div class="text-xl font-medium pl-4 pt-2">{{ group.name }}</div>
                     <p-divider styleClass="mt-2!" />
                   </div>
@@ -176,9 +189,19 @@
         <div
           class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col h-full"
         >
-          <div class="flex flex-col">
-            <h1 class="text-4xl font-medium mb-1">Invoice PDF View</h1>
-            <p class="text-sm text-muted-color mb-2">Review the invoice PDF here</p>
+          <div class="grid grid-cols-12">
+            <div class="col-span-6 flex flex-col">
+              <h1 class="text-3xl font-medium mb-1">Invoice PDF View</h1>
+              <p class="text-sm text-muted-color mb-2">Review the invoice PDF here</p>
+            </div>
+            <div class="col-span-6 flex items-center justify-end">
+              <p-button
+                icon="pi pi-save"
+                variant="outlined"
+                severity="contrast"
+                label="Save Invoice PDF"
+              />
+            </div>
           </div>
           <div class="h-full">
             <ngx-extended-pdf-viewer
@@ -234,11 +257,21 @@
             class="pi mr-4 text-5xl!"
           ></div>
           @if (reviewConfirmType() === 'approve') {
-          <div class="font-semibold">
+          <div
+            class="font-semibold"
+            [ngClass]="{
+              'dark:text-emerald-600': reviewConfirmType() === 'approve',
+            }"
+          >
             Are you sure you want to approve {{ invoiceToApprove().invoiceNumber }}
           </div>
           } @else {
-          <div class="font-semibold">
+          <div
+            class="font-semibold"
+            [ngClass]="{
+              'dark:text-red-600': reviewConfirmType() === 'reject'
+            }"
+          >
             Are you sure you want to reject {{ invoiceToApprove().invoiceNumber }}
           </div>
           }

@@ -11,6 +11,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
 import { SplitterModule } from 'primeng/splitter';
+import { TooltipModule } from 'primeng/tooltip';
 
 // import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
 import { INVOICE_FIELD_CONFIG } from '../core/config/invoice-fields.config';
@@ -38,6 +39,7 @@ import { DialogModule } from 'primeng/dialog';
     DialogModule,
     MessageModule,
     SplitterModule,
+    TooltipModule,
   ],
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',
@@ -59,7 +61,7 @@ export class InvoiceReview implements OnInit {
 
   invoiceOptions = computed(() =>
     this.invoiceData().map((invoice) => ({
-      label: invoice.invoiceNumber,
+      label: invoice.vendorName,
       value: invoice.invoiceNumber,
     }))
   );

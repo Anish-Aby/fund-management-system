@@ -7,14 +7,12 @@
 .logo {
   background: url(../../imgs/logo.svg) no-repeat center center;
   background-size: contain;
-  height: 3rem;
-  width: 3rem;
+  height: 2rem;
+  width: 2rem;
   filter: brightness(5);
 
   &.invert {
     filter: invert(1) brightness(0);
-    width: 2rem;
-    height: 2rem;
   }
 }
 
