@@ -10,7 +10,7 @@
 
     <div class="border border-surface bg-primary-contrast rounded-t-xl">
       <div
-        class="grid grid-cols-12 gap-y-5 gap-x-4 py-5 px-5 bg-slate-50 rounded-t-xl shadow-inner"
+        class="grid grid-cols-12 gap-y-5 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-2">
           <div>Vendor Name</div>
@@ -67,7 +67,6 @@
         <p-button
           icon="pi pi-file-check"
           severity="contrast"
-          variant="outlined"
           label="Review Invoices"
           [disabled]="selectedInvoices.length === 0"
           (onClick)="onReviewInvoice()"
