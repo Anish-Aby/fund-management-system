@@ -1,0 +1,40 @@
+<main class="flex items-center justify-center min-h-screen bg-surface-0 relative overflow-hidden">
+  <!-- Floating stars background -->
+  <div class="stars-container">
+    <div class="star" *ngFor="let star of stars; trackBy: trackByStar"></div>
+  </div>
+  <div class="text-center max-w-md px-6 relative z-10">
+    <!-- Fund Management System themed 404 -->
+    <div class="mb-8">
+      <div class="not-found-logo mb-8"></div>
+      <!-- <h1 class="text-8xl font-bold text-primary mb-4">404</h1> -->
+      <h2 class="text-2xl font-semibold text-surface-900 mb-4">Portfolio Not Found</h2>
+      <p class="text-surface-600 mb-6">
+        The fund or page you're looking for seems to have been delisted or moved to a different
+        portfolio.
+      </p>
+    </div>
+
+    <!-- Navigation options -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <p-button
+        label="Return to Dashboard"
+        icon="pi pi-home"
+        (onClick)="goToDashboard()"
+        styleClass="w-full sm:w-auto"
+      />
+      <p-button
+        label="Login"
+        icon="pi pi-sign-in"
+        severity="secondary"
+        (onClick)="goToLogin()"
+        styleClass="w-full sm:w-auto"
+      />
+    </div>
+
+    <!-- Fund management context help -->
+    <div class="mt-8 text-sm text-surface-500">
+      <p>Looking for specific fund data? Try accessing it through the main dashboard.</p>
+    </div>
+  </div>
+</main>

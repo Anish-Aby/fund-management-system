@@ -16,6 +16,13 @@
   }
 }
 
+.not-found-logo {
+  background-image: url(../../imgs/404.svg);
+  height: 16rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .top-1rem {
   top: 1rem !important;
 }
