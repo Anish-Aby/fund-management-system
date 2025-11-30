@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { SkeletonModule } from 'primeng/skeleton';
 
 export type CardColor = 'indigo' | 'green' | 'amber' | 'rose' | 'sky' | 'purple';
 
 @Component({
   selector: 'app-stat-card',
-  imports: [CommonModule],
+  imports: [CommonModule, SkeletonModule],
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.scss',
 })
@@ -16,6 +17,7 @@ export class StatCard {
   @Input() iconClass: string = 'pi pi-window-maximize';
   @Input() color: CardColor = 'indigo';
   @Input() colSpan: string = 'col-span-6 lg:col-span-4';
+  @Input() loading: boolean = false; // Add this
 
   onCardClick() {
     // Handle card click

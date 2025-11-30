@@ -4,7 +4,17 @@
     <span [class]="iconClass"></span>
   </div>
   <div class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold mb-2">
+    @if (loading) {
+    <p-skeleton height="1.5rem" width="60%" />
+    } @else {
     {{ value }}
+    }
   </div>
-  <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs">{{ subtitle }}</div>
+  <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs">
+    @if (loading) {
+    <p-skeleton height="0.8rem" width="80%" />
+    } @else {
+    {{ subtitle }}
+    }
+  </div>
 </div>
