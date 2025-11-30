@@ -19,9 +19,14 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
-        path: 'invoice-review',
+        path: 'invoice/review',
         loadComponent: () =>
-          import('./modules/invoice-review/invoice-review').then((m) => m.InvoiceReview),
+          import('./modules/invoice/review/invoice-review').then((m) => m.InvoiceReview),
+      },
+      {
+        path: 'invoice/list',
+        loadComponent: () =>
+          import('./modules/invoice/list/invoice-list').then((m) => m.InvoiceList),
       },
     ],
   },

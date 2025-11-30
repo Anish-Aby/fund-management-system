@@ -17,13 +17,9 @@ export class StatCard {
   @Input() color: CardColor = 'indigo';
   @Input() colSpan: string = 'col-span-6 lg:col-span-4';
 
-  onCardClick() {
-    // Handle card click
-  }
-
   getCardClasses(): string {
     const baseClasses =
-      'border h-full rounded-2xl px-4 py-3 flex flex-col justify-between cursor-pointer hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 ease-in-out';
+      'border h-full rounded-2xl px-4 py-3 flex flex-col justify-between cursor-pointer hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-transform transition-shadow duration-300 ease-in-out';
 
     const colorClasses = {
       indigo:

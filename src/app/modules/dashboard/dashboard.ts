@@ -204,11 +204,15 @@ export class Dashboard implements OnInit {
       return;
     }
     const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
-    this.router.navigate(['app/invoice-review']);
+    this.router.navigate(['app/invoice/review']);
   }
 
   onInvoiceRowSelect(event: any): void {
     console.log('here');
-    this.router.navigate(['app/invoice-review']);
+    this.router.navigate(['app/invoice/review']);
+  }
+
+  onCardClick(statusId: number) {
+    this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
   }
 }

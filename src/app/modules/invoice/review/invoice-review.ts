@@ -14,10 +14,10 @@ import { SplitterModule } from 'primeng/splitter';
 import { TooltipModule } from 'primeng/tooltip';
 
 // import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
-import { INVOICE_FIELD_CONFIG } from '../core/config/invoice-fields.config';
-import InvoiceDataMock from '../core/mocks/invoice-review-mock.json';
+import { INVOICE_FIELD_CONFIG } from '../../core/config/invoice-fields.config';
+import InvoiceDataMock from '../../core/mocks/invoice-review-mock.json';
 import { CommonModule } from '@angular/common';
-import { UtilityService } from '../shared/services/utility.service';
+import { UtilityService } from '../../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DialogModule } from 'primeng/dialog';
 

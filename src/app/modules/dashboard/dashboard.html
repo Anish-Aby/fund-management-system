@@ -124,7 +124,7 @@
             Get quick insights to invoice details
           </div>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(1)">
           <app-stat-card
             title="Received Invoices"
             value="128"
@@ -133,11 +133,11 @@
           >
           </app-stat-card>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(2)">
           <app-stat-card title="Pending Invoices" value="70" subtitle="Amount - $805" color="amber">
           </app-stat-card>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(3)">
           <app-stat-card
             title="Approved Invoices"
             value="27"
@@ -146,11 +146,11 @@
           >
           </app-stat-card>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(4)">
           <app-stat-card title="Rejected Invoices" value="4" subtitle="Amount - $1622" color="rose">
           </app-stat-card>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(5)">
           <app-stat-card
             title="Scheduled For Release"
             value="12"
@@ -159,7 +159,7 @@
           >
           </app-stat-card>
         </div>
-        <div class="relative col-span-6 lg:col-span-4">
+        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(6)">
           <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
           </app-stat-card>
         </div>

@@ -7,3 +7,9 @@
     position: absolute;
   }
 }
+
+.header-menubar {
+  ::ng-deep .p-menubar-submenu {
+    z-index: 1000 !important;
+  }
+}

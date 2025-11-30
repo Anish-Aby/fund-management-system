@@ -1,0 +1,180 @@
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Invoice List</h1>
+        <p class="text-sm text-muted-color">Manage and view all invoices in the system</p>
+      </div>
+      <!-- <p-button label="Review Invoices" icon="pi pi-plus" severity="contrast" /> -->
+    </div>
+
+    <div class="border border-surface bg-primary-contrast rounded-t-xl">
+      <div
+        class="grid grid-cols-12 gap-y-5 gap-x-4 py-5 px-5 bg-slate-50 rounded-t-xl shadow-inner"
+      >
+        <div class="col-span-2">
+          <div>Vendor Name</div>
+          <input placeholder="Search by vendor..." fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Invoice Number</div>
+          <input placeholder="e.g. INV-2024-001" fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Invoice Date</div>
+          <p-datepicker placeholder="Select date" fluid />
+        </div>
+        <div class="col-span-2">
+          <div>Portfolio</div>
+          <input placeholder="Technology, Healthcare..." fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Aging</div>
+          <input placeholder="Days overdue" fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Location</div>
+          <input placeholder="City, Country" fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Currency</div>
+          <input placeholder="USD, EUR, GBP..." fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Expenses Type</div>
+          <input placeholder="Software, Legal..." fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Gross Amount</div>
+          <input placeholder="Amount" fluid type="text" pInputText />
+        </div>
+        <div class="col-span-2">
+          <div>Status</div>
+          <p-multiselect fluid [options]="statusOptions" placeholder="Choose status" />
+        </div>
+        <div class="col-span-4 flex items-end justify-end">
+          <!-- <input
+            class="mr-2 lg:w-auto"
+            pInputText
+            type="text"
+            placeholder="Search"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+          /> -->
+          <p-button icon="pi pi-search" severity="contrast" label="Search" class="mr-2" />
+        </div>
+      </div>
+      <div class="col-span-12 flex justify-end p-3">
+        <p-button
+          icon="pi pi-file-check"
+          severity="contrast"
+          variant="outlined"
+          label="Review Invoices"
+          [disabled]="selectedInvoices.length === 0"
+          (onClick)="onReviewInvoice()"
+        />
+      </div>
+
+      <div class="col-span-12">
+        <p-table
+          #dt
+          [value]="invoices"
+          [(selection)]="selectedInvoices"
+          dataKey="invoiceNumber"
+          stripedRows="true"
+          size="small"
+          showGridlines="true"
+          [scrollable]="true"
+          scrollHeight="500px"
+          class="table-dashboard-invoice"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
+          (onFilter)="onTableFilter($event)"
+          [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
+        >
+          <ng-template #header>
+            <tr>
+              <th><p-tableHeaderCheckbox /></th>
+              <th pResizableColumn>Vendor Name</th>
+              <th pResizableColumn>Invoice Number</th>
+              <th pResizableColumn>Invoice Date</th>
+              <th pResizableColumn>Portfolio</th>
+              <th pResizableColumn>Aging</th>
+              <th pResizableColumn>Location</th>
+              <th pResizableColumn>Currency</th>
+              <th pResizableColumn>Expenses Type</th>
+              <th pResizableColumn>Status</th>
+              <th>Amount</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-invoice>
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="invoice" />
+              </td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.fundName }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.vendorName }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">
+                <p-tag [value]="invoice.status" [severity]="getSeverity(invoice.status)" />
+              </td>
+              <td (click)="onInvoiceRowSelect(invoice)">
+                <div class="text-right">${{ invoice.grossAmount }}</div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #footer>
+            <tr>
+              <td
+                colspan="10"
+                class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
+              >
+                Total
+              </td>
+              <td>
+                <!-- <div class="text-right font-semibold">${{ filteredTotal() }}</div> -->
+                <div class="text-right font-semibold">${{ filteredTotal | number }}</div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- <p-table [value]="invoices" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #header>
+        <tr>
+          <th>ID</th>
+          <th>Vendor</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-invoice>
+        <tr>
+          <td>{{ invoice.id }}</td>
+          <td>{{ invoice.vendor }}</td>
+          <td>{{ invoice.amount | currency }}</td>
+          <td>
+            <p-tag
+              [value]="invoice.status"
+              [severity]="getSeverity(invoice.status)"
+              class="capitalize"
+            />
+          </td>
+          <td>{{ invoice.date }}</td>
+          <td>
+            <p-button icon="pi pi-eye" size="small" variant="outlined" class="mr-2" />
+            <p-button icon="pi pi-pencil" size="small" severity="secondary" variant="outlined" />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table> -->
+  </div>
+</div>

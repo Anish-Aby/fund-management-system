@@ -1,0 +1,6 @@
+:host {
+  .cursor-pointer {
+    transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out, scale 300ms ease-in-out,
+      translate 300ms ease-in-out;
+  }
+}
