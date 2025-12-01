@@ -110,12 +110,12 @@
               <td>
                 <p-tableCheckbox [value]="invoice" />
               </td>
-              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.fundName }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.vendorName }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
-              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
-              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.portfolio }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.aging }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.location }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
               <td (click)="onInvoiceRowSelect(invoice)">

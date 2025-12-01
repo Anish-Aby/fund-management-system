@@ -10,7 +10,8 @@
     "status": "Paid",
     "grossAmount": 15000,
     "portfolio": "Technology",
-    "location": "New York"
+    "location": "US",
+    "aging": 5
   },
   {
     "invoiceNumber": "INV-2024-002",
@@ -23,7 +24,8 @@
     "status": "Pending",
     "grossAmount": 8500,
     "portfolio": "Technology",
-    "location": "San Francisco"
+    "location": "US",
+    "aging": 12
   },
   {
     "invoiceNumber": "INV-2024-003",
@@ -36,7 +38,8 @@
     "status": "Approved",
     "grossAmount": 12000,
     "portfolio": "Emerging Markets",
-    "location": "London"
+    "location": "GB",
+    "aging": 3
   },
   {
     "invoiceNumber": "INV-2024-004",
@@ -49,7 +52,8 @@
     "status": "Rejected",
     "grossAmount": 25000,
     "portfolio": "Fixed Income",
-    "location": "Chicago"
+    "location": "US",
+    "aging": 8
   },
   {
     "invoiceNumber": "INV-2024-005",
@@ -62,7 +66,8 @@
     "status": "Received",
     "grossAmount": 18500,
     "portfolio": "Real Estate",
-    "location": "London"
+    "location": "GB",
+    "aging": 15
   },
   {
     "invoiceNumber": "INV-2024-006",
@@ -75,7 +80,8 @@
     "status": "Paid",
     "grossAmount": 9200,
     "portfolio": "Technology",
-    "location": "New York"
+    "location": "US",
+    "aging": 2
   },
   {
     "invoiceNumber": "INV-2024-007",
@@ -88,7 +94,8 @@
     "status": "Approved",
     "grossAmount": 22000,
     "portfolio": "Technology",
-    "location": "San Francisco"
+    "location": "US",
+    "aging": 7
   },
   {
     "invoiceNumber": "INV-2024-008",
@@ -101,7 +108,8 @@
     "status": "Pending",
     "grossAmount": 31500,
     "portfolio": "Real Estate",
-    "location": "Manchester"
+    "location": "GB",
+    "aging": 20
   },
   {
     "invoiceNumber": "INV-2024-009",
@@ -114,7 +122,8 @@
     "status": "Received",
     "grossAmount": 14800,
     "portfolio": "Fixed Income",
-    "location": "Boston"
+    "location": "US",
+    "aging": 4
   },
   {
     "invoiceNumber": "INV-2024-010",
@@ -127,7 +136,8 @@
     "status": "Rejected",
     "grossAmount": 7500,
     "portfolio": "Emerging Markets",
-    "location": "Frankfurt"
+    "location": "DE",
+    "aging": 18
   },
   {
     "invoiceNumber": "INV-2024-011",
@@ -140,7 +150,8 @@
     "status": "Paid",
     "grossAmount": 3200,
     "portfolio": "Technology",
-    "location": "New York"
+    "location": "US",
+    "aging": 1
   },
   {
     "invoiceNumber": "INV-2024-012",
@@ -153,7 +164,8 @@
     "status": "Scheduled",
     "grossAmount": 45000,
     "portfolio": "Healthcare",
-    "location": "Boston"
+    "location": "US",
+    "aging": 9
   },
   {
     "invoiceNumber": "INV-2024-013",
@@ -166,7 +178,8 @@
     "status": "Scheduled",
     "grossAmount": 67500,
     "portfolio": "Energy",
-    "location": "Amsterdam"
+    "location": "NL",
+    "aging": 6
   },
   {
     "invoiceNumber": "INV-2024-014",
@@ -179,7 +192,8 @@
     "status": "Approved",
     "grossAmount": 38000,
     "portfolio": "Technology",
-    "location": "Seattle"
+    "location": "US",
+    "aging": 11
   },
   {
     "invoiceNumber": "INV-2024-015",
@@ -192,7 +206,8 @@
     "status": "Pending",
     "grossAmount": 125000,
     "portfolio": "Real Estate",
-    "location": "Toronto"
+    "location": "CA",
+    "aging": 14
   },
   {
     "invoiceNumber": "INV-2024-016",
@@ -205,7 +220,8 @@
     "status": "Received",
     "grossAmount": 19500,
     "portfolio": "Fixed Income",
-    "location": "Chicago"
+    "location": "US",
+    "aging": 3
   },
   {
     "invoiceNumber": "INV-2024-017",
@@ -218,7 +234,8 @@
     "status": "Scheduled",
     "grossAmount": 2850000,
     "portfolio": "Emerging Markets",
-    "location": "Tokyo"
+    "location": "JP",
+    "aging": 22
   },
   {
     "invoiceNumber": "INV-2024-018",
@@ -231,7 +248,8 @@
     "status": "Approved",
     "grossAmount": 52000,
     "portfolio": "Healthcare",
-    "location": "San Diego"
+    "location": "US",
+    "aging": 5
   },
   {
     "invoiceNumber": "INV-2024-019",
@@ -244,7 +262,8 @@
     "status": "Paid",
     "grossAmount": 89000,
     "portfolio": "Energy",
-    "location": "Berlin"
+    "location": "DE",
+    "aging": 1
   },
   {
     "invoiceNumber": "INV-2024-020",
@@ -257,7 +276,8 @@
     "status": "Rejected",
     "grossAmount": 16800,
     "portfolio": "Technology",
-    "location": "Austin"
+    "location": "US",
+    "aging": 16
   },
   {
     "invoiceNumber": "INV-2024-021",
@@ -270,7 +290,8 @@
     "status": "Scheduled",
     "grossAmount": 28500,
     "portfolio": "Real Estate",
-    "location": "Edinburgh"
+    "location": "GB",
+    "aging": 8
   },
   {
     "invoiceNumber": "INV-2024-022",
@@ -283,7 +304,8 @@
     "status": "Pending",
     "grossAmount": 11200,
     "portfolio": "Technology",
-    "location": "Denver"
+    "location": "US",
+    "aging": 13
   },
   {
     "invoiceNumber": "INV-2024-023",
@@ -296,7 +318,8 @@
     "status": "Received",
     "grossAmount": 73500,
     "portfolio": "Healthcare",
-    "location": "Houston"
+    "location": "US",
+    "aging": 4
   },
   {
     "invoiceNumber": "INV-2024-024",
@@ -309,7 +332,8 @@
     "status": "Scheduled",
     "grossAmount": 21000,
     "portfolio": "Fixed Income",
-    "location": "Miami"
+    "location": "US",
+    "aging": 10
   },
   {
     "invoiceNumber": "INV-2024-025",
@@ -322,7 +346,8 @@
     "status": "Approved",
     "grossAmount": 94000,
     "portfolio": "Energy",
-    "location": "Copenhagen"
+    "location": "DK",
+    "aging": 17
   },
   {
     "invoiceNumber": "INV-2024-026",
@@ -335,7 +360,8 @@
     "status": "Received",
     "grossAmount": 85000,
     "portfolio": "Financial Technology",
-    "location": "Singapore"
+    "location": "SG",
+    "aging": 25
   },
   {
     "invoiceNumber": "INV-2024-027",
@@ -348,7 +374,8 @@
     "status": "Pending",
     "grossAmount": 42000,
     "portfolio": "Agriculture",
-    "location": "Melbourne"
+    "location": "AU",
+    "aging": 6
   },
   {
     "invoiceNumber": "INV-2024-028",
@@ -361,7 +388,8 @@
     "status": "Scheduled",
     "grossAmount": 150000,
     "portfolio": "Aerospace",
-    "location": "Cape Canaveral"
+    "location": "US",
+    "aging": 19
   },
   {
     "invoiceNumber": "INV-2024-029",
@@ -374,7 +402,8 @@
     "status": "Approved",
     "grossAmount": 98000,
     "portfolio": "Biotechnology",
-    "location": "Zurich"
+    "location": "CH",
+    "aging": 11
   },
   {
     "invoiceNumber": "INV-2024-030",
@@ -387,7 +416,8 @@
     "status": "Paid",
     "grossAmount": 76500,
     "portfolio": "Automotive",
-    "location": "Stuttgart"
+    "location": "DE",
+    "aging": 2
   },
   {
     "invoiceNumber": "INV-2024-031",
@@ -400,7 +430,8 @@
     "status": "Rejected",
     "grossAmount": 34000,
     "portfolio": "Retail",
-    "location": "London"
+    "location": "GB",
+    "aging": 23
   },
   {
     "invoiceNumber": "INV-2024-032",
@@ -413,7 +444,8 @@
     "status": "Received",
     "grossAmount": 29500,
     "portfolio": "Education",
-    "location": "Boston"
+    "location": "US",
+    "aging": 14
   },
   {
     "invoiceNumber": "INV-2024-033",
@@ -426,7 +458,8 @@
     "status": "Scheduled",
     "grossAmount": 125000,
     "portfolio": "Gaming",
-    "location": "Los Angeles"
+    "location": "US",
+    "aging": 8
   },
   {
     "invoiceNumber": "INV-2024-034",
@@ -439,7 +472,8 @@
     "status": "Pending",
     "grossAmount": 67000,
     "portfolio": "Logistics",
-    "location": "Amsterdam"
+    "location": "NL",
+    "aging": 12
   },
   {
     "invoiceNumber": "INV-2024-035",
@@ -452,7 +486,8 @@
     "status": "Approved",
     "grossAmount": 54000,
     "portfolio": "Cybersecurity",
-    "location": "Tel Aviv"
+    "location": "IL",
+    "aging": 4
   },
   {
     "invoiceNumber": "INV-2024-036",
@@ -465,7 +500,8 @@
     "status": "Paid",
     "grossAmount": 89000,
     "portfolio": "Environmental",
-    "location": "San Francisco"
+    "location": "US",
+    "aging": 1
   },
   {
     "invoiceNumber": "INV-2024-037",
@@ -478,7 +514,8 @@
     "status": "Received",
     "grossAmount": 245000,
     "portfolio": "Quantum Technology",
-    "location": "Waterloo"
+    "location": "CA",
+    "aging": 30
   },
   {
     "invoiceNumber": "INV-2024-038",
@@ -491,7 +528,8 @@
     "status": "Scheduled",
     "grossAmount": 38000,
     "portfolio": "Social Impact",
-    "location": "Chicago"
+    "location": "US",
+    "aging": 7
   },
   {
     "invoiceNumber": "INV-2024-039",
@@ -504,7 +542,8 @@
     "status": "Pending",
     "grossAmount": 156000,
     "portfolio": "Maritime",
-    "location": "Bergen"
+    "location": "NO",
+    "aging": 15
   },
   {
     "invoiceNumber": "INV-2024-040",
@@ -517,7 +556,8 @@
     "status": "Approved",
     "grossAmount": 187000,
     "portfolio": "Artificial Intelligence",
-    "location": "Palo Alto"
+    "location": "US",
+    "aging": 9
   },
   {
     "invoiceNumber": "INV-2024-041",
@@ -530,7 +570,8 @@
     "status": "Rejected",
     "grossAmount": 43000,
     "portfolio": "Materials Science",
-    "location": "Munich"
+    "location": "DE",
+    "aging": 21
   },
   {
     "invoiceNumber": "INV-2024-042",
@@ -543,7 +584,8 @@
     "status": "Paid",
     "grossAmount": 72000,
     "portfolio": "Digital Health",
-    "location": "Nashville"
+    "location": "US",
+    "aging": 3
   },
   {
     "invoiceNumber": "INV-2024-043",
@@ -556,7 +598,8 @@
     "status": "Received",
     "grossAmount": 98000,
     "portfolio": "Smart Infrastructure",
-    "location": "Singapore"
+    "location": "SG",
+    "aging": 13
   },
   {
     "invoiceNumber": "INV-2024-044",
@@ -569,7 +612,8 @@
     "status": "Scheduled",
     "grossAmount": 320000,
     "portfolio": "Defense",
-    "location": "Washington DC"
+    "location": "US",
+    "aging": 18
   },
   {
     "invoiceNumber": "INV-2024-045",
@@ -582,7 +626,8 @@
     "status": "Pending",
     "grossAmount": 64000,
     "portfolio": "Food Technology",
-    "location": "San Francisco"
+    "location": "US",
+    "aging": 5
   },
   {
     "invoiceNumber": "INV-2024-046",
@@ -595,7 +640,8 @@
     "status": "Approved",
     "grossAmount": 8500000,
     "portfolio": "Robotics",
-    "location": "Osaka"
+    "location": "JP",
+    "aging": 26
   },
   {
     "invoiceNumber": "INV-2024-047",
@@ -608,7 +654,8 @@
     "status": "Paid",
     "grossAmount": 145000,
     "portfolio": "Climate Tech",
-    "location": "Oslo"
+    "location": "NO",
+    "aging": 10
   },
   {
     "invoiceNumber": "INV-2024-048",
@@ -621,7 +668,8 @@
     "status": "Received",
     "grossAmount": 275000,
     "portfolio": "Pharmaceuticals",
-    "location": "Cambridge"
+    "location": "US",
+    "aging": 16
   },
   {
     "invoiceNumber": "INV-2024-049",
@@ -634,7 +682,8 @@
     "status": "Scheduled",
     "grossAmount": 125000000,
     "portfolio": "Telecommunications",
-    "location": "Seoul"
+    "location": "KR",
+    "aging": 22
   },
   {
     "invoiceNumber": "INV-2024-050",
@@ -647,7 +696,8 @@
     "status": "Pending",
     "grossAmount": 198000,
     "portfolio": "Mining",
-    "location": "Perth"
+    "location": "AU",
+    "aging": 28
   },
   {
     "invoiceNumber": "INV-2024-051",
@@ -660,7 +710,8 @@
     "status": "Approved",
     "grossAmount": 56000,
     "portfolio": "InsurTech",
-    "location": "Hartford"
+    "location": "US",
+    "aging": 6
   },
   {
     "invoiceNumber": "INV-2024-052",
@@ -673,7 +724,8 @@
     "status": "Rejected",
     "grossAmount": 167000,
     "portfolio": "Energy Storage",
-    "location": "Nevada"
+    "location": "US",
+    "aging": 24
   },
   {
     "invoiceNumber": "INV-2024-053",
@@ -686,7 +738,8 @@
     "status": "Paid",
     "grossAmount": 89000,
     "portfolio": "Virtual Reality",
-    "location": "San Jose"
+    "location": "US",
+    "aging": 4
   },
   {
     "invoiceNumber": "INV-2024-054",
@@ -699,7 +752,8 @@
     "status": "Received",
     "grossAmount": 45,
     "portfolio": "Blockchain",
-    "location": "Zug"
+    "location": "CH",
+    "aging": 11
   },
   {
     "invoiceNumber": "INV-2024-055",
@@ -712,7 +766,8 @@
     "status": "Scheduled",
     "grossAmount": 73000,
     "portfolio": "Agriculture",
-    "location": "Iowa"
+    "location": "US",
+    "aging": 8
   },
   {
     "invoiceNumber": "INV-2024-056",
@@ -725,7 +780,8 @@
     "status": "Pending",
     "grossAmount": 134000,
     "portfolio": "Nanotechnology",
-    "location": "MIT"
+    "location": "US",
+    "aging": 27
   },
   {
     "invoiceNumber": "INV-2024-057",
@@ -738,7 +794,8 @@
     "status": "Approved",
     "grossAmount": 87000,
     "portfolio": "Environmental",
-    "location": "Stockholm"
+    "location": "SE",
+    "aging": 14
   },
   {
     "invoiceNumber": "INV-2024-058",
@@ -751,7 +808,8 @@
     "status": "Paid",
     "grossAmount": 42000,
     "portfolio": "Sports Tech",
-    "location": "Orlando"
+    "location": "US",
+    "aging": 2
   },
   {
     "invoiceNumber": "INV-2024-059",
@@ -764,7 +822,8 @@
     "status": "Received",
     "grossAmount": 58000,
     "portfolio": "Mental Health",
-    "location": "Portland"
+    "location": "US",
+    "aging": 19
   },
   {
     "invoiceNumber": "INV-2024-060",
@@ -777,7 +836,8 @@
     "status": "Scheduled",
     "grossAmount": 95000,
     "portfolio": "Supply Chain",
-    "location": "Memphis"
+    "location": "US",
+    "aging": 12
   },
   {
     "invoiceNumber": "INV-2024-061",
@@ -790,7 +850,8 @@
     "status": "Received",
     "grossAmount": 156000,
     "portfolio": "Renewable Energy",
-    "location": "Phoenix"
+    "location": "US",
+    "aging": 7
   },
   {
     "invoiceNumber": "INV-2024-062",
@@ -803,7 +864,8 @@
     "status": "Pending",
     "grossAmount": 78000,
     "portfolio": "Urban Mobility",
-    "location": "Barcelona"
+    "location": "ES",
+    "aging": 20
   },
   {
     "invoiceNumber": "INV-2024-063",
@@ -816,7 +878,8 @@
     "status": "Approved",
     "grossAmount": 92000,
     "portfolio": "Data Science",
-    "location": "Edinburgh"
+    "location": "GB",
+    "aging": 15
   },
   {
     "invoiceNumber": "INV-2024-064",
@@ -829,7 +892,8 @@
     "status": "Scheduled",
     "grossAmount": 134000,
     "portfolio": "Cloud Computing",
-    "location": "Seattle"
+    "location": "US",
+    "aging": 9
   },
   {
     "invoiceNumber": "INV-2024-065",
@@ -842,7 +906,8 @@
     "status": "Paid",
     "grossAmount": 285000,
     "portfolio": "Medical Technology",
-    "location": "Minneapolis"
+    "location": "US",
+    "aging": 3
   },
   {
     "invoiceNumber": "INV-2024-066",
@@ -855,7 +920,8 @@
     "status": "Rejected",
     "grossAmount": 450000,
     "portfolio": "Aerospace",
-    "location": "Hawthorne"
+    "location": "US",
+    "aging": 25
   },
   {
     "invoiceNumber": "INV-2024-067",
@@ -868,7 +934,8 @@
     "status": "Received",
     "grossAmount": 167000,
     "portfolio": "Clean Energy",
-    "location": "Vancouver"
+    "location": "CA",
+    "aging": 13
   },
   {
     "invoiceNumber": "INV-2024-068",
@@ -881,7 +948,8 @@
     "status": "Pending",
     "grossAmount": 73000,
     "portfolio": "Financial Services",
-    "location": "New York"
+    "location": "US",
+    "aging": 6
   },
   {
     "invoiceNumber": "INV-2024-069",
@@ -894,7 +962,8 @@
     "status": "Approved",
     "grossAmount": 118000,
     "portfolio": "Entertainment",
-    "location": "Los Angeles"
+    "location": "US",
+    "aging": 18
   },
   {
     "invoiceNumber": "INV-2024-070",
@@ -907,7 +976,8 @@
     "status": "Scheduled",
     "grossAmount": 89000,
     "portfolio": "Security",
-    "location": "Vienna"
+    "location": "AT",
+    "aging": 10
   },
   {
     "invoiceNumber": "INV-2024-071",
@@ -920,7 +990,8 @@
     "status": "Paid",
     "grossAmount": 195000,
     "portfolio": "Construction Tech",
-    "location": "Dubai"
+    "location": "AE",
+    "aging": 1
   },
   {
     "invoiceNumber": "INV-2024-072",
@@ -933,7 +1004,8 @@
     "status": "Received",
     "grossAmount": 325000,
     "portfolio": "Marine Technology",
-    "location": "San Diego"
+    "location": "US",
+    "aging": 21
   },
   {
     "invoiceNumber": "INV-2024-073",
@@ -946,7 +1018,8 @@
     "status": "Pending",
     "grossAmount": 6750000,
     "portfolio": "Manufacturing",
-    "location": "Nagoya"
+    "location": "JP",
+    "aging": 16
   },
   {
     "invoiceNumber": "INV-2024-074",
@@ -959,7 +1032,8 @@
     "status": "Approved",
     "grossAmount": 64000,
     "portfolio": "Digital Marketing",
-    "location": "Atlanta"
+    "location": "US",
+    "aging": 5
   },
   {
     "invoiceNumber": "INV-2024-075",
@@ -972,7 +1046,8 @@
     "status": "Scheduled",
     "grossAmount": 52000,
     "portfolio": "Sustainable Materials",
-    "location": "Helsinki"
+    "location": "FI",
+    "aging": 23
   },
   {
     "invoiceNumber": "INV-2024-076",
@@ -985,7 +1060,8 @@
     "status": "Rejected",
     "grossAmount": 178000,
     "portfolio": "Logistics",
-    "location": "Manchester"
+    "location": "GB",
+    "aging": 29
   },
   {
     "invoiceNumber": "INV-2024-077",
@@ -998,7 +1074,8 @@
     "status": "Paid",
     "grossAmount": 234000,
     "portfolio": "Precision Medicine",
-    "location": "Boston"
+    "location": "US",
+    "aging": 4
   },
   {
     "invoiceNumber": "INV-2024-078",
@@ -1011,7 +1088,8 @@
     "status": "Received",
     "grossAmount": 87000,
     "portfolio": "Urban Development",
-    "location": "Singapore"
+    "location": "SG",
+    "aging": 11
   },
   {
     "invoiceNumber": "INV-2024-079",
@@ -1024,7 +1102,8 @@
     "status": "Pending",
     "grossAmount": 298000,
     "portfolio": "Renewable Energy",
-    "location": "Reykjavik"
+    "location": "IS",
+    "aging": 17
   },
   {
     "invoiceNumber": "INV-2024-080",
@@ -1037,6 +1116,7 @@
     "status": "Approved",
     "grossAmount": 76000,
     "portfolio": "Digital Identity",
-    "location": "Amsterdam"
+    "location": "NL",
+    "aging": 8
   }
 ]
