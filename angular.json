@@ -37,7 +37,8 @@
                 "glob": "**/*",
                 "input": "node_modules/ngx-extended-pdf-viewer/assets",
                 "output": "/assets/"
-              }
+              },
+              "src/_redirects"
             ],
             "styles": ["src/assets/scss/styles.scss", "src/tailwind.css"]
           },
