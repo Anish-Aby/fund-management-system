@@ -19,14 +19,29 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
-        path: 'invoice/review',
-        loadComponent: () =>
-          import('./modules/invoice/review/invoice-review').then((m) => m.InvoiceReview),
+        path: 'invoice',
+        children: [
+          {
+            path: 'review',
+            loadComponent: () =>
+              import('./modules/invoice/review/invoice-review').then((m) => m.InvoiceReview),
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./modules/invoice/list/invoice-list').then((m) => m.InvoiceList),
+          },
+        ],
       },
       {
-        path: 'invoice/list',
-        loadComponent: () =>
-          import('./modules/invoice/list/invoice-list').then((m) => m.InvoiceList),
+        path: 'report',
+        children: [
+          {
+            path: 'ledger-report',
+            loadComponent: () =>
+              import('./modules/report/ledger-report/ledger-report').then((m) => m.LedgerReport),
+          },
+        ],
       },
     ],
   },

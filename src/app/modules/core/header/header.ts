@@ -141,6 +141,9 @@ export class Header {
           {
             label: 'Ledger Report',
             icon: 'pi pi-book',
+            command: () => {
+              this.router.navigate(['app/report/ledger-report']);
+            },
           },
           {
             label: 'Expenses Report',
@@ -153,6 +156,28 @@ export class Header {
           {
             label: 'Tax Report',
             icon: 'pi pi-percentage',
+          },
+        ],
+      },
+      {
+        label: 'Tools',
+        icon: 'pi pi-wrench',
+        items: [
+          {
+            label: 'Lock Period',
+            icon: 'pi pi-lock',
+          },
+          {
+            label: 'Forex Pricing',
+            icon: 'pi pi-dollar',
+          },
+          {
+            label: 'Split Invoice',
+            icon: 'pi pi-clone',
+          },
+          {
+            label: 'Invoice Error',
+            icon: 'pi pi-exclamation-triangle',
           },
         ],
       },
