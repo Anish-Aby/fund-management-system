@@ -7,6 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
+import { AltLoaderComponent, MainLoaderComponent } from '../../../shared/components/main-loader';
 
 @Component({
   selector: 'app-ledger-report',
@@ -30,7 +31,7 @@ export class LedgerReport {
     { label: 'FinLab Holdings Ltd', value: 'finlab-holdings' },
     { label: 'FinLab Tech Solutions', value: 'finlab-tech' },
     { label: 'FinLab International', value: 'finlab-international' },
-    { label: 'FinLab Real Estate', value: 'finlab-realestate' }
+    { label: 'FinLab Real Estate', value: 'finlab-realestate' },
   ]);
 
   vendorOptions = signal([
@@ -53,7 +54,7 @@ export class LedgerReport {
     { label: 'Global Trade Services', value: 'global-trade' },
     { label: 'Biotech Research Inc', value: 'biotech' },
     { label: 'Solar Panel Manufacturers', value: 'solar-panels' },
-    { label: 'Cybersecurity Solutions', value: 'cybersecurity' }
+    { label: 'Cybersecurity Solutions', value: 'cybersecurity' },
   ]);
 
   totals = computed(() => {
@@ -61,7 +62,7 @@ export class LedgerReport {
     return {
       debit: data.reduce((sum, item) => sum + (item.debit || 0), 0),
       credit: data.reduce((sum, item) => sum + (item.credit || 0), 0),
-      balance: data.reduce((sum, item) => sum + (item.debit || 0) - (item.credit || 0), 0)
+      balance: data.reduce((sum, item) => sum + (item.debit || 0) - (item.credit || 0), 0),
     };
   });
 

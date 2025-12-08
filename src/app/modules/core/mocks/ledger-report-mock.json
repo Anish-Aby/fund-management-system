@@ -1,5 +1,18 @@
 [
   {
+    "type": "opening balance",
+    "invoiceDate": "2024-01-15",
+    "paidDate": "2024-02-01",
+    "voucherType": "Invoice Received",
+    "tranNo": "TXN-2024-001",
+    "invoiceNo": "INV-2024-001",
+    "portfolioName": "Growth Equity Fund",
+    "particulars": "Annual software license renewal for development tools",
+    "debit": 15000,
+    "credit": 0,
+    "balance": 15000
+  },
+  {
     "invoiceDate": "2024-01-15",
     "paidDate": "2024-02-01",
     "voucherType": "Invoice Received",
@@ -145,7 +158,7 @@
   },
   {
     "invoiceDate": "2024-02-12",
-    "paidDate": "",
+    "paidDate": "2024-03-25",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-010",
     "invoiceNo": "INV-2024-007",
@@ -157,7 +170,7 @@
   },
   {
     "invoiceDate": "2024-02-15",
-    "paidDate": "",
+    "paidDate": "2024-03-28",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-011",
     "invoiceNo": "INV-2024-008",
@@ -169,7 +182,7 @@
   },
   {
     "invoiceDate": "2024-02-18",
-    "paidDate": "",
+    "paidDate": "2024-04-01",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-012",
     "invoiceNo": "INV-2024-009",
@@ -181,7 +194,7 @@
   },
   {
     "invoiceDate": "2024-02-20",
-    "paidDate": "",
+    "paidDate": "2024-04-05",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-013",
     "invoiceNo": "INV-2024-010",
@@ -217,7 +230,7 @@
   },
   {
     "invoiceDate": "2024-03-01",
-    "paidDate": "",
+    "paidDate": "2024-04-10",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-016",
     "invoiceNo": "INV-2024-012",
@@ -229,7 +242,7 @@
   },
   {
     "invoiceDate": "2024-03-05",
-    "paidDate": "",
+    "paidDate": "2024-04-15",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-017",
     "invoiceNo": "INV-2024-013",
@@ -241,7 +254,7 @@
   },
   {
     "invoiceDate": "2024-03-08",
-    "paidDate": "",
+    "paidDate": "2024-04-20",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-018",
     "invoiceNo": "INV-2024-014",
@@ -253,7 +266,7 @@
   },
   {
     "invoiceDate": "2024-03-10",
-    "paidDate": "",
+    "paidDate": "2024-04-25",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-019",
     "invoiceNo": "INV-2024-015",
@@ -265,7 +278,7 @@
   },
   {
     "invoiceDate": "2024-03-12",
-    "paidDate": "",
+    "paidDate": "2024-04-30",
     "voucherType": "Invoice Received",
     "tranNo": "TXN-2024-020",
     "invoiceNo": "INV-2024-016",
