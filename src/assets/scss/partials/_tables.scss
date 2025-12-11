@@ -5,16 +5,25 @@ p-table {
   }
 
   .p-datatable-thead > tr > th {
-    // Light theme
     .app-light & {
       background-color: #f0f9ff !important;
       color: #1f2937 !important;
     }
-
-    // Dark theme
     .app-dark & {
       background-color: #1e293b !important;
       color: #f1f5f9 !important;
+    }
+    &.p-datatable-column-sorted {
+      background-color: var(--p-primary-color) !important;
+      color: var(--p-primary-contrast-color) !important;
+
+      .p-button-text.p-button-secondary {
+        color: var(--p-primary-contrast-color) !important;
+
+        &:hover {
+          color: var(--p-primary-color) !important;
+        }
+      }
     }
   }
 

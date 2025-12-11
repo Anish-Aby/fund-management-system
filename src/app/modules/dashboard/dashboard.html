@@ -36,65 +36,79 @@
           showGridlines="true"
           [scrollable]="true"
           scrollHeight="230px"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
           (onFilter)="onTableFilter($event)"
           [globalFilterFields]="['code', 'name', 'region', 'amount']"
         >
           <ng-template #header>
             <tr>
-              <th>
-                <div class="flex items-center justify-between">
+              <th pSortableColumn="code" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
                   Code
-                  <p-columnFilter
-                    type="text"
-                    field="code"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
+                  <div>
+                    <p-sortIcon field="code" />
+                    <p-columnFilter
+                      type="text"
+                      field="code"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
                 </div>
               </th>
-              <th>
-                <div class="flex items-center justify-between">
+              <th pSortableColumn="name" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
                   Portfolio
-                  <p-columnFilter
-                    type="text"
-                    field="name"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
+                  <div>
+                    <p-sortIcon field="name" />
+                    <p-columnFilter
+                      type="text"
+                      field="name"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
                 </div>
               </th>
-              <th>
-                <div class="flex items-center justify-between">
+              <th pSortableColumn="region" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
                   Region
-                  <p-columnFilter
-                    type="text"
-                    field="region"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
+                  <div>
+                    <p-sortIcon field="region" />
+                    <p-columnFilter
+                      type="text"
+                      field="region"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
                 </div>
               </th>
-              <th>
-                <div class="flex items-center justify-between">
+              <th pSortableColumn="amount" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
                   Amount
-                  <p-columnFilter
-                    type="text"
-                    field="amount"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
+                  <div>
+                    <p-sortIcon field="amount" />
+                    <p-columnFilter
+                      type="text"
+                      field="amount"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
                 </div>
               </th>
             </tr>
@@ -233,142 +247,161 @@
         <ng-template #header>
           <tr>
             <th><p-tableHeaderCheckbox /></th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="fundName" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Portfolio
-                <p-columnFilter
-                  type="text"
-                  field="fundName"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                />
+                <div>
+                  <p-sortIcon field="fundName" />
+                  <p-columnFilter
+                    type="text"
+                    field="fundName"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  />
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="vendorName" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Vendor
-                <p-columnFilter
-                  type="text"
-                  field="vendorName"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                />
+                <div>
+                  <p-sortIcon field="vendorName" />
+                  <p-columnFilter
+                    type="text"
+                    field="vendorName"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  />
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="invoiceNumber" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Invoice No
-                <p-columnFilter
-                  type="text"
-                  field="invoiceNumber"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                />
+                <div>
+                  <p-sortIcon field="invoiceNumber" />
+                  <p-columnFilter
+                    type="text"
+                    field="invoiceNumber"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  />
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="invoiceDate" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Invoice Date
-                <p-columnFilter
-                  type="date"
-                  field="invoiceDate"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                ></p-columnFilter>
+                <div>
+                  <p-sortIcon field="invoiceDate" />
+                  <p-columnFilter
+                    type="date"
+                    field="invoiceDate"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                  ></p-columnFilter>
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="dueDate" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Due Date
-                <p-columnFilter
-                  type="date"
-                  field="dueDate"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                ></p-columnFilter>
+                <div>
+                  <p-sortIcon field="dueDate" />
+                  <p-columnFilter
+                    type="date"
+                    field="dueDate"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                  ></p-columnFilter>
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="aging" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Aging
-                <p-columnFilter
-                  type="text"
-                  field="aging"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                />
+                <div>
+                  <p-sortIcon field="aging" />
+                  <p-columnFilter
+                    type="text"
+                    field="aging"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  />
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="expenseType" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Expenses
-                <p-columnFilter
-                  type="text"
-                  field="expenseType"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                ></p-columnFilter>
+                <div>
+                  <p-sortIcon field="expenseType" />
+                  <p-columnFilter
+                    type="text"
+                    field="expenseType"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  ></p-columnFilter>
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="currency" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Currency
-                <p-columnFilter
-                  type="text"
-                  field="currency"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                ></p-columnFilter>
+                <div>
+                  <p-sortIcon field="currency" />
+                  <p-columnFilter
+                    type="text"
+                    field="currency"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  ></p-columnFilter>
+                </div>
               </div>
             </th>
-            <th pResizableColumn>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="status" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Status
-                <p-columnFilter
-                  type="text"
-                  field="status"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                ></p-columnFilter>
+                <div>
+                  <p-sortIcon field="status" />
+                  <p-columnFilter
+                    type="text"
+                    field="status"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                    matchMode="contains"
+                  ></p-columnFilter>
+                </div>
               </div>
             </th>
-            <th>
-              <div class="flex items-center justify-between">
+            <th pSortableColumn="grossAmount" pResizableColumn>
+              <div class="flex items-center justify-between gap-3">
                 Amount
-                <p-columnFilter
-                  type="text"
-                  field="amount"
-                  display="menu"
-                  showMatchModes="false"
-                  showAddButton="false"
-                  showOperator="false"
-                  matchMode="contains"
-                ></p-columnFilter>
+                <p-sortIcon field="grossAmount" />
               </div>
             </th>
           </tr>

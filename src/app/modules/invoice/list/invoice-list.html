@@ -93,16 +93,66 @@
           <ng-template #header>
             <tr>
               <th><p-tableHeaderCheckbox /></th>
-              <th pResizableColumn>Vendor Name</th>
-              <th pResizableColumn>Invoice Number</th>
-              <th pResizableColumn>Invoice Date</th>
-              <th pResizableColumn>Portfolio</th>
-              <th pResizableColumn>Aging</th>
-              <th pResizableColumn>Location</th>
-              <th pResizableColumn>Currency</th>
-              <th pResizableColumn>Expenses Type</th>
-              <th pResizableColumn>Status</th>
-              <th>Amount</th>
+              <th pSortableColumn="vendorName" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Vendor Name
+                  <p-sortIcon field="vendorName" />
+                </div>
+              </th>
+              <th pSortableColumn="invoiceNumber" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Invoice Number
+                  <p-sortIcon field="invoiceNumber" />
+                </div>
+              </th>
+              <th pSortableColumn="invoiceDate" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Invoice Date
+                  <p-sortIcon field="invoiceDate" />
+                </div>
+              </th>
+              <th pSortableColumn="portfolio" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Portfolio
+                  <p-sortIcon field="portfolio" />
+                </div>
+              </th>
+              <th pSortableColumn="aging" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Aging
+                  <p-sortIcon field="aging" />
+                </div>
+              </th>
+              <th pSortableColumn="location" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Location
+                  <p-sortIcon field="location" />
+                </div>
+              </th>
+              <th pSortableColumn="currency" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Currency
+                  <p-sortIcon field="currency" />
+                </div>
+              </th>
+              <th pSortableColumn="expenseType" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Expenses Type
+                  <p-sortIcon field="expenseType" />
+                </div>
+              </th>
+              <th pSortableColumn="status" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Status
+                  <p-sortIcon field="status" />
+                </div>
+              </th>
+              <th pSortableColumn="grossAmount" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Amount
+                  <p-sortIcon field="grossAmount" />
+                </div>
+              </th>
             </tr>
           </ng-template>
           <ng-template #body let-invoice>
