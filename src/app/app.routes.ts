@@ -41,6 +41,13 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./modules/report/ledger-report/ledger-report').then((m) => m.LedgerReport),
           },
+          {
+            path: 'expenses-report',
+            loadComponent: () =>
+              import('./modules/report/expenses-report/expenses-report').then(
+                (m) => m.ExpensesReport
+              ),
+          },
         ],
       },
     ],

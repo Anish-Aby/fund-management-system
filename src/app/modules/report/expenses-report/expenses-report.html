@@ -1,0 +1,149 @@
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Expenses Report</h1>
+        <p class="text-sm text-muted-color">
+          View detailed financial transactions and account balances
+        </p>
+      </div>
+    </div>
+
+    <div class="border border-surface bg-primary-contrast rounded-t-xl">
+      <div
+        class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
+      >
+        <div class="col-span-3">
+          <div>Entity</div>
+          <p-select
+            class="mb-4 w-80"
+            panelStyleClass="w-60"
+            [options]="entityOptions()"
+            [filter]="true"
+            [showClear]="true"
+            placeholder="Select entity"
+            fluid
+          />
+        </div>
+        <div class="col-span-3">
+          <div>Vendor</div>
+          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select vendor" />
+        </div>
+        <div class="col-span-3">
+          <div>Expense Type</div>
+          <p-multiselect fluid [options]="expenseTypeOptions()" placeholder="Select expense type" />
+        </div>
+        <div class="col-span-3">
+          <div>Portfolio</div>
+          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select portfolio" />
+        </div>
+        <div class="col-span-3">
+          <div>Date From</div>
+          <p-datepicker fluid placeholder="Select start date" />
+        </div>
+        <div class="col-span-3">
+          <div>Date To</div>
+          <p-datepicker fluid placeholder="Select end date" />
+        </div>
+        <div class="col-span-6 flex items-end justify-end">
+          <p-button
+            icon="pi pi-print"
+            aria-label="Download PDF"
+            variant="outlined"
+            severity="contrast"
+            label="Download PDF"
+            class="mr-2"
+          />
+          <p-button
+            icon="pi pi-file-excel"
+            aria-label="Download Excel"
+            variant="outlined"
+            severity="contrast"
+            label="Download Excel"
+            class="mr-2"
+          />
+          <p-button icon="pi pi-search" severity="contrast" label="Search" />
+        </div>
+      </div>
+
+      <div class="col-span-12">
+        <p-table
+          #expensesTable
+          [value]="expensesData()"
+          stripedRows="true"
+          size="small"
+          showGridlines="true"
+          [scrollable]="true"
+          scrollHeight="500px"
+          class="table-dashboard-invoice"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
+          (onFilter)="onTableFilter($event)"
+          [globalFilterFields]="[
+            'name',
+            'fundLocation',
+            'portfolioCurrency'
+          ]"
+        >
+          <ng-template #header>
+            <tr>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">Name</div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">Fund Location</div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">Portfolio Currency</div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">Beginning Amount</div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">For the Period</div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">Ending Amount</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-expense>
+            <tr>
+              <td>{{ expense.name }}</td>
+              <td>{{ expense.fundLocation }}</td>
+              <td>{{ expense.portfolioCurrency }}</td>
+              <td>
+                <div class="text-right">${{ expense.beginningAmount.toLocaleString() }}</div>
+              </td>
+              <td>
+                <div class="text-right">${{ expense.forThePeriod.toLocaleString() }}</div>
+              </td>
+              <td>
+                <div class="text-right">${{ expense.endingAmount.toLocaleString() }}</div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #footer>
+            <tr>
+              <td
+                colspan="3"
+                class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
+              >
+                Total
+              </td>
+              <td>
+                <div class="text-right font-semibold">${{ totals().beginningAmount.toLocaleString() }}</div>
+              </td>
+              <td>
+                <div class="text-right font-semibold">${{ totals().forThePeriod.toLocaleString() }}</div>
+              </td>
+              <td>
+                <div class="text-right font-semibold">${{ totals().endingAmount.toLocaleString() }}</div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

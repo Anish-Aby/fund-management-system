@@ -74,6 +74,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Paid',
         grossAmount: 15000,
+        aging: 45,
       },
       {
         invoiceNumber: 'INV-2024-002',
@@ -85,6 +86,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Pending',
         grossAmount: 8500,
+        aging: 40,
       },
       {
         invoiceNumber: 'INV-2024-003',
@@ -96,6 +98,7 @@ export class Dashboard implements OnInit {
         currency: 'EUR',
         status: 'Approved',
         grossAmount: 12000,
+        aging: 35,
       },
       {
         invoiceNumber: 'INV-2024-004',
@@ -107,6 +110,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Rejected',
         grossAmount: 25000,
+        aging: 30,
       },
       {
         invoiceNumber: 'INV-2024-005',
@@ -118,6 +122,7 @@ export class Dashboard implements OnInit {
         currency: 'GBP',
         status: 'Received',
         grossAmount: 18500,
+        aging: 24,
       },
       {
         invoiceNumber: 'INV-2024-006',
@@ -129,6 +134,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Paid',
         grossAmount: 9200,
+        aging: 19,
       },
       {
         invoiceNumber: 'INV-2024-007',
@@ -140,6 +146,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Approved',
         grossAmount: 22000,
+        aging: 17,
       },
       {
         invoiceNumber: 'INV-2024-008',
@@ -151,6 +158,7 @@ export class Dashboard implements OnInit {
         currency: 'GBP',
         status: 'Pending',
         grossAmount: 31500,
+        aging: 14,
       },
       {
         invoiceNumber: 'INV-2024-009',
@@ -162,6 +170,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Received',
         grossAmount: 14800,
+        aging: 11,
       },
       {
         invoiceNumber: 'INV-2024-010',
@@ -173,6 +182,7 @@ export class Dashboard implements OnInit {
         currency: 'EUR',
         status: 'Rejected',
         grossAmount: 7500,
+        aging: 9,
       },
       {
         invoiceNumber: 'INV-2024-011',
@@ -184,6 +194,7 @@ export class Dashboard implements OnInit {
         currency: 'USD',
         status: 'Paid',
         grossAmount: 3200,
+        aging: 7,
       },
     ];
 
@@ -215,4 +226,6 @@ export class Dashboard implements OnInit {
   onCardClick(statusId: number) {
     this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
   }
+
+
 }

@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Tech Solutions Fund",
+    "fundLocation": "USA",
+    "portfolioCurrency": "USD",
+    "beginningAmount": 5000,
+    "forThePeriod": 1000,
+    "endingAmount": 6000
+  },
+  {
+    "name": "Growth Equity Fund",
+    "fundLocation": "Canada",
+    "portfolioCurrency": "CAD",
+    "beginningAmount": 12000,
+    "forThePeriod": 2500,
+    "endingAmount": 14500
+  },
+  {
+    "name": "Tech Innovation Fund",
+    "fundLocation": "UK",
+    "portfolioCurrency": "GBP",
+    "beginningAmount": 8500,
+    "forThePeriod": 1800,
+    "endingAmount": 10300
+  },
+  {
+    "name": "Emerging Markets Fund",
+    "fundLocation": "Singapore",
+    "portfolioCurrency": "SGD",
+    "beginningAmount": 15000,
+    "forThePeriod": 3200,
+    "endingAmount": 18200
+  },
+  {
+    "name": "Bond Stability Fund",
+    "fundLocation": "Germany",
+    "portfolioCurrency": "EUR",
+    "beginningAmount": 25000,
+    "forThePeriod": 4500,
+    "endingAmount": 29500
+  },
+  {
+    "name": "Real Estate Fund",
+    "fundLocation": "Australia",
+    "portfolioCurrency": "AUD",
+    "beginningAmount": 18500,
+    "forThePeriod": 2800,
+    "endingAmount": 21300
+  },
+  {
+    "name": "Healthcare Innovation Fund",
+    "fundLocation": "Switzerland",
+    "portfolioCurrency": "CHF",
+    "beginningAmount": 45000,
+    "forThePeriod": 8200,
+    "endingAmount": 53200
+  },
+  {
+    "name": "Sustainable Energy Fund",
+    "fundLocation": "Netherlands",
+    "portfolioCurrency": "EUR",
+    "beginningAmount": 67500,
+    "forThePeriod": 12500,
+    "endingAmount": 80000
+  },
+  {
+    "name": "AI Research Fund",
+    "fundLocation": "Japan",
+    "portfolioCurrency": "JPY",
+    "beginningAmount": 38000,
+    "forThePeriod": 6800,
+    "endingAmount": 44800
+  },
+  {
+    "name": "Biotech Development Fund",
+    "fundLocation": "USA",
+    "portfolioCurrency": "USD",
+    "beginningAmount": 125000,
+    "forThePeriod": 22000,
+    "endingAmount": 147000
+  },
+  {
+    "name": "Fintech Solutions Fund",
+    "fundLocation": "UK",
+    "portfolioCurrency": "GBP",
+    "beginningAmount": 19500,
+    "forThePeriod": 3500,
+    "endingAmount": 23000
+  },
+  {
+    "name": "Global Infrastructure Fund",
+    "fundLocation": "Canada",
+    "portfolioCurrency": "CAD",
+    "beginningAmount": 85000,
+    "forThePeriod": 15200,
+    "endingAmount": 100200
+  }
+]

@@ -148,6 +148,9 @@ export class Header {
           {
             label: 'Expenses Report',
             icon: 'pi pi-money-bill',
+            command: () => {
+              this.router.navigate(['app/report/expenses-report']);
+            },
           },
           {
             label: 'Bank Report',

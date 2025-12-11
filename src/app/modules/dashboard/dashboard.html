@@ -303,6 +303,20 @@
             </th>
             <th pResizableColumn>
               <div class="flex items-center justify-between">
+                Aging
+                <p-columnFilter
+                  type="text"
+                  field="Aging"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </th>
+            <th pResizableColumn>
+              <div class="flex items-center justify-between">
                 Expenses
                 <p-columnFilter
                   type="text"
@@ -369,6 +383,7 @@
             <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
             <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
             <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
+            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.aging }}</td>
             <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
             <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
             <td (click)="onInvoiceRowSelect(invoice)">
@@ -385,7 +400,7 @@
         <ng-template #footer>
           <tr>
             <td
-              colspan="9"
+              colspan="10"
               class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
             >
               Total
