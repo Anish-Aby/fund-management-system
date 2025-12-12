@@ -1,0 +1,92 @@
+[
+  {
+    "id": "VEN-001",
+    "displayName": "Tech Solutions Inc",
+    "vendorName": "Tech Solutions Incorporated",
+    "vendorCode": "TSI2024"
+  },
+  {
+    "id": "VEN-002",
+    "displayName": "Cloud Services Ltd",
+    "vendorName": "Cloud Services Limited",
+    "vendorCode": "CSL2024"
+  },
+  {
+    "id": "VEN-003",
+    "displayName": "Legal Advisors LLC",
+    "vendorName": "Legal Advisors Limited Liability Company",
+    "vendorCode": "LAL2024"
+  },
+  {
+    "id": "VEN-004",
+    "displayName": "Audit Partners",
+    "vendorName": "Audit Partners Professional Services",
+    "vendorCode": "APP2024"
+  },
+  {
+    "id": "VEN-005",
+    "displayName": "Property Management Co",
+    "vendorName": "Property Management Company",
+    "vendorCode": "PMC2024"
+  },
+  {
+    "id": "VEN-006",
+    "displayName": "Marketing Agency Pro",
+    "vendorName": "Marketing Agency Professional",
+    "vendorCode": "MAP2024"
+  },
+  {
+    "id": "VEN-007",
+    "displayName": "Data Analytics Corp",
+    "vendorName": "Data Analytics Corporation",
+    "vendorCode": "DAC2024"
+  },
+  {
+    "id": "VEN-008",
+    "displayName": "Construction Services",
+    "vendorName": "Construction Services International",
+    "vendorCode": "CSI2024"
+  },
+  {
+    "id": "VEN-009",
+    "displayName": "Financial Advisors Inc",
+    "vendorName": "Financial Advisors Incorporated",
+    "vendorCode": "FAI2024"
+  },
+  {
+    "id": "VEN-010",
+    "displayName": "Research Institute",
+    "vendorName": "Research Institute of Technology",
+    "vendorCode": "RIT2024"
+  },
+  {
+    "id": "VEN-011",
+    "displayName": "Office Supplies Ltd",
+    "vendorName": "Office Supplies Limited",
+    "vendorCode": "OSL2024"
+  },
+  {
+    "id": "VEN-012",
+    "displayName": "MedTech Solutions",
+    "vendorName": "Medical Technology Solutions",
+    "vendorCode": "MTS2024"
+  },
+  {
+    "id": "VEN-013",
+    "displayName": "Green Power Corp",
+    "vendorName": "Green Power Corporation",
+    "vendorCode": "GPC2024"
+  },
+  {
+    "id": "VEN-014",
+    "displayName": "AI Research Lab",
+    "vendorName": "Artificial Intelligence Research Laboratory",
+    "vendorCode": "AIR2024"
+  },
+  {
+    "id": "VEN-015",
+    "displayName": "Urban Development LLC",
+    "vendorName": "Urban Development Limited Liability Company",
+    "vendorCode": "UDL2024"
+  }
+]

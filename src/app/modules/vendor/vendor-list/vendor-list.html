@@ -1,0 +1,367 @@
+<!-- <div class="grid grid-cols-12 gap-4 px-5 pt-5">
+  <div class="relative col-span-2">
+    <app-stat-card
+      title="Total Vendors"
+      value="128"
+      subtitle="Avg past month - 25"
+      color="transparent"
+    >
+    </app-stat-card>
+  </div>
+  <div class="relative col-span-2">
+    <app-stat-card
+      title="Received Invoices"
+      value="128"
+      subtitle="Amount - $4000"
+      color="transparent"
+    >
+    </app-stat-card>
+  </div>
+</div> -->
+
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <h1 class="text-3xl font-medium mb-1">Vendors List</h1>
+    <p class="text-sm text-muted-color mb-3">View, add, edit and manage all of your vendors here</p>
+    <div class="grid grid-cols-12 gap-2 mb-4">
+      <div class="relative col-span-2">
+        <app-stat-card
+          title="Total Vendors"
+          value="128"
+          subtitle="Avg past month - 25"
+          color="amber"
+        >
+        </app-stat-card>
+      </div>
+      <div class="relative col-span-2">
+        <app-stat-card
+          title="Received Invoices"
+          value="128"
+          subtitle="Amount - $4000"
+          color="amber"
+        >
+        </app-stat-card>
+      </div>
+      <div class="col-span-8 flex items-end justify-end gap-2">
+        <input
+          class="lg:w-auto"
+          pInputText
+          type="text"
+          placeholder="Search"
+          (input)="vendorTable.filterGlobal($event.target.value, 'contains')"
+        />
+        <p-button icon="pi pi-plus-circle" severity="contrast" label="Add Vendor" />
+        <p-button icon="pi pi-trash" severity="danger" variant="outlined" />
+        <p-button icon="pi pi-print" severity="contrast" variant="outlined" />
+        <p-button icon="pi pi-file-excel" severity="contrast" variant="outlined" />
+      </div>
+    </div>
+    <p-table
+      #vendorTable
+      [value]="vendors()"
+      [(selection)]="selectedVendors"
+      dataKey="id"
+      stripedRows="true"
+      size="small"
+      showGridlines="true"
+      [scrollable]="true"
+      scrollHeight="550px"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      [globalFilterFields]="['displayName', 'vendorName', 'vendorCode']"
+    >
+      <ng-template #header>
+        <tr>
+          <th><p-tableHeaderCheckbox /></th>
+          <th style="width: 80px"></th>
+          <th pSortableColumn="displayName" pResizableColumn>
+            <div class="flex items-center justify-between gap-3">
+              Display Name
+              <div>
+                <p-sortIcon field="displayName" />
+                <p-columnFilter
+                  type="text"
+                  field="displayName"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorName" pResizableColumn>
+            <div class="flex items-center justify-between gap-3">
+              Vendor Name
+              <div>
+                <p-sortIcon field="vendorName" />
+                <p-columnFilter
+                  type="text"
+                  field="vendorName"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorCode" pResizableColumn>
+            <div class="flex items-center justify-between gap-3">
+              Vendor Code
+              <div>
+                <p-sortIcon field="vendorCode" />
+                <p-columnFilter
+                  type="text"
+                  field="vendorCode"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th style="width: 120px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-vendor>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="vendor" />
+          </td>
+          <td>
+            <div class="flex items-center justify-center">
+              <div
+                class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-medium text-sm"
+              >
+                {{ getInitials(vendor.displayName) }}
+              </div>
+            </div>
+          </td>
+          <td>{{ vendor.displayName }}</td>
+          <td>{{ vendor.vendorName }}</td>
+          <td>{{ vendor.vendorCode }}</td>
+          <td>
+            <p-splitButton
+              label="View"
+              icon="pi pi-eye"
+              size="small"
+              severity="contrast"
+              outlined
+              [model]="[
+                { label: 'Edit', icon: 'pi pi-pencil' },
+                { label: 'Delete', icon: 'pi pi-trash' }
+              ]"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- <div class="p-5">
+  <div class="grid grid-cols-12 gap-2">
+    <div class="col-span-6">
+      <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+        <h1 class="text-3xl font-medium mb-1">Vendors List</h1>
+        <p class="text-sm text-muted-color mb-4">
+          View, add, edit and manage all of your vendors here
+        </p>
+        <div class="grid grid-cols-12 gap-2 mb-4">
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Total Vendors"
+              value="128"
+              subtitle="Avg past month - 25"
+              color="indigo"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Received Invoices"
+              value="128"
+              subtitle="Amount - $4000"
+              color="amber"
+            >
+            </app-stat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-6">
+      <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+        <h1 class="text-3xl font-medium mb-1">Vendors List</h1>
+        <p class="text-sm text-muted-color mb-4">
+          View, add, edit and manage all of your vendors here
+        </p>
+        <div class="grid grid-cols-12 gap-2 mb-4">
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Total Vendors"
+              value="128"
+              subtitle="Avg past month - 25"
+              color="transparent"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Received Invoices"
+              value="128"
+              subtitle="Amount - $4000"
+              color="transparent"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Total Vendors"
+              value="128"
+              subtitle="Avg past month - 25"
+              color="transparent"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6">
+            <app-stat-card
+              title="Received Invoices"
+              value="128"
+              subtitle="Amount - $4000"
+              color="transparent"
+            >
+            </app-stat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-12">
+      <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+        <div class="grid grid-cols-12 gap-2">
+          <div class="col-span-6">
+            <h1 class="text-3xl font-medium mb-1">Vendors List</h1>
+            <p class="text-sm text-muted-color mb-4">
+              View, add, edit and manage all of your vendors here
+            </p>
+          </div>
+          <div class="col-span-6 flex items-end justify-end gap-2">
+            <p-button icon="pi pi-plus-circle" severity="contrast" label="Add Vendor" />
+            <p-button icon="pi pi-trash" severity="danger" variant="outlined" />
+            <p-button icon="pi pi-print" severity="contrast" variant="outlined" />
+            <p-button icon="pi pi-file-excel" severity="contrast" variant="outlined" />
+          </div>
+          <div class="col-span-12">
+            <p-table
+              [value]="vendors()"
+              [(selection)]="selectedVendors"
+              dataKey="id"
+              stripedRows="true"
+              size="small"
+              showGridlines="true"
+              [scrollable]="true"
+              scrollHeight="550px"
+              [resizableColumns]="true"
+              columnResizeMode="expand"
+            >
+              <ng-template #header>
+                <tr>
+                  <th><p-tableHeaderCheckbox /></th>
+                  <th style="width: 80px"></th>
+                  <th pSortableColumn="displayName" pResizableColumn>
+                    <div class="flex items-center justify-between gap-3">
+                      Display Name
+                      <div>
+                        <p-sortIcon field="displayName" />
+                        <p-columnFilter
+                          type="text"
+                          field="displayName"
+                          display="menu"
+                          showMatchModes="false"
+                          showAddButton="false"
+                          showOperator="false"
+                          matchMode="contains"
+                        />
+                      </div>
+                    </div>
+                  </th>
+                  <th pSortableColumn="vendorName" pResizableColumn>
+                    <div class="flex items-center justify-between gap-3">
+                      Vendor Name
+                      <div>
+                        <p-sortIcon field="vendorName" />
+                        <p-columnFilter
+                          type="text"
+                          field="vendorName"
+                          display="menu"
+                          showMatchModes="false"
+                          showAddButton="false"
+                          showOperator="false"
+                          matchMode="contains"
+                        />
+                      </div>
+                    </div>
+                  </th>
+                  <th pSortableColumn="vendorCode" pResizableColumn>
+                    <div class="flex items-center justify-between gap-3">
+                      Vendor Code
+                      <div>
+                        <p-sortIcon field="vendorCode" />
+                        <p-columnFilter
+                          type="text"
+                          field="vendorCode"
+                          display="menu"
+                          showMatchModes="false"
+                          showAddButton="false"
+                          showOperator="false"
+                          matchMode="contains"
+                        />
+                      </div>
+                    </div>
+                  </th>
+                  <th style="width: 120px">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-vendor>
+                <tr>
+                  <td>
+                    <p-tableCheckbox [value]="vendor" />
+                  </td>
+                  <td>
+                    <div class="flex items-center justify-center">
+                      <div
+                        class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-medium text-sm"
+                      >
+                        {{ getInitials(vendor.displayName) }}
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ vendor.displayName }}</td>
+                  <td>{{ vendor.vendorName }}</td>
+                  <td>{{ vendor.vendorCode }}</td>
+                  <td>
+                    <p-splitButton
+                      label="View"
+                      icon="pi pi-eye"
+                      size="small"
+                      severity="contrast"
+                      outlined
+                      [model]="[
+                        { label: 'Edit', icon: 'pi pi-pencil' },
+                        { label: 'Delete', icon: 'pi pi-trash' }
+                      ]"
+                    />
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

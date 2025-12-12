@@ -123,6 +123,9 @@ export class Header {
           {
             label: 'Vendors',
             icon: 'pi pi-shop',
+            command: () => {
+              this.router.navigate(['app/vendor/list']);
+            },
           },
           {
             label: 'Expenses',

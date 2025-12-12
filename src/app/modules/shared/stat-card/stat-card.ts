@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-export type CardColor = 'indigo' | 'green' | 'amber' | 'rose' | 'sky' | 'purple';
+export type CardColor = 'transparent' | 'indigo' | 'green' | 'amber' | 'rose' | 'sky' | 'purple';
 
 @Component({
   selector: 'app-stat-card',
@@ -32,6 +32,8 @@ export class StatCard {
       sky: 'border-sky-200 bg-sky-100 hover:border-sky-300 dark:border-sky-600 dark:bg-sky-800/60 dark:hover:border-sky-500 dark:text-sky-100',
       purple:
         'border-purple-200 bg-purple-100 hover:border-purple-300 dark:border-purple-600 dark:bg-purple-800/60 dark:hover:border-purple-500 dark:text-purple-100',
+      transparent:
+        'border-primary bg-transparent hover:border-transparent dark:border-transparent dark:bg-transparent dark:hover:border-transparent dark:text-transparent',
     };
 
     return `${this.colSpan} ${baseClasses} ${colorClasses[this.color]}`;

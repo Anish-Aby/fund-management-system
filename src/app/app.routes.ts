@@ -50,6 +50,16 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'vendor',
+        children: [
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./modules/vendor/vendor-list/vendor-list').then((m) => m.VendorList),
+          },
+        ],
+      },
     ],
   },
   {
