@@ -9,6 +9,12 @@ import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ThemeService } from '../services/theme';
+import { DialogService } from 'primeng/dynamicdialog';
+import { VendorList } from '../../vendor/vendor-list/vendor-list';
+import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
+import { DialogWindowService } from '../../shared/services/dialog-window';
+import { LedgerReport } from '../../report/ledger-report/ledger-report';
+import { ExpensesReport } from '../../report/expenses-report/expenses-report';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +27,7 @@ import { ThemeService } from '../services/theme';
     ButtonModule,
     MenuModule,
   ],
+  providers: [DialogService],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -30,7 +37,12 @@ export class Header {
   notificationItems: MenuItem[] = [];
   notificationCount: number = 3;
 
-  constructor(public themeService: ThemeService, private router: Router) {}
+  constructor(
+    public themeService: ThemeService,
+    private router: Router,
+    private dialogService: DialogService,
+    private dialogWindowService: DialogWindowService
+  ) {}
 
   ngOnInit() {
     this.userMenuItems = [
@@ -124,7 +136,8 @@ export class Header {
             label: 'Vendors',
             icon: 'pi pi-shop',
             command: () => {
-              this.router.navigate(['app/vendor/list']);
+              // this.router.navigate(['app/vendor/list']);
+              this.openVendor();
             },
           },
           {
@@ -145,14 +158,16 @@ export class Header {
             label: 'Ledger Report',
             icon: 'pi pi-book',
             command: () => {
-              this.router.navigate(['app/report/ledger-report']);
+              // this.router.navigate(['app/report/ledger-report']);
+              this.openLedgerReport();
             },
           },
           {
             label: 'Expenses Report',
             icon: 'pi pi-money-bill',
             command: () => {
-              this.router.navigate(['app/report/expenses-report']);
+              // this.router.navigate(['app/report/expenses-report']);
+              this.openExpensesReport();
             },
           },
           {
@@ -231,5 +246,58 @@ export class Header {
 
   onViewAllNotifications() {
     console.log('View all notifications');
+  }
+
+  openVendor(): void {
+    if (!this.dialogWindowService.restoreByComponent('VendorList')) {
+      this.dialogService.open(VendorList, {
+        data: { title: 'Vendor List', componentName: 'VendorList', component: VendorList },
+        draggable: true,
+        resizable: true,
+        width: '80%',
+        modal: false,
+        maximizable: true,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  openLedgerReport(): void {
+    if (!this.dialogWindowService.restoreByComponent('LedgerReport')) {
+      this.dialogService.open(LedgerReport, {
+        data: { title: 'Ledger Report', componentName: 'LedgerReport', component: LedgerReport },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  openExpensesReport(): void {
+    if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
+      this.dialogService.open(ExpensesReport, {
+        data: {
+          title: 'Expenses Report',
+          componentName: 'ExpensesReport',
+          component: ExpensesReport,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
   }
 }

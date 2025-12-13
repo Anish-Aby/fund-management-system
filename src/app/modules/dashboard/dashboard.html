@@ -38,7 +38,6 @@
           scrollHeight="230px"
           [resizableColumns]="true"
           columnResizeMode="expand"
-          (onFilter)="onTableFilter($event)"
           [globalFilterFields]="['code', 'name', 'region', 'amount']"
         >
           <ng-template #header>

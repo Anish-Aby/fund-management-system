@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
+import { Taskbar } from './taskbar/taskbar';
 
 @Component({
   selector: 'app-core',
-  imports: [RouterOutlet, Header, TooltipModule, ButtonModule],
+  imports: [RouterOutlet, Header, TooltipModule, ButtonModule, Taskbar],
   templateUrl: './core.html',
   styleUrl: './core.scss',
 })

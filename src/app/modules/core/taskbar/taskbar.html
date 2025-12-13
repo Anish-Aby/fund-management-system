@@ -1,0 +1,11 @@
+<div
+  class="taskbar min-h-13 w-full px-5 py-2 border-surface border-t grid grid-cols-12 gap-4 bg-sky-100 dark:bg-gray-800 dark:border-gray-600"
+>
+  <div
+    class="task col-auto border border-black dark:border-gray-500 rounded-lg bg-surface-100 dark:bg-gray-700 p-1 text-center cursor-pointer dark:text-white"
+    *ngFor="let win of dialogWindowService.minimized$ | async; let i = index"
+    (click)="dialogWindowService.restore(i)"
+  >
+    {{ win.title }}
+  </div>
+</div>

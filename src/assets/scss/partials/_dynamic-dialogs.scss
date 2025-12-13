@@ -1,0 +1,33 @@
+p-dynamicdialog {
+  .p-dialog-header {
+    padding: 0.5rem;
+    background-color: #f0f9ff;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15) !important;
+    border-radius: 12px 12px 0 0;
+
+    .app-dark & {
+      background-color: #374151;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.4) !important;
+    }
+    app-dialog {
+      width: 100%;
+    }
+
+    .p-dialog-maximize-button {
+      display: none;
+    }
+  }
+
+  .p-dialog-content {
+    padding: 0;
+
+    .app-dark & {
+      background-color: #1f2937;
+      color: #f9fafb;
+    }
+  }
+}
+
+.p-dialog .p-dialog-header-icon.pi-window-maximize {
+  display: none;
+}

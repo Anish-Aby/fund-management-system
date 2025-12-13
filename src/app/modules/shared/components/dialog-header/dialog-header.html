@@ -1,0 +1,25 @@
+<div class="flex align-items-center justify-end w-full rounded-t-5xl">
+  <p-buttongroup>
+    <p-button
+      variant="outlined"
+      severity="contrast"
+      icon="pi pi-minus"
+      styleClass="p-1!"
+      (click)="minimizeDialog()"
+    />
+    <p-button
+      variant="outlined"
+      severity="contrast"
+      icon="pi pi-clone"
+      styleClass="p-1!"
+      (click)="maximizeDialog()"
+    />
+    <p-button
+      variant="outlined"
+      severity="contrast"
+      icon="pi pi-times"
+      styleClass="p-1!"
+      (click)="closeDialog()"
+    />
+  </p-buttongroup>
+</div>

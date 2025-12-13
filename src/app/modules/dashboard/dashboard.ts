@@ -6,7 +6,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { StatCard } from '../shared/stat-card/stat-card';
+import { StatCard } from '../shared/components/stat-card/stat-card';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { UtilityService } from '../shared/services/utility.service';
@@ -226,6 +226,4 @@ export class Dashboard implements OnInit {
   onCardClick(statusId: number) {
     this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
   }
-
-
 }
