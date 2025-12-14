@@ -108,6 +108,10 @@ export class Header {
             icon: 'pi pi-file-plus',
           },
           {
+            label: 'General Ledger',
+            icon: 'pi pi-book',
+          },
+          {
             label: 'Reconciliation',
             icon: 'pi pi-sync',
           },
@@ -127,11 +131,39 @@ export class Header {
         items: [
           {
             label: 'Entities',
-            icon: 'pi pi-bolt',
+            icon: 'pi pi-building',
+            items: [
+              {
+                label: 'Add Entities',
+                icon: 'pi pi-plus-circle',
+              },
+              {
+                label: 'Edit Entities',
+                icon: 'pi pi-pencil',
+              },
+              {
+                label: 'Delete Entities',
+                icon: 'pi pi-trash',
+              },
+            ],
           },
           {
             label: 'Users',
             icon: 'pi pi-users',
+            items: [
+              {
+                label: 'Add Users',
+                icon: 'pi pi-plus-circle',
+              },
+              {
+                label: 'Edit Users',
+                icon: 'pi pi-pencil',
+              },
+              {
+                label: 'Delete Users',
+                icon: 'pi pi-trash',
+              },
+            ],
           },
           {
             label: 'Vendors',
@@ -166,10 +198,38 @@ export class Header {
           {
             label: 'Expenses',
             icon: 'pi pi-money-bill',
+            items: [
+              {
+                label: 'Add Expenses',
+                icon: 'pi pi-plus-circle',
+              },
+              {
+                label: 'Edit Expenses',
+                icon: 'pi pi-pencil',
+              },
+              {
+                label: 'Delete Expenses',
+                icon: 'pi pi-trash',
+              },
+            ],
           },
           {
             label: 'Portfolio',
             icon: 'pi pi-briefcase',
+            items: [
+              {
+                label: 'Add Portfolio',
+                icon: 'pi pi-plus-circle',
+              },
+              {
+                label: 'Edit Portfolio',
+                icon: 'pi pi-pencil',
+              },
+              {
+                label: 'Delete Portfolio',
+                icon: 'pi pi-trash',
+              },
+            ],
           },
         ],
       },
@@ -194,8 +254,12 @@ export class Header {
             },
           },
           {
-            label: 'Bank Report',
-            icon: 'pi pi-building',
+            label: 'Cash Balance',
+            icon: 'pi pi-wallet',
+          },
+          {
+            label: 'Fund Cash Report',
+            icon: 'pi pi-chart-line',
           },
           {
             label: 'Tax Report',
