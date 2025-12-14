@@ -254,7 +254,6 @@ export class Header {
         data: { title: 'Vendor List', componentName: 'VendorList', component: VendorList },
         draggable: true,
         resizable: true,
-        width: '80%',
         modal: false,
         maximizable: true,
         position: 'center',
