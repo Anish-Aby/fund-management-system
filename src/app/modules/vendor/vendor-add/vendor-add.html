@@ -1,1 +1,236 @@
-<div class="p-5"></div>
+<div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-4 px-4">
+    <h1 class="text-3xl font-medium">Vendor Add</h1>
+    <p-tabs value="0" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">Vendor Info</p-tab>
+        <p-tab value="1">Tax / Currency / Bank</p-tab>
+        <p-tab value="2">Portfolio</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Vendor Name</div>
+              <input fluid type="text" pInputText placeholder="Enter vendor name" />
+            </div>
+            <div class="col-span-6">
+              <div>Vendor Code</div>
+              <input fluid type="text" pInputText placeholder="Enter unique code" />
+            </div>
+            <div class="col-span-6">
+              <div>Display Name</div>
+              <input fluid type="text" pInputText placeholder="Enter display name" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Charges</div>
+              <p-select
+                [options]="bankChargesOptions()"
+                [filter]="true"
+                filterBy="label"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Charge Bearer"
+                fluid
+              />
+            </div>
+            <div class="col-span-12 flex my-2 items-center gap-2">
+              <span class="text-sm text-muted-color">Address</span>
+              <div class="h-px bg-surface-300 flex-1"></div>
+            </div>
+            <div class="col-span-6">
+              <div>Street</div>
+              <input fluid type="text" pInputText placeholder="Enter street address" />
+            </div>
+            <div class="col-span-6">
+              <div>Street 1</div>
+              <input fluid type="text" pInputText placeholder="Enter suite/unit" />
+            </div>
+            <div class="col-span-6">
+              <div>Street 2</div>
+              <input fluid type="text" pInputText placeholder="Enter building" />
+            </div>
+            <div class="col-span-6">
+              <div>Street 3</div>
+              <input fluid type="text" pInputText placeholder="Enter floor/apt" />
+            </div>
+            <div class="col-span-6">
+              <div>City</div>
+              <input fluid type="text" pInputText placeholder="Enter city" />
+            </div>
+            <div class="col-span-6">
+              <div>PO Box</div>
+              <input fluid type="text" pInputText placeholder="Enter PO box" />
+            </div>
+            <div class="col-span-6">
+              <div>ZIP</div>
+              <input fluid type="text" pInputText placeholder="Enter ZIP code" />
+            </div>
+            <div class="col-span-6">
+              <div>State</div>
+              <input fluid type="text" pInputText placeholder="Enter state" />
+            </div>
+            <div class="col-span-6">
+              <div>Country</div>
+              <input fluid type="text" pInputText placeholder="Enter country" />
+            </div>
+            <div class="col-span-6">
+              <div>Other Identifier</div>
+              <input fluid type="text" pInputText placeholder="Enter DUNS/Tax ID" />
+            </div>
+            <div class="col-span-12 flex my-2 items-center gap-2">
+              <span class="text-sm text-muted-color">Contact</span>
+              <div class="h-px bg-surface-300 flex-1"></div>
+            </div>
+            <div class="col-span-6">
+              <div>Contact Person Name</div>
+              <input fluid type="text" pInputText placeholder="Enter contact name" />
+            </div>
+            <div class="col-span-6">
+              <div>Contact Person Contact No</div>
+              <input fluid type="tel" pInputText placeholder="Enter phone number" />
+            </div>
+            <div class="col-span-6">
+              <div>Email ID 1</div>
+              <input fluid type="email" pInputText placeholder="Enter primary email" />
+            </div>
+            <div class="col-span-6">
+              <div>Email ID 2</div>
+              <input fluid type="email" pInputText placeholder="Enter secondary email" />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Tax Type</div>
+              <p-select
+                [(ngModel)]="selectedTaxType"
+                [options]="taxTypeOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Tax Type"
+                [filter]="true"
+                filterBy="label"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Tax %</div>
+              <input
+                fluid
+                type="number"
+                pInputText
+                [(ngModel)]="taxPercentage"
+                [disabled]="!selectedTaxType"
+                placeholder="Enter tax rate"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Local Ccy</div>
+              <input fluid type="text" pInputText placeholder="Enter currency code" />
+            </div>
+            <div class="col-span-6">
+              <div>Tax ID</div>
+              <input fluid type="text" pInputText placeholder="Enter tax ID" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Debit</div>
+              <input fluid type="text" pInputText placeholder="Enter debit details" />
+            </div>
+            <div class="col-span-12 flex my-2 items-center gap-2">
+              <span class="text-sm text-muted-color">Bank</span>
+              <div class="h-px bg-surface-300 flex-1"></div>
+            </div>
+            <div class="col-span-6">
+              <div>Bank Name</div>
+              <input fluid type="text" pInputText placeholder="Enter bank name" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Account No</div>
+              <input fluid type="text" pInputText placeholder="Enter account number" />
+            </div>
+            <div class="col-span-6">
+              <div>Transfer Type</div>
+              <input fluid type="text" pInputText placeholder="Enter transfer method" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Country</div>
+              <input fluid type="text" pInputText placeholder="Enter bank country" />
+            </div>
+            <div class="col-span-6">
+              <div>ACH No</div>
+              <input fluid type="text" pInputText placeholder="Enter routing number" />
+            </div>
+            <div class="col-span-6">
+              <div>Wire Details</div>
+              <input fluid type="text" pInputText placeholder="Enter SWIFT/wire info" />
+            </div>
+            <div class="col-span-6">
+              <div>Email ID</div>
+              <input fluid type="email" pInputText placeholder="Enter bank email" />
+            </div>
+            <div class="col-span-6">
+              <div>Country</div>
+              <input fluid type="text" pInputText placeholder="Enter country" />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="2">
+          <div class="max-h-[400px] pr-4 overflow-y-auto">
+            @for (entry of fundEntries(); track $index) {
+            <div class="grid grid-cols-11 gap-2 p-4 border border-surface-300 rounded-lg mb-4">
+              <div class="col-span-5">
+                <div class="mb-2">Fund {{ $index + 1 }}</div>
+                <p-select
+                  [ngModel]="entry.fund"
+                  (ngModelChange)="updateFund($index, $event)"
+                  [options]="funds"
+                  optionLabel="name"
+                  placeholder="Select Fund"
+                  [filter]="true"
+                  filterBy="name"
+                  appendTo="body"
+                  fluid
+                />
+              </div>
+              <div class="col-span-5">
+                <div class="mb-2">Fee Types</div>
+                <p-multiselect
+                  [ngModel]="entry.feeTypes"
+                  (ngModelChange)="updateFeeTypes($index, $event)"
+                  [options]="feeTypeOptions"
+                  optionLabel="label"
+                  placeholder="Select Fee Types"
+                  appendTo="body"
+                  fluid
+                />
+              </div>
+              <div class="col-span-1 flex items-end">
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  variant="text"
+                  (click)="removeFund($index)"
+                />
+              </div>
+            </div>
+            }
+            <div class="flex justify-end">
+              <p-button
+                icon="pi pi-plus"
+                label="Add Fund"
+                severity="contrast"
+                variant="outlined"
+                (click)="addFund()"
+              />
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+  <div class="col-span-12 flex justify-end mt-2">
+    <p-button icon="pi pi-plus-circle" severity="contrast" label="Add Vendor" />
+  </div>
+</div>

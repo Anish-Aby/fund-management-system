@@ -9,7 +9,10 @@
       [title]="win.title"
     >
       {{ win.title.length > 13 ? win.title.substring(0, 8) + '...' : win.title }}
-      <div class="pi pi-times" (click)="$event.stopPropagation(); dialogWindowService.close($index)"></div>
+      <div
+        class="pi pi-times"
+        (click)="$event.stopPropagation(); dialogWindowService.close($index)"
+      ></div>
     </div>
   </div>
   }

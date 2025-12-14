@@ -15,6 +15,7 @@ import { DialogHeader } from '../../shared/components/dialog-header/dialog-heade
 import { DialogWindowService } from '../../shared/services/dialog-window';
 import { LedgerReport } from '../../report/ledger-report/ledger-report';
 import { ExpensesReport } from '../../report/expenses-report/expenses-report';
+import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
 
 @Component({
   selector: 'app-header',
@@ -135,10 +136,32 @@ export class Header {
           {
             label: 'Vendors',
             icon: 'pi pi-shop',
-            command: () => {
-              // this.router.navigate(['app/vendor/list']);
-              this.openVendor();
-            },
+            items: [
+              {
+                label: 'Add Vendors',
+                icon: 'pi pi-plus-circle',
+                command: () => {
+                  // this.router.navigate(['app/vendor/list']);
+                  this.showAddVendor();
+                },
+              },
+              {
+                label: 'Edit Vendors',
+                icon: 'pi pi-pencil',
+                command: () => {
+                  // this.router.navigate(['app/vendor/list']);
+                  this.showVendor();
+                },
+              },
+              {
+                label: 'Delete Vendors',
+                icon: 'pi pi-trash',
+                command: () => {
+                  // this.router.navigate(['app/vendor/list']);
+                  this.showVendor();
+                },
+              },
+            ],
           },
           {
             label: 'Expenses',
@@ -159,7 +182,7 @@ export class Header {
             icon: 'pi pi-book',
             command: () => {
               // this.router.navigate(['app/report/ledger-report']);
-              this.openLedgerReport();
+              this.showLedgerReport();
             },
           },
           {
@@ -167,7 +190,7 @@ export class Header {
             icon: 'pi pi-money-bill',
             command: () => {
               // this.router.navigate(['app/report/expenses-report']);
-              this.openExpensesReport();
+              this.showExpensesReport();
             },
           },
           {
@@ -248,7 +271,7 @@ export class Header {
     console.log('View all notifications');
   }
 
-  openVendor(): void {
+  showVendor(): void {
     if (!this.dialogWindowService.restoreByComponent('VendorList')) {
       this.dialogService.open(VendorList, {
         data: { title: 'Vendor List', componentName: 'VendorList', component: VendorList },
@@ -264,7 +287,7 @@ export class Header {
     }
   }
 
-  openLedgerReport(): void {
+  showLedgerReport(): void {
     if (!this.dialogWindowService.restoreByComponent('LedgerReport')) {
       this.dialogService.open(LedgerReport, {
         data: { title: 'Ledger Report', componentName: 'LedgerReport', component: LedgerReport },
@@ -280,7 +303,7 @@ export class Header {
     }
   }
 
-  openExpensesReport(): void {
+  showExpensesReport(): void {
     if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
       this.dialogService.open(ExpensesReport, {
         data: {
@@ -292,6 +315,27 @@ export class Header {
         resizable: true,
         modal: false,
         maximizable: true,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showAddVendor(): void {
+    if (!this.dialogWindowService.restoreByComponent('VendorAdd')) {
+      this.dialogService.open(VendorAdd, {
+        data: {
+          title: 'Vendor Add',
+          componentName: 'VendorAdd',
+          component: VendorAdd,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
         position: 'center',
         templates: {
           header: DialogHeader,

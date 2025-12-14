@@ -43,10 +43,10 @@ export class VendorList {
   }
 
   showAddVendorModal(): void {
-    if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
+    if (!this.dialogWindowService.restoreByComponent('VendorAdd')) {
       this.dialogService.open(VendorAdd, {
         data: {
-          title: 'VendorAdd',
+          title: 'Vendor Add',
           componentName: 'VendorAdd',
           component: VendorAdd,
         },
@@ -54,6 +54,7 @@ export class VendorList {
         resizable: true,
         modal: false,
         maximizable: true,
+        focusOnShow: false,
         position: 'center',
         templates: {
           header: DialogHeader,

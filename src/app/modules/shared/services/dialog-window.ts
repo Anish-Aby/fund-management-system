@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VendorList } from '../../vendor/vendor-list/vendor-list';
+import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
 import { LedgerReport } from '../../report/ledger-report/ledger-report';
 import { ExpensesReport } from '../../report/expenses-report/expenses-report';
 import { DialogHeader } from '../components/dialog-header/dialog-header';
@@ -27,7 +28,12 @@ interface StoredDialog {
 export class DialogWindowService {
   private minimizedSubject = new BehaviorSubject<MinimizedDialog[]>([]);
   minimized$: Observable<MinimizedDialog[]> = this.minimizedSubject.asObservable();
-  private componentMap: { [key: string]: any } = { VendorList, LedgerReport, ExpensesReport };
+  private componentMap: { [key: string]: any } = {
+    VendorList,
+    VendorAdd,
+    LedgerReport,
+    ExpensesReport,
+  };
 
   constructor(private dialogService: DialogService) {
     this.loadFromStorage();
@@ -37,10 +43,12 @@ export class DialogWindowService {
     const stored = sessionStorage.getItem('minimizedDialogs');
     if (stored) {
       const storedDialogs: StoredDialog[] = JSON.parse(stored);
-      const dialogs: MinimizedDialog[] = storedDialogs.map(d => ({
-        ...d,
-        component: this.componentMap[d.componentName]
-      })).filter(d => d.component); // Only keep dialogs with valid components
+      const dialogs: MinimizedDialog[] = storedDialogs
+        .map((d) => ({
+          ...d,
+          component: this.componentMap[d.componentName],
+        }))
+        .filter((d) => d.component); // Only keep dialogs with valid components
       this.minimizedSubject.next(dialogs);
     }
   }
@@ -63,11 +71,25 @@ export class DialogWindowService {
     return false;
   }
 
-  minimize(title: string, componentName: string, component: any, config: any, ref: any, state?: any) {
+  minimize(
+    title: string,
+    componentName: string,
+    component: any,
+    config: any,
+    ref: any,
+    state?: any
+  ) {
     const current = this.minimizedSubject.value;
     const updated = [...current, { title, componentName, component, config, state }];
     this.minimizedSubject.next(updated);
-    this.saveToStorage(updated.map(d => ({ title: d.title, componentName: d.componentName, config: d.config, state: d.state })));
+    this.saveToStorage(
+      updated.map((d) => ({
+        title: d.title,
+        componentName: d.componentName,
+        config: d.config,
+        state: d.state,
+      }))
+    );
     ref.close();
   }
 
@@ -86,7 +108,14 @@ export class DialogWindowService {
       }
       current.splice(index, 1);
       this.minimizedSubject.next([...current]);
-      this.saveToStorage(current.map(d => ({ title: d.title, componentName: d.componentName, config: d.config, state: d.state })));
+      this.saveToStorage(
+        current.map((d) => ({
+          title: d.title,
+          componentName: d.componentName,
+          config: d.config,
+          state: d.state,
+        }))
+      );
     }
   }
 
@@ -94,6 +123,13 @@ export class DialogWindowService {
     const current = this.minimizedSubject.value;
     current.splice(index, 1);
     this.minimizedSubject.next([...current]);
-    this.saveToStorage(current.map(d => ({ title: d.title, componentName: d.componentName, config: d.config, state: d.state })));
+    this.saveToStorage(
+      current.map((d) => ({
+        title: d.title,
+        componentName: d.componentName,
+        config: d.config,
+        state: d.state,
+      }))
+    );
   }
 }
