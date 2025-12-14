@@ -1,11 +1,16 @@
 <div
-  class="taskbar min-h-13 w-full px-5 py-2 border-surface border-t grid grid-cols-12 gap-4 bg-sky-100 dark:bg-gray-800 dark:border-gray-600"
+  class="taskbar min-h-10 w-full px-5 pt-1 border-surface border-t grid grid-cols-12 gap-2 bg-sky-100 dark:bg-gray-800 dark:border-gray-600"
 >
-  <div
-    class="task col-auto border border-black dark:border-gray-500 rounded-lg bg-surface-100 dark:bg-gray-700 p-1 text-center cursor-pointer dark:text-white"
-    *ngFor="let win of dialogWindowService.minimized$ | async; let i = index"
-    (click)="dialogWindowService.restore(i)"
-  >
-    {{ win.title }}
+  @for (win of dialogWindowService.minimized$ | async; track $index) {
+  <div class="flex items-end">
+    <div
+      class="col-auto border w-full justify-between px-1 flex items-center gap-2 border-black dark:border-gray-500 rounded-t-lg bg-surface-100 dark:bg-gray-700 p-1 text-center cursor-pointer dark:text-white"
+      (click)="dialogWindowService.restore($index)"
+      [title]="win.title"
+    >
+      {{ win.title.length > 13 ? win.title.substring(0, 8) + '...' : win.title }}
+      <div class="pi pi-times" (click)="$event.stopPropagation(); dialogWindowService.close($index)"></div>
+    </div>
   </div>
+  }
 </div>

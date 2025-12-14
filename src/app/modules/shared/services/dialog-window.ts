@@ -89,4 +89,11 @@ export class DialogWindowService {
       this.saveToStorage(current.map(d => ({ title: d.title, componentName: d.componentName, config: d.config, state: d.state })));
     }
   }
+
+  close(index: number) {
+    const current = this.minimizedSubject.value;
+    current.splice(index, 1);
+    this.minimizedSubject.next([...current]);
+    this.saveToStorage(current.map(d => ({ title: d.title, componentName: d.componentName, config: d.config, state: d.state })));
+  }
 }
