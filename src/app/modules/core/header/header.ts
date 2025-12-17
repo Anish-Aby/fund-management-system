@@ -401,6 +401,7 @@ export class Header {
         },
         draggable: true,
         resizable: true,
+        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,

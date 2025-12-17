@@ -6,31 +6,14 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="loader-overlay">
+    <div class="h-dvh w-full flex justify-center items-center box-border">
       <div class="loader-container">
-        <div class="main-animation">
-          <div class="invoice-stack">
-            <div class="invoice-sheet sheet-1"></div>
-            <div class="invoice-sheet sheet-2"></div>
-            <div class="invoice-sheet sheet-3"></div>
-          </div>
-          <div class="coins-container">
-            <div class="coin coin-1"></div>
-            <div class="coin coin-2"></div>
-            <div class="coin coin-3"></div>
-          </div>
-        </div>
-        <div class="loading-text">
-          <span>Loading</span>
-          <div class="dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-        </div>
+        <div class="box1"></div>
+        <div class="box2"></div>
+        <div class="box3"></div>
       </div>
     </div>
   `,
-  styleUrls: ['./main-loader.component.scss']
+  styleUrls: ['./main-loader.component.scss'],
 })
 export class MainLoaderComponent {}
