@@ -16,6 +16,7 @@ import { DialogWindowService } from '../../shared/services/dialog-window';
 import { LedgerReport } from '../../report/ledger-report/ledger-report';
 import { ExpensesReport } from '../../report/expenses-report/expenses-report';
 import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
+import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
 
 @Component({
   selector: 'app-header',
@@ -106,6 +107,9 @@ export class Header {
           {
             label: 'Add invoice',
             icon: 'pi pi-file-plus',
+            command: () => {
+              this.showAddInvoice();
+            },
           },
           {
             label: 'General Ledger',
@@ -394,6 +398,27 @@ export class Header {
           title: 'Vendor Add',
           componentName: 'VendorAdd',
           component: VendorAdd,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showAddInvoice(): void {
+    if (!this.dialogWindowService.restoreByComponent('InvoiceAdd')) {
+      this.dialogService.open(InvoiceAdd, {
+        data: {
+          title: 'Invoice Add',
+          componentName: 'InvoiceAdd',
+          component: InvoiceAdd,
         },
         draggable: true,
         resizable: true,

@@ -9,9 +9,6 @@
         <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col">
           <div class="flex w-full justify-between items-center">
             <div class="flex flex-col">
-              @if (editMode()) {
-              <p-button label="Save" severity="success" (onClick)="saveChanges()" size="small" />
-              }
               <h1 class="text-3xl font-medium mb-1">Invoice Review</h1>
               <p class="text-sm text-muted-color mb-2">
                 Review invoices, approve or reject them. Change tabs for viewing the invoices
@@ -60,23 +57,43 @@
                     />
                   </div>
                   <div class="col-span-1 flex justify-end text-primary">
+                    @if (editMode()) {
+                    <div class="flex items-center gap-4">
+                      <p-button
+                        icon="pi pi-check-circle"
+                        label="Save Edit"
+                        severity="success"
+                        variant="outlined"
+                        (onClick)="saveChanges()"
+                      />
+                      <p-button
+                        icon="pi pi-times-circle"
+                        variant="outlined"
+                        severity="contrast"
+                        label="Cancel Edit"
+                        class="mr-2"
+                        (onClick)="cancelEdit()"
+                      />
+                    </div>
+                    } @else {
                     <p-button
-                      icon="pi pi-eye"
+                      icon="pi pi-pencil"
                       variant="outlined"
                       severity="contrast"
-                      label="View Invoice PDF"
+                      label="Edit Invoice PDF"
+                      class="mr-2"
+                      (onClick)="toggleEditMode()"
+                    />
+                    }
+                    <p-button
+                      icon="pi pi-clone"
+                      variant="outlined"
+                      severity="contrast"
+                      label="Split Invoice"
                       class="mr-2"
                     />
                   </div>
                 </div>
-                <!-- <div class="text-lg text-muted-color font-medium mb-2">
-                    {{ invoice.invoiceNumber }}
-                  </div> -->
-                <!-- <p-tag
-                    class="h-max capitalize"
-                    [value]="invoice.invoiceStatus"
-                    [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
-                  /> -->
 
                 @for (group of fieldGroups(); track group.name) {
                 <div class="mb-4 border border-surface rounded-xl">
@@ -146,6 +163,20 @@
                           (ngModelChange)="invoice[field.key] = $event"
                         >
                         </textarea>
+                        } @if (field.type === 'select') {
+                        <p-select
+                          class="w-full"
+                          [options]="field.options"
+                          [ngModel]="getFieldValue(invoice, field.key)"
+                          (ngModelChange)="invoice[field.key] = $event"
+                        />
+                        } @if (field.type === 'multiselect') {
+                        <p-multiselect
+                          class="w-full"
+                          [options]="field.options"
+                          [ngModel]="getFieldValue(invoice, field.key)"
+                          (ngModelChange)="invoice[field.key] = $event"
+                        />
                         }
                       </div>
                       }

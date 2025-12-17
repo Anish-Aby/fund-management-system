@@ -1,0 +1,14 @@
+[
+  { "id": "FEE-001", "name": "Management Fees" },
+  { "id": "FEE-002", "name": "Advisory Fees" },
+  { "id": "FEE-003", "name": "Audit Fees" },
+  { "id": "FEE-004", "name": "Legal Services" },
+  { "id": "FEE-005", "name": "Software License" },
+  { "id": "FEE-006", "name": "Infrastructure" },
+  { "id": "FEE-007", "name": "Consulting" },
+  { "id": "FEE-008", "name": "Marketing" },
+  { "id": "FEE-009", "name": "Research" },
+  { "id": "FEE-010", "name": "Equipment" },
+  { "id": "FEE-011", "name": "Maintenance" },
+  { "id": "FEE-012", "name": "Office Expenses" }
+]

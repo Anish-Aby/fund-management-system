@@ -2,6 +2,7 @@ import { Component, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
 import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -26,6 +27,7 @@ import { DialogModule } from 'primeng/dialog';
   imports: [
     TabsModule,
     SelectModule,
+    MultiSelectModule,
     DividerModule,
     ButtonModule,
     InputTextModule,

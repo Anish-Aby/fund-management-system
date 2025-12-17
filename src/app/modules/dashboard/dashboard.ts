@@ -10,6 +10,10 @@ import { StatCard } from '../shared/components/stat-card/stat-card';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { UtilityService } from '../shared/services/utility.service';
+import { InvoiceAdd } from '../invoice/invoice-add/invoice-add';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogWindowService } from '../shared/services/dialog-window';
+import { DialogHeader } from '../shared/components/dialog-header/dialog-header';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +41,12 @@ export class Dashboard implements OnInit {
 
   home: any = { icon: 'pi pi-home', routerLink: '/' };
 
-  constructor(private router: Router, public utilityService: UtilityService) {}
+  constructor(
+    private router: Router,
+    private dialogService: DialogService,
+    private dialogWindowService: DialogWindowService,
+    public utilityService: UtilityService
+  ) {}
 
   ngOnInit() {
     this.portfolio = [
@@ -225,5 +234,26 @@ export class Dashboard implements OnInit {
 
   onCardClick(statusId: number) {
     this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
+  }
+
+  showAddInvoice(): void {
+    if (!this.dialogWindowService.restoreByComponent('InvoiceAdd')) {
+      this.dialogService.open(InvoiceAdd, {
+        data: {
+          title: 'Invoice Add',
+          componentName: 'InvoiceAdd',
+          component: InvoiceAdd,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
   }
 }

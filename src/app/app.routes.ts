@@ -24,12 +24,14 @@ export const routes: Routes = [
           {
             path: 'review',
             loadComponent: () =>
-              import('./modules/invoice/review/invoice-review').then((m) => m.InvoiceReview),
+              import('./modules/invoice/invoice-review/invoice-review').then(
+                (m) => m.InvoiceReview
+              ),
           },
           {
             path: 'list',
             loadComponent: () =>
-              import('./modules/invoice/list/invoice-list').then((m) => m.InvoiceList),
+              import('./modules/invoice/invoice-list/invoice-list').then((m) => m.InvoiceList),
           },
         ],
       },
