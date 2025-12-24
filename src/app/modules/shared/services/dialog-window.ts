@@ -7,6 +7,7 @@ import { LedgerReport } from '../../report/ledger-report/ledger-report';
 import { ExpensesReport } from '../../report/expenses-report/expenses-report';
 import { DialogHeader } from '../components/dialog-header/dialog-header';
 import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
+import { InvoiceSplit } from '../../invoice/invoice-split/invoice-split';
 
 interface MinimizedDialog {
   title: string;
@@ -35,6 +36,7 @@ export class DialogWindowService {
     LedgerReport,
     ExpensesReport,
     InvoiceAdd,
+    InvoiceSplit,
   };
 
   constructor(private dialogService: DialogService) {

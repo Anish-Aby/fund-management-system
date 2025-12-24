@@ -21,6 +21,10 @@ import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DialogModule } from 'primeng/dialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogWindowService } from '../../shared/services/dialog-window';
+import { InvoiceSplit } from '../invoice-split/invoice-split';
+import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
 
 @Component({
   selector: 'app-invoice-review',
@@ -55,7 +59,11 @@ export class InvoiceReview implements OnInit {
   confirmDialogVisible = signal<boolean>(false);
   reviewConfirmType = signal<string>('');
 
-  constructor(public utilityService: UtilityService) {}
+  constructor(
+    private dialogService: DialogService,
+    private dialogWindowService: DialogWindowService,
+    public utilityService: UtilityService
+  ) {}
 
   ngOnInit() {
     window.scrollTo(0, 0);
@@ -132,5 +140,26 @@ export class InvoiceReview implements OnInit {
 
   rejectInvoice(): void {
     this.confirmDialogVisible.set(false);
+  }
+
+  splitInvoice(invoice: any): void {
+    if (!this.dialogWindowService.restoreByComponent('InvoiceSplit')) {
+      this.dialogService.open(InvoiceSplit, {
+        data: {
+          title: 'Invoice Split',
+          componentName: 'InvoiceSplit',
+          component: InvoiceSplit,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
   }
 }
