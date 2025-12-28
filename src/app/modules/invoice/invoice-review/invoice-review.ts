@@ -17,6 +17,10 @@ import { TooltipModule } from 'primeng/tooltip';
 // import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
 import { INVOICE_FIELD_CONFIG } from '../../core/config/invoice-fields.config';
 import InvoiceDataMock from '../../core/mocks/invoice-review-mock.json';
+import FeeTypeDataMock from '../../core/mocks/fee-types-mock.json';
+import ServiceDescriptionDataMock from '../../core/mocks/service-description-options-mock.json';
+import FundDataMock from '../../core/mocks/funds-mock.json';
+import PaidByDataMock from '../../core/mocks/paid-by-mock.json';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
@@ -54,10 +58,14 @@ export class InvoiceReview implements OnInit {
   invoiceData = signal<any[]>(InvoiceDataMock as any[]);
   editMode = signal(false);
   selectedInvoiceId = signal<string | null>(null);
-  selectedTabValue = signal<string>(InvoiceDataMock[0]?.invoiceNumber || '');
+  selectedTabValue = signal<string>(InvoiceDataMock[0]?.basicInformation.invoiceNo || '');
   invoiceToApprove = signal<any | null>(null);
   confirmDialogVisible = signal<boolean>(false);
   reviewConfirmType = signal<string>('');
+  feeTypeOptions = signal<any>(FeeTypeDataMock);
+  serviceDescriptionOptions = signal<any>(ServiceDescriptionDataMock);
+  fundOptions = signal<any>(FundDataMock);
+  paidByOptions = signal<any>(PaidByDataMock);
 
   constructor(
     private dialogService: DialogService,
