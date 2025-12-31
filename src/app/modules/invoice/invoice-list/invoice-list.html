@@ -2,8 +2,42 @@
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
     <div class="flex justify-between items-center mb-4">
       <div>
-        <h1 class="text-3xl font-medium mb-1">Invoice List</h1>
-        <p class="text-sm text-muted-color">Manage and view all invoices in the system</p>
+        @if (status() === 'Received') {
+        <h1 class="text-3xl font-medium mb-1">All Invoices Received as on Date</h1>
+        <p class="text-sm text-muted-color">
+          The invoices below have been received from the start, and their corresponding statuses are
+          indicated in the status column.
+        </p>
+        } @else if (status() === 'Pending') {
+        <h1 class="text-3xl font-medium mb-1">Invoices Pending for Review and Approve</h1>
+        <p class="text-sm text-muted-color">
+          The below invoices are reviewed and approved for next level of approval.
+        </p>
+        } @else if (status() === 'Approved') {
+        <h1 class="text-3xl font-medium mb-1">Approved Invoices</h1>
+        <p class="text-sm text-muted-color">
+          The invoices below have been reviewed and approved by the maker. Your approval is required
+          for the further release of payment.
+        </p>
+        } @else if (status() === 'Rejected') {
+        <h1 class="text-3xl font-medium mb-1">Rejected Invoices</h1>
+        <p class="text-sm text-muted-color">
+          The invoices listed below were rejected for various reasons. Please take the required
+          action.
+        </p>
+        } @else if (status() === 'Scheduled') {
+        <h1 class="text-3xl font-medium mb-1">Approved Invoices for Release of Payment</h1>
+        <p class="text-sm text-muted-color">
+          The invoices listed below have been reviewed and approved for payment release. Please
+          proceed with the payment.
+        </p>
+        } @else if (status() === 'Paid') {
+        <h1 class="text-3xl font-medium mb-1">Paid and Cleared Invoices</h1>
+        <p class="text-sm text-muted-color">
+          The invoices listed below have been paid and released to the vendor. Please review the
+          details provided.
+        </p>
+        }
       </div>
       <!-- <p-button label="Review Invoices" icon="pi pi-plus" severity="contrast" /> -->
     </div>
@@ -52,25 +86,16 @@
           <div>Status</div>
           <p-multiselect fluid [options]="statusOptions" placeholder="Choose status" />
         </div>
-        <div class="col-span-4 flex items-end justify-end">
-          <!-- <input
-            class="mr-2 lg:w-auto"
-            pInputText
-            type="text"
-            placeholder="Search"
-            (input)="dt.filterGlobal($event.target.value, 'contains')"
-          /> -->
+        <div class="col-span-4 flex items-end justify-end gap-3">
+          <p-button
+            icon="pi pi-file-check"
+            severity="contrast"
+            label="Review Invoices"
+            [disabled]="selectedInvoices.length === 0"
+            (onClick)="onReviewInvoice()"
+          />
           <p-button icon="pi pi-search" severity="contrast" label="Search" class="mr-2" />
         </div>
-      </div>
-      <div class="col-span-12 flex justify-end p-3">
-        <p-button
-          icon="pi pi-file-check"
-          severity="contrast"
-          label="Review Invoices"
-          [disabled]="selectedInvoices.length === 0"
-          (onClick)="onReviewInvoice()"
-        />
       </div>
 
       <div class="col-span-12">
@@ -193,37 +218,5 @@
         </p-table>
       </div>
     </div>
-
-    <!-- <p-table [value]="invoices" [tableStyle]="{ 'min-width': '50rem' }">
-      <ng-template #header>
-        <tr>
-          <th>ID</th>
-          <th>Vendor</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Date</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-invoice>
-        <tr>
-          <td>{{ invoice.id }}</td>
-          <td>{{ invoice.vendor }}</td>
-          <td>{{ invoice.amount | currency }}</td>
-          <td>
-            <p-tag
-              [value]="invoice.status"
-              [severity]="getSeverity(invoice.status)"
-              class="capitalize"
-            />
-          </td>
-          <td>{{ invoice.date }}</td>
-          <td>
-            <p-button icon="pi pi-eye" size="small" variant="outlined" class="mr-2" />
-            <p-button icon="pi pi-pencil" size="small" severity="secondary" variant="outlined" />
-          </td>
-        </tr>
-      </ng-template>
-    </p-table> -->
   </div>
 </div>

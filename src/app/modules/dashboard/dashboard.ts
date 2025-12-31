@@ -14,6 +14,7 @@ import { InvoiceAdd } from '../invoice/invoice-add/invoice-add';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DialogWindowService } from '../shared/services/dialog-window';
 import { DialogHeader } from '../shared/components/dialog-header/dialog-header';
+import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
 
 @Component({
   selector: 'app-dashboard',
@@ -224,15 +225,52 @@ export class Dashboard implements OnInit {
       return;
     }
     const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
-    this.router.navigate(['app/invoice/review']);
+    // this.router.navigate(['app/invoice/review']);
+
+    if (!this.dialogWindowService.restoreByComponent('InvoiceReview')) {
+      this.dialogService.open(InvoiceReview, {
+        data: {
+          title: 'Invoice Review',
+          componentName: 'InvoiceReview',
+          component: InvoiceReview,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
   }
 
   onInvoiceRowSelect(event: any): void {
     console.log('here');
-    this.router.navigate(['app/invoice/review']);
+    // this.router.navigate(['app/invoice/review']);
+    if (!this.dialogWindowService.restoreByComponent('InvoiceReview')) {
+      this.dialogService.open(InvoiceReview, {
+        data: {
+          title: 'Invoice Review',
+          componentName: 'InvoiceReview',
+          component: InvoiceReview,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
   }
 
-  onCardClick(statusId: number) {
+  onCardClick(statusId: number): void {
     this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
   }
 

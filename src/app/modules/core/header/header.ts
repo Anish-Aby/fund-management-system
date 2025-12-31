@@ -17,6 +17,8 @@ import { LedgerReport } from '../../report/ledger-report/ledger-report';
 import { ExpensesReport } from '../../report/expenses-report/expenses-report';
 import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
 import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
+import { CashBalance } from '../../report/cash-balance/cash-balance';
+import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
 
 @Component({
   selector: 'app-header',
@@ -112,7 +114,7 @@ export class Header {
             },
           },
           {
-            label: 'General Ledger',
+            label: 'Journal Entry',
             icon: 'pi pi-book',
           },
           {
@@ -260,10 +262,16 @@ export class Header {
           {
             label: 'Cash Balance',
             icon: 'pi pi-wallet',
+            command: () => {
+              this.showCashBalance();
+            },
           },
           {
-            label: 'Fund Cash Report',
+            label: 'Fund Cash Balance',
             icon: 'pi pi-chart-line',
+            command: () => {
+              this.showFundCashBalance();
+            },
           },
           {
             label: 'Tax Report',
@@ -420,6 +428,48 @@ export class Header {
           title: 'Invoice Add',
           componentName: 'InvoiceAdd',
           component: InvoiceAdd,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showCashBalance(): void {
+    if (!this.dialogWindowService.restoreByComponent('Cash Balance')) {
+      this.dialogService.open(CashBalance, {
+        data: {
+          title: 'Cash Balance',
+          componentName: 'CashBalance',
+          component: CashBalance,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showFundCashBalance(): void {
+    if (!this.dialogWindowService.restoreByComponent('Fund Cash Balance')) {
+      this.dialogService.open(FundCashBalance, {
+        data: {
+          title: 'Fund Cash Balance',
+          componentName: 'FundCashBalance',
+          component: FundCashBalance,
         },
         draggable: true,
         resizable: true,

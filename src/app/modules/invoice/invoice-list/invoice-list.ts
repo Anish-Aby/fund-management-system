@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -28,6 +28,7 @@ export class InvoiceList {
   selectedInvoices: any[] = [];
   invoices: any[] = [];
   filteredTotal: number = 0;
+  status = signal<string | null>('Received');
   statusOptions = [
     { label: 'Received', value: 'Received' },
     { label: 'Pending', value: 'Pending' },
@@ -44,8 +45,8 @@ export class InvoiceList {
   ) {
     const queryParams = this.activatedRoute.snapshot.queryParams;
     console.log(queryParams);
-    const status = this.getStatus(queryParams['statusId']);
-    this.invoices = InvoiceListData.filter((invoice) => invoice.status === status);
+    this.status.set(this.getStatus(queryParams['statusId']));
+    this.invoices = InvoiceListData.filter((invoice) => invoice.status === this.status());
     this.calculateTotal();
   }
 

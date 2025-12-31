@@ -1,0 +1,222 @@
+[
+  {
+    "bankName": "Bank of America",
+    "accountNo": "266774748",
+    "accountName": "Credit Fund",
+    "currency": "USD",
+    "region": "USA",
+    "beginningBalance": 50000,
+    "forThePeriod": 2000,
+    "endingBalance": 52000,
+    "usdBalance": 52000
+  },
+  {
+    "bankName": "Chase Bank UK",
+    "accountNo": "2233338822",
+    "accountName": "Euro Debt Fund",
+    "currency": "GBP",
+    "region": "UK",
+    "beginningBalance": 20000,
+    "forThePeriod": 15000,
+    "endingBalance": 35000,
+    "usdBalance": 46700
+  },
+  {
+    "bankName": "Deutsche Bank",
+    "accountNo": "4455667788",
+    "accountName": "Growth Fund",
+    "currency": "EUR",
+    "region": "Germany",
+    "beginningBalance": 75000,
+    "forThePeriod": -5000,
+    "endingBalance": 70000,
+    "usdBalance": 76300
+  },
+  {
+    "bankName": "HSBC Singapore",
+    "accountNo": "9988776655",
+    "accountName": "Asia Pacific Fund",
+    "currency": "SGD",
+    "region": "Singapore",
+    "beginningBalance": 100000,
+    "forThePeriod": 25000,
+    "endingBalance": 125000,
+    "usdBalance": 92500
+  },
+  {
+    "bankName": "JPMorgan Chase",
+    "accountNo": "1122334455",
+    "accountName": "Equity Fund",
+    "currency": "USD",
+    "region": "USA",
+    "beginningBalance": 150000,
+    "forThePeriod": -12000,
+    "endingBalance": 138000,
+    "usdBalance": 138000
+  },
+  {
+    "bankName": "Barclays Bank",
+    "accountNo": "5566778899",
+    "accountName": "Bond Fund",
+    "currency": "GBP",
+    "region": "UK",
+    "beginningBalance": 85000,
+    "forThePeriod": 8500,
+    "endingBalance": 93500,
+    "usdBalance": 124775
+  },
+  {
+    "bankName": "Wells Fargo",
+    "accountNo": "7788990011",
+    "accountName": "Real Estate Fund",
+    "currency": "USD",
+    "region": "USA",
+    "beginningBalance": 200000,
+    "forThePeriod": 35000,
+    "endingBalance": 235000,
+    "usdBalance": 235000
+  },
+  {
+    "bankName": "Citibank",
+    "accountNo": "3344556677",
+    "accountName": "Technology Fund",
+    "currency": "USD",
+    "region": "USA",
+    "beginningBalance": 95000,
+    "forThePeriod": 18000,
+    "endingBalance": 113000,
+    "usdBalance": 113000
+  },
+  {
+    "bankName": "UBS Switzerland",
+    "accountNo": "9900112233",
+    "accountName": "Private Wealth Fund",
+    "currency": "CHF",
+    "region": "Switzerland",
+    "beginningBalance": 120000,
+    "forThePeriod": -8000,
+    "endingBalance": 112000,
+    "usdBalance": 125440
+  },
+  {
+    "bankName": "BNP Paribas",
+    "accountNo": "4455667700",
+    "accountName": "European Fund",
+    "currency": "EUR",
+    "region": "France",
+    "beginningBalance": 180000,
+    "forThePeriod": 22000,
+    "endingBalance": 202000,
+    "usdBalance": 220180
+  },
+  {
+    "bankName": "Royal Bank of Canada",
+    "accountNo": "6677889900",
+    "accountName": "Canadian Fund",
+    "currency": "CAD",
+    "region": "Canada",
+    "beginningBalance": 90000,
+    "forThePeriod": 12000,
+    "endingBalance": 102000,
+    "usdBalance": 75480
+  },
+  {
+    "bankName": "ANZ Bank",
+    "accountNo": "8899001122",
+    "accountName": "Australian Fund",
+    "currency": "AUD",
+    "region": "Australia",
+    "beginningBalance": 65000,
+    "forThePeriod": 5500,
+    "endingBalance": 70500,
+    "usdBalance": 46530
+  },
+  {
+    "bankName": "Mizuho Bank",
+    "accountNo": "1234567890",
+    "accountName": "Japan Fund",
+    "currency": "JPY",
+    "region": "Japan",
+    "beginningBalance": 15000000,
+    "forThePeriod": 2500000,
+    "endingBalance": 17500000,
+    "usdBalance": 116667
+  },
+  {
+    "bankName": "Standard Chartered",
+    "accountNo": "2345678901",
+    "accountName": "Emerging Markets Fund",
+    "currency": "USD",
+    "region": "Hong Kong",
+    "beginningBalance": 125000,
+    "forThePeriod": -15000,
+    "endingBalance": 110000,
+    "usdBalance": 110000
+  },
+  {
+    "bankName": "ING Bank",
+    "accountNo": "3456789012",
+    "accountName": "Netherlands Fund",
+    "currency": "EUR",
+    "region": "Netherlands",
+    "beginningBalance": 95000,
+    "forThePeriod": 18500,
+    "endingBalance": 113500,
+    "usdBalance": 123725
+  },
+  {
+    "bankName": "Santander Bank",
+    "accountNo": "4567890123",
+    "accountName": "Iberian Fund",
+    "currency": "EUR",
+    "region": "Spain",
+    "beginningBalance": 78000,
+    "forThePeriod": 9200,
+    "endingBalance": 87200,
+    "usdBalance": 95048
+  },
+  {
+    "bankName": "Credit Suisse",
+    "accountNo": "5678901234",
+    "accountName": "Alpine Fund",
+    "currency": "CHF",
+    "region": "Switzerland",
+    "beginningBalance": 85000,
+    "forThePeriod": -3500,
+    "endingBalance": 81500,
+    "usdBalance": 91280
+  },
+  {
+    "bankName": "Nordea Bank",
+    "accountNo": "6789012345",
+    "accountName": "Nordic Fund",
+    "currency": "SEK",
+    "region": "Sweden",
+    "beginningBalance": 850000,
+    "forThePeriod": 125000,
+    "endingBalance": 975000,
+    "usdBalance": 88636
+  },
+  {
+    "bankName": "DBS Bank",
+    "accountNo": "7890123456",
+    "accountName": "Southeast Asia Fund",
+    "currency": "SGD",
+    "region": "Singapore",
+    "beginningBalance": 140000,
+    "forThePeriod": 28000,
+    "endingBalance": 168000,
+    "usdBalance": 124320
+  },
+  {
+    "bankName": "Bank of Tokyo",
+    "accountNo": "8901234567",
+    "accountName": "Innovation Fund",
+    "currency": "JPY",
+    "region": "Japan",
+    "beginningBalance": 12000000,
+    "forThePeriod": -1500000,
+    "endingBalance": 10500000,
+    "usdBalance": 70000
+  }
+]

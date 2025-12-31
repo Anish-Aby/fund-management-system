@@ -1,0 +1,82 @@
+[
+  {
+    "portfolioName": "Pan Euro Credit Fund Llp",
+    "fundBank": "Chase Bank",
+    "region": "USA",
+    "currency": "USD",
+    "paidInvoices": 2500,
+    "unpaidInvoices": 5000,
+    "bankBalance": 15000,
+    "usdBalance": 7500
+  },
+  {
+    "portfolioName": "Growth Equity Fund",
+    "fundBank": "Bank of America",
+    "region": "USA",
+    "currency": "USD",
+    "paidInvoices": 12500,
+    "unpaidInvoices": 8000,
+    "bankBalance": 52000,
+    "usdBalance": 31500
+  },
+  {
+    "portfolioName": "Tech Innovation Fund",
+    "fundBank": "Barclays Bank",
+    "region": "UK",
+    "currency": "GBP",
+    "paidInvoices": 7083,
+    "unpaidInvoices": 3500,
+    "bankBalance": 35000,
+    "usdBalance": 46700
+  },
+  {
+    "portfolioName": "Emerging Markets Fund",
+    "fundBank": "Deutsche Bank",
+    "region": "Germany",
+    "currency": "EUR",
+    "paidInvoices": 10000,
+    "unpaidInvoices": 6500,
+    "bankBalance": 70000,
+    "usdBalance": 76300
+  },
+  {
+    "portfolioName": "Bond Stability Fund",
+    "fundBank": "JPMorgan Chase",
+    "region": "USA",
+    "currency": "USD",
+    "paidInvoices": 20833,
+    "unpaidInvoices": 15000,
+    "bankBalance": 138000,
+    "usdBalance": 102167
+  },
+  {
+    "portfolioName": "Real Estate Fund",
+    "fundBank": "HSBC Singapore",
+    "region": "Singapore",
+    "currency": "SGD",
+    "paidInvoices": 15417,
+    "unpaidInvoices": 9200,
+    "bankBalance": 125000,
+    "usdBalance": 92500
+  },
+  {
+    "portfolioName": "Healthcare Innovation Fund",
+    "fundBank": "Wells Fargo",
+    "region": "USA",
+    "currency": "USD",
+    "paidInvoices": 45000,
+    "unpaidInvoices": 28000,
+    "bankBalance": 235000,
+    "usdBalance": 162000
+  },
+  {
+    "portfolioName": "Sustainable Energy Fund",
+    "fundBank": "UBS Switzerland",
+    "region": "Switzerland",
+    "currency": "CHF",
+    "paidInvoices": 67500,
+    "unpaidInvoices": 32000,
+    "bankBalance": 112000,
+    "usdBalance": 125440
+  }
+]

@@ -1,0 +1,36 @@
+// Cash Balance Report Styles
+.table-dashboard-invoice {
+  :host ::ng-deep .p-datatable {
+    .p-datatable-thead > tr > th {
+      background-color: var(--p-surface-100);
+      border-color: var(--p-surface-200);
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .p-datatable-tbody > tr > td {
+      border-color: var(--p-surface-200);
+      padding: 0.75rem;
+    }
+
+    .p-datatable-tfoot > tr > td {
+      background-color: var(--p-surface-50);
+      border-color: var(--p-surface-200);
+      font-weight: 600;
+    }
+  }
+}
+
+// Responsive table adjustments
+@media (max-width: 768px) {
+  .table-dashboard-invoice {
+    :host ::ng-deep .p-datatable {
+      font-size: 0.75rem;
+      
+      .p-datatable-tbody > tr > td,
+      .p-datatable-thead > tr > th {
+        padding: 0.5rem;
+      }
+    }
+  }
+}
