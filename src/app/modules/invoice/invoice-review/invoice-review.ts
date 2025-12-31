@@ -79,8 +79,8 @@ export class InvoiceReview implements OnInit {
 
   invoiceOptions = computed(() =>
     this.invoiceData().map((invoice) => ({
-      label: invoice.vendorName,
-      value: invoice.invoiceNumber,
+      label: invoice.basicInformation.vendorName,
+      value: invoice.basicInformation.invoiceNo,
     }))
   );
 

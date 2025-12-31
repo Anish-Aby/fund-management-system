@@ -11,3 +11,19 @@
   white-space: nowrap !important;
   overflow: hidden !important;
 }
+
+.btn-dialog-header-group {
+  .p-button {
+    border-start-start-radius: 0 !important;
+    border-end-start-radius: 0 !important;
+    &:hover {
+      background-color: oklch(70.7% 0.165 254.624) !important;
+    }
+  }
+  .btn-close {
+    border-end-end-radius: 0 !important;
+    &:hover {
+      background-color: oklch(70.4% 0.191 22.216) !important;
+    }
+  }
+}

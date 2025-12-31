@@ -277,27 +277,27 @@
                   </div>
 
                   <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
                       <div class="text-muted-color uppercase text-xs mb-1">
                         Description as per Invoice
                       </div>
-                      @if (editMode()) {
-                      <textarea rows="5" pTextarea></textarea>
-                      } @else {
                       <div class="font-medium">
                         {{ invoice.serviceDetails.descriptionAsPerInvoice }}
                       </div>
-                      }
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
                       <div class="text-muted-color uppercase text-xs mb-1">Description Service</div>
                       @if (editMode()) {
-                      <p-select class="w-full" [options]="serviceDescriptionOptions()" />
+                      <p-select
+                        class="w-full"
+                        [options]="serviceDescriptionOptions()"
+                        [editable]="true"
+                      />
                       } @else {
                       <div class="font-medium">{{ invoice.serviceDetails.descriptionService }}</div>
                       }
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
                       <div class="text-muted-color uppercase text-xs mb-1">
                         Classification for Accounting
                       </div>
