@@ -11,6 +11,7 @@ import { InvoiceSplit } from '../../invoice/invoice-split/invoice-split';
 import { InvoiceReview } from '../../invoice/invoice-review/invoice-review';
 import { CashBalance } from '../../report/cash-balance/cash-balance';
 import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
+import { EntityAdd } from '../../entity/entity-add/entity-add';
 
 interface MinimizedDialog {
   title: string;
@@ -43,6 +44,7 @@ export class DialogWindowService {
     InvoiceReview,
     CashBalance,
     FundCashBalance,
+    EntityAdd,
   };
 
   constructor(private dialogService: DialogService) {

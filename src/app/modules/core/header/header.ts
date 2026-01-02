@@ -19,6 +19,7 @@ import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
 import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
 import { CashBalance } from '../../report/cash-balance/cash-balance';
 import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
+import { EntityAdd } from '../../entity/entity-add/entity-add';
 
 @Component({
   selector: 'app-header',
@@ -142,6 +143,9 @@ export class Header {
               {
                 label: 'Add Entities',
                 icon: 'pi pi-plus-circle',
+                command: () => {
+                  this.showAddEntity();
+                },
               },
               {
                 label: 'Edit Entities',
@@ -473,6 +477,28 @@ export class Header {
         },
         draggable: true,
         resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showAddEntity(): void {
+    if (!this.dialogWindowService.restoreByComponent('EntityAdd')) {
+      this.dialogService.open(EntityAdd, {
+        data: {
+          title: 'Entity Add',
+          componentName: 'EntityAdd',
+          component: EntityAdd,
+        },
+        draggable: true,
+        resizable: true,
+        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,

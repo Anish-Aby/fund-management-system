@@ -1,0 +1,147 @@
+<div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-4 px-4">
+    <h1 class="text-3xl font-medium">Entity Add</h1>
+    <p-tabs value="0" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">Entity Details</p-tab>
+        <p-tab value="1">Address</p-tab>
+        <p-tab value="2">Bank Details</p-tab>
+        <p-tab value="3">Contact Details</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Entity Name</div>
+              <input fluid type="text" pInputText placeholder="Enter entity name" />
+            </div>
+            <div class="col-span-6">
+              <div>Displayed Name</div>
+              <input fluid type="text" pInputText placeholder="Enter display name" />
+            </div>
+            <div class="col-span-6">
+              <div>Entity Code</div>
+              <input fluid type="text" pInputText placeholder="Enter unique entity code" />
+            </div>
+            <div class="col-span-6">
+              <div>Tax ID</div>
+              <input fluid type="text" pInputText placeholder="Enter tax ID" />
+            </div>
+            <div class="col-span-6">
+              <div>Tax Type</div>
+              <p-select
+                [(ngModel)]="selectedTaxType"
+                [options]="taxTypeOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Tax Type"
+                [filter]="true"
+                filterBy="label"
+                fluid
+                appendTo="body"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Tax %</div>
+              <input
+                fluid
+                type="number"
+                pInputText
+                [(ngModel)]="taxPercentage"
+                [disabled]="!selectedTaxType"
+                placeholder="Enter tax percentage"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Base Currency</div>
+              <input fluid type="text" pInputText placeholder="Enter Base Currency" />
+            </div>
+            <div class="col-span-6">
+              <div>Entity Region</div>
+              <input fluid type="text" pInputText placeholder="Enter Entity Region" />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Street</div>
+              <input fluid type="text" pInputText placeholder="Enter street address" />
+            </div>
+            <div class="col-span-6">
+              <div>Street-1</div>
+              <input fluid type="text" pInputText placeholder="Enter street address line 2" />
+            </div>
+            <div class="col-span-6">
+              <div>City</div>
+              <input fluid type="text" pInputText placeholder="Enter city" />
+            </div>
+            <div class="col-span-6">
+              <div>State</div>
+              <input fluid type="text" pInputText placeholder="Enter state" />
+            </div>
+            <div class="col-span-6">
+              <div>Country</div>
+              <input fluid type="text" pInputText placeholder="Enter country" />
+            </div>
+            <div class="col-span-6">
+              <div>ZIP Code</div>
+              <input fluid type="text" pInputText placeholder="Enter ZIP code" />
+            </div>
+            <div class="col-span-12">
+              <div>Website</div>
+              <input fluid type="url" pInputText placeholder="Enter website URL" />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="2">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Bank Name</div>
+              <input fluid type="text" pInputText placeholder="Enter bank name" />
+            </div>
+            <div class="col-span-6">
+              <div>Account No</div>
+              <input fluid type="text" pInputText placeholder="Enter account number" />
+            </div>
+            <div class="col-span-6">
+              <div>ACH No</div>
+              <input fluid type="text" pInputText placeholder="Enter ACH routing number" />
+            </div>
+            <div class="col-span-6">
+              <div>Swift No</div>
+              <input fluid type="text" pInputText placeholder="Enter SWIFT code" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Region</div>
+              <input fluid type="text" pInputText placeholder="Enter bank region" />
+            </div>
+            <div class="col-span-6">
+              <div>Bank Currency</div>
+              <input fluid type="text" pInputText placeholder="Enter bank currency" />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="3">
+          <div class="grid grid-cols-12 gap-2 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Contact Person Name</div>
+              <input fluid type="text" pInputText placeholder="Enter contact person name" />
+            </div>
+            <div class="col-span-6">
+              <div>Contact No</div>
+              <input fluid type="tel" pInputText placeholder="Enter contact number" />
+            </div>
+            <div class="col-span-12">
+              <div>Email ID</div>
+              <input fluid type="email" pInputText placeholder="Enter email address" />
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+  <div class="col-span-12 flex justify-end mt-2">
+    <p-button icon="pi pi-plus-circle" severity="contrast" label="Add Entity" />
+  </div>
+</div>
