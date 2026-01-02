@@ -10,6 +10,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MultiSelectModule } from 'primeng/multiselect';
 
+interface TableColumn {
+  field: string;
+  header: string;
+  sortable?: boolean;
+}
+
+interface SearchField {
+  field: string;
+  label: string;
+  placeholder: string;
+  type: 'text' | 'date' | 'multiselect';
+  options?: any[];
+}
+
 @Component({
   selector: 'app-invoice-list',
   imports: [
@@ -29,6 +43,7 @@ export class InvoiceList {
   invoices: any[] = [];
   filteredTotal: number = 0;
   status = signal<string | null>('Received');
+  Math = Math;
   statusOptions = [
     { label: 'Received', value: 'Received' },
     { label: 'Pending', value: 'Pending' },
@@ -37,6 +52,9 @@ export class InvoiceList {
     { label: 'Scheduled', value: 'Scheduled' },
     { label: 'Paid', value: 'Paid' },
   ];
+
+  columns = computed(() => this.getColumnsForStatus(this.status()));
+  searchFields = computed(() => this.getSearchFieldsForStatus(this.status()));
 
   constructor(
     public utilityService: UtilityService,
@@ -92,5 +110,287 @@ export class InvoiceList {
     }
     const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
     this.router.navigate(['app/invoice/review']);
+  }
+
+  getColumnsForStatus(status: string | null): TableColumn[] {
+    switch (status) {
+      case 'Received':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
+          { field: 'aging', header: 'Aging', sortable: true },
+          { field: 'location', header: 'Location', sortable: true },
+          { field: 'currency', header: 'Currency', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+      case 'Pending':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
+          { field: 'aging', header: 'Aging', sortable: true },
+          { field: 'location', header: 'Location', sortable: true },
+          { field: 'currency', header: 'Currency', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+      case 'Approved':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
+          { field: 'aging', header: 'Aging', sortable: true },
+          { field: 'currency', header: 'Currency', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'approvedBy', header: 'Approved By', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+      case 'Rejected':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
+          { field: 'aging', header: 'Aging', sortable: true },
+          { field: 'currency', header: 'Currency', sortable: true },
+          { field: 'rejectedBy', header: 'Rejected By', sortable: true },
+          { field: 'rejectedReason', header: 'Rejected Reason', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+      case 'Scheduled':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'dueDate', header: 'Invoice Due Date', sortable: true },
+          { field: 'fundName', header: 'Fund Name', sortable: true },
+          { field: 'fundBank', header: 'Fund Bank', sortable: true },
+          { field: 'paidFrom', header: 'Paid From', sortable: true },
+          { field: 'bankBalance', header: 'Bank Balance', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+      case 'Paid':
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'paidDate', header: 'Paid Date', sortable: true },
+          { field: 'releasedEntity', header: 'Released Entity', sortable: true },
+          { field: 'entityBank', header: 'Entity Bank', sortable: true },
+          { field: 'paidBy', header: 'Paid By', sortable: true },
+          { field: 'currency', header: 'Base Currency', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'grossAmount', header: 'Paid Amount', sortable: true },
+        ];
+      default:
+        return [
+          { field: 'vendorName', header: 'Vendor Name', sortable: true },
+          { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
+          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+        ];
+    }
+  }
+
+  getSearchFieldsForStatus(status: string | null): SearchField[] {
+    switch (status) {
+      case 'Received':
+      case 'Pending':
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
+          {
+            field: 'portfolio',
+            label: 'Portfolio',
+            placeholder: 'Technology, Healthcare...',
+            type: 'text',
+          },
+          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
+          { field: 'location', label: 'Location', placeholder: 'City, Country', type: 'text' },
+          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
+          {
+            field: 'expenseType',
+            label: 'Fee Category',
+            placeholder: 'Software, Legal...',
+            type: 'text',
+          },
+          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
+        ];
+      case 'Approved':
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
+          {
+            field: 'portfolio',
+            label: 'Portfolio',
+            placeholder: 'Technology, Healthcare...',
+            type: 'text',
+          },
+          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
+          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
+          {
+            field: 'expenseType',
+            label: 'Fee Category',
+            placeholder: 'Software, Legal...',
+            type: 'text',
+          },
+          {
+            field: 'approvedBy',
+            label: 'Approved By',
+            placeholder: 'Approver name...',
+            type: 'text',
+          },
+          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
+        ];
+      case 'Rejected':
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
+          {
+            field: 'portfolio',
+            label: 'Portfolio',
+            placeholder: 'Technology, Healthcare...',
+            type: 'text',
+          },
+          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
+          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
+          {
+            field: 'rejectedBy',
+            label: 'Rejected By',
+            placeholder: 'Rejector name...',
+            type: 'text',
+          },
+          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
+          {
+            field: 'rejectedReason',
+            label: 'Rejected Reason',
+            placeholder: 'Reason...',
+            type: 'text',
+          },
+        ];
+      case 'Scheduled':
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
+          {
+            field: 'dueDate',
+            label: 'Invoice Due Date',
+            placeholder: 'Select due date',
+            type: 'date',
+          },
+          { field: 'fundName', label: 'Fund Name', placeholder: 'Fund name...', type: 'text' },
+          { field: 'fundBank', label: 'Fund Bank', placeholder: 'Bank name...', type: 'text' },
+          { field: 'paidFrom', label: 'Paid From', placeholder: 'Payment source...', type: 'text' },
+          {
+            field: 'bankBalance',
+            label: 'Bank Balance',
+            placeholder: 'Balance amount...',
+            type: 'text',
+          },
+          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
+        ];
+      case 'Paid':
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'paidDate', label: 'Paid Date', placeholder: 'Select paid date', type: 'date' },
+          {
+            field: 'releasedEntity',
+            label: 'Released Entity',
+            placeholder: 'Entity name...',
+            type: 'text',
+          },
+          { field: 'entityBank', label: 'Entity Bank', placeholder: 'Bank name...', type: 'text' },
+          { field: 'paidBy', label: 'Paid By', placeholder: 'Payer name...', type: 'text' },
+          {
+            field: 'currency',
+            label: 'Base Currency',
+            placeholder: 'USD, EUR, GBP...',
+            type: 'text',
+          },
+          {
+            field: 'expenseType',
+            label: 'Fee Category',
+            placeholder: 'Software, Legal...',
+            type: 'text',
+          },
+          { field: 'grossAmount', label: 'Paid Amount', placeholder: 'Amount', type: 'text' },
+        ];
+      default:
+        return [
+          {
+            field: 'vendorName',
+            label: 'Vendor Name',
+            placeholder: 'Search by vendor...',
+            type: 'text',
+          },
+          {
+            field: 'invoiceNumber',
+            label: 'Invoice Number',
+            placeholder: 'e.g. INV-2024-001',
+            type: 'text',
+          },
+          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
+          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
+        ];
+    }
   }
 }

@@ -130,7 +130,16 @@
               <td>{{ row.invoiceNo }}</td>
               <td>{{ row.invoiceType }}</td>
               <td>
-                <input type="text" pInputText [(ngModel)]="row.fundName" class="w-full" />
+                <p-select
+                  [options]="funds"
+                  [(ngModel)]="row.fundName"
+                  panelStyleClass="z-10"
+                  optionLabel="name"
+                  optionValue="name"
+                  class="w-full"
+                  appendTo="body"
+                  placeholder="Select Fund"
+                />
               </td>
               <td>
                 <input type="text" pInputText [(ngModel)]="row.description" class="w-full" />
@@ -177,12 +186,20 @@
                 />
               </td>
               <td>
-                <p-button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  variant="text"
-                  (click)="deleteSplitRow(i)"
-                />
+                <div class="flex">
+                  <p-button
+                    icon="pi pi-trash"
+                    severity="danger"
+                    variant="text"
+                    (click)="deleteSplitRow(i)"
+                  />
+                  <p-button
+                    icon="pi pi-plus"
+                    severity="contrast"
+                    variant="text"
+                    (click)="addSplitRow()"
+                  />
+                </div>
               </td>
             </tr>
           </ng-template>
@@ -195,12 +212,14 @@
               class="text-lg font-bold"
               [class.text-red-500]="getTotalSplitAmount() > invoiceDetails.grossAmount"
             >
-              ${{ (getTotalSplitAmount() | number:'1.3-3') }}
+              ${{ getTotalSplitAmount() | number : '1.3-3' }}
             </span>
           </div>
           <div class="flex justify-between items-center mt-2">
             <span class="font-medium">Original Gross Amount:</span>
-            <span class="text-lg font-bold">${{ (invoiceDetails.grossAmount | number:'1.3-3') }}</span>
+            <span class="text-lg font-bold"
+              >${{ invoiceDetails.grossAmount | number : '1.3-3' }}</span
+            >
           </div>
           <div
             class="flex justify-between items-center mt-2"
@@ -208,7 +227,7 @@
           >
             <span class="font-medium">Remaining Amount:</span>
             <span class="text-lg font-bold" [class.text-red-500]="getRemainingAmount() < 0">
-              ${{ (getRemainingAmount() | number:'1.3-3') }}
+              ${{ getRemainingAmount() | number : '1.3-3' }}
             </span>
           </div>
         </div>

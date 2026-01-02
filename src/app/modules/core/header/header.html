@@ -6,6 +6,12 @@
   <ng-template #end>
     <div class="flex items-center align-items-center gap-2">
       <!-- <input type="text" pInputText placeholder="Search" class="mr-3 w-20rem" /> -->
+      <div
+        class="rounded-2xl bg-green-200 border-green-400 border px-3 flex gap-5 items-center mr-3 py-1 dark:text-black"
+      >
+        <div>Base Currency:</div>
+        <span class="font-medium">USD</span>
+      </div>
       <p-button
         [icon]="themeService.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
         (onClick)="toggleTheme()"

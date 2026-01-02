@@ -11,7 +11,17 @@
     "grossAmount": 15000,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 5
+    "aging": 5,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-02-10",
+    "releasedEntity": "Tech Solutions Inc",
+    "entityBank": "Chase Bank",
+    "paidBy": "Admin Finance",
+    "fundBank": "JP Morgan",
+    "paidFrom": "Main Account",
+    "bankBalance": 2500000
   },
   {
     "invoiceNumber": "INV-2024-002",
@@ -25,7 +35,17 @@
     "grossAmount": 8500,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 12
+    "aging": 12,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 1800000
   },
   {
     "invoiceNumber": "INV-2024-003",
@@ -39,7 +59,17 @@
     "grossAmount": 12000,
     "portfolio": "Emerging Markets",
     "location": "GB",
-    "aging": 3
+    "aging": 3,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 3200000
   },
   {
     "invoiceNumber": "INV-2024-004",
@@ -53,7 +83,17 @@
     "grossAmount": 25000,
     "portfolio": "Fixed Income",
     "location": "US",
-    "aging": 8
+    "aging": 8,
+    "approvedBy": null,
+    "rejectedBy": "Michael Brown",
+    "rejectedReason": "Incomplete documentation",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 4500000
   },
   {
     "invoiceNumber": "INV-2024-005",
@@ -67,7 +107,17 @@
     "grossAmount": 18500,
     "portfolio": "Real Estate",
     "location": "GB",
-    "aging": 15
+    "aging": 15,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 4554237
   },
   {
     "invoiceNumber": "INV-2024-006",
@@ -81,7 +131,17 @@
     "grossAmount": 9200,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 2
+    "aging": 2,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-02-11",
+    "releasedEntity": "Marketing Agency Pro",
+    "entityBank": "HSBC",
+    "paidBy": "Admin Finance",
+    "fundBank": "Chase Bank",
+    "paidFrom": "Technology Account",
+    "bankBalance": 8204671
   },
   {
     "invoiceNumber": "INV-2024-007",
@@ -95,7 +155,17 @@
     "grossAmount": 22000,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 7
+    "aging": 7,
+    "approvedBy": "Michael Brown",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 7839786
   },
   {
     "invoiceNumber": "INV-2024-008",
@@ -109,7 +179,17 @@
     "grossAmount": 31500,
     "portfolio": "Real Estate",
     "location": "GB",
-    "aging": 20
+    "aging": 20,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 1244623
   },
   {
     "invoiceNumber": "INV-2024-009",
@@ -123,7 +203,17 @@
     "grossAmount": 14800,
     "portfolio": "Fixed Income",
     "location": "US",
-    "aging": 4
+    "aging": 4,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 8627426
   },
   {
     "invoiceNumber": "INV-2024-010",
@@ -137,7 +227,17 @@
     "grossAmount": 7500,
     "portfolio": "Emerging Markets",
     "location": "DE",
-    "aging": 18
+    "aging": 18,
+    "approvedBy": null,
+    "rejectedBy": "Compliance Officer",
+    "rejectedReason": "Amount exceeds budget",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 8775182
   },
   {
     "invoiceNumber": "INV-2024-011",
@@ -151,7 +251,17 @@
     "grossAmount": 3200,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 1
+    "aging": 1,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-03-01",
+    "releasedEntity": "Office Supplies Ltd",
+    "entityBank": "Wells Fargo",
+    "paidBy": "Finance Team",
+    "fundBank": "HSBC",
+    "paidFrom": "Technology Account",
+    "bankBalance": 4109590
   },
   {
     "invoiceNumber": "INV-2024-012",
@@ -165,7 +275,17 @@
     "grossAmount": 45000,
     "portfolio": "Healthcare",
     "location": "US",
-    "aging": 9
+    "aging": 9,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": "Healthcare Account",
+    "bankBalance": 5600000
   },
   {
     "invoiceNumber": "INV-2024-013",
@@ -179,7 +299,17 @@
     "grossAmount": 67500,
     "portfolio": "Energy",
     "location": "NL",
-    "aging": 6
+    "aging": 6,
+    "approvedBy": "Michael Brown",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": "Energy Account",
+    "bankBalance": 5234575
   },
   {
     "invoiceNumber": "INV-2024-014",
@@ -193,7 +323,17 @@
     "grossAmount": 38000,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 11
+    "aging": 11,
+    "approvedBy": "Lisa Anderson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 8997703
   },
   {
     "invoiceNumber": "INV-2024-015",
@@ -207,7 +347,17 @@
     "grossAmount": 125000,
     "portfolio": "Real Estate",
     "location": "CA",
-    "aging": 14
+    "aging": 14,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 5475008
   },
   {
     "invoiceNumber": "INV-2024-016",
@@ -221,7 +371,17 @@
     "grossAmount": 19500,
     "portfolio": "Fixed Income",
     "location": "US",
-    "aging": 3
+    "aging": 3,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 9214076
   },
   {
     "invoiceNumber": "INV-2024-017",
@@ -235,7 +395,17 @@
     "grossAmount": 2850000,
     "portfolio": "Emerging Markets",
     "location": "JP",
-    "aging": 22
+    "aging": 22,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": "Emerging Markets Account",
+    "bankBalance": 5468489
   },
   {
     "invoiceNumber": "INV-2024-018",
@@ -249,7 +419,17 @@
     "grossAmount": 52000,
     "portfolio": "Healthcare",
     "location": "US",
-    "aging": 5
+    "aging": 5,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 8498705
   },
   {
     "invoiceNumber": "INV-2024-019",
@@ -263,7 +443,17 @@
     "grossAmount": 89000,
     "portfolio": "Energy",
     "location": "DE",
-    "aging": 1
+    "aging": 1,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-04-04",
+    "releasedEntity": "Solar Panel Manufacturers",
+    "entityBank": "Citibank",
+    "paidBy": "Accounts Payable",
+    "fundBank": "Wells Fargo",
+    "paidFrom": "Energy Account",
+    "bankBalance": 2062564
   },
   {
     "invoiceNumber": "INV-2024-020",
@@ -277,7 +467,17 @@
     "grossAmount": 16800,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 16
+    "aging": 16,
+    "approvedBy": null,
+    "rejectedBy": "Finance Team",
+    "rejectedReason": "Invalid vendor information",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 10224379
   },
   {
     "invoiceNumber": "INV-2024-021",
@@ -291,7 +491,17 @@
     "grossAmount": 28500,
     "portfolio": "Real Estate",
     "location": "GB",
-    "aging": 8
+    "aging": 8,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": "Real Estate Account",
+    "bankBalance": 6702868
   },
   {
     "invoiceNumber": "INV-2024-022",
@@ -305,7 +515,17 @@
     "grossAmount": 11200,
     "portfolio": "Technology",
     "location": "US",
-    "aging": 13
+    "aging": 13,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 4971624
   },
   {
     "invoiceNumber": "INV-2024-023",
@@ -319,7 +539,17 @@
     "grossAmount": 73500,
     "portfolio": "Healthcare",
     "location": "US",
-    "aging": 4
+    "aging": 4,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 10407085
   },
   {
     "invoiceNumber": "INV-2024-024",
@@ -333,7 +563,17 @@
     "grossAmount": 21000,
     "portfolio": "Fixed Income",
     "location": "US",
-    "aging": 10
+    "aging": 10,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": "Fixed Income Account",
+    "bankBalance": 8624045
   },
   {
     "invoiceNumber": "INV-2024-025",
@@ -347,7 +587,17 @@
     "grossAmount": 94000,
     "portfolio": "Energy",
     "location": "DK",
-    "aging": 17
+    "aging": 17,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 4509078
   },
   {
     "invoiceNumber": "INV-2024-026",
@@ -361,7 +611,17 @@
     "grossAmount": 85000,
     "portfolio": "Financial Technology",
     "location": "SG",
-    "aging": 25
+    "aging": 25,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 8993183
   },
   {
     "invoiceNumber": "INV-2024-027",
@@ -375,7 +635,17 @@
     "grossAmount": 42000,
     "portfolio": "Agriculture",
     "location": "AU",
-    "aging": 6
+    "aging": 6,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 3358806
   },
   {
     "invoiceNumber": "INV-2024-028",
@@ -389,7 +659,17 @@
     "grossAmount": 150000,
     "portfolio": "Aerospace",
     "location": "US",
-    "aging": 19
+    "aging": 19,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": "Aerospace Account",
+    "bankBalance": 4687358
   },
   {
     "invoiceNumber": "INV-2024-029",
@@ -403,7 +683,17 @@
     "grossAmount": 98000,
     "portfolio": "Biotechnology",
     "location": "CH",
-    "aging": 11
+    "aging": 11,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 9740046
   },
   {
     "invoiceNumber": "INV-2024-030",
@@ -417,7 +707,17 @@
     "grossAmount": 76500,
     "portfolio": "Automotive",
     "location": "DE",
-    "aging": 2
+    "aging": 2,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-04-17",
+    "releasedEntity": "Electric Vehicle Parts",
+    "entityBank": "HSBC",
+    "paidBy": "Admin Finance",
+    "fundBank": "Bank of America",
+    "paidFrom": "Automotive Account",
+    "bankBalance": 8949270
   },
   {
     "invoiceNumber": "INV-2024-031",
@@ -431,7 +731,17 @@
     "grossAmount": 34000,
     "portfolio": "Retail",
     "location": "GB",
-    "aging": 23
+    "aging": 23,
+    "approvedBy": null,
+    "rejectedBy": "Compliance Officer",
+    "rejectedReason": "Amount exceeds budget",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 2639478
   },
   {
     "invoiceNumber": "INV-2024-032",
@@ -445,7 +755,17 @@
     "grossAmount": 29500,
     "portfolio": "Education",
     "location": "US",
-    "aging": 14
+    "aging": 14,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 4041542
   },
   {
     "invoiceNumber": "INV-2024-033",
@@ -459,7 +779,17 @@
     "grossAmount": 125000,
     "portfolio": "Gaming",
     "location": "US",
-    "aging": 8
+    "aging": 8,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": "Gaming Account",
+    "bankBalance": 1092644
   },
   {
     "invoiceNumber": "INV-2024-034",
@@ -473,7 +803,17 @@
     "grossAmount": 67000,
     "portfolio": "Logistics",
     "location": "NL",
-    "aging": 12
+    "aging": 12,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 7019528
   },
   {
     "invoiceNumber": "INV-2024-035",
@@ -487,7 +827,17 @@
     "grossAmount": 54000,
     "portfolio": "Cybersecurity",
     "location": "IL",
-    "aging": 4
+    "aging": 4,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 5144263
   },
   {
     "invoiceNumber": "INV-2024-036",
@@ -501,7 +851,17 @@
     "grossAmount": 89000,
     "portfolio": "Environmental",
     "location": "US",
-    "aging": 1
+    "aging": 1,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-05-30",
+    "releasedEntity": "Water Purification Tech",
+    "entityBank": "Bank of America",
+    "paidBy": "Finance Team",
+    "fundBank": "Citibank",
+    "paidFrom": "Environmental Account",
+    "bankBalance": 7481622
   },
   {
     "invoiceNumber": "INV-2024-037",
@@ -515,7 +875,17 @@
     "grossAmount": 245000,
     "portfolio": "Quantum Technology",
     "location": "CA",
-    "aging": 30
+    "aging": 30,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 4938335
   },
   {
     "invoiceNumber": "INV-2024-038",
@@ -529,7 +899,17 @@
     "grossAmount": 38000,
     "portfolio": "Social Impact",
     "location": "US",
-    "aging": 7
+    "aging": 7,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": "Social Impact Account",
+    "bankBalance": 10711204
   },
   {
     "invoiceNumber": "INV-2024-039",
@@ -543,7 +923,17 @@
     "grossAmount": 156000,
     "portfolio": "Maritime",
     "location": "NO",
-    "aging": 15
+    "aging": 15,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 3299373
   },
   {
     "invoiceNumber": "INV-2024-040",
@@ -557,7 +947,17 @@
     "grossAmount": 187000,
     "portfolio": "Artificial Intelligence",
     "location": "US",
-    "aging": 9
+    "aging": 9,
+    "approvedBy": "Lisa Anderson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 9591262
   },
   {
     "invoiceNumber": "INV-2024-041",
@@ -571,7 +971,17 @@
     "grossAmount": 43000,
     "portfolio": "Materials Science",
     "location": "DE",
-    "aging": 21
+    "aging": 21,
+    "approvedBy": null,
+    "rejectedBy": "Compliance Officer",
+    "rejectedReason": "Duplicate invoice",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 1593035
   },
   {
     "invoiceNumber": "INV-2024-042",
@@ -585,7 +995,17 @@
     "grossAmount": 72000,
     "portfolio": "Digital Health",
     "location": "US",
-    "aging": 3
+    "aging": 3,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-06-04",
+    "releasedEntity": "Telemedicine Platform",
+    "entityBank": "Citibank",
+    "paidBy": "Finance Team",
+    "fundBank": "Citibank",
+    "paidFrom": "Digital Health Account",
+    "bankBalance": 1578391
   },
   {
     "invoiceNumber": "INV-2024-043",
@@ -599,7 +1019,17 @@
     "grossAmount": 98000,
     "portfolio": "Smart Infrastructure",
     "location": "SG",
-    "aging": 13
+    "aging": 13,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 10210863
   },
   {
     "invoiceNumber": "INV-2024-044",
@@ -613,7 +1043,17 @@
     "grossAmount": 320000,
     "portfolio": "Defense",
     "location": "US",
-    "aging": 18
+    "aging": 18,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": "Defense Account",
+    "bankBalance": 10295410
   },
   {
     "invoiceNumber": "INV-2024-045",
@@ -627,7 +1067,17 @@
     "grossAmount": 64000,
     "portfolio": "Food Technology",
     "location": "US",
-    "aging": 5
+    "aging": 5,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 7279690
   },
   {
     "invoiceNumber": "INV-2024-046",
@@ -641,7 +1091,17 @@
     "grossAmount": 8500000,
     "portfolio": "Robotics",
     "location": "JP",
-    "aging": 26
+    "aging": 26,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 3321885
   },
   {
     "invoiceNumber": "INV-2024-047",
@@ -655,7 +1115,17 @@
     "grossAmount": 145000,
     "portfolio": "Climate Tech",
     "location": "NO",
-    "aging": 10
+    "aging": 10,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-06-14",
+    "releasedEntity": "Carbon Capture Solutions",
+    "entityBank": "Chase Bank",
+    "paidBy": "Accounts Payable",
+    "fundBank": "HSBC",
+    "paidFrom": "Climate Tech Account",
+    "bankBalance": 4303918
   },
   {
     "invoiceNumber": "INV-2024-048",
@@ -669,7 +1139,17 @@
     "grossAmount": 275000,
     "portfolio": "Pharmaceuticals",
     "location": "US",
-    "aging": 16
+    "aging": 16,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 2700107
   },
   {
     "invoiceNumber": "INV-2024-049",
@@ -683,7 +1163,17 @@
     "grossAmount": 125000000,
     "portfolio": "Telecommunications",
     "location": "KR",
-    "aging": 22
+    "aging": 22,
+    "approvedBy": "Michael Brown",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": "Telecommunications Account",
+    "bankBalance": 1736067
   },
   {
     "invoiceNumber": "INV-2024-050",
@@ -697,7 +1187,17 @@
     "grossAmount": 198000,
     "portfolio": "Mining",
     "location": "AU",
-    "aging": 28
+    "aging": 28,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 9415262
   },
   {
     "invoiceNumber": "INV-2024-051",
@@ -711,7 +1211,17 @@
     "grossAmount": 56000,
     "portfolio": "InsurTech",
     "location": "US",
-    "aging": 6
+    "aging": 6,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 4690611
   },
   {
     "invoiceNumber": "INV-2024-052",
@@ -725,7 +1235,17 @@
     "grossAmount": 167000,
     "portfolio": "Energy Storage",
     "location": "US",
-    "aging": 24
+    "aging": 24,
+    "approvedBy": null,
+    "rejectedBy": "Compliance Officer",
+    "rejectedReason": "Invalid vendor information",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 5065067
   },
   {
     "invoiceNumber": "INV-2024-053",
@@ -739,7 +1259,17 @@
     "grossAmount": 89000,
     "portfolio": "Virtual Reality",
     "location": "US",
-    "aging": 4
+    "aging": 4,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-06-18",
+    "releasedEntity": "Immersive Technologies",
+    "entityBank": "Chase Bank",
+    "paidBy": "Finance Team",
+    "fundBank": "JP Morgan",
+    "paidFrom": "Virtual Reality Account",
+    "bankBalance": 7757062
   },
   {
     "invoiceNumber": "INV-2024-054",
@@ -753,7 +1283,17 @@
     "grossAmount": 45,
     "portfolio": "Blockchain",
     "location": "CH",
-    "aging": 11
+    "aging": 11,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 2801983
   },
   {
     "invoiceNumber": "INV-2024-055",
@@ -767,7 +1307,17 @@
     "grossAmount": 73000,
     "portfolio": "Agriculture",
     "location": "US",
-    "aging": 8
+    "aging": 8,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": "Agriculture Account",
+    "bankBalance": 10701091
   },
   {
     "invoiceNumber": "INV-2024-056",
@@ -781,7 +1331,17 @@
     "grossAmount": 134000,
     "portfolio": "Nanotechnology",
     "location": "US",
-    "aging": 27
+    "aging": 27,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 6165486
   },
   {
     "invoiceNumber": "INV-2024-057",
@@ -795,7 +1355,17 @@
     "grossAmount": 87000,
     "portfolio": "Environmental",
     "location": "SE",
-    "aging": 14
+    "aging": 14,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 8190267
   },
   {
     "invoiceNumber": "INV-2024-058",
@@ -809,7 +1379,17 @@
     "grossAmount": 42000,
     "portfolio": "Sports Tech",
     "location": "US",
-    "aging": 2
+    "aging": 2,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-06-28",
+    "releasedEntity": "Athletic Performance Analytics",
+    "entityBank": "Chase Bank",
+    "paidBy": "Finance Team",
+    "fundBank": "HSBC",
+    "paidFrom": "Sports Tech Account",
+    "bankBalance": 9851238
   },
   {
     "invoiceNumber": "INV-2024-059",
@@ -823,7 +1403,17 @@
     "grossAmount": 58000,
     "portfolio": "Mental Health",
     "location": "US",
-    "aging": 19
+    "aging": 19,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 1613884
   },
   {
     "invoiceNumber": "INV-2024-060",
@@ -837,7 +1427,17 @@
     "grossAmount": 95000,
     "portfolio": "Supply Chain",
     "location": "US",
-    "aging": 12
+    "aging": 12,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": "Supply Chain Account",
+    "bankBalance": 3250011
   },
   {
     "invoiceNumber": "INV-2024-061",
@@ -851,7 +1451,17 @@
     "grossAmount": 156000,
     "portfolio": "Renewable Energy",
     "location": "US",
-    "aging": 7
+    "aging": 7,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 2674636
   },
   {
     "invoiceNumber": "INV-2024-062",
@@ -865,7 +1475,17 @@
     "grossAmount": 78000,
     "portfolio": "Urban Mobility",
     "location": "ES",
-    "aging": 20
+    "aging": 20,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 4959311
   },
   {
     "invoiceNumber": "INV-2024-063",
@@ -879,7 +1499,17 @@
     "grossAmount": 92000,
     "portfolio": "Data Science",
     "location": "GB",
-    "aging": 15
+    "aging": 15,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 8576536
   },
   {
     "invoiceNumber": "INV-2024-064",
@@ -893,7 +1523,17 @@
     "grossAmount": 134000,
     "portfolio": "Cloud Computing",
     "location": "US",
-    "aging": 9
+    "aging": 9,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": "Cloud Computing Account",
+    "bankBalance": 1858824
   },
   {
     "invoiceNumber": "INV-2024-065",
@@ -907,7 +1547,17 @@
     "grossAmount": 285000,
     "portfolio": "Medical Technology",
     "location": "US",
-    "aging": 3
+    "aging": 3,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-07-22",
+    "releasedEntity": "Surgical Robotics Inc",
+    "entityBank": "Citibank",
+    "paidBy": "Admin Finance",
+    "fundBank": "Wells Fargo",
+    "paidFrom": "Medical Technology Account",
+    "bankBalance": 7632273
   },
   {
     "invoiceNumber": "INV-2024-066",
@@ -921,7 +1571,17 @@
     "grossAmount": 450000,
     "portfolio": "Aerospace",
     "location": "US",
-    "aging": 25
+    "aging": 25,
+    "approvedBy": null,
+    "rejectedBy": "Michael Brown",
+    "rejectedReason": "Missing approval signatures",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 1702984
   },
   {
     "invoiceNumber": "INV-2024-067",
@@ -935,7 +1595,17 @@
     "grossAmount": 167000,
     "portfolio": "Clean Energy",
     "location": "CA",
-    "aging": 13
+    "aging": 13,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 5147986
   },
   {
     "invoiceNumber": "INV-2024-068",
@@ -949,7 +1619,17 @@
     "grossAmount": 73000,
     "portfolio": "Financial Services",
     "location": "US",
-    "aging": 6
+    "aging": 6,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Citibank",
+    "paidFrom": null,
+    "bankBalance": 7509098
   },
   {
     "invoiceNumber": "INV-2024-069",
@@ -963,7 +1643,17 @@
     "grossAmount": 118000,
     "portfolio": "Entertainment",
     "location": "US",
-    "aging": 18
+    "aging": 18,
+    "approvedBy": "David Wilson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 10135694
   },
   {
     "invoiceNumber": "INV-2024-070",
@@ -977,7 +1667,17 @@
     "grossAmount": 89000,
     "portfolio": "Security",
     "location": "AT",
-    "aging": 10
+    "aging": 10,
+    "approvedBy": "Lisa Anderson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": "Security Account",
+    "bankBalance": 2312601
   },
   {
     "invoiceNumber": "INV-2024-071",
@@ -991,7 +1691,17 @@
     "grossAmount": 195000,
     "portfolio": "Construction Tech",
     "location": "AE",
-    "aging": 1
+    "aging": 1,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-08-12",
+    "releasedEntity": "3D Printing Construction",
+    "entityBank": "Wells Fargo",
+    "paidBy": "Accounts Payable",
+    "fundBank": "HSBC",
+    "paidFrom": "Construction Tech Account",
+    "bankBalance": 3413998
   },
   {
     "invoiceNumber": "INV-2024-072",
@@ -1005,7 +1715,17 @@
     "grossAmount": 325000,
     "portfolio": "Marine Technology",
     "location": "US",
-    "aging": 21
+    "aging": 21,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Wells Fargo",
+    "paidFrom": null,
+    "bankBalance": 1833914
   },
   {
     "invoiceNumber": "INV-2024-073",
@@ -1019,7 +1739,17 @@
     "grossAmount": 6750000,
     "portfolio": "Manufacturing",
     "location": "JP",
-    "aging": 16
+    "aging": 16,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Chase Bank",
+    "paidFrom": null,
+    "bankBalance": 4456765
   },
   {
     "invoiceNumber": "INV-2024-074",
@@ -1033,7 +1763,17 @@
     "grossAmount": 64000,
     "portfolio": "Digital Marketing",
     "location": "US",
-    "aging": 5
+    "aging": 5,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 7951156
   },
   {
     "invoiceNumber": "INV-2024-075",
@@ -1047,7 +1787,17 @@
     "grossAmount": 52000,
     "portfolio": "Sustainable Materials",
     "location": "FI",
-    "aging": 23
+    "aging": 23,
+    "approvedBy": "John Smith",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": "Sustainable Materials Account",
+    "bankBalance": 5324208
   },
   {
     "invoiceNumber": "INV-2024-076",
@@ -1061,7 +1811,17 @@
     "grossAmount": 178000,
     "portfolio": "Logistics",
     "location": "GB",
-    "aging": 29
+    "aging": 29,
+    "approvedBy": null,
+    "rejectedBy": "Michael Brown",
+    "rejectedReason": "Invalid vendor information",
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 7619083
   },
   {
     "invoiceNumber": "INV-2024-077",
@@ -1075,7 +1835,17 @@
     "grossAmount": 234000,
     "portfolio": "Precision Medicine",
     "location": "US",
-    "aging": 4
+    "aging": 4,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": "2024-08-26",
+    "releasedEntity": "Genomics Research Lab",
+    "entityBank": "Citibank",
+    "paidBy": "Admin Finance",
+    "fundBank": "HSBC",
+    "paidFrom": "Precision Medicine Account",
+    "bankBalance": 2360446
   },
   {
     "invoiceNumber": "INV-2024-078",
@@ -1089,7 +1859,17 @@
     "grossAmount": 87000,
     "portfolio": "Urban Development",
     "location": "SG",
-    "aging": 11
+    "aging": 11,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "Bank of America",
+    "paidFrom": null,
+    "bankBalance": 10734877
   },
   {
     "invoiceNumber": "INV-2024-079",
@@ -1103,7 +1883,17 @@
     "grossAmount": 298000,
     "portfolio": "Renewable Energy",
     "location": "IS",
-    "aging": 17
+    "aging": 17,
+    "approvedBy": null,
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "HSBC",
+    "paidFrom": null,
+    "bankBalance": 1070384
   },
   {
     "invoiceNumber": "INV-2024-080",
@@ -1117,6 +1907,16 @@
     "grossAmount": 76000,
     "portfolio": "Digital Identity",
     "location": "NL",
-    "aging": 8
+    "aging": 8,
+    "approvedBy": "Sarah Johnson",
+    "rejectedBy": null,
+    "rejectedReason": null,
+    "paidDate": null,
+    "releasedEntity": null,
+    "entityBank": null,
+    "paidBy": null,
+    "fundBank": "JP Morgan",
+    "paidFrom": null,
+    "bankBalance": 2808830
   }
 ]
