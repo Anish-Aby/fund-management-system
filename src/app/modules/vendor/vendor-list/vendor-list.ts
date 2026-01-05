@@ -19,7 +19,7 @@ interface Vendor {
 
 @Component({
   selector: 'app-vendor-list',
-  imports: [StatCard, ButtonModule, TableModule, SplitButtonModule, InputTextModule],
+  imports: [ButtonModule, TableModule, SplitButtonModule, InputTextModule],
   templateUrl: './vendor-list.html',
   styleUrl: './vendor-list.scss',
 })

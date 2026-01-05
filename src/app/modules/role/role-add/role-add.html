@@ -1,0 +1,133 @@
+<div class="p-5" [formGroup]="roleForm">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Roles Add</h1>
+        <p class="text-sm text-muted-color">Create a new role and assign the role to users.</p>
+      </div>
+      <input type="text" pInputText placeholder="Role Name" formControlName="roleName" />
+    </div>
+
+    @for (category of menuCategories; track category.name) {
+    <div class="mb-4">
+      <p-fieldset toggleable="true">
+        <ng-template #header>
+          <div class="flex items-center gap-2 px-2">
+            <i [class]="category.icon + ' text-2xl'"></i>
+            <span class="font-medium">{{ category.name }}</span>
+          </div>
+        </ng-template>
+        <div class="flex justify-end items-center mb-2 -mt-2">
+          <p-checkbox
+            [inputId]="category.name.toLowerCase() + 'SelectAll'"
+            [formControlName]="category.name.toLowerCase() + 'SelectAll'"
+            (onChange)="onSelectAll(category.name)"
+            [binary]="true"
+          />
+          <label [for]="category.name.toLowerCase() + 'SelectAll'" class="ml-2"> Select All </label>
+        </div>
+        <p-table
+          [value]="category.permissions"
+          dataKey="key"
+          stripedRows="true"
+          size="small"
+          showGridlines="true"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+          columnResizeMode="fit"
+        >
+          <ng-template #header>
+            <tr>
+              <th pResizableColumn>Module</th>
+              <th pResizableColumn>
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    [binary]="true"
+                    [formControlName]="category.name.toLowerCase() + 'CreateAll'"
+                    (onChange)="onSelectColumn(category.name, 'create')"
+                  />
+                  <span>Create</span>
+                </div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    [binary]="true"
+                    [formControlName]="category.name.toLowerCase() + 'ReadAll'"
+                    (onChange)="onSelectColumn(category.name, 'read')"
+                  />
+                  <span>Read</span>
+                </div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    [binary]="true"
+                    [formControlName]="category.name.toLowerCase() + 'UpdateAll'"
+                    (onChange)="onSelectColumn(category.name, 'update')"
+                  />
+                  <span>Update</span>
+                </div>
+              </th>
+              <th pResizableColumn>
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    [binary]="true"
+                    [formControlName]="category.name.toLowerCase() + 'DeleteAll'"
+                    (onChange)="onSelectColumn(category.name, 'delete')"
+                  />
+                  <span>Delete</span>
+                </div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-permission>
+            <tr>
+              <td>{{ permission.name }}</td>
+              <td (click)="togglePermission(permission.key, 'create')" class="cursor-pointer">
+                <p-checkbox
+                  [binary]="true"
+                  [formControlName]="permission.key + '_create'"
+                  (click)="$event.stopPropagation()"
+                />
+              </td>
+              <td (click)="togglePermission(permission.key, 'read')" class="cursor-pointer">
+                <p-checkbox
+                  [binary]="true"
+                  [formControlName]="permission.key + '_read'"
+                  (click)="$event.stopPropagation()"
+                />
+              </td>
+              <td (click)="togglePermission(permission.key, 'update')" class="cursor-pointer">
+                <p-checkbox
+                  [binary]="true"
+                  [formControlName]="permission.key + '_update'"
+                  (click)="$event.stopPropagation()"
+                />
+              </td>
+              <td (click)="togglePermission(permission.key, 'delete')" class="cursor-pointer">
+                <p-checkbox
+                  [binary]="true"
+                  [formControlName]="permission.key + '_delete'"
+                  (click)="$event.stopPropagation()"
+                />
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-fieldset>
+    </div>
+    }
+
+    <div class="flex justify-end mt-4">
+      <button
+        pButton
+        type="button"
+        label="Save Role"
+        class="p-button-success"
+        (click)="onSaveRole()"
+      ></button>
+    </div>
+  </div>
+</div>

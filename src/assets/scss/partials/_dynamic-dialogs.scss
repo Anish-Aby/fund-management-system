@@ -1,4 +1,9 @@
 p-dynamicdialog {
+  .p-dialog-maximized {
+    position: absolute;
+    height: calc(100% - 104px) !important;
+    top: 65px !important;
+  }
   .p-dialog-header {
     padding: 0;
     background-color: #f0f9ff;

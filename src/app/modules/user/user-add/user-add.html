@@ -1,0 +1,377 @@
+<div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl" [formGroup]="userForm">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-4 px-4">
+    <h1 class="text-3xl font-medium">User Add</h1>
+    <p-tabs value="0" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">Basic Information</p-tab>
+        <p-tab value="1">Organization & Fund</p-tab>
+        <p-tab value="2">Authentication & Security</p-tab>
+        <p-tab value="3">Workflow & Notifications</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>User ID</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="System generated"
+                formControlName="userId"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Title</div>
+              <p-select
+                appendTo="body"
+                formControlName="title"
+                [options]="titleOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Title"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>First Name</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter first name"
+                formControlName="firstName"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Middle Name</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter middle name (optional)"
+                formControlName="middleName"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Last Name</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter last name"
+                formControlName="lastName"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Display Name</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter display name"
+                formControlName="displayName"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Organization Name</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter organization name"
+                formControlName="organizationName"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Employee ID</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter employee ID"
+                formControlName="employeeId"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Email Address</div>
+              <input
+                fluid
+                type="email"
+                pInputText
+                placeholder="Enter work email"
+                formControlName="emailAddress"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Mobile Number</div>
+              <input
+                fluid
+                type="tel"
+                pInputText
+                placeholder="Enter mobile number"
+                formControlName="mobileNumber"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Alternate Contact Number</div>
+              <input
+                fluid
+                type="tel"
+                pInputText
+                placeholder="Enter alternate number (optional)"
+                formControlName="alternateContact"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Role</div>
+              <p-select
+                appendTo="body"
+                formControlName="role"
+                [options]="roleOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Role"
+                [filter]="true"
+                filterBy="label"
+                fluid
+              />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Legal Entity Name</div>
+              <p-multiselect
+                formControlName="legalEntities"
+                [options]="entityOptions"
+                optionLabel="label"
+                placeholder="Select Legal Entities"
+                appendTo="body"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Fund Name(s)</div>
+              <p-multiselect
+                formControlName="funds"
+                [options]="fundOptions"
+                optionLabel="label"
+                placeholder="Select Funds"
+                appendTo="body"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Department / Function</div>
+              <p-select
+                appendTo="body"
+                formControlName="department"
+                [options]="departmentOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Department"
+                [filter]="true"
+                filterBy="label"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Office Location</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter city / country"
+                formControlName="officeLocation"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Time Zone</div>
+              <p-select
+                appendTo="body"
+                formControlName="timezone"
+                [options]="timezoneOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Time Zone"
+                [filter]="true"
+                filterBy="label"
+                fluid
+              />
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="2">
+          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-6">
+              <div>Username</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter username"
+                formControlName="username"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Password</div>
+              <p-password fluid placeholder="Enter password" formControlName="password" />
+            </div>
+            <div class="col-span-6">
+              <div>Login Method</div>
+              <p-select
+                appendTo="body"
+                formControlName="loginMethod"
+                [options]="loginMethodOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Login Method"
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <div>IP Restriction</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter IP range (optional)"
+                formControlName="ipRestriction"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Device Restriction</div>
+              <input
+                fluid
+                type="text"
+                pInputText
+                placeholder="Enter device restrictions (optional)"
+                formControlName="deviceRestriction"
+              />
+            </div>
+            <div class="col-span-6">
+              <div>Password Expiry Policy</div>
+              <input
+                fluid
+                type="number"
+                pInputText
+                placeholder="Enter days"
+                formControlName="passwordExpiry"
+              />
+            </div>
+            <div class="col-span-12">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="twoFactorEnabled"
+                  [binary]="true"
+                  inputId="twoFactor"
+                />
+                <label for="twoFactor">Two-Factor Authentication Enabled</label>
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="3">
+          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+            <div class="col-span-12 flex my-2 items-center gap-2">
+              <span class="text-sm text-muted-color">Workflow Roles</span>
+              <div class="h-px bg-surface-300 flex-1"></div>
+            </div>
+            <div class="col-span-4">
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="isMaker" [binary]="true" inputId="maker" />
+                <label for="maker">Maker</label>
+              </div>
+            </div>
+            <div class="col-span-4">
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="isChecker" [binary]="true" inputId="checker" />
+                <label for="checker">Checker</label>
+              </div>
+            </div>
+            <div class="col-span-4">
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="isApprover" [binary]="true" inputId="approver" />
+                <label for="approver">Approver</label>
+              </div>
+            </div>
+            <div class="col-span-12 flex my-2 items-center gap-2">
+              <span class="text-sm text-muted-color">Notification Settings</span>
+              <div class="h-px bg-surface-300 flex-1"></div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="emailNotifications"
+                  [binary]="true"
+                  inputId="emailNotif"
+                />
+                <label for="emailNotif">Email Notifications</label>
+              </div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="invoiceUploaded"
+                  [binary]="true"
+                  inputId="invoiceUploaded"
+                />
+                <label for="invoiceUploaded">Invoice Uploaded</label>
+              </div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="invoiceReviewed"
+                  [binary]="true"
+                  inputId="invoiceReviewed"
+                />
+                <label for="invoiceReviewed">Invoice Reviewed</label>
+              </div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="paymentApproved"
+                  [binary]="true"
+                  inputId="paymentApproved"
+                />
+                <label for="paymentApproved">Payment Approved</label>
+              </div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="paymentReleased"
+                  [binary]="true"
+                  inputId="paymentReleased"
+                />
+                <label for="paymentReleased">Payment Released</label>
+              </div>
+            </div>
+            <div class="col-span-6">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                  formControlName="invoiceOverdue"
+                  [binary]="true"
+                  inputId="invoiceOverdue"
+                />
+                <label for="invoiceOverdue">Invoice Overdue</label>
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+  <div class="col-span-12 flex justify-end mt-2">
+    <p-button
+      icon="pi pi-plus-circle"
+      severity="contrast"
+      label="Add User"
+      (click)="onSaveUser()"
+    />
+  </div>
+</div>

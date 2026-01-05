@@ -9,11 +9,11 @@
       </div>
     </div>
 
-    <div class="border border-surface bg-primary-contrast rounded-t-xl">
+    <div class="border border-surface bg-primary-contrast rounded-t-xl @container">
       <div
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
-        <div class="col-span-3">
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Entity</div>
           <p-select
             class="mb-4 w-80"
@@ -25,29 +25,28 @@
             fluid
           />
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Vendor</div>
           <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose vendor" />
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Portfolio</div>
           <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose portfolio" />
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Date From</div>
           <p-datepicker fluid />
         </div>
-        <div class="col-span-3">
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Date To</div>
           <p-datepicker fluid />
         </div>
-        <div class="col-span-9 flex items-end justify-end">
+        <div class="col-span-12 mt-2 @7xl:col-span-2 @7xl:mt-0 flex items-center justify-end">
           <p-button
             icon="pi pi-print"
             aria-label="Download PDF"
             variant="outlined"
             severity="contrast"
-            label="Download PDF"
             class="mr-2"
           />
           <p-button
@@ -55,7 +54,6 @@
             aria-label="Download Excel"
             variant="outlined"
             severity="contrast"
-            label="Download Excel"
             class="mr-2"
           />
           <p-button icon="pi pi-search" severity="contrast" label="Search" />

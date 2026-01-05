@@ -20,6 +20,8 @@ import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
 import { CashBalance } from '../../report/cash-balance/cash-balance';
 import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
 import { EntityAdd } from '../../entity/entity-add/entity-add';
+import { RoleAdd } from '../../role/role-add/role-add';
+import { UserAdd } from '../../user/user-add/user-add';
 
 @Component({
   selector: 'app-header',
@@ -164,14 +166,13 @@ export class Header {
               {
                 label: 'Add Users',
                 icon: 'pi pi-plus-circle',
+                command: () => {
+                  this.showAddUsers();
+                },
               },
               {
                 label: 'Edit Users',
                 icon: 'pi pi-pencil',
-              },
-              {
-                label: 'Delete Users',
-                icon: 'pi pi-trash',
               },
             ],
           },
@@ -238,6 +239,26 @@ export class Header {
               {
                 label: 'Delete Portfolio',
                 icon: 'pi pi-trash',
+              },
+            ],
+          },
+          {
+            label: 'Roles',
+            icon: 'pi pi-shield',
+            items: [
+              {
+                label: 'Add Roles',
+                icon: 'pi pi-plus-circle',
+                command: () => {
+                  this.showAddRoles();
+                },
+              },
+              {
+                label: 'Edit Roles',
+                icon: 'pi pi-pencil',
+                command: () => {
+                  // this.showRoles();
+                },
               },
             ],
           },
@@ -495,6 +516,50 @@ export class Header {
           title: 'Entity Add',
           componentName: 'EntityAdd',
           component: EntityAdd,
+        },
+        draggable: true,
+        resizable: true,
+        width: '50%',
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showAddRoles(): void {
+    if (!this.dialogWindowService.restoreByComponent('RoleAdd')) {
+      this.dialogService.open(RoleAdd, {
+        data: {
+          title: 'Role Add',
+          componentName: 'RoleAdd',
+          component: RoleAdd,
+        },
+        draggable: true,
+        resizable: true,
+        width: '50%',
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showAddUsers(): void {
+    if (!this.dialogWindowService.restoreByComponent('UserAdd')) {
+      this.dialogService.open(UserAdd, {
+        data: {
+          title: 'User Add',
+          componentName: 'UserAdd',
+          component: UserAdd,
         },
         draggable: true,
         resizable: true,
