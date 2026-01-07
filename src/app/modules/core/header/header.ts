@@ -22,6 +22,7 @@ import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balanc
 import { EntityAdd } from '../../entity/entity-add/entity-add';
 import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
+import { ForexPricing } from '../../forex-pricing/forex-pricing';
 
 @Component({
   selector: 'app-header',
@@ -315,6 +316,9 @@ export class Header {
           {
             label: 'Forex Pricing',
             icon: 'pi pi-dollar',
+            command: () => {
+              this.showForexPricing();
+            },
           },
           {
             label: 'Split Invoice',
@@ -564,6 +568,28 @@ export class Header {
         draggable: true,
         resizable: true,
         width: '50%',
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showForexPricing(): void {
+    if (!this.dialogWindowService.restoreByComponent('ForexPricing')) {
+      this.dialogService.open(ForexPricing, {
+        data: {
+          title: 'Forex Pricing',
+          componentName: 'ForexPricing',
+          component: ForexPricing,
+        },
+        draggable: true,
+        resizable: true,
+        width: '80%',
         modal: false,
         maximizable: true,
         focusOnShow: false,

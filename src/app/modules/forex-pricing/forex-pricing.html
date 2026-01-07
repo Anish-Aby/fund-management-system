@@ -1,0 +1,196 @@
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Forex Pricing</h1>
+        <p class="text-sm text-muted-color">Add forex pricing records to the system</p>
+      </div>
+    </div>
+
+    <div class="forex-pricing-container">
+      <p-tabs value="0">
+        <p-tablist>
+          <p-tab value="0">Add New Record</p-tab>
+          <p-tab value="1">View Records</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <form [formGroup]="addForm">
+              <div class="grid grid-cols-12 gap-4 mb-4">
+                <div class="col-span-3">
+                  <label class="block text-sm font-medium mb-2">Entity Name</label>
+                  <p-select
+                    formControlName="entity"
+                    [options]="entities"
+                    placeholder="Select Entity"
+                    class="w-full"
+                    appendTo="body"
+                  >
+                  </p-select>
+                </div>
+
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium mb-2">Base Currency</label>
+                  <input
+                    pInputText
+                    formControlName="baseCurrency"
+                    readonly
+                    class="w-full"
+                    placeholder="Auto-populated"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium mb-2">Date of Pricing</label>
+                  <p-datepicker formControlName="pricingDate" fluid="true" appendTo="body">
+                  </p-datepicker>
+                  <small class="text-gray-500">Cannot be the day of a holiday</small>
+                </div>
+                <div class="col-span-5 items-center flex">
+                  <p-button label="Search" icon="pi pi-search" (onClick)="getEntityForex()">
+                  </p-button>
+                </div>
+              </div>
+
+              @if (ratesArray.length > 0) {
+              <div class="mb-4">
+                <h3 class="text-lg font-semibold mb-3">Forex Rates</h3>
+                <p-table
+                  size="small"
+                  stripedRows="true"
+                  [value]="ratesArray.controls"
+                  class="w-full"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Region Name</th>
+                      <th>Symbol</th>
+                      <th>Value</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rateControl let-i="rowIndex">
+                    <tr>
+                      <td>{{ rateControl.get('regionName')?.value }}</td>
+                      <td>{{ rateControl.get('symbol')?.value }}</td>
+                      <td>
+                        <p-inputNumber
+                          [formControl]="rateControl.get('value')"
+                          mode="decimal"
+                          [minFractionDigits]="2"
+                          [maxFractionDigits]="4"
+                          [readonly]="
+                            rateControl.get('symbol')?.value === addForm.get('baseCurrency')?.value
+                          "
+                          fluid="true"
+                        >
+                        </p-inputNumber>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              }
+
+              <div class="flex justify-end">
+                <p-button
+                  label="Save"
+                  severity="success"
+                  icon="pi pi-save"
+                  (onClick)="onSave()"
+                  [disabled]="!addForm.get('entity')?.value || ratesArray.length === 0"
+                >
+                </p-button>
+              </div>
+            </form>
+          </p-tabpanel>
+
+          <p-tabpanel value="1">
+            <form [formGroup]="viewForm">
+              <div class="grid grid-cols-12 gap-4 mb-4">
+                <div class="col-span-3">
+                  <label class="block text-sm font-medium mb-2">Entity Name</label>
+                  <p-select
+                    formControlName="entity"
+                    [options]="entities"
+                    placeholder="Select Entity"
+                    (onChange)="onViewFormChange()"
+                    class="w-full"
+                    appendTo="body"
+                  >
+                  </p-select>
+                </div>
+
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium mb-2">Date From</label>
+                  <p-datepicker
+                    formControlName="dateFrom"
+                    (onSelect)="onViewFormChange()"
+                    class="w-full"
+                    fluid="true"
+                    appendTo="body"
+                  >
+                  </p-datepicker>
+                </div>
+
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium mb-2">Date To</label>
+                  <p-datepicker
+                    formControlName="dateTo"
+                    (onSelect)="onViewFormChange()"
+                    class="w-full"
+                    fluid="true"
+                    appendTo="body"
+                  >
+                  </p-datepicker>
+                </div>
+
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium mb-2">Symbol</label>
+                  <p-multiselect
+                    formControlName="symbol"
+                    [options]="symbols"
+                    placeholder="Select Symbol"
+                    (onChange)="onViewFormChange()"
+                    class="w-full"
+                    appendTo="body"
+                  >
+                  </p-multiselect>
+                </div>
+                <div class="col-span-3 items-end flex">
+                  <p-button label="Search" icon="pi pi-search"> </p-button>
+                </div>
+              </div>
+            </form>
+
+            @if (historicalRecords.length > 0) {
+            <div>
+              <h3 class="text-lg font-semibold mb-3">Historical Records</h3>
+              <p-table size="small" stripedRows="true" [value]="historicalRecords" class="w-full">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Date</th>
+                    <th>Region Name</th>
+                    <th>Symbol</th>
+                    <th>Value</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record>
+                  <tr>
+                    <td>{{ record.date | date : 'M/d/yyyy' }}</td>
+                    <td>{{ record.regionName }}</td>
+                    <td>{{ record.symbol }}</td>
+                    <td>{{ record.value | number : '1.2-4' }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            } @else {
+            <div class="text-center py-8 text-gray-500">
+              No records found for the selected criteria.
+            </div>
+            }
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+  </div>
+</div>
