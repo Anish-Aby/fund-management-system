@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
-import { AltLoaderComponent, MainLoaderComponent } from '../../../shared/components/main-loader';
+import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components/main-loader';
 
 @Component({
   selector: 'app-ledger-report',

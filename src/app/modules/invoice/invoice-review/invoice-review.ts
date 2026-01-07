@@ -29,6 +29,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DialogWindowService } from '../../shared/services/dialog-window';
 import { InvoiceSplit } from '../invoice-split/invoice-split';
 import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
+import { EmailDialog } from '../../shared/components/email-dialog/email-dialog';
+import TaxType from '../../core/mocks/tax-type-mock.json';
 
 @Component({
   selector: 'app-invoice-review',
@@ -66,6 +68,7 @@ export class InvoiceReview implements OnInit {
   serviceDescriptionOptions = signal<any>(ServiceDescriptionDataMock);
   fundOptions = signal<any>(FundDataMock);
   paidByOptions = signal<any>(PaidByDataMock);
+  taxTypeOptions = signal<any>(TaxType);
 
   constructor(
     private dialogService: DialogService,
@@ -148,6 +151,51 @@ export class InvoiceReview implements OnInit {
 
   rejectInvoice(): void {
     this.confirmDialogVisible.set(false);
+  }
+
+  viewEmail(invoice: any): void {
+    this.dialogService.open(EmailDialog, {
+      data: {
+        title: 'Email Details',
+        emailData: {
+          from: 'vendor@example.com',
+          to: 'finance@company.com',
+          subject: `Invoice ${invoice.basicInformation.invoiceNo} - ${invoice.basicInformation.vendorName}`,
+          date: new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          body: `Dear Finance Team,
+
+Please find attached the invoice for services rendered.
+
+Invoice Details:
+- Invoice Number: ${invoice.basicInformation.invoiceNo}
+- Vendor: ${invoice.basicInformation.vendorName}
+- Amount: ${invoice.basicInformation.payableAmount}
+- Due Date: ${invoice.basicInformation.invoiceDueDate}
+
+Please process payment at your earliest convenience.
+
+Best regards,
+${invoice.basicInformation.vendorName}`,
+          attachments: [`Invoice_${invoice.basicInformation.invoiceNo}.pdf`],
+        },
+      },
+      templates: {
+        header: DialogHeader,
+      },
+      draggable: true,
+      resizable: true,
+      width: '50%',
+      modal: false,
+      maximizable: true,
+      focusOnShow: false,
+      position: 'center',
+    });
   }
 
   splitInvoice(invoice: any): void {

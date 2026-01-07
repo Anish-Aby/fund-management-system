@@ -2,7 +2,7 @@
   <p-splitter
     [minSizes]="[30, 30]"
     [panelSizes]="[60, 40]"
-    class="w-full h-[88dvh] splitter-invoice"
+    class="w-full h-[80dvh] splitter-invoice"
   >
     <ng-template #panel>
       <div class="h-full overflow-y-auto">
@@ -45,8 +45,8 @@
             <p-tabpanels>
               @for(invoice of invoiceData(); track invoice.basicInformation.invoiceNo){
               <p-tabpanel [value]="invoice.basicInformation.invoiceNo">
-                <div class="text-3xl grid grid-cols-2 py-2 font-medium mb-3">
-                  <div class="col-span-1 flex items-center">
+                <div class="text-3xl grid grid-cols-12 py-2 font-medium mb-3 @container">
+                  <div class="col-span-12 @2xl:col-span-5 flex items-center">
                     <div class="mr-6">
                       {{ invoice.basicInformation.vendorName }}
                     </div>
@@ -56,9 +56,11 @@
                       [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
                     />
                   </div>
-                  <div class="col-span-1 flex justify-end text-primary">
+                  <div
+                    class="col-span-12 mt-2 @2xl:mt-0 @2xl:col-span-7 flex justify-end text-primary"
+                  >
                     @if (editMode()) {
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-start gap-4">
                       <p-button
                         icon="pi pi-check-circle"
                         label="Save Edit"
@@ -80,18 +82,18 @@
                       icon="pi pi-pencil"
                       variant="outlined"
                       severity="contrast"
-                      label="Edit Invoice PDF"
+                      label="Edit Invoice"
                       class="mr-2"
                       (onClick)="toggleEditMode()"
                     />
                     }
                     <p-button
-                      icon="pi pi-clone"
+                      icon="pi pi-envelope"
                       variant="outlined"
                       severity="contrast"
-                      label="Split Invoice"
+                      label="View Email"
                       class="mr-2"
-                      (onClick)="splitInvoice(invoice)"
+                      (onClick)="viewEmail(invoice)"
                     />
                   </div>
                 </div>
@@ -100,30 +102,42 @@
                     <div class="text-xl font-medium pl-4 pt-2">Basic Information</div>
                   </div>
 
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Vendor Name</div>
                       <div class="font-medium">{{ invoice.basicInformation.vendorName }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Portfolio Name</div>
                       <div class="font-medium">{{ invoice.basicInformation.portfolioName }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Invoice No</div>
                       <div class="font-medium">{{ invoice.basicInformation.invoiceNo }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Invoice Date</div>
                       <div class="font-medium">{{ invoice.basicInformation.invoiceDate }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Invoice Due Date</div>
                       <div class="font-medium">{{ invoice.basicInformation.invoiceDueDate }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Fund Ccy</div>
-                      <div class="font-medium">{{ invoice.basicInformation.fundCcy }}</div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Fund Balance</div>
+                      <div class="font-medium">{{ invoice.basicInformation.fundBalance }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Payable Amount</div>
+                      <div class="font-medium">{{ invoice.basicInformation.payableAmount }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">
+                        Amount Paid as on date
+                      </div>
+                      <div class="font-medium">
+                        {{ invoice.basicInformation.amountPaidAsOnDate }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -133,41 +147,58 @@
                     <div class="text-xl font-medium pl-4 pt-2">Financial Details</div>
                   </div>
 
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Fee Type</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" optionLabel="name" [options]="feeTypeOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.financialDetails.feeType }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Vendor Ccy</div>
+                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Local Ccy (Vendor)</div>
                       <div class="font-medium">{{ invoice.financialDetails.vendorCcy }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Invoice Net Amount</div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Tax Type</div>
+                      @if (editMode()) {
+                      <p-select class="w-full" [options]="taxTypeOptions()" />
+                      } @else {
+                      <div class="font-medium">{{ invoice.financialDetails.taxType }}</div>
+                      }
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Net Amount</div>
                       <div class="font-medium">{{ invoice.financialDetails.invoiceNetAmount }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Invoice Gross Amount
-                      </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Tax %</div>
+                      <div class="font-medium">{{ invoice.financialDetails.taxPercent }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax Amount</div>
+                      <div class="font-medium">{{ invoice.financialDetails.taxAmount }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Gross Amount</div>
                       <div class="font-medium">
                         {{ invoice.financialDetails.invoiceGrossAmount }}
                       </div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        FX Base Ccy (per ECB)
-                      </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">FX (per ECB)</div>
                       <div class="font-medium">{{ invoice.financialDetails.fxBaseCcy }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Base Ccy Gross Amount
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3"></div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Base Ccy (Entity)</div>
+                      <div class="font-medium">{{ invoice.financialDetails.entityCcy }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Net Amount</div>
+                      <div class="font-medium">{{ invoice.financialDetails.netAmount }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Tax Amount</div>
+                      <div class="font-medium">
+                        {{ invoice.financialDetails.taxAmountEntityCcy }}
                       </div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Gross Amount</div>
                       <div class="font-medium">
                         {{ invoice.financialDetails.baseCcyGrossAmount }}
                       </div>
@@ -175,72 +206,20 @@
                   </div>
                 </div>
 
-                <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Tax Information</div>
-                  </div>
-
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax Type</div>
-                      <div class="font-medium">{{ invoice.taxInformation.localTaxType }}</div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax Ccy</div>
-                      @if (editMode()) {
-                      <input type="text" pInputText />
-                      } @else {
-                      <div class="font-medium">{{ invoice.taxInformation.localTaxCcy }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax %</div>
-                      <div class="font-medium">{{ invoice.taxInformation.localTaxPercent }}</div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax Amount</div>
-                      @if (editMode()) {
-                      <input type="text" pInputText />
-                      } @else {
-                      <div class="font-medium">{{ invoice.taxInformation.localTaxAmount }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        FX Base Ccy (per ECB)
-                      </div>
-                      @if (editMode()) {
-                      <input type="text" pInputText />
-                      } @else {
-                      <div class="font-medium">{{ invoice.taxInformation.fxBaseCcy }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Base Ccy Gross Amount
-                      </div>
-                      @if (editMode()) {
-                      <input type="text" pInputText />
-                      } @else {
-                      <div class="font-medium">{{ invoice.taxInformation.baseCcyGrossAmount }}</div>
-                      }
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-4 border border-surface rounded-xl">
+                <div class="mb-4 border border-surface rounded-xl @container">
                   <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
                     <div class="text-xl font-medium pl-4 pt-2">Payment Information</div>
                   </div>
-
                   <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Fund Bank Balance</div>
-                      <div class="font-medium">
-                        {{ invoice.paymentInformation.fundBankBalance }}
-                      </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Fee Type</div>
+                      @if (editMode()) {
+                      <p-select class="w-full" optionLabel="name" [options]="feeTypeOptions()" />
+                      } @else {
+                      <div class="font-medium">{{ invoice.paymentInformation.feeType }}</div>
+                      }
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Paid By</div>
                       @if (editMode()) {
                       <p-select class="w-full" optionLabel="label" [options]="paidByOptions()" />
@@ -248,19 +227,7 @@
                       <div class="font-medium">{{ invoice.paymentInformation.paidBy }}</div>
                       }
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Paid Amount</div>
-                      <div class="font-medium">{{ invoice.paymentInformation.paidAmount }}</div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Released Bank</div>
-                      <div class="font-medium">{{ invoice.paymentInformation.releasedBank }}</div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Release Date</div>
-                      <div class="font-medium">{{ invoice.paymentInformation.releaseDate }}</div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Paid from</div>
                       @if (editMode()) {
                       <p-select class="w-full" optionLabel="name" [options]="fundOptions()" />
@@ -268,24 +235,19 @@
                       <div class="font-medium">{{ invoice.paymentInformation.paidFrom }}</div>
                       }
                     </div>
-                  </div>
-                </div>
-
-                <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Service Details</div>
-                  </div>
-
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Released Bank</div>
+                      <div class="font-medium">{{ invoice.paymentInformation.releasedBank }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">
                         Description as per Invoice
                       </div>
                       <div class="font-medium">
-                        {{ invoice.serviceDetails.descriptionAsPerInvoice }}
+                        {{ invoice.paymentInformation.descriptionAsPerInvoice }}
                       </div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Description Service</div>
                       @if (editMode()) {
                       <p-select
@@ -294,18 +256,24 @@
                         [editable]="true"
                       />
                       } @else {
-                      <div class="font-medium">{{ invoice.serviceDetails.descriptionService }}</div>
+                      <div class="font-medium">
+                        {{ invoice.paymentInformation.descriptionService }}
+                      </div>
                       }
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-4">
+                    <div class="col-span-12 lg:col-span-4 xl:col-span-6">
                       <div class="text-muted-color uppercase text-xs mb-1">
                         Classification for Accounting
                       </div>
                       @if (editMode()) {
-                      <p-select class="w-full" [options]="serviceDescriptionOptions()" />
+                      <p-select
+                        class="w-full"
+                        [options]="serviceDescriptionOptions()"
+                        [editable]="true"
+                      />
                       } @else {
                       <div class="font-medium">
-                        {{ invoice.serviceDetails.classificationForAccounting }}
+                        {{ invoice.paymentInformation.classificationForAccounting }}
                       </div>
                       }
                     </div>
@@ -317,30 +285,42 @@
                     <div class="text-xl font-medium pl-4 pt-2">Approvals</div>
                   </div>
 
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Reviewed by</div>
                       <div class="font-medium">{{ invoice.approvals.reviewedBy }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Reviewed Date</div>
                       <div class="font-medium">{{ invoice.approvals.reviewedDate }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Approved by</div>
                       <div class="font-medium">{{ invoice.approvals.approvedBy }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Approved Date</div>
                       <div class="font-medium">{{ invoice.approvals.approvedDate }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Released by</div>
                       <div class="font-medium">{{ invoice.approvals.releasedBy }}</div>
                     </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
                       <div class="text-muted-color uppercase text-xs mb-1">Released Date</div>
                       <div class="font-medium">{{ invoice.approvals.releasedDate }}</div>
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Paid from</div>
+                      @if (editMode()) {
+                      <p-select class="w-full" optionLabel="name" [options]="fundOptions()" />
+                      } @else {
+                      <div class="font-medium">{{ invoice.paymentInformation.paidFrom }}</div>
+                      }
+                    </div>
+                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
+                      <div class="text-muted-color uppercase text-xs mb-1">Paid Date</div>
+                      <div class="font-medium">{{ invoice.approvals.paidDate }}</div>
                     </div>
                   </div>
                 </div>
@@ -352,6 +332,22 @@
                     label="Reject Invoice"
                     class="mr-2"
                     (onClick)="showApproveDialog(invoice, 'reject')"
+                  />
+                  <p-button
+                    icon="pi pi-clone"
+                    variant="outlined"
+                    severity="contrast"
+                    label="Split Invoice"
+                    class="mr-2"
+                    (onClick)="splitInvoice(invoice)"
+                  />
+
+                  <p-button
+                    icon="pi pi-file-check"
+                    variant="outlined"
+                    severity="contrast"
+                    label="View Agreement"
+                    class="mr-2"
                   />
                   <p-button
                     icon="pi pi-check-circle"

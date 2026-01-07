@@ -1,0 +1,60 @@
+<div class="email-dialog p-6">
+  <div class="email-header mb-6">
+    <div class="flex justify-between items-start mb-4">
+      <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Email Details</h2>
+    </div>
+
+    <div class="bg-gray-100 text-black dark:bg-gray-800 rounded-2xl p-4 space-y-3">
+      <div class="grid grid-cols-12 gap-2">
+        <div class="col-span-2 text-sm font-medium text-gray-600 dark:text-gray-400">From:</div>
+        <div class="col-span-10 text-sm">{{ emailData().from }}</div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-2">
+        <div class="col-span-2 text-sm font-medium text-gray-600 dark:text-gray-400">To:</div>
+        <div class="col-span-10 text-sm">{{ emailData().to }}</div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-2">
+        <div class="col-span-2 text-sm font-medium text-gray-600 dark:text-gray-400">Subject:</div>
+        <div class="col-span-10 text-sm font-medium">{{ emailData().subject }}</div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-2">
+        <div class="col-span-2 text-sm font-medium text-gray-600 dark:text-gray-400">Date:</div>
+        <div class="col-span-10 text-sm">{{ emailData().date }}</div>
+      </div>
+    </div>
+  </div>
+
+  <p-divider />
+
+  <div class="email-body mb-6">
+    <h3 class="text-lg font-medium mb-3 text-gray-800 dark:text-gray-200">Message</h3>
+    <div
+      class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-4"
+    >
+      <pre
+        class="whitespace-pre-wrap text-md leading-relaxed text-black dark:text-gray-300 font-sans"
+        >{{ emailData().body }}</pre
+      >
+    </div>
+  </div>
+
+  @if (emailData().attachments && emailData().attachments.length > 0) {
+  <div class="email-attachments">
+    <h3 class="text-lg font-medium mb-3 text-gray-800 dark:text-gray-200">Attachments</h3>
+    <div class="space-y-2">
+      @for (attachment of emailData().attachments; track attachment) {
+      <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-2xl p-3">
+        <div class="flex items-center space-x-3">
+          <i class="pi pi-file-pdf text-red-500 text-lg"></i>
+          <span class="text-sm font-medium">{{ attachment }}</span>
+          <p-tag value="PDF" severity="info" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

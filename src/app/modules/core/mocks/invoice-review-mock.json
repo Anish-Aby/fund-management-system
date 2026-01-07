@@ -7,33 +7,29 @@
       "invoiceNo": "INV-2024-001",
       "invoiceDate": "2024-02-15",
       "invoiceDueDate": "2024-03-16",
-      "fundCcy": "USD"
+      "fundBalance": "20,000",
+      "payableAmount": "15,000",
+      "amountPaidAsOnDate": "0"
     },
     "financialDetails": {
-      "feeType": "Software License",
       "vendorCcy": "USD",
+      "taxType": "VAT",
       "invoiceNetAmount": 12500,
+      "taxPercent": 20,
+      "taxAmount": 2500,
       "invoiceGrossAmount": 15000,
       "fxBaseCcy": 1.085,
-      "baseCcyGrossAmount": 13824.88
-    },
-    "taxInformation": {
-      "localTaxType": "VAT",
-      "localTaxCcy": "USD",
-      "localTaxPercent": 20,
-      "localTaxAmount": 2500,
-      "fxBaseCcy": 1.085,
+      "entityCcy": "EUR",
+      "netAmount": 11520.66,
+      "taxAmountEntityCcy": 2304.13,
       "baseCcyGrossAmount": 13824.88
     },
     "paymentInformation": {
-      "fundBankBalance": 150000,
+      "feeType": "Software License",
       "paidBy": "FinLab Holdings Ltd",
-      "paidAmount": 15000,
       "releasedBank": "Chase Bank",
       "releaseDate": "2024-03-01",
-      "paidFrom": "Operating Account"
-    },
-    "serviceDetails": {
+      "paidFrom": "Operating Account",
       "descriptionAsPerInvoice": "Annual software license renewal",
       "descriptionService": "Software licensing",
       "classificationForAccounting": "Operating Expenses - Technology"
@@ -44,7 +40,9 @@
       "approvedBy": "John Smith",
       "approvedDate": "2024-02-17",
       "releasedBy": "Sarah Johnson",
-      "releasedDate": "2024-02-20"
+      "releasedDate": "2024-02-20",
+      "paidFrom": "Operating Account",
+      "paidDate": "2024-03-02"
     },
     "period": "February 2024",
     "financeComment": "Urgent renewal required",
@@ -58,33 +56,29 @@
       "invoiceNo": "INV-2024-002",
       "invoiceDate": "2024-02-20",
       "invoiceDueDate": "2024-03-21",
-      "fundCcy": "EUR"
+      "fundBalance": "85,000",
+      "payableAmount": "8,500",
+      "amountPaidAsOnDate": "8,500"
     },
     "financialDetails": {
-      "feeType": "Infrastructure",
       "vendorCcy": "GBP",
+      "taxType": "VAT",
       "invoiceNetAmount": 7083.33,
+      "taxPercent": 20,
+      "taxAmount": 1416.67,
       "invoiceGrossAmount": 8500,
       "fxBaseCcy": 0.852,
-      "baseCcyGrossAmount": 7242.0
-    },
-    "taxInformation": {
-      "localTaxType": "VAT",
-      "localTaxCcy": "GBP",
-      "localTaxPercent": 20,
-      "localTaxAmount": 1416.67,
-      "fxBaseCcy": 0.852,
+      "entityCcy": "EUR",
+      "netAmount": 6035.08,
+      "taxAmountEntityCcy": 1207.02,
       "baseCcyGrossAmount": 7242.0
     },
     "paymentInformation": {
-      "fundBankBalance": 85000,
+      "feeType": "Infrastructure",
       "paidBy": "FinLab Tech Solutions",
-      "paidAmount": 8500,
       "releasedBank": "Barclays Bank",
       "releaseDate": "2024-03-05",
-      "paidFrom": "Tech Fund Account"
-    },
-    "serviceDetails": {
+      "paidFrom": "Tech Fund Account",
       "descriptionAsPerInvoice": "Monthly cloud hosting services",
       "descriptionService": "Cloud infrastructure",
       "classificationForAccounting": "Operating Expenses - Infrastructure"
@@ -95,7 +89,9 @@
       "approvedBy": "Sarah Johnson",
       "approvedDate": "2024-02-22",
       "releasedBy": "Michael Brown",
-      "releasedDate": "2024-02-25"
+      "releasedDate": "2024-02-25",
+      "paidFrom": "Tech Fund Account",
+      "paidDate": "2024-03-05"
     },
     "period": "February 2024",
     "financeComment": "Standard monthly billing",
@@ -109,33 +105,29 @@
       "invoiceNo": "INV-2024-003",
       "invoiceDate": "2024-02-25",
       "invoiceDueDate": "2024-03-26",
-      "fundCcy": "EUR"
+      "fundBalance": "120,000",
+      "payableAmount": "12,000",
+      "amountPaidAsOnDate": "12,000"
     },
     "financialDetails": {
-      "feeType": "Legal Services",
       "vendorCcy": "EUR",
+      "taxType": "VAT",
       "invoiceNetAmount": 10000,
+      "taxPercent": 20,
+      "taxAmount": 2000,
       "invoiceGrossAmount": 12000,
       "fxBaseCcy": 1.0,
-      "baseCcyGrossAmount": 12000
-    },
-    "taxInformation": {
-      "localTaxType": "VAT",
-      "localTaxCcy": "EUR",
-      "localTaxPercent": 20,
-      "localTaxAmount": 2000,
-      "fxBaseCcy": 1.0,
+      "entityCcy": "EUR",
+      "netAmount": 10000,
+      "taxAmountEntityCcy": 2000,
       "baseCcyGrossAmount": 12000
     },
     "paymentInformation": {
-      "fundBankBalance": 120000,
+      "feeType": "Legal Services",
       "paidBy": "FinLab International",
-      "paidAmount": 12000,
       "releasedBank": "Deutsche Bank",
       "releaseDate": "2024-03-10",
-      "paidFrom": "Legal Services Account"
-    },
-    "serviceDetails": {
+      "paidFrom": "Legal Services Account",
       "descriptionAsPerInvoice": "Contract review and legal consultation",
       "descriptionService": "Legal advisory",
       "classificationForAccounting": "Professional Fees - Legal"
@@ -146,7 +138,9 @@
       "approvedBy": "Michael Brown",
       "approvedDate": "2024-02-27",
       "releasedBy": "Lisa Davis",
-      "releasedDate": "2024-03-01"
+      "releasedDate": "2024-03-01",
+      "paidFrom": "Legal Services Account",
+      "paidDate": "2024-03-10"
     },
     "period": "February 2024",
     "financeComment": "Contract finalization complete",
@@ -160,33 +154,29 @@
       "invoiceNo": "INV-2024-004",
       "invoiceDate": "2024-03-01",
       "invoiceDueDate": "2024-03-31",
-      "fundCcy": "EUR"
+      "fundBalance": "200,000",
+      "payableAmount": "25,000",
+      "amountPaidAsOnDate": "0"
     },
     "financialDetails": {
-      "feeType": "Audit Fees",
       "vendorCcy": "USD",
+      "taxType": "VAT",
       "invoiceNetAmount": 20833.33,
+      "taxPercent": 20,
+      "taxAmount": 4166.67,
       "invoiceGrossAmount": 25000,
       "fxBaseCcy": 1.085,
-      "baseCcyGrossAmount": 23041.47
-    },
-    "taxInformation": {
-      "localTaxType": "VAT",
-      "localTaxCcy": "USD",
-      "localTaxPercent": 20,
-      "localTaxAmount": 4166.67,
-      "fxBaseCcy": 1.085,
+      "entityCcy": "EUR",
+      "netAmount": 19202.02,
+      "taxAmountEntityCcy": 3840.40,
       "baseCcyGrossAmount": 23041.47
     },
     "paymentInformation": {
-      "fundBankBalance": 200000,
+      "feeType": "Audit Fees",
       "paidBy": "FinLab Holdings Ltd",
-      "paidAmount": 0,
       "releasedBank": "",
       "releaseDate": "",
-      "paidFrom": ""
-    },
-    "serviceDetails": {
+      "paidFrom": "",
       "descriptionAsPerInvoice": "Annual financial audit services",
       "descriptionService": "Financial audit",
       "classificationForAccounting": "Professional Fees - Audit"
@@ -197,7 +187,9 @@
       "approvedBy": "Lisa Davis",
       "approvedDate": "",
       "releasedBy": "",
-      "releasedDate": ""
+      "releasedDate": "",
+      "paidFrom": "",
+      "paidDate": ""
     },
     "period": "March 2024",
     "financeComment": "Documentation incomplete - rejected",
@@ -211,33 +203,29 @@
       "invoiceNo": "INV-2024-005",
       "invoiceDate": "2024-03-05",
       "invoiceDueDate": "2024-04-04",
-      "fundCcy": "EUR"
+      "fundBalance": "95,000",
+      "payableAmount": "18,500",
+      "amountPaidAsOnDate": "0"
     },
     "financialDetails": {
-      "feeType": "Management Fees",
       "vendorCcy": "GBP",
+      "taxType": "VAT",
       "invoiceNetAmount": 15416.67,
+      "taxPercent": 20,
+      "taxAmount": 3083.33,
       "invoiceGrossAmount": 18500,
       "fxBaseCcy": 0.852,
-      "baseCcyGrossAmount": 15762.0
-    },
-    "taxInformation": {
-      "localTaxType": "VAT",
-      "localTaxCcy": "GBP",
-      "localTaxPercent": 20,
-      "localTaxAmount": 3083.33,
-      "fxBaseCcy": 0.852,
+      "entityCcy": "EUR",
+      "netAmount": 13135.00,
+      "taxAmountEntityCcy": 2627.00,
       "baseCcyGrossAmount": 15762.0
     },
     "paymentInformation": {
-      "fundBankBalance": 95000,
+      "feeType": "Management Fees",
       "paidBy": "FinLab Real Estate",
-      "paidAmount": 0,
       "releasedBank": "HSBC Bank",
       "releaseDate": "",
-      "paidFrom": "Real Estate Account"
-    },
-    "serviceDetails": {
+      "paidFrom": "Real Estate Account",
       "descriptionAsPerInvoice": "Quarterly property management services",
       "descriptionService": "Property management",
       "classificationForAccounting": "Operating Expenses - Real Estate"
@@ -248,7 +236,9 @@
       "approvedBy": "David Wilson",
       "approvedDate": "2024-03-07",
       "releasedBy": "Emma Thompson",
-      "releasedDate": "2024-03-10"
+      "releasedDate": "2024-03-10",
+      "paidFrom": "Real Estate Account",
+      "paidDate": ""
     },
     "period": "March 2024",
     "financeComment": "Awaiting property inspection report",

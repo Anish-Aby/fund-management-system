@@ -1,0 +1,14 @@
+.email-dialog {
+  min-height: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.email-header {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.email-body pre {
+  margin: 0;
+  font-family: inherit;
+}

@@ -3,6 +3,7 @@ p-dynamicdialog {
     position: absolute;
     height: calc(100% - 104px) !important;
     top: 65px !important;
+    box-shadow: none !important;
   }
   .p-dialog-header {
     padding: 0;
