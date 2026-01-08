@@ -23,6 +23,7 @@ import { EntityAdd } from '../../entity/entity-add/entity-add';
 import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
 import { ForexPricing } from '../../forex-pricing/forex-pricing';
+import { TaxReport } from '../../report/tax-report/tax-report';
 
 @Component({
   selector: 'app-header',
@@ -302,6 +303,9 @@ export class Header {
           {
             label: 'Tax Report',
             icon: 'pi pi-percentage',
+            command: () => {
+              this.showTaxReport();
+            },
           },
         ],
       },
@@ -590,6 +594,28 @@ export class Header {
         draggable: true,
         resizable: true,
         width: '80%',
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showTaxReport(): void {
+    if (!this.dialogWindowService.restoreByComponent('TaxReport')) {
+      this.dialogService.open(TaxReport, {
+        data: {
+          title: 'Tax Report',
+          componentName: 'TaxReport',
+          component: TaxReport,
+        },
+        draggable: true,
+        resizable: true,
+        width: '100%',
         modal: false,
         maximizable: true,
         focusOnShow: false,

@@ -14,6 +14,7 @@ import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balanc
 import { EntityAdd } from '../../entity/entity-add/entity-add';
 import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
+import { TaxReport } from '../../report/tax-report/tax-report';
 
 interface MinimizedDialog {
   title: string;
@@ -49,6 +50,7 @@ export class DialogWindowService {
     EntityAdd,
     RoleAdd,
     UserAdd,
+    TaxReport,
   };
 
   constructor(private dialogService: DialogService) {

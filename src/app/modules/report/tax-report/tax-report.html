@@ -1,0 +1,187 @@
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Tax Report</h1>
+        <p class="text-sm text-muted-color">Tax collection and reversal details for the period</p>
+      </div>
+    </div>
+
+    <form [formGroup]="taxForm" class="border border-surface bg-primary-contrast rounded-t-xl">
+      <div
+        class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner @container"
+      >
+        <div class="col-span-6 @3xl:col-span-2">
+          <div>Entity Name</div>
+          <p-select
+            formControlName="entity"
+            [options]="entityOptions()"
+            [filter]="true"
+            placeholder="Select entity"
+            fluid
+            (onChange)="onEntityChange($event)"
+            appendTo="body"
+          />
+        </div>
+        <div class="col-span-6 @3xl:col-span-2">
+          <div>Vendor Name</div>
+          <p-multiselect
+            formControlName="vendors"
+            [options]="vendorOptions()"
+            optionLabel="vendorName"
+            placeholder="All / Vendor selection"
+            fluid
+            appendTo="body"
+          />
+        </div>
+        <div class="col-span-6 @3xl:col-span-2">
+          <div>Date From</div>
+          <p-datepicker
+            formControlName="dateFrom"
+            placeholder="Select start date"
+            fluid
+            appendTo="body"
+          />
+        </div>
+        <div class="col-span-6 @3xl:col-span-2">
+          <div>Date To</div>
+          <p-datepicker
+            formControlName="dateTo"
+            placeholder="Select end date"
+            fluid
+            appendTo="body"
+          />
+        </div>
+        <div class="col-span-6 @3xl:col-span-2">
+          <div>Base Currency</div>
+          <input
+            [value]="baseCurrency()"
+            placeholder="Auto-populated"
+            [readonly]="true"
+            fluid
+            pInputText
+            appendTo="body"
+          />
+        </div>
+        <div class="col-span-6 @5xl:col-span-2 flex items-end justify-between">
+          <div>
+            <p-button
+              icon="pi pi-search"
+              class="mr-2"
+              severity="contrast"
+              label="Search"
+              (onClick)="onSearch()"
+            />
+          </div>
+          <div>
+            <p-button
+              icon="pi pi-print"
+              aria-label="Download PDF"
+              variant="outlined"
+              severity="contrast"
+              class="mr-2"
+            />
+            <p-button
+              icon="pi pi-file-excel"
+              aria-label="Download Excel"
+              variant="outlined"
+              severity="contrast"
+            />
+          </div>
+        </div>
+      </div>
+
+      @if (showTable()) {
+      <div class="col-span-12">
+        <p-table
+          [value]="taxData()"
+          stripedRows="true"
+          size="small"
+          showGridlines="true"
+          [scrollable]="true"
+          scrollHeight="500px"
+          class="table-dashboard-invoice"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
+        >
+          <ng-template #header>
+            <tr>
+              <th pResizableColumn>Invoice Date</th>
+              <th pResizableColumn>Fund / Vendor Name</th>
+              <th pResizableColumn>Tax Type</th>
+              <th pResizableColumn>Invoice No</th>
+              <th pResizableColumn>Gross Amount</th>
+              <th pResizableColumn>Tax Region</th>
+              <th pResizableColumn>Tax Amount</th>
+              <th pResizableColumn>Paid Date</th>
+              <th pResizableColumn>Paid Amount Dr.</th>
+              <th pResizableColumn>Tax Return to Firm Cr.</th>
+              <th pResizableColumn>
+                <div class="flex items-center justify-between">
+                  Status
+                  <p-columnFilter
+                    field="status"
+                    matchMode="equals"
+                    display="menu"
+                    showMatchModes="false"
+                    showAddButton="false"
+                    showOperator="false"
+                  >
+                    <ng-template #filter let-value let-filter="filterCallback">
+                      <p-multiselect
+                        [ngModel]="value"
+                        [options]="statusOptions()"
+                        placeholder="Select Status"
+                        (onChange)="filter($event.value)"
+                        optionLabel="label"
+                        optionValue="value"
+                        class="w-full"
+                      />
+                    </ng-template>
+                  </p-columnFilter>
+                </div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-tax>
+            <tr>
+              <td>{{ tax.invoiceDate }}</td>
+              <td>{{ tax.vendorName }}</td>
+              <td>{{ tax.taxType }}</td>
+              <td>{{ tax.invoiceNo }}</td>
+              <td class="text-right">{{ tax.grossAmount.toLocaleString() }}</td>
+              <td>{{ tax.taxRegion }}</td>
+              <td class="text-right">{{ tax.taxAmount.toLocaleString() }}</td>
+              <td>{{ tax.paidDate }}</td>
+              <td class="text-right">{{ tax.paidAmountDr.toLocaleString() }}</td>
+              <td class="text-right">{{ tax.taxReturnToFirmCr.toLocaleString() }}</td>
+              <td>
+                <p-tag
+                  [value]="tax.status"
+                  [severity]="tax.status === 'Received' ? 'success' : 'warn'"
+                />
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #footer>
+            <tr>
+              <td colspan="4" class="font-semibold">Total</td>
+              <td class="text-right font-semibold">${{ totals().grossAmount.toLocaleString() }}</td>
+              <td></td>
+              <td class="text-right font-semibold">${{ totals().taxAmount.toLocaleString() }}</td>
+              <td></td>
+              <td class="text-right font-semibold">
+                {{ totals().paidAmountDr.toLocaleString() }}
+              </td>
+              <td class="text-right font-semibold">
+                {{ totals().taxReturnToFirmCr.toLocaleString() }}
+              </td>
+              <td></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      }
+    </form>
+  </div>
+</div>
