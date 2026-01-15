@@ -22,6 +22,16 @@ export class DialogHeader {
     private dialogWindowService: DialogWindowService
   ) {}
 
+  get data() {
+    return this.config.data;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.data?.autoMaximize) {
+      setTimeout(() => this.maximizeDialog(), 0);
+    }
+  }
+
   closeDialog(): void {
     this.ref.close();
   }

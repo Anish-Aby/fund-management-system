@@ -9,6 +9,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 @Component({
   selector: 'app-cash-balance',
@@ -22,13 +23,14 @@ import { FormsModule } from '@angular/forms';
     DatePickerModule,
     CommonModule,
     FormsModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './cash-balance.html',
   styleUrl: './cash-balance.scss',
 })
 export class CashBalance {
   cashBalanceData = signal(cashBalanceMockData);
-  filteredData = signal<any[]>(cashBalanceMockData);
+  filteredData = signal<any[]>([]);
   selectedBanks = signal<any[]>([]);
   dateFrom = signal<Date | null>(null);
   dateTo = signal<Date | null>(null);

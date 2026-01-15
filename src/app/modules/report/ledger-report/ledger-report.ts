@@ -8,6 +8,7 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components/main-loader';
+import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 @Component({
   selector: 'app-ledger-report',
@@ -19,12 +20,13 @@ import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components
     SelectModule,
     MultiSelectModule,
     DatePickerModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './ledger-report.html',
   styleUrl: './ledger-report.scss',
 })
 export class LedgerReport {
-  ledgerData = signal(ledgerMockData);
+  ledgerData = signal<any[]>([]);
   filteredData = signal<any[]>(ledgerMockData);
 
   entityOptions = signal([
@@ -68,5 +70,9 @@ export class LedgerReport {
 
   onTableFilter(event: any) {
     this.filteredData.set(event.filteredValue || this.ledgerData());
+  }
+
+  getLedgerReport(): void {
+    this.ledgerData.set(ledgerMockData);
   }
 }

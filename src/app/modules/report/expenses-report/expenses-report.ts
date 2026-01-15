@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
-import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components/main-loader';
+import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 @Component({
   selector: 'app-expenses-report',
@@ -19,12 +19,13 @@ import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components
     SelectModule,
     MultiSelectModule,
     DatePickerModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './expenses-report.html',
   styleUrl: './expenses-report.scss',
 })
 export class ExpensesReport {
-  expensesData = signal(expensesMockData);
+  expensesData = signal<any[]>([]);
   filteredData = signal<any[]>(expensesMockData);
 
   entityOptions = signal([
@@ -78,5 +79,9 @@ export class ExpensesReport {
 
   onTableFilter(event: any) {
     this.filteredData.set(event.filteredValue || this.expensesData());
+  }
+
+  getExpensesReport() {
+    this.expensesData.set(expensesMockData);
   }
 }

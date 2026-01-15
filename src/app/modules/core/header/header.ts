@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
@@ -51,6 +51,7 @@ export class Header {
     public themeService: ThemeService,
     private router: Router,
     private dialogService: DialogService,
+    private cdr: ChangeDetectorRef,
     private dialogWindowService: DialogWindowService
   ) {}
 
@@ -403,7 +404,12 @@ export class Header {
   showLedgerReport(): void {
     if (!this.dialogWindowService.restoreByComponent('LedgerReport')) {
       this.dialogService.open(LedgerReport, {
-        data: { title: 'Ledger Report', componentName: 'LedgerReport', component: LedgerReport },
+        data: {
+          title: 'Ledger Report',
+          componentName: 'LedgerReport',
+          component: LedgerReport,
+          autoMaximize: true,
+        },
         draggable: true,
         resizable: true,
         modal: false,
@@ -418,11 +424,12 @@ export class Header {
 
   showExpensesReport(): void {
     if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
-      this.dialogService.open(ExpensesReport, {
+      const dialogRef = this.dialogService.open(ExpensesReport, {
         data: {
           title: 'Expenses Report',
           componentName: 'ExpensesReport',
           component: ExpensesReport,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
@@ -486,6 +493,7 @@ export class Header {
           title: 'Cash Balance',
           componentName: 'CashBalance',
           component: CashBalance,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
@@ -507,6 +515,7 @@ export class Header {
           title: 'Fund Cash Balance',
           componentName: 'FundCashBalance',
           component: FundCashBalance,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
@@ -616,6 +625,7 @@ export class Header {
           title: 'Tax Report',
           componentName: 'TaxReport',
           component: TaxReport,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,

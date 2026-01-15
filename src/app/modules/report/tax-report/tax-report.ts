@@ -10,6 +10,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import TaxReportMockData from './../../core/mocks/tax-report-mock.json';
 import VendorMockData from './../../core/mocks/vendor-list-mock.json';
+import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 interface TaxData {
   invoiceDate: Date;
@@ -38,6 +39,7 @@ interface TaxData {
     MultiSelectModule,
     DatePickerModule,
     FormsModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './tax-report.html',
   styleUrl: './tax-report.scss',

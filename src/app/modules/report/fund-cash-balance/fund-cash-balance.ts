@@ -8,6 +8,7 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
+import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 @Component({
   selector: 'app-fund-cash-balance',
@@ -20,13 +21,14 @@ import { FormsModule } from '@angular/forms';
     MultiSelectModule,
     DatePickerModule,
     FormsModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './fund-cash-balance.html',
   styleUrl: './fund-cash-balance.scss',
 })
 export class FundCashBalance {
   fundCashBalanceData = signal(fundCashBalanceMockData);
-  filteredData = signal<any[]>(fundCashBalanceMockData);
+  filteredData = signal<any[]>([]);
   selectedEntity = signal<any>(null);
   baseCurrency = signal('USD');
 
@@ -91,15 +93,6 @@ export class FundCashBalance {
   }
 
   onSearch() {
-    let filtered = [...this.fundCashBalanceData()];
-
-    // Filter by selected entity if any
-    if (this.selectedEntity()) {
-      // This would filter based on entity selection
-      // For now, showing all data as entity filtering would require
-      // additional entity field in the mock data
-    }
-
-    this.filteredData.set(filtered);
+    this.filteredData.set(fundCashBalanceMockData);
   }
 }

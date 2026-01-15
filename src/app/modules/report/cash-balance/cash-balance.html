@@ -55,6 +55,9 @@
       </div>
 
       <div class="col-span-12">
+        @if (filteredData().length === 0) {
+        <app-no-data-placeholder></app-no-data-placeholder>
+        } @else {
         <p-table
           #dt
           [value]="filteredData()"
@@ -156,6 +159,7 @@
             </tr>
           </ng-template>
         </p-table>
+        }
       </div>
     </div>
   </div>

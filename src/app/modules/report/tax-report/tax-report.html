@@ -91,7 +91,9 @@
         </div>
       </div>
 
-      @if (showTable()) {
+      @if (taxData().length === 0 && showTable() === false) {
+      <app-no-data-placeholder></app-no-data-placeholder>
+      }@else {
       <div class="col-span-12">
         <p-table
           [value]="taxData()"

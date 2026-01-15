@@ -1,5 +1,5 @@
 <div class="p-5">
-  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 h-full flex flex-col">
     <div class="flex justify-between items-center mb-4">
       <div>
         <h1 class="text-3xl font-medium mb-1">Expenses Report</h1>
@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="border border-surface bg-primary-contrast rounded-t-xl">
+    <div class="border border-surface bg-primary-contrast rounded-t-xl flex-1 flex flex-col">
       <div
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
@@ -52,7 +52,7 @@
             variant="outlined"
             severity="contrast"
             label="Download PDF"
-            class="mr-2"
+            class="mr-2 [&_.pi]:hover:animate-pulse"
           />
           <p-button
             icon="pi pi-file-excel"
@@ -60,13 +60,25 @@
             variant="outlined"
             severity="contrast"
             label="Download Excel"
-            class="mr-2"
+            class="mr-2 [&_.pi]:hover:animate-pulse"
           />
-          <p-button icon="pi pi-search" severity="contrast" label="Search" />
+          <p-button
+            icon="pi pi-search"
+            severity="contrast"
+            label="Search"
+            class="[&_.pi]:hover:animate-spin"
+            (onClick)="getExpensesReport()"
+          />
         </div>
       </div>
 
-      <div class="col-span-12">
+      <div class="col-span-12 flex-1">
+        @if (expensesData().length === 0) {
+        <app-no-data-placeholder
+          message="No expenses data found for the selected criteria."
+          class="h-full"
+        ></app-no-data-placeholder>
+        } @else {
         <p-table
           #expensesTable
           [value]="expensesData()"
@@ -79,11 +91,7 @@
           [resizableColumns]="true"
           columnResizeMode="expand"
           (onFilter)="onTableFilter($event)"
-          [globalFilterFields]="[
-            'name',
-            'fundLocation',
-            'portfolioCurrency'
-          ]"
+          [globalFilterFields]="['name', 'fundLocation', 'portfolioCurrency']"
         >
           <ng-template #header>
             <tr>
@@ -132,17 +140,24 @@
                 Total
               </td>
               <td>
-                <div class="text-right font-semibold">${{ totals().beginningAmount.toLocaleString() }}</div>
+                <div class="text-right font-semibold">
+                  ${{ totals().beginningAmount.toLocaleString() }}
+                </div>
               </td>
               <td>
-                <div class="text-right font-semibold">${{ totals().forThePeriod.toLocaleString() }}</div>
+                <div class="text-right font-semibold">
+                  ${{ totals().forThePeriod.toLocaleString() }}
+                </div>
               </td>
               <td>
-                <div class="text-right font-semibold">${{ totals().endingAmount.toLocaleString() }}</div>
+                <div class="text-right font-semibold">
+                  ${{ totals().endingAmount.toLocaleString() }}
+                </div>
               </td>
             </tr>
           </ng-template>
         </p-table>
+        }
       </div>
     </div>
   </div>

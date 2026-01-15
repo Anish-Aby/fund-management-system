@@ -1,4 +1,5 @@
 @use './base';
+@use './partials/animations';
 @import 'primeicons/primeicons.css';
 
 body {
@@ -6,6 +7,14 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.25) {
+  body { zoom: 0.8; }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  body { zoom: 0.67; }
 }
 
 html,
