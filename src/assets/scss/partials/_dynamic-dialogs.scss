@@ -2,6 +2,7 @@ p-dynamicdialog {
   .p-dialog-maximized {
     position: absolute;
     height: calc(100% - 104px) !important;
+    width: 100% !important;
     top: 65px !important;
     box-shadow: none !important;
   }
