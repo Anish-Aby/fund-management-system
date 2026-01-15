@@ -15,6 +15,7 @@ import { EntityAdd } from '../../entity/entity-add/entity-add';
 import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
 import { TaxReport } from '../../report/tax-report/tax-report';
+import { JournalEntry } from '../../journal-entry/journal-entry';
 
 interface MinimizedDialog {
   title: string;
@@ -51,6 +52,7 @@ export class DialogWindowService {
     RoleAdd,
     UserAdd,
     TaxReport,
+    JournalEntry,
   };
 
   constructor(private dialogService: DialogService) {

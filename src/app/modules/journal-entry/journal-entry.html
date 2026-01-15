@@ -44,9 +44,9 @@
         <ng-template #header>
           <tr>
             <th>Account Type</th>
-            <th>Debit Entity Name</th>
+            <th>Debit From</th>
             <th>Debit Amount</th>
-            <th>Credit Entity Name</th>
+            <th>Credit To</th>
             <th>Credit Amount</th>
             <th>Actions</th>
           </tr>
@@ -66,7 +66,7 @@
               <p-select
                 [(ngModel)]="entry.debitEntity"
                 [options]="entities"
-                placeholder="Select Entity"
+                placeholder="Select Company"
                 fluid
                 appendTo="body"
               />
@@ -85,7 +85,7 @@
               <p-select
                 [(ngModel)]="entry.creditEntity"
                 [options]="entities"
-                placeholder="Select Entity"
+                placeholder="Select Company"
                 fluid
                 appendTo="body"
               />
