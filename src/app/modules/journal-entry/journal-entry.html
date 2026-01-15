@@ -1,0 +1,157 @@
+<div class="p-5">
+  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5" @container>
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-3xl font-medium mb-1">Journal Entry</h1>
+        <p class="text-sm text-muted-color">Add credit and debits for Entities</p>
+      </div>
+    </div>
+
+    <div class="border border-surface bg-primary-contrast rounded-t-xl">
+      <div
+        class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
+      >
+        <div class="col-span-3">
+          <div>Entity Name</div>
+          <input
+            placeholder="Entity Name"
+            value="Global Investments Inc"
+            fluid
+            pInputText
+            disabled
+          />
+        </div>
+        <div class="col-span-2">
+          <div>Date</div>
+          <p-datepicker
+            [(ngModel)]="today"
+            [maxDate]="today"
+            fluid
+            appendTo="body"
+            placeholder="Select Date"
+          />
+        </div>
+        <div class="col-span-2 flex items-end">
+          <p-button icon="pi pi-search" severity="contrast" label="Search" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="text-xl font-medium mb-4">Journal Entries</h2>
+
+      <p-table scrollHeight="400px" [value]="journalEntries" size="small" showGridlines="true">
+        <ng-template #header>
+          <tr>
+            <th>Account Type</th>
+            <th>Debit Entity Name</th>
+            <th>Debit Amount</th>
+            <th>Credit Entity Name</th>
+            <th>Credit Amount</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-entry let-i="rowIndex">
+          <tr>
+            <td>
+              <p-select
+                [(ngModel)]="entry.accountType"
+                [options]="accountTypes"
+                placeholder="Select Account Type"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <p-select
+                [(ngModel)]="entry.debitEntity"
+                [options]="entities"
+                placeholder="Select Entity"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <input
+                [(ngModel)]="entry.debitAmount"
+                pInputText
+                type="number"
+                min="0"
+                placeholder="0.00"
+                fluid
+              />
+            </td>
+            <td>
+              <p-select
+                [(ngModel)]="entry.creditEntity"
+                [options]="entities"
+                placeholder="Select Entity"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <input
+                [(ngModel)]="entry.creditAmount"
+                pInputText
+                type="number"
+                min="0"
+                variant="outlined"
+                placeholder="0.00"
+                fluid
+              />
+            </td>
+            <td>
+              <div class="flex gap-2">
+                <p-button
+                  icon="pi pi-plus"
+                  variant="outlined"
+                  severity="contrast"
+                  size="small"
+                  (click)="addRow()"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  variant="outlined"
+                  size="small"
+                  (click)="removeRow(i)"
+                  [disabled]="journalEntries.length === 1"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #footer>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td>
+              <strong>${{ getTotalDebit() }}</strong>
+            </td>
+            <td></td>
+            <td>
+              <strong>${{ getTotalCredit() }}</strong>
+            </td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <div class="mt-4">
+        <label class="block text-sm font-medium mb-2">Narration</label>
+        <textarea
+          [(ngModel)]="narration"
+          pInputTextarea
+          rows="3"
+          placeholder="Enter narration..."
+          fluid
+        ></textarea>
+      </div>
+
+      <div class="flex justify-end">
+        <p-button icon="pi pi-check" severity="success" label="Save" />
+      </div>
+    </div>
+  </div>
+</div>

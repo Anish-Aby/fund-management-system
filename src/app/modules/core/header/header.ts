@@ -24,6 +24,7 @@ import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
 import { ForexPricing } from '../../forex-pricing/forex-pricing';
 import { TaxReport } from '../../report/tax-report/tax-report';
+import { JournalEntry } from '../../journal-entry/journal-entry';
 
 @Component({
   selector: 'app-header',
@@ -121,6 +122,9 @@ export class Header {
           {
             label: 'Journal Entry',
             icon: 'pi pi-book',
+            command: () => {
+              this.showJournalEntry();
+            },
           },
           {
             label: 'Reconciliation',
@@ -616,6 +620,27 @@ export class Header {
         draggable: true,
         resizable: true,
         width: '100%',
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showJournalEntry(): void {
+    if (!this.dialogWindowService.restoreByComponent('JournalEntry')) {
+      this.dialogService.open(JournalEntry, {
+        data: {
+          title: 'Journal Entry',
+          componentName: 'JournalEntry',
+          component: JournalEntry,
+        },
+        draggable: true,
+        resizable: true,
         modal: false,
         maximizable: true,
         focusOnShow: false,
