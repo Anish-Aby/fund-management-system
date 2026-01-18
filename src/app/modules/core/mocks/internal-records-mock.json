@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "date": "2026-01-01",
+    "description": "Opening Balance Transfer",
+    "amount": 1500
+  },
+  {
+    "id": 2,
+    "date": "2026-01-02",
+    "description": "Investment Income",
+    "amount": 2500
+  },
+  {
+    "id": 3,
+    "date": "2026-01-03",
+    "description": "Management Fee Payment",
+    "amount": 750
+  },
+  {
+    "id": 4,
+    "date": "2026-01-04",
+    "description": "Dividend Distribution",
+    "amount": 1200
+  },
+  {
+    "id": 5,
+    "date": "2026-01-05",
+    "description": "Administrative Charges",
+    "amount": 300
+  },
+  {
+    "id": 6,
+    "date": "2026-01-03",
+    "description": "Management Fee Payment",
+    "amount": 750
+  },
+  {
+    "id": 7,
+    "date": "2026-01-04",
+    "description": "Dividend Distribution",
+    "amount": 1200
+  },
+  {
+    "id": 8,
+    "date": "2026-01-05",
+    "description": "Administrative Charges",
+    "amount": 300
+  },
+  {
+    "id": 9,
+    "date": "2026-01-03",
+    "description": "Management Fee Payment",
+    "amount": 750
+  },
+  {
+    "id": 10,
+    "date": "2026-01-04",
+    "description": "Dividend Distribution",
+    "amount": 1200
+  },
+  {
+    "id": 11,
+    "date": "2026-01-05",
+    "description": "Administrative Charges",
+    "amount": 300
+  },
+  {
+    "id": 12,
+    "date": "2026-01-03",
+    "description": "Management Fee Payment",
+    "amount": 750
+  },
+  {
+    "id": 13,
+    "date": "2026-01-04",
+    "description": "Dividend Distribution",
+    "amount": 1200
+  },
+  {
+    "id": 14,
+    "date": "2026-01-05",
+    "description": "Administrative Charges",
+    "amount": 300
+  }
+]

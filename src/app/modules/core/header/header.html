@@ -40,18 +40,26 @@
       </div>
       <div class="flex items-center cursor-pointer">
         <p-avatar label="AG" class="mr-2 user-avatar" size="large" />
-        <div class="flex flex-col justify-center mr-2">
+        <div class="flex flex-col justify-center mr-4">
           <span class="font-medium"> Aby George </span>
           <span class="text-xs text-muted-color">Super Admin</span>
         </div>
-        <p-button
+        <!-- <p-button
           icon="pi pi-chevron-down"
           [text]="true"
           severity="secondary"
           (onClick)="userMenu.toggle($event)"
           #menuButton
         />
-        <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body" />
+        <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body" /> -->
+        <p-button
+          icon="pi pi-sign-out"
+          variant="outlined"
+          text="true"
+          severity="contrast"
+          (onClick)="onLogout()"
+          [title]="'Sign Out'"
+        />
       </div>
     </div>
   </ng-template>

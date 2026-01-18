@@ -25,6 +25,7 @@ import { UserAdd } from '../../user/user-add/user-add';
 import { ForexPricing } from '../../forex-pricing/forex-pricing';
 import { TaxReport } from '../../report/tax-report/tax-report';
 import { JournalEntry } from '../../journal-entry/journal-entry';
+import { Reconciliation } from '../../reconciliation/reconciliation';
 
 @Component({
   selector: 'app-header',
@@ -130,6 +131,9 @@ export class Header {
           {
             label: 'Reconciliation',
             icon: 'pi pi-sync',
+            command: () => {
+              this.showReconciliation();
+            },
           },
           {
             label: 'Import File',
@@ -487,7 +491,7 @@ export class Header {
   }
 
   showCashBalance(): void {
-    if (!this.dialogWindowService.restoreByComponent('Cash Balance')) {
+    if (!this.dialogWindowService.restoreByComponent('CashBalance')) {
       this.dialogService.open(CashBalance, {
         data: {
           title: 'Cash Balance',
@@ -509,7 +513,7 @@ export class Header {
   }
 
   showFundCashBalance(): void {
-    if (!this.dialogWindowService.restoreByComponent('Fund Cash Balance')) {
+    if (!this.dialogWindowService.restoreByComponent('FundCashBalance')) {
       this.dialogService.open(FundCashBalance, {
         data: {
           title: 'Fund Cash Balance',
@@ -648,6 +652,28 @@ export class Header {
           title: 'Journal Entry',
           componentName: 'JournalEntry',
           component: JournalEntry,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
+        focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  showReconciliation(): void {
+    if (!this.dialogWindowService.restoreByComponent('Reconciliation')) {
+      this.dialogService.open(Reconciliation, {
+        data: {
+          title: 'Reconciliation',
+          componentName: 'Reconciliation',
+          component: Reconciliation,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,

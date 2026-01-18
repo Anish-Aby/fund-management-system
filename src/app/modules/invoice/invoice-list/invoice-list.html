@@ -3,48 +3,47 @@
     <div class="flex justify-between items-center mb-4">
       <div>
         @if (status() === 'Received') {
-        <h1 class="text-3xl font-medium mb-1">All Invoices Received as on Date</h1>
-        <p class="text-sm text-muted-color">
-          The invoices below have been received from the start, and their corresponding statuses are
-          indicated in the status column.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">All Invoices Received as on Date</h1>
+          <p class="text-sm text-muted-color">
+            The invoices below have been received from the start, and their corresponding statuses
+            are indicated in the status column.
+          </p>
         } @else if (status() === 'Pending') {
-        <h1 class="text-3xl font-medium mb-1">Invoices Pending for Review and Approve</h1>
-        <p class="text-sm text-muted-color">
-          The below invoices are reviewed and approved for next level of approval.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">Invoices Pending for Review and Approve</h1>
+          <p class="text-sm text-muted-color">
+            The below invoices are reviewed and approved for next level of approval.
+          </p>
         } @else if (status() === 'Approved') {
-        <h1 class="text-3xl font-medium mb-1">Approved Invoices</h1>
-        <p class="text-sm text-muted-color">
-          The invoices below have been reviewed and approved by the maker. Your approval is required
-          for the further release of payment.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">Approved Invoices</h1>
+          <p class="text-sm text-muted-color">
+            The invoices below have been reviewed and approved by the maker. Your approval is
+            required for the further release of payment.
+          </p>
         } @else if (status() === 'Rejected') {
-        <h1 class="text-3xl font-medium mb-1">Rejected Invoices</h1>
-        <p class="text-sm text-muted-color">
-          The invoices listed below were rejected for various reasons. Please take the required
-          action.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">Rejected Invoices</h1>
+          <p class="text-sm text-muted-color">
+            The invoices listed below were rejected for various reasons. Please take the required
+            action.
+          </p>
         } @else if (status() === 'Scheduled') {
-        <h1 class="text-3xl font-medium mb-1">Approved Invoices for Release of Payment</h1>
-        <p class="text-sm text-muted-color">
-          The invoices listed below have been reviewed and approved for payment release. Please
-          proceed with the payment.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">Approved Invoices for Release of Payment</h1>
+          <p class="text-sm text-muted-color">
+            The invoices listed below have been reviewed and approved for payment release. Please
+            proceed with the payment.
+          </p>
         } @else if (status() === 'Paid') {
-        <h1 class="text-3xl font-medium mb-1">Paid and Cleared Invoices</h1>
-        <p class="text-sm text-muted-color">
-          The invoices listed below have been paid and released to the vendor. Please review the
-          details provided.
-        </p>
+          <h1 class="text-3xl font-medium mb-1">Paid and Cleared Invoices</h1>
+          <p class="text-sm text-muted-color">
+            The invoices listed below have been paid and released to the vendor. Please review the
+            details provided.
+          </p>
         }
       </div>
     </div>
 
     <div class="border border-surface bg-primary-contrast rounded-t-xl">
       <div
-        class="grid gap-y-5 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
-        [style.grid-template-columns]="'repeat(' + Math.ceil(searchFields().length / 2) + ', 1fr)'"
+        class="grid grid-cols-7 gap-y-5 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         @for (field of searchFields(); track field.field) {
           <div class="col-span-1">
@@ -54,11 +53,15 @@
             } @else if (field.type === 'date') {
               <p-datepicker [placeholder]="field.placeholder" fluid />
             } @else if (field.type === 'multiselect') {
-              <p-multiselect fluid [options]="field.options || []" [placeholder]="field.placeholder" />
+              <p-multiselect
+                fluid
+                [options]="field.options || []"
+                [placeholder]="field.placeholder"
+              />
             }
           </div>
         }
-        <div class="col-span-full flex items-end justify-end gap-3 mt-4">
+        <div class="col-span-2 flex items-end gap-3 mt-4">
           <p-button
             icon="pi pi-file-check"
             severity="contrast"
@@ -112,7 +115,10 @@
                   @if (col.field === 'grossAmount') {
                     <div class="text-right">${{ invoice[col.field] | number }}</div>
                   } @else if (col.field === 'status') {
-                    <p-tag [value]="invoice[col.field]" [severity]="getSeverity(invoice[col.field])" />
+                    <p-tag
+                      [value]="invoice[col.field]"
+                      [severity]="getSeverity(invoice[col.field])"
+                    />
                   } @else {
                     {{ invoice[col.field] || '-' }}
                   }

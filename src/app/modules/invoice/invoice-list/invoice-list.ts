@@ -59,7 +59,7 @@ export class InvoiceList {
   constructor(
     public utilityService: UtilityService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     const queryParams = this.activatedRoute.snapshot.queryParams;
     console.log(queryParams);
@@ -213,23 +213,19 @@ export class InvoiceList {
             placeholder: 'e.g. INV-2024-001',
             type: 'text',
           },
-          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
           {
             field: 'portfolio',
             label: 'Portfolio',
             placeholder: 'Technology, Healthcare...',
             type: 'text',
           },
-          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
           { field: 'location', label: 'Location', placeholder: 'City, Country', type: 'text' },
-          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
           {
             field: 'expenseType',
             label: 'Fee Category',
             placeholder: 'Software, Legal...',
             type: 'text',
           },
-          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
         ];
       case 'Approved':
         return [
@@ -245,15 +241,12 @@ export class InvoiceList {
             placeholder: 'e.g. INV-2024-001',
             type: 'text',
           },
-          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
           {
             field: 'portfolio',
             label: 'Portfolio',
             placeholder: 'Technology, Healthcare...',
             type: 'text',
           },
-          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
-          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
           {
             field: 'expenseType',
             label: 'Fee Category',
@@ -266,7 +259,6 @@ export class InvoiceList {
             placeholder: 'Approver name...',
             type: 'text',
           },
-          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
         ];
       case 'Rejected':
         return [
@@ -282,26 +274,10 @@ export class InvoiceList {
             placeholder: 'e.g. INV-2024-001',
             type: 'text',
           },
-          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
           {
             field: 'portfolio',
             label: 'Portfolio',
             placeholder: 'Technology, Healthcare...',
-            type: 'text',
-          },
-          { field: 'aging', label: 'Aging', placeholder: 'Days overdue', type: 'text' },
-          { field: 'currency', label: 'Currency', placeholder: 'USD, EUR, GBP...', type: 'text' },
-          {
-            field: 'rejectedBy',
-            label: 'Rejected By',
-            placeholder: 'Rejector name...',
-            type: 'text',
-          },
-          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
-          {
-            field: 'rejectedReason',
-            label: 'Rejected Reason',
-            placeholder: 'Reason...',
             type: 'text',
           },
         ];
@@ -319,23 +295,8 @@ export class InvoiceList {
             placeholder: 'e.g. INV-2024-001',
             type: 'text',
           },
-          { field: 'invoiceDate', label: 'Invoice Date', placeholder: 'Select date', type: 'date' },
-          {
-            field: 'dueDate',
-            label: 'Invoice Due Date',
-            placeholder: 'Select due date',
-            type: 'date',
-          },
           { field: 'fundName', label: 'Fund Name', placeholder: 'Fund name...', type: 'text' },
           { field: 'fundBank', label: 'Fund Bank', placeholder: 'Bank name...', type: 'text' },
-          { field: 'paidFrom', label: 'Paid From', placeholder: 'Payment source...', type: 'text' },
-          {
-            field: 'bankBalance',
-            label: 'Bank Balance',
-            placeholder: 'Balance amount...',
-            type: 'text',
-          },
-          { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
         ];
       case 'Paid':
         return [
@@ -358,21 +319,12 @@ export class InvoiceList {
             placeholder: 'Entity name...',
             type: 'text',
           },
-          { field: 'entityBank', label: 'Entity Bank', placeholder: 'Bank name...', type: 'text' },
-          { field: 'paidBy', label: 'Paid By', placeholder: 'Payer name...', type: 'text' },
-          {
-            field: 'currency',
-            label: 'Base Currency',
-            placeholder: 'USD, EUR, GBP...',
-            type: 'text',
-          },
           {
             field: 'expenseType',
             label: 'Fee Category',
             placeholder: 'Software, Legal...',
             type: 'text',
           },
-          { field: 'grossAmount', label: 'Paid Amount', placeholder: 'Amount', type: 'text' },
         ];
       default:
         return [

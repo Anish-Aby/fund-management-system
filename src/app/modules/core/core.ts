@@ -1,19 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { Taskbar } from './taskbar/taskbar';
+import { SelectModule } from 'primeng/select';
+import EntityMockData from './mocks/entity-mock.json';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-core',
-  imports: [RouterOutlet, Header, TooltipModule, ButtonModule, Taskbar],
+  imports: [RouterOutlet, Header, TooltipModule, ButtonModule, Taskbar, SelectModule, CommonModule],
   templateUrl: './core.html',
   styleUrl: './core.scss',
 })
 export class Core {
   collapsed = true;
   isHovered = false;
+
+  today = new Date();
+
+  entityOptions = signal<any[]>(EntityMockData);
 
   menuItems = [
     {

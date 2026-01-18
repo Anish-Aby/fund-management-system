@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -15,6 +15,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DialogWindowService } from '../shared/services/dialog-window';
 import { DialogHeader } from '../shared/components/dialog-header/dialog-header';
 import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SelectModule } from 'primeng/select';
+import EntityMockData from './../core/mocks/entity-mock.json';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +31,9 @@ import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
     ButtonGroupModule,
     StatCard,
     InputTextModule,
+    FormsModule,
+    SelectModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
@@ -38,7 +44,13 @@ export class Dashboard implements OnInit {
   selectedInvoices: any[] = [];
   filteredTotal: number = 0;
 
+  isShowDashboardContent = signal(true);
+
+  entityForm: FormGroup;
+
   items: any[] = [{ label: 'Dashboard' }];
+
+  entityOptions = signal<any[]>(EntityMockData);
 
   home: any = { icon: 'pi pi-home', routerLink: '/' };
 
@@ -46,8 +58,13 @@ export class Dashboard implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private dialogWindowService: DialogWindowService,
+    private fb: FormBuilder,
     public utilityService: UtilityService
-  ) {}
+  ) {
+    this.entityForm = this.fb.group({
+      entityId: [null],
+    });
+  }
 
   ngOnInit() {
     this.portfolio = [

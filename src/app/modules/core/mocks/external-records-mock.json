@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "date": "2026-01-01",
+    "description": "Bank Transfer Received",
+    "amount": 1400
+  },
+  {
+    "id": 2,
+    "date": "2026-01-02",
+    "description": "Interest Credit",
+    "amount": 100
+  },
+  {
+    "id": 3,
+    "date": "2026-01-03",
+    "description": "Fee Deduction",
+    "amount": 2500
+  },
+  {
+    "id": 4,
+    "date": "2026-01-04",
+    "description": "Dividend Payment",
+    "amount": 1200
+  },
+  {
+    "id": 5,
+    "date": "2026-01-05",
+    "description": "Service Charge",
+    "amount": 750
+  },
+  {
+    "id": 6,
+    "date": "2026-01-06",
+    "description": "Wire Transfer",
+    "amount": 300
+  },
+  {
+    "id": 7,
+    "date": "2026-01-04",
+    "description": "Dividend Payment",
+    "amount": 1200
+  },
+  {
+    "id": 8,
+    "date": "2026-01-05",
+    "description": "Service Charge",
+    "amount": 750
+  },
+  {
+    "id": 9,
+    "date": "2026-01-06",
+    "description": "Wire Transfer",
+    "amount": 300
+  },
+  {
+    "id": 10,
+    "date": "2026-01-04",
+    "description": "Dividend Payment",
+    "amount": 1200
+  },
+  {
+    "id": 11,
+    "date": "2026-01-05",
+    "description": "Service Charge",
+    "amount": 750
+  },
+  {
+    "id": 12,
+    "date": "2026-01-06",
+    "description": "Wire Transfer",
+    "amount": 300
+  },
+  {
+    "id": 13,
+    "date": "2026-01-04",
+    "description": "Dividend Payment",
+    "amount": 1200
+  },
+  {
+    "id": 14,
+    "date": "2026-01-05",
+    "description": "Service Charge",
+    "amount": 750
+  },
+  {
+    "id": 15,
+    "date": "2026-01-06",
+    "description": "Wire Transfer",
+    "amount": 300
+  }
+]

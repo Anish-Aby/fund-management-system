@@ -1,5 +1,5 @@
-<div class="p-1 sm:p-2 md:p-3 lg:p-4 xl:p-5">
-  <div class="grid grid-cols-12">
+<div class="p-1 sm:p-2 md:p-3 lg:p-4 xl:p-5 pt-3!">
+  <!-- <div class="grid grid-cols-12">
     <div class="col-span-12 grid grid-cols-12 mb-2 lg:mb-0">
       <div class="col-span-12 lg:col-span-6">
         <p class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color mb-1">
@@ -19,59 +19,240 @@
         <p-button icon="pi pi-sync" label="Refresh" />
       </div>
     </div>
-  </div>
-  <div class="grid grid-cols-12 gap-2 sm:gap-3 md:gap-4">
-    <div class="col-span-12 lg:col-span-6">
-      <div
-        class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col h-full"
-      >
-        <div class="items-center gap-4 mb-2">
-          <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
-            Portfolio
+  </div> -->
+  @if (isShowDashboardContent()) {
+    <div class="grid grid-cols-12 gap-2 sm:gap-3 md:gap-4">
+      <div class="col-span-12 lg:col-span-6">
+        <div
+          class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col h-full"
+        >
+          <div class="items-center gap-4 mb-2">
+            <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+              Portfolios
+            </div>
+            <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+              Get quick insights to invoice details
+            </div>
           </div>
-          <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
-            Get quick insights to invoice details
+          <p-table
+            #dtPortfolio
+            [value]="portfolio"
+            stripedRows="true"
+            size="small"
+            showGridlines="true"
+            [scrollable]="true"
+            scrollHeight="230px"
+            [resizableColumns]="true"
+            columnResizeMode="expand"
+            [globalFilterFields]="['code', 'name', 'region', 'amount']"
+          >
+            <ng-template #header>
+              <tr>
+                <th pSortableColumn="code" pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">
+                    Code
+                    <div>
+                      <p-sortIcon field="code" />
+                      <p-columnFilter
+                        type="text"
+                        field="code"
+                        display="menu"
+                        showMatchModes="false"
+                        showAddButton="false"
+                        showOperator="false"
+                        matchMode="contains"
+                      />
+                    </div>
+                  </div>
+                </th>
+                <th pSortableColumn="name" pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">
+                    Portfolio
+                    <div>
+                      <p-sortIcon field="name" />
+                      <p-columnFilter
+                        type="text"
+                        field="name"
+                        display="menu"
+                        showMatchModes="false"
+                        showAddButton="false"
+                        showOperator="false"
+                        matchMode="contains"
+                      />
+                    </div>
+                  </div>
+                </th>
+                <th pSortableColumn="region" pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">
+                    Region
+                    <div>
+                      <p-sortIcon field="region" />
+                      <p-columnFilter
+                        type="text"
+                        field="region"
+                        display="menu"
+                        showMatchModes="false"
+                        showAddButton="false"
+                        showOperator="false"
+                        matchMode="contains"
+                      />
+                    </div>
+                  </div>
+                </th>
+                <th pSortableColumn="amount" pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">
+                    Amount
+                    <div>
+                      <p-sortIcon field="amount" />
+                      <p-columnFilter
+                        type="text"
+                        field="amount"
+                        display="menu"
+                        showMatchModes="false"
+                        showAddButton="false"
+                        showOperator="false"
+                        matchMode="contains"
+                      />
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-product>
+              <tr>
+                <td>{{ product.code }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.region }}</td>
+                <td>
+                  <div class="text-right">${{ product.amount }}</div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div class="col-span-12 lg:col-span-6">
+        <div
+          class="border grid gap-1 sm:gap-2 grid-cols-12 border-surface bg-primary-contrast rounded-2xl h-full py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5"
+        >
+          <div class="col-span-12 flex-1">
+            <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+              Summary
+            </div>
+            <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+              Get quick insights to invoice details
+            </div>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(1)">
+            <app-stat-card
+              title="All Invoices"
+              value="128"
+              subtitle="Amount - $4000"
+              color="indigo"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(2)">
+            <app-stat-card
+              title="Pending Invoices"
+              value="70"
+              subtitle="Amount - $805"
+              color="amber"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(3)">
+            <app-stat-card
+              title="Approved Invoices"
+              value="27"
+              subtitle="Amount - $1790"
+              color="green"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(4)">
+            <app-stat-card
+              title="Rejected Invoices"
+              value="4"
+              subtitle="Amount - $1622"
+              color="rose"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(5)">
+            <app-stat-card
+              title="Scheduled For Release"
+              value="12"
+              subtitle="Amount - $422"
+              color="purple"
+            >
+            </app-stat-card>
+          </div>
+          <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(6)">
+            <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
+            </app-stat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-12 mt-2 sm:mt-3 md:mt-4">
+      <div
+        class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col"
+      >
+        <div class="grid grid-cols-12 mb-2">
+          <div class="col-span-12 mb-2 lg:mb-0 lg:col-span-3 flex justify-centercenter flex-col">
+            <h3 class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
+              Invoices
+            </h3>
+            <p class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
+              Manage all your invoices here
+            </p>
+          </div>
+          <div class="col-span-12 lg:col-span-9 lg:justify-end flex items-center">
+            <input
+              class="mr-2 lg:w-auto"
+              pInputText
+              type="text"
+              placeholder="Search"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+            />
+            <p-button
+              icon="pi pi-file-check"
+              severity="contrast"
+              label="Review Invoices"
+              class="mr-2"
+              [disabled]="selectedInvoices.length === 0"
+              (onClick)="onReviewInvoice()"
+            />
           </div>
         </div>
         <p-table
-          #dtPortfolio
-          [value]="portfolio"
+          #dt
+          [value]="invoices"
+          [(selection)]="selectedInvoices"
+          dataKey="invoiceNumber"
           stripedRows="true"
           size="small"
           showGridlines="true"
           [scrollable]="true"
-          scrollHeight="230px"
+          scrollHeight="370px"
+          class="table-dashboard-invoice"
           [resizableColumns]="true"
           columnResizeMode="expand"
-          [globalFilterFields]="['code', 'name', 'region', 'amount']"
+          (onFilter)="onTableFilter($event)"
+          [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
         >
           <ng-template #header>
             <tr>
-              <th pSortableColumn="code" pResizableColumn>
-                <div class="flex items-center justify-between gap-3">
-                  Code
-                  <div>
-                    <p-sortIcon field="code" />
-                    <p-columnFilter
-                      type="text"
-                      field="code"
-                      display="menu"
-                      showMatchModes="false"
-                      showAddButton="false"
-                      showOperator="false"
-                      matchMode="contains"
-                    />
-                  </div>
-                </div>
-              </th>
-              <th pSortableColumn="name" pResizableColumn>
+              <th><p-tableHeaderCheckbox /></th>
+              <th pSortableColumn="fundName" pResizableColumn>
                 <div class="flex items-center justify-between gap-3">
                   Portfolio
                   <div>
-                    <p-sortIcon field="name" />
+                    <p-sortIcon field="fundName" />
                     <p-columnFilter
                       type="text"
-                      field="name"
+                      field="fundName"
                       display="menu"
                       showMatchModes="false"
                       showAddButton="false"
@@ -81,14 +262,14 @@
                   </div>
                 </div>
               </th>
-              <th pSortableColumn="region" pResizableColumn>
+              <th pSortableColumn="vendorName" pResizableColumn>
                 <div class="flex items-center justify-between gap-3">
-                  Region
+                  Vendor
                   <div>
-                    <p-sortIcon field="region" />
+                    <p-sortIcon field="vendorName" />
                     <p-columnFilter
                       type="text"
-                      field="region"
+                      field="vendorName"
                       display="menu"
                       showMatchModes="false"
                       showAddButton="false"
@@ -98,334 +279,181 @@
                   </div>
                 </div>
               </th>
-              <th pSortableColumn="amount" pResizableColumn>
+              <th pSortableColumn="invoiceNumber" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Invoice No
+                  <div>
+                    <p-sortIcon field="invoiceNumber" />
+                    <p-columnFilter
+                      type="text"
+                      field="invoiceNumber"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="invoiceDate" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Invoice Date
+                  <div>
+                    <p-sortIcon field="invoiceDate" />
+                    <p-columnFilter
+                      type="date"
+                      field="invoiceDate"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                    ></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="dueDate" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Due Date
+                  <div>
+                    <p-sortIcon field="dueDate" />
+                    <p-columnFilter
+                      type="date"
+                      field="dueDate"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                    ></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="aging" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Aging
+                  <div>
+                    <p-sortIcon field="aging" />
+                    <p-columnFilter
+                      type="text"
+                      field="aging"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    />
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="expenseType" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Expenses
+                  <div>
+                    <p-sortIcon field="expenseType" />
+                    <p-columnFilter
+                      type="text"
+                      field="expenseType"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    ></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="currency" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Currency
+                  <div>
+                    <p-sortIcon field="currency" />
+                    <p-columnFilter
+                      type="text"
+                      field="currency"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    ></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="status" pResizableColumn>
+                <div class="flex items-center justify-between gap-3">
+                  Status
+                  <div>
+                    <p-sortIcon field="status" />
+                    <p-columnFilter
+                      type="text"
+                      field="status"
+                      display="menu"
+                      showMatchModes="false"
+                      showAddButton="false"
+                      showOperator="false"
+                      matchMode="contains"
+                    ></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th pSortableColumn="grossAmount" pResizableColumn>
                 <div class="flex items-center justify-between gap-3">
                   Amount
-                  <div>
-                    <p-sortIcon field="amount" />
-                    <p-columnFilter
-                      type="text"
-                      field="amount"
-                      display="menu"
-                      showMatchModes="false"
-                      showAddButton="false"
-                      showOperator="false"
-                      matchMode="contains"
-                    />
-                  </div>
+                  <p-sortIcon field="grossAmount" />
                 </div>
               </th>
             </tr>
           </ng-template>
-          <ng-template #body let-product>
+          <ng-template #body let-invoice>
             <tr>
-              <td>{{ product.code }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.region }}</td>
               <td>
-                <div class="text-right">${{ product.amount }}</div>
+                <p-tableCheckbox [value]="invoice" />
+              </td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.fundName }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.vendorName }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.aging }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
+              <td (click)="onInvoiceRowSelect(invoice)">
+                <p-tag
+                  [value]="invoice.status"
+                  [severity]="utilityService.getSeverity(invoice.status)"
+                />
+              </td>
+              <td (click)="onInvoiceRowSelect(invoice)">
+                <div class="text-right">${{ invoice.grossAmount }}</div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #footer>
+            <tr>
+              <td
+                colspan="10"
+                class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
+              >
+                Total
+              </td>
+              <td>
+                <div class="text-right font-semibold">${{ filteredTotal }}</div>
               </td>
             </tr>
           </ng-template>
         </p-table>
       </div>
     </div>
-    <div class="col-span-12 lg:col-span-6">
-      <div
-        class="border grid gap-1 sm:gap-2 grid-cols-12 border-surface bg-primary-contrast rounded-2xl h-full py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5"
-      >
-        <div class="col-span-12 flex-1">
-          <div class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
-            Summary
-          </div>
-          <div class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
-            Get quick insights to invoice details
-          </div>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(1)">
-          <app-stat-card title="All Invoices" value="128" subtitle="Amount - $4000" color="indigo">
-          </app-stat-card>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(2)">
-          <app-stat-card title="Pending Invoices" value="70" subtitle="Amount - $805" color="amber">
-          </app-stat-card>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(3)">
-          <app-stat-card
-            title="Approved Invoices"
-            value="27"
-            subtitle="Amount - $1790"
-            color="green"
-          >
-          </app-stat-card>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(4)">
-          <app-stat-card title="Rejected Invoices" value="4" subtitle="Amount - $1622" color="rose">
-          </app-stat-card>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(5)">
-          <app-stat-card
-            title="Scheduled For Release"
-            value="12"
-            subtitle="Amount - $422"
-            color="purple"
-          >
-          </app-stat-card>
-        </div>
-        <div class="relative col-span-6 lg:col-span-4" (click)="onCardClick(6)">
-          <app-stat-card title="Paid Invoices" value="215" subtitle="Amount - $422" color="sky">
-          </app-stat-card>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-span-12 mt-2 sm:mt-3 md:mt-4">
+  } @else {
     <div
-      class="border border-surface bg-primary-contrast rounded-2xl py-1 px-1 sm:py-2 sm:px-2 md:py-3 md:px-3 lg:py-4 lg:px-4 xl:py-5 xl:px-5 flex flex-col"
+      class="border-2 h-[calc(100vh-28vh)] flex-col flex items-center justify-center border-dashed border-[#0369a1] bg-primary-contrast rounded-2xl p-4"
     >
-      <div class="grid grid-cols-12 mb-2">
-        <div class="col-span-12 mb-2 lg:mb-0 lg:col-span-3 flex justify-centercenter flex-col">
-          <h3 class="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg font-medium">
-            Invoices
-          </h3>
-          <p class="text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs text-muted-color">
-            Manage all your invoices here
-          </p>
-        </div>
-        <div class="col-span-12 lg:col-span-9 lg:justify-end flex items-center">
-          <input
-            class="mr-2 lg:w-auto"
-            pInputText
-            type="text"
-            placeholder="Search"
-            (input)="dt.filterGlobal($event.target.value, 'contains')"
-          />
-          <p-button
-            icon="pi pi-file-check"
-            severity="contrast"
-            label="Review Invoices"
-            class="mr-2"
-            [disabled]="selectedInvoices.length === 0"
-            (onClick)="onReviewInvoice()"
-          />
-        </div>
+      <div class="h-24 w-24 rounded-full bg-[#e0f2fe] flex items-center justify-center mb-6">
+        <span class="pi text-5xl! text-[#0369a1] pi-info-circle"></span>
       </div>
-      <p-table
-        #dt
-        [value]="invoices"
-        [(selection)]="selectedInvoices"
-        dataKey="invoiceNumber"
-        stripedRows="true"
-        size="small"
-        showGridlines="true"
-        [scrollable]="true"
-        scrollHeight="370px"
-        class="table-dashboard-invoice"
-        [resizableColumns]="true"
-        columnResizeMode="expand"
-        (onFilter)="onTableFilter($event)"
-        [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
-      >
-        <ng-template #header>
-          <tr>
-            <th><p-tableHeaderCheckbox /></th>
-            <th pSortableColumn="fundName" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Portfolio
-                <div>
-                  <p-sortIcon field="fundName" />
-                  <p-columnFilter
-                    type="text"
-                    field="fundName"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="vendorName" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Vendor
-                <div>
-                  <p-sortIcon field="vendorName" />
-                  <p-columnFilter
-                    type="text"
-                    field="vendorName"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="invoiceNumber" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Invoice No
-                <div>
-                  <p-sortIcon field="invoiceNumber" />
-                  <p-columnFilter
-                    type="text"
-                    field="invoiceNumber"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="invoiceDate" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Invoice Date
-                <div>
-                  <p-sortIcon field="invoiceDate" />
-                  <p-columnFilter
-                    type="date"
-                    field="invoiceDate"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="dueDate" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Due Date
-                <div>
-                  <p-sortIcon field="dueDate" />
-                  <p-columnFilter
-                    type="date"
-                    field="dueDate"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="aging" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Aging
-                <div>
-                  <p-sortIcon field="aging" />
-                  <p-columnFilter
-                    type="text"
-                    field="aging"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  />
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="expenseType" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Expenses
-                <div>
-                  <p-sortIcon field="expenseType" />
-                  <p-columnFilter
-                    type="text"
-                    field="expenseType"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="currency" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Currency
-                <div>
-                  <p-sortIcon field="currency" />
-                  <p-columnFilter
-                    type="text"
-                    field="currency"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="status" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Status
-                <div>
-                  <p-sortIcon field="status" />
-                  <p-columnFilter
-                    type="text"
-                    field="status"
-                    display="menu"
-                    showMatchModes="false"
-                    showAddButton="false"
-                    showOperator="false"
-                    matchMode="contains"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th>
-            <th pSortableColumn="grossAmount" pResizableColumn>
-              <div class="flex items-center justify-between gap-3">
-                Amount
-                <p-sortIcon field="grossAmount" />
-              </div>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-invoice>
-          <tr>
-            <td>
-              <p-tableCheckbox [value]="invoice" />
-            </td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.fundName }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.vendorName }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceNumber }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.invoiceDate }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.dueDate }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.aging }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.expenseType }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">{{ invoice.currency }}</td>
-            <td (click)="onInvoiceRowSelect(invoice)">
-              <p-tag
-                [value]="invoice.status"
-                [severity]="utilityService.getSeverity(invoice.status)"
-              />
-            </td>
-            <td (click)="onInvoiceRowSelect(invoice)">
-              <div class="text-right">${{ invoice.grossAmount }}</div>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template #footer>
-          <tr>
-            <td
-              colspan="10"
-              class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
-            >
-              Total
-            </td>
-            <td>
-              <div class="text-right font-semibold">${{ filteredTotal }}</div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <p class="text-center text-[#0369a1]">
+        Please select an Entity to view the dashboard content.
+      </p>
     </div>
-  </div>
+  }
 </div>
