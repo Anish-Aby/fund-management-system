@@ -9,17 +9,17 @@ body {
   overflow: hidden;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.25) {
-  body {
-    zoom: 0.8;
-  }
-}
+// @media screen and (-webkit-min-device-pixel-ratio: 1.25) {
+//   body {
+//     zoom: 0.8;
+//   }
+// }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  body {
-    zoom: 0.67;
-  }
-}
+// @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+//   body {
+//     zoom: 0.67;
+//   }
+// }
 
 html,
 body,
@@ -48,5 +48,7 @@ section {
 body {
   margin: 0;
   font-family: var(--font-family);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
