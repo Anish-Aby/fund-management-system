@@ -120,10 +120,10 @@
             </ng-template>
             <ng-template #body let-product>
               <tr>
-                <td>{{ product.code }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.region }}</td>
-                <td>
+                <td (click)="onPortfolioSelect(portfolio)">{{ product.code }}</td>
+                <td (click)="onPortfolioSelect(portfolio)">{{ product.name }}</td>
+                <td (click)="onPortfolioSelect(portfolio)">{{ product.region }}</td>
+                <td (click)="onPortfolioSelect(portfolio)">
                   <div class="text-right">${{ product.amount }}</div>
                 </td>
               </tr>

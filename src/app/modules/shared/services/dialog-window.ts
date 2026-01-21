@@ -99,7 +99,7 @@ export class DialogWindowService {
     component: any,
     config: any,
     ref: any,
-    state?: any
+    state?: any,
   ) {
     const current = this.minimizedSubject.value;
     const updated = [...current, { title, componentName, component, config, state }];
@@ -110,7 +110,7 @@ export class DialogWindowService {
         componentName: d.componentName,
         config: d.config,
         state: d.state,
-      }))
+      })),
     );
     ref.close();
   }
@@ -136,7 +136,7 @@ export class DialogWindowService {
           componentName: d.componentName,
           config: d.config,
           state: d.state,
-        }))
+        })),
       );
     }
   }
@@ -151,7 +151,7 @@ export class DialogWindowService {
         componentName: d.componentName,
         config: d.config,
         state: d.state,
-      }))
+      })),
     );
   }
 }

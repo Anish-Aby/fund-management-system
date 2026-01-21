@@ -102,14 +102,14 @@ export class Reconciliation {
   onInternalRecordSelect() {
     console.log(this.selectedInternalRecords());
     this.internalSelectedTotal.set(
-      this.selectedInternalRecords().reduce((sum, record) => sum + record.amount, 0)
+      this.selectedInternalRecords().reduce((sum, record) => sum + record.amount, 0),
     );
   }
 
   onExternalRecordSelect() {
     console.log(this.selectedExternalRecords());
     this.externalSelectedTotal.set(
-      this.selectedExternalRecords().reduce((sum, record) => sum + record.amount, 0)
+      this.selectedExternalRecords().reduce((sum, record) => sum + record.amount, 0),
     );
   }
 

@@ -119,6 +119,13 @@
                       [value]="invoice[col.field]"
                       [severity]="getSeverity(invoice[col.field])"
                     />
+                  } @else if (col.field === 'recoStatus') {
+                    <p-tag
+                      [value]="
+                        invoice[col.field]?.charAt(0).toUpperCase() + invoice[col.field]?.slice(1)
+                      "
+                      [severity]="getSeverity(invoice[col.field])"
+                    />
                   } @else {
                     {{ invoice[col.field] || '-' }}
                   }

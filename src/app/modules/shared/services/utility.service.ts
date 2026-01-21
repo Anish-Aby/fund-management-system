@@ -10,6 +10,7 @@ export class UtilityService {
         return 'danger';
 
       case 'approved':
+      case 'done':
         return 'success';
 
       case 'received':

@@ -18,6 +18,7 @@ import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import EntityMockData from './../core/mocks/entity-mock.json';
+import { ExpensesReport } from '../report/expenses-report/expenses-report';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,7 +60,7 @@ export class Dashboard implements OnInit {
     private dialogService: DialogService,
     private dialogWindowService: DialogWindowService,
     private fb: FormBuilder,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
   ) {
     this.entityForm = this.fb.group({
       entityId: [null],
@@ -304,6 +305,28 @@ export class Dashboard implements OnInit {
         modal: false,
         maximizable: true,
         focusOnShow: false,
+        position: 'center',
+        templates: {
+          header: DialogHeader,
+        },
+      });
+    }
+  }
+
+  onPortfolioSelect(portfolio: any): void {
+    if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
+      const dialogRef = this.dialogService.open(ExpensesReport, {
+        data: {
+          title: 'Expenses Report',
+          componentName: 'ExpensesReport',
+          component: ExpensesReport,
+          showData: true,
+          autoMaximize: true,
+        },
+        draggable: true,
+        resizable: true,
+        modal: false,
+        maximizable: true,
         position: 'center',
         templates: {
           header: DialogHeader,

@@ -121,9 +121,10 @@ export class InvoiceList {
           { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
           { field: 'portfolio', header: 'Portfolio', sortable: true },
           { field: 'aging', header: 'Aging', sortable: true },
-          { field: 'location', header: 'Location', sortable: true },
-          { field: 'currency', header: 'Currency', sortable: true },
           { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'netAmount', header: 'Net Amount', sortable: true },
+          { field: 'taxAmount', header: 'Tax Amount', sortable: true },
           { field: 'grossAmount', header: 'Gross Amount', sortable: true },
         ];
       case 'Pending':
@@ -133,9 +134,10 @@ export class InvoiceList {
           { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
           { field: 'portfolio', header: 'Portfolio', sortable: true },
           { field: 'aging', header: 'Aging', sortable: true },
-          { field: 'location', header: 'Location', sortable: true },
-          { field: 'currency', header: 'Currency', sortable: true },
           { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'netAmount', header: 'Net Amount', sortable: true },
+          { field: 'taxAmount', header: 'Tax Amount', sortable: true },
           { field: 'grossAmount', header: 'Gross Amount', sortable: true },
         ];
       case 'Approved':
@@ -145,9 +147,11 @@ export class InvoiceList {
           { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
           { field: 'portfolio', header: 'Portfolio', sortable: true },
           { field: 'aging', header: 'Aging', sortable: true },
-          { field: 'currency', header: 'Currency', sortable: true },
           { field: 'expenseType', header: 'Fee Category', sortable: true },
-          { field: 'approvedBy', header: 'Approved By', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'netAmount', header: 'Net Amount', sortable: true },
+          { field: 'fxPrice', header: 'FX Price', sortable: true },
+          { field: 'taxAmount', header: 'Tax Amount', sortable: true },
           { field: 'grossAmount', header: 'Gross Amount', sortable: true },
         ];
       case 'Rejected':
@@ -157,34 +161,39 @@ export class InvoiceList {
           { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
           { field: 'portfolio', header: 'Portfolio', sortable: true },
           { field: 'aging', header: 'Aging', sortable: true },
-          { field: 'currency', header: 'Currency', sortable: true },
-          { field: 'rejectedBy', header: 'Rejected By', sortable: true },
-          { field: 'rejectedReason', header: 'Rejected Reason', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'netAmount', header: 'Net Amount', sortable: true },
           { field: 'grossAmount', header: 'Gross Amount', sortable: true },
+          { field: 'rejectedReason', header: 'Rejected Reason', sortable: true },
         ];
       case 'Scheduled':
         return [
           { field: 'vendorName', header: 'Vendor Name', sortable: true },
           { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
-          { field: 'invoiceDate', header: 'Invoice Date', sortable: true },
           { field: 'dueDate', header: 'Invoice Due Date', sortable: true },
-          { field: 'fundName', header: 'Fund Name', sortable: true },
-          { field: 'fundBank', header: 'Fund Bank', sortable: true },
-          { field: 'paidFrom', header: 'Paid From', sortable: true },
-          { field: 'bankBalance', header: 'Bank Balance', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
+          { field: 'aging', header: 'Aging', sortable: true },
+          { field: 'expenseType', header: 'Fee Category', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'paidBy', header: 'Paid By', sortable: true },
           { field: 'grossAmount', header: 'Gross Amount', sortable: true },
         ];
       case 'Paid':
         return [
           { field: 'vendorName', header: 'Vendor Name', sortable: true },
           { field: 'invoiceNumber', header: 'Invoice No', sortable: true },
-          { field: 'paidDate', header: 'Paid Date', sortable: true },
+          { field: 'portfolio', header: 'Portfolio', sortable: true },
           { field: 'releasedEntity', header: 'Released Entity', sortable: true },
-          { field: 'entityBank', header: 'Entity Bank', sortable: true },
-          { field: 'paidBy', header: 'Paid By', sortable: true },
-          { field: 'currency', header: 'Base Currency', sortable: true },
           { field: 'expenseType', header: 'Fee Category', sortable: true },
-          { field: 'grossAmount', header: 'Paid Amount', sortable: true },
+          { field: 'status', header: 'Status', sortable: true },
+          { field: 'localCcy', header: 'Local Ccy', sortable: true },
+          { field: 'netAmount', header: 'Net Amount', sortable: true },
+          { field: 'fxPrice', header: 'FX Price', sortable: true },
+          { field: 'paidAmount', header: 'Paid Amount', sortable: true },
+          { field: 'paidDate', header: 'Paid Date', sortable: true },
+          { field: 'recoStatus', header: 'Reco Status', sortable: true },
+          { field: 'grossAmount', header: 'Gross Amount', sortable: true },
         ];
       default:
         return [

@@ -41,6 +41,29 @@ export class FundCashBalance {
     { label: 'FinLab Energy', value: 'finlab-energy' },
   ]);
 
+  vendorOptions = signal([
+    { label: 'Tech Solutions Inc', value: 'tech-solutions' },
+    { label: 'Cloud Services Ltd', value: 'cloud-services' },
+    { label: 'Legal Advisors LLC', value: 'legal-advisors' },
+    { label: 'Audit Partners', value: 'audit-partners' },
+    { label: 'Property Management Co', value: 'property-mgmt' },
+    { label: 'Marketing Agency Pro', value: 'marketing-agency' },
+    { label: 'Data Analytics Corp', value: 'data-analytics' },
+    { label: 'Construction Services', value: 'construction' },
+    { label: 'Financial Advisors Inc', value: 'financial-advisors' },
+    { label: 'Research Institute', value: 'research-institute' },
+    { label: 'Office Supplies Ltd', value: 'office-supplies' },
+    { label: 'MedTech Solutions', value: 'medtech' },
+    { label: 'Green Power Corp', value: 'green-power' },
+    { label: 'AI Research Lab', value: 'ai-research' },
+    { label: 'Urban Development LLC', value: 'urban-dev' },
+    { label: 'Risk Management Partners', value: 'risk-mgmt' },
+    { label: 'Global Trade Services', value: 'global-trade' },
+    { label: 'Biotech Research Inc', value: 'biotech' },
+    { label: 'Solar Panel Manufacturers', value: 'solar-panels' },
+    { label: 'Cybersecurity Solutions', value: 'cybersecurity' },
+  ]);
+
   totals = computed(() => {
     const data = this.filteredData();
     return {

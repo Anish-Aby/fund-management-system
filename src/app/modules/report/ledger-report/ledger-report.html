@@ -14,175 +14,167 @@
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-          <div>Entity</div>
-          <p-select
-            class="mb-4 w-80"
-            panelStyleClass="w-60"
-            [options]="entityOptions()"
-            [filter]="true"
-            [showClear]="true"
-            placeholder="Select entity"
-            fluid
-          />
+          <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
+            <div>Portfolio</div>
+            <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose portfolio" />
+          </div>
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Vendor</div>
           <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose vendor" />
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-          <div>Portfolio</div>
-          <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose portfolio" />
-        </div>
-        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Date From</div>
-          <p-datepicker fluid />
+          <p-datepicker fluid placeholder="Select start date" />
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div>Date To</div>
-          <p-datepicker fluid />
+          <p-datepicker fluid placeholder="Select end date" />
         </div>
-        <div class="col-span-12 mt-2 @7xl:col-span-2 @7xl:mt-0 flex items-center justify-end">
-          <p-button
-            icon="pi pi-print"
-            aria-label="Download PDF"
-            variant="outlined"
-            severity="contrast"
-            class="mr-2"
-          />
-          <p-button
-            icon="pi pi-file-excel"
-            aria-label="Download Excel"
-            variant="outlined"
-            severity="contrast"
-            class="mr-2"
-          />
+        <div class="col-span-12 mt-2 @7xl:col-span-2 @7xl:mt-0 flex items-end justify-between">
           <p-button
             icon="pi pi-search"
             severity="contrast"
             label="Search"
             (onClick)="getLedgerReport()"
           />
+          <div>
+            <p-button
+              icon="pi pi-print"
+              aria-label="Download PDF"
+              variant="outlined"
+              severity="contrast"
+              class="mr-2"
+            />
+            <p-button
+              icon="pi pi-file-excel"
+              aria-label="Download Excel"
+              variant="outlined"
+              severity="contrast"
+              class="mr-2"
+            />
+          </div>
         </div>
       </div>
 
       <div class="col-span-12">
         @if (ledgerData().length === 0) {
-        <app-no-data-placeholder></app-no-data-placeholder>
+          <app-no-data-placeholder></app-no-data-placeholder>
         } @else {
-        <p-table
-          #dt
-          [value]="ledgerData()"
-          stripedRows="true"
-          size="small"
-          showGridlines="true"
-          rowGroupMode="subheader"
-          [scrollable]="true"
-          scrollHeight="500px"
-          class="table-dashboard-invoice"
-          [resizableColumns]="true"
-          columnResizeMode="expand"
-          (onFilter)="onTableFilter($event)"
-          [globalFilterFields]="[
-            'portfolioName',
-            'voucherType',
-            'tranNo',
-            'invoiceNo',
-            'particulars'
-          ]"
-        >
-          <ng-template #header>
-            <tr>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Invoice Date</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Paid Date</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Voucher Type</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Transaction No</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Invoice No</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Portfolio Name</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Particulars</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Debit</div>
-              </th>
-              <th pResizableColumn>
-                <div class="flex items-center justify-between gap-3">Credit</div>
-              </th>
-              <th>
-                <div class="flex items-center justify-between gap-3">Balance</div>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-ledger>
-            <tr>
-              @if (ledger.type && ledger.type === "opening balance") {
-              <td colspan="7" class="bg-amber-100">
-                <div class="flex items-center justify-center">Opening Balance</div>
-              </td>
-              <td class="bg-amber-100"><div class="text-right">-</div></td>
-              <td class="bg-amber-100"><div class="text-right">-</div></td>
-              <td class="bg-amber-100"><div class="text-right">$15000</div></td>
-              } @else {
-              <td>{{ ledger.invoiceDate }}</td>
-              <td>{{ ledger.paidDate }}</td>
-              <td>
-                @if (ledger.voucherType === 'Payment') {
-                <p-tag severity="success" value="Payment" />
+          <p-table
+            #dt
+            [value]="ledgerData()"
+            stripedRows="true"
+            size="small"
+            showGridlines="true"
+            rowGroupMode="subheader"
+            [scrollable]="true"
+            scrollHeight="500px"
+            class="table-dashboard-invoice"
+            [resizableColumns]="true"
+            columnResizeMode="expand"
+            (onFilter)="onTableFilter($event)"
+            [globalFilterFields]="[
+              'portfolioName',
+              'voucherType',
+              'tranNo',
+              'invoiceNo',
+              'particulars',
+            ]"
+          >
+            <ng-template #header>
+              <tr>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Invoice Date</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Paid Date</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Voucher Type</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Transaction No</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Invoice No</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Portfolio Name</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Particulars</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Debit</div>
+                </th>
+                <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Credit</div>
+                </th>
+                <th>
+                  <div class="flex items-center justify-between gap-3">Balance</div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-ledger>
+              <tr>
+                @if (ledger.type && ledger.type === 'opening balance') {
+                  <td colspan="7" class="bg-amber-100">
+                    <div class="flex items-center justify-center">Opening Balance</div>
+                  </td>
+                  <td class="bg-amber-100"><div class="text-right">-</div></td>
+                  <td class="bg-amber-100"><div class="text-right">-</div></td>
+                  <td class="bg-amber-100"><div class="text-right">$15000</div></td>
                 } @else {
-                <p-tag severity="warn" value="Invoice" />
+                  <td>{{ ledger.invoiceDate }}</td>
+                  <td>{{ ledger.paidDate }}</td>
+                  <td>
+                    @if (ledger.voucherType === 'Payment') {
+                      <p-tag severity="success" value="Payment" />
+                    } @else {
+                      <p-tag severity="warn" value="Invoice" />
+                    }
+                  </td>
+                  <td>{{ ledger.tranNo }}</td>
+                  <td>{{ ledger.invoiceNo }}</td>
+                  <td>{{ ledger.portfolioName }}</td>
+                  <td>{{ ledger.particulars }}</td>
+                  <td>
+                    <div class="text-right">
+                      {{ ledger.debit > 0 ? '$' + ledger.debit : '-' }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="text-right">
+                      {{ ledger.credit > 0 ? '$' + ledger.credit : '-' }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="text-right">${{ ledger.balance }}</div>
+                  </td>
                 }
-              </td>
-              <td>{{ ledger.tranNo }}</td>
-              <td>{{ ledger.invoiceNo }}</td>
-              <td>{{ ledger.portfolioName }}</td>
-              <td>{{ ledger.particulars }}</td>
-              <td>
-                <div class="text-right">
-                  {{ ledger.debit > 0 ? '$' + ledger.debit : '-' }}
-                </div>
-              </td>
-              <td>
-                <div class="text-right">
-                  {{ ledger.credit > 0 ? '$' + ledger.credit : '-' }}
-                </div>
-              </td>
-              <td>
-                <div class="text-right">${{ ledger.balance }}</div>
-              </td>
-              }
-            </tr>
-          </ng-template>
-          <ng-template #footer>
-            <tr>
-              <td
-                colspan="7"
-                class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
-              >
-                Total
-              </td>
-              <td>
-                <div class="text-right font-semibold">${{ totals().debit }}</div>
-              </td>
-              <td>
-                <div class="text-right font-semibold">${{ totals().credit }}</div>
-              </td>
-              <td>
-                <div class="text-right font-semibold">${{ totals().balance }}</div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+              </tr>
+            </ng-template>
+            <ng-template #footer>
+              <tr>
+                <td
+                  colspan="7"
+                  class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
+                >
+                  Total
+                </td>
+                <td>
+                  <div class="text-right font-semibold">${{ totals().debit }}</div>
+                </td>
+                <td>
+                  <div class="text-right font-semibold">${{ totals().credit }}</div>
+                </td>
+                <td>
+                  <div class="text-right font-semibold">${{ totals().balance }}</div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         }
       </div>
     </div>

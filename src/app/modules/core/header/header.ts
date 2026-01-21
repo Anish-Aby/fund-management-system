@@ -53,7 +53,7 @@ export class Header {
     private router: Router,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef,
-    private dialogWindowService: DialogWindowService
+    private dialogWindowService: DialogWindowService,
   ) {}
 
   ngOnInit() {
@@ -108,7 +108,9 @@ export class Header {
       {
         label: 'Dashboard',
         icon: 'pi pi-home',
-        routerLink: 'dashboard',
+        command: () => {
+          this.navigateToDashboard();
+        },
       },
       {
         label: 'File',
@@ -686,5 +688,10 @@ export class Header {
         },
       });
     }
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['app/dashboard']);
+    // this.dialogWindowService.minimizeAll();
   }
 }

@@ -7,7 +7,6 @@ import { TagModule } from 'primeng/tag';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
-import { AltLoaderComponent, MainLoaderComponent } from '../../shared/components/main-loader';
 import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 
 @Component({

@@ -8,6 +8,7 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-expenses-report',
@@ -27,6 +28,16 @@ import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/n
 export class ExpensesReport {
   expensesData = signal<any[]>([]);
   filteredData = signal<any[]>(expensesMockData);
+
+  currencyOptions = signal([
+    { label: 'Base Currency', id: 1 },
+    { label: 'Local Currency', id: 2 },
+  ]);
+
+  taxOptions = signal([
+    { label: 'With Tax', id: 1 },
+    { label: 'Without Tax', id: 2 },
+  ]);
 
   entityOptions = signal([
     { label: 'FinLab Holdings Ltd', value: 'finlab-holdings' },
@@ -67,6 +78,12 @@ export class ExpensesReport {
     { label: 'Investor Report', value: 'investor-report' },
     { label: 'Professional Fee', value: 'professional-fee' },
   ]);
+
+  constructor(private config: DynamicDialogConfig) {
+    if (this.config.data?.showData) {
+      this.getExpensesReport();
+    }
+  }
 
   totals = computed(() => {
     const data = this.filteredData();
