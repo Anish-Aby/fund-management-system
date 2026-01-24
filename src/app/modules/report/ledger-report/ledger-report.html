@@ -15,20 +15,24 @@
       >
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
           <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-            <div>Portfolio</div>
-            <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose portfolio" />
+            <div class="required">Category</div>
+            <p-select fluid [options]="categoryOptions()" placeholder="Choose portfolio / vendor" />
           </div>
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-          <div>Vendor</div>
-          <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose vendor" />
+          <div class="required">Account Type</div>
+          <p-multiselect fluid [options]="vendorOptions()" placeholder="Choose account" />
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-          <div>Date From</div>
+          <div class="required">Voucher Type</div>
+          <p-multiselect fluid [options]="voucherTypeOptions()" placeholder="Choose account" />
+        </div>
+        <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
+          <div class="required">Date From</div>
           <p-datepicker fluid placeholder="Select start date" />
         </div>
         <div class="col-span-12 @md:col-span-4 @5xl:col-span-2">
-          <div>Date To</div>
+          <div class="required">Date To</div>
           <p-datepicker fluid placeholder="Select end date" />
         </div>
         <div class="col-span-12 mt-2 @7xl:col-span-2 @7xl:mt-0 flex items-end justify-between">
@@ -91,6 +95,9 @@
                   <div class="flex items-center justify-between gap-3">Paid Date</div>
                 </th>
                 <th pResizableColumn>
+                  <div class="flex items-center justify-between gap-3">Portfolio Name</div>
+                </th>
+                <th pResizableColumn>
                   <div class="flex items-center justify-between gap-3">Voucher Type</div>
                 </th>
                 <th pResizableColumn>
@@ -98,9 +105,6 @@
                 </th>
                 <th pResizableColumn>
                   <div class="flex items-center justify-between gap-3">Invoice No</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Portfolio Name</div>
                 </th>
                 <th pResizableColumn>
                   <div class="flex items-center justify-between gap-3">Particulars</div>
@@ -128,6 +132,7 @@
                 } @else {
                   <td>{{ ledger.invoiceDate }}</td>
                   <td>{{ ledger.paidDate }}</td>
+                  <td>{{ ledger.portfolioName }}</td>
                   <td>
                     @if (ledger.voucherType === 'Payment') {
                       <p-tag severity="success" value="Payment" />
@@ -137,7 +142,6 @@
                   </td>
                   <td>{{ ledger.tranNo }}</td>
                   <td>{{ ledger.invoiceNo }}</td>
-                  <td>{{ ledger.portfolioName }}</td>
                   <td>{{ ledger.particulars }}</td>
                   <td>
                     <div class="text-right">

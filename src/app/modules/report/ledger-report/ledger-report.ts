@@ -8,6 +8,8 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
+import CategoryTypeOptions from '../../core/mocks/category-type-mock.json';
+import VoucherTypeOptions from '../../core/mocks/voucher-type-mock.json';
 
 @Component({
   selector: 'app-ledger-report',
@@ -27,6 +29,9 @@ import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/n
 export class LedgerReport {
   ledgerData = signal<any[]>([]);
   filteredData = signal<any[]>(ledgerMockData);
+
+  categoryOptions = signal(CategoryTypeOptions);
+  voucherTypeOptions = signal(VoucherTypeOptions);
 
   entityOptions = signal([
     { label: 'FinLab Holdings Ltd', value: 'finlab-holdings' },

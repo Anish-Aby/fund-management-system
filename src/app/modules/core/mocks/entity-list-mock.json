@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Tech Solutions Fund",
+    "code": "CV-1231",
+    "baseCcy": "USD",
+    "region": "US"
+  },
+  {
+    "name": "Global Equity Fund",
+    "code": "GEF-4567",
+    "baseCcy": "EUR",
+    "region": "EU"
+  },
+  {
+    "name": "Asia Growth Fund",
+    "code": "AGF-8901",
+    "baseCcy": "JPY",
+    "region": "JP"
+  },
+  {
+    "name": "Emerging Markets Fund",
+    "code": "EMF-2345",
+    "baseCcy": "USD",
+    "region": "EM"
+  },
+  {
+    "name": "Sustainable Future Fund",
+    "code": "SFF-6789",
+    "baseCcy": "GBP",
+    "region": "UK"
+  },
+  {
+    "name": "Real Estate Investment Fund",
+    "code": "REIF-1122",
+    "baseCcy": "USD",
+    "region": "US"
+  },
+  {
+    "name": "Technology Innovation Fund",
+    "code": "TIF-3344",
+    "baseCcy": "EUR",
+    "region": "EU"
+  },
+  {
+    "name": "Healthcare Opportunities Fund",
+    "code": "HOF-5566",
+    "baseCcy": "USD",
+    "region": "US"
+  },
+  {
+    "name": "Infrastructure Development Fund",
+    "code": "IDF-7788",
+    "baseCcy": "AUD",
+    "region": "AU"
+  },
+  {
+    "name": "Global Bond Fund",
+    "code": "GBF-9900",
+    "baseCcy": "USD",
+    "region": "JP"
+  },
+  {
+    "name": "Energy Sector Fund",
+    "code": "ESF-2233",
+    "baseCcy": "CAD",
+    "region": "CA"
+  },
+  {
+    "name": "Consumer Goods Fund",
+    "code": "CGF-4455",
+    "baseCcy": "EUR",
+    "region": "EU"
+  }
+]

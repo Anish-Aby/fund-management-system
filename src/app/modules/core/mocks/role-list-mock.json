@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "name": "Admin",
+    "userAssignedCount": 5,
+    "hasAdminRights": true,
+    "description": "Administrator role with full access"
+  },
+  {
+    "id": "2",
+    "name": "Editor",
+    "userAssignedCount": 12,
+    "hasAdminRights": false,
+    "description": "Editor role with content modification rights"
+  },
+  {
+    "id": "3",
+    "name": "Viewer",
+    "userAssignedCount": 20,
+    "hasAdminRights": false,
+    "description": "Viewer role with read-only access"
+  },
+  {
+    "id": "4",
+    "name": "Contributor",
+    "userAssignedCount": 8,
+    "hasAdminRights": false,
+    "description": "Contributor role with content creation rights"
+  },
+  {
+    "id": "5",
+    "name": "Manager",
+    "userAssignedCount": 3,
+    "hasAdminRights": true,
+    "description": "Manager role with team oversight capabilities"
+  },
+  {
+    "id": "6",
+    "name": "Support",
+    "userAssignedCount": 10,
+    "hasAdminRights": false,
+    "description": "Support role for customer assistance"
+  },
+  {
+    "id": "7",
+    "name": "Guest",
+    "userAssignedCount": 15,
+    "hasAdminRights": false,
+    "description": "Guest role with limited access"
+  }
+]

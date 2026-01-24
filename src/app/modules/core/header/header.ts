@@ -152,128 +152,47 @@ export class Header {
         icon: 'pi pi-star',
         items: [
           {
-            label: 'Entities',
+            label: 'Entity Management',
             icon: 'pi pi-building',
-            items: [
-              {
-                label: 'Add Entities',
-                icon: 'pi pi-plus-circle',
-                command: () => {
-                  this.showAddEntity();
-                },
-              },
-              {
-                label: 'Edit Entities',
-                icon: 'pi pi-pencil',
-              },
-              {
-                label: 'Delete Entities',
-                icon: 'pi pi-trash',
-              },
-            ],
+            command: () => {
+              this.showAddEntity();
+            },
           },
           {
-            label: 'Users',
+            label: 'User Management',
             icon: 'pi pi-users',
-            items: [
-              {
-                label: 'Add Users',
-                icon: 'pi pi-plus-circle',
-                command: () => {
-                  this.showAddUsers();
-                },
-              },
-              {
-                label: 'Edit Users',
-                icon: 'pi pi-pencil',
-              },
-            ],
+            command: () => {
+              this.showAddUsers();
+            },
           },
           {
-            label: 'Vendors',
+            label: 'Vendor Management',
             icon: 'pi pi-shop',
-            items: [
-              {
-                label: 'Add Vendors',
-                icon: 'pi pi-plus-circle',
-                command: () => {
-                  // this.router.navigate(['app/vendor/list']);
-                  this.showAddVendor();
-                },
-              },
-              {
-                label: 'Edit Vendors',
-                icon: 'pi pi-pencil',
-                command: () => {
-                  // this.router.navigate(['app/vendor/list']);
-                  this.showVendor();
-                },
-              },
-              {
-                label: 'Delete Vendors',
-                icon: 'pi pi-trash',
-                command: () => {
-                  // this.router.navigate(['app/vendor/list']);
-                  this.showVendor();
-                },
-              },
-            ],
+            command: () => {
+              this.showAddVendor();
+            },
           },
           {
-            label: 'Expenses',
+            label: 'Expense Management',
             icon: 'pi pi-money-bill',
-            items: [
-              {
-                label: 'Add Expenses',
-                icon: 'pi pi-plus-circle',
-              },
-              {
-                label: 'Edit Expenses',
-                icon: 'pi pi-pencil',
-              },
-              {
-                label: 'Delete Expenses',
-                icon: 'pi pi-trash',
-              },
-            ],
           },
           {
-            label: 'Portfolio',
+            label: 'Portfolio Management',
             icon: 'pi pi-briefcase',
-            items: [
-              {
-                label: 'Add Portfolio',
-                icon: 'pi pi-plus-circle',
-              },
-              {
-                label: 'Edit Portfolio',
-                icon: 'pi pi-pencil',
-              },
-              {
-                label: 'Delete Portfolio',
-                icon: 'pi pi-trash',
-              },
-            ],
           },
           {
-            label: 'Roles',
+            label: 'Bank Management',
+            icon: 'pi pi-building-columns',
+            command: () => {
+              // this.showAddEntity();
+            },
+          },
+          {
+            label: 'Role Management',
             icon: 'pi pi-shield',
-            items: [
-              {
-                label: 'Add Roles',
-                icon: 'pi pi-plus-circle',
-                command: () => {
-                  this.showAddRoles();
-                },
-              },
-              {
-                label: 'Edit Roles',
-                icon: 'pi pi-pencil',
-                command: () => {
-                  // this.showRoles();
-                },
-              },
-            ],
+            command: () => {
+              this.showAddRoles();
+            },
           },
         ],
       },
@@ -335,10 +254,7 @@ export class Header {
               this.showForexPricing();
             },
           },
-          {
-            label: 'Split Invoice',
-            icon: 'pi pi-clone',
-          },
+
           {
             label: 'Invoice Error',
             icon: 'pi pi-exclamation-triangle',
@@ -456,10 +372,10 @@ export class Header {
           title: 'Vendor Add',
           componentName: 'VendorAdd',
           component: VendorAdd,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
-        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,
@@ -543,10 +459,10 @@ export class Header {
           title: 'Entity Add',
           componentName: 'EntityAdd',
           component: EntityAdd,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
-        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,
@@ -565,10 +481,10 @@ export class Header {
           title: 'Role Add',
           componentName: 'RoleAdd',
           component: RoleAdd,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
-        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,
@@ -587,10 +503,10 @@ export class Header {
           title: 'User Add',
           componentName: 'UserAdd',
           component: UserAdd,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,
-        width: '50%',
         modal: false,
         maximizable: true,
         focusOnShow: false,

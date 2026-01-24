@@ -14,32 +14,28 @@
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-2">
-          <div>Portfolio</div>
-          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select portfolio" />
+          <div class="required">Category</div>
+          <p-select fluid [options]="categoryOptions()" placeholder="Choose portfolio / vendor" />
         </div>
         <div class="col-span-2">
-          <div>Vendor</div>
-          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select vendor" />
+          <div class="required">Account Type</div>
+          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select account" />
         </div>
         <div class="col-span-2">
-          <div>Expense Type</div>
-          <p-multiselect fluid [options]="expenseTypeOptions()" placeholder="Select expense type" />
-        </div>
-        <div class="col-span-2">
-          <div>Date From</div>
-          <p-datepicker fluid placeholder="Select start date" />
-        </div>
-        <div class="col-span-2">
-          <div>Date To</div>
-          <p-datepicker fluid placeholder="Select end date" />
-        </div>
-        <div class="col-span-2">
-          <div>Currency</div>
+          <div class="required">Currency</div>
           <p-select fluid [options]="currencyOptions()" placeholder="Select currency" />
         </div>
         <div class="col-span-2">
-          <div>Tax</div>
+          <div class="required">Tax</div>
           <p-select fluid [options]="taxOptions()" placeholder="Select with / without tax" />
+        </div>
+        <div class="col-span-1">
+          <div class="required">Date From</div>
+          <p-datepicker fluid />
+        </div>
+        <div class="col-span-1">
+          <div class="required">Date To</div>
+          <p-datepicker fluid />
         </div>
         <div class="col-span-2 flex items-end justify-between">
           <p-button

@@ -1,7 +1,4 @@
 [
-  { "id": "TYPE-001", "name": "Standard Invoice" },
   { "id": "TYPE-002", "name": "Credit Note" },
-  { "id": "TYPE-003", "name": "Debit Note" },
-  { "id": "TYPE-004", "name": "Proforma Invoice" },
-  { "id": "TYPE-005", "name": "Recurring Invoice" }
+  { "id": "TYPE-003", "name": "Debit Note" }
 ]

@@ -12,7 +12,7 @@
         class="grid grid-cols-12 gap-y-5 gap-x-4 py-5 px-5 bg-slate-100 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-2">
-          <div>Vendor Name</div>
+          <div class="required">Vendor Name</div>
           <p-select
             fluid
             [options]="vendors"
@@ -24,7 +24,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Invoice Type</div>
+          <div class="required">Invoice Type</div>
           <p-select
             fluid
             [options]="invoiceTypes"
@@ -36,7 +36,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Invoice No</div>
+          <div class="required">Invoice No</div>
           <input
             placeholder="e.g. INV-2024-001"
             fluid
@@ -47,7 +47,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Invoiced Fund Name</div>
+          <div class="required">Invoiced Fund Name</div>
           <p-select
             fluid
             [options]="funds"
@@ -59,7 +59,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Invoice Date</div>
+          <div class="required">Invoice Date</div>
           <p-datepicker
             placeholder="Select date"
             fluid
@@ -68,7 +68,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Invoice Due Date</div>
+          <div class="required">Invoice Due Date</div>
           <p-datepicker
             placeholder="Select date"
             fluid
@@ -77,7 +77,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Fee Type</div>
+          <div class="required">Fee Type</div>
           <p-select
             fluid
             [options]="feeTypes"
@@ -88,8 +88,8 @@
             (ngModelChange)="updateInvoiceField('feeType', $event)"
           />
         </div>
-        <div class="col-span-2">
-          <div>Vendor Ccy</div>
+        <div class="col-span-1">
+          <div class="required">Vendor Ccy</div>
           <input
             placeholder="USD, EUR, GBP..."
             fluid
@@ -100,7 +100,7 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Net Amount</div>
+          <div class="required">Net Amount</div>
           <input
             placeholder="0.00"
             fluid
@@ -110,8 +110,8 @@
             (ngModelChange)="updateInvoiceField('netAmount', $event)"
           />
         </div>
-        <div class="col-span-2">
-          <div>Tax Amount</div>
+        <div class="col-span-1">
+          <div class="required">Tax %</div>
           <input
             placeholder="0.00"
             fluid
@@ -122,7 +122,18 @@
           />
         </div>
         <div class="col-span-2">
-          <div>Gross Amount</div>
+          <div class="required">Tax Amount</div>
+          <input
+            placeholder="0.00"
+            fluid
+            type="number"
+            pInputText
+            [(ngModel)]="newInvoice().taxAmount"
+            (ngModelChange)="updateInvoiceField('taxAmount', $event)"
+          />
+        </div>
+        <div class="col-span-2">
+          <div class="required">Gross Amount</div>
           <input
             placeholder="0.00"
             fluid
@@ -144,176 +155,179 @@
 
       <div class="col-span-12">
         @if (addedInvoice().length > 0) {
-        <p-table
-          [value]="addedInvoice()"
-          dataKey="id"
-          stripedRows="true"
-          size="small"
-          showGridlines="true"
-          [scrollable]="true"
-          scrollHeight="400px"
-          [resizableColumns]="true"
-          columnResizeMode="expand"
-        >
-          <ng-template #header>
-            <tr>
-              <th pResizableColumn>Vendor Name</th>
-              <th pResizableColumn>Invoice Type</th>
-              <th pResizableColumn>Invoice Date</th>
-              <th pResizableColumn>Invoice No</th>
-              <th pResizableColumn>Invoice Due Date</th>
-              <th pResizableColumn>Invoiced Fund Name</th>
-              <th pResizableColumn>Vendor CCy</th>
-              <th pResizableColumn>Fee Type</th>
-              <th pResizableColumn>Net Amount</th>
-              <th pResizableColumn>Tax Amount</th>
-              <th pResizableColumn>Gross Amount</th>
-              <th pResizableColumn>Actions</th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-invoice>
-            <tr>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-select
-                  [(ngModel)]="invoice.vendorName"
-                  [options]="vendors"
-                  optionLabel="displayName"
-                  optionValue="displayName"
-                />
-                } @else {
-                {{ invoice.vendorName }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-select
-                  [(ngModel)]="invoice.invoiceType"
-                  [options]="invoiceTypes"
-                  optionLabel="name"
-                  optionValue="name"
-                />
-                } @else {
-                {{ invoice.invoiceType }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-datepicker [(ngModel)]="invoice.invoiceDate" />
-                } @else {
-                {{ invoice.invoiceDate | date : 'shortDate' }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <input [(ngModel)]="invoice.invoiceNo" pInputText />
-                } @else {
-                {{ invoice.invoiceNo }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-datepicker [(ngModel)]="invoice.invoiceDueDate" />
-                } @else {
-                {{ invoice.invoiceDueDate | date : 'shortDate' }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-select
-                  [(ngModel)]="invoice.invoicedFundName"
-                  [options]="funds"
-                  optionLabel="name"
-                  optionValue="name"
-                />
-                } @else {
-                {{ invoice.invoicedFundName }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <input [(ngModel)]="invoice.vendorCcy" pInputText />
-                } @else {
-                {{ invoice.vendorCcy }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <p-select
-                  [(ngModel)]="invoice.feeType"
-                  [options]="feeTypes"
-                  optionLabel="name"
-                  optionValue="name"
-                />
-                } @else {
-                {{ invoice.feeType }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <input [(ngModel)]="invoice.netAmount" type="number" pInputText />
-                } @else { ${{ invoice.netAmount | number }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <input [(ngModel)]="invoice.taxAmount" type="number" pInputText />
-                } @else { ${{ invoice.taxAmount | number }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <input [(ngModel)]="invoice.grossAmount" type="number" pInputText />
-                } @else { ${{ invoice.grossAmount | number }}
-                }
-              </td>
-              <td>
-                @if (editingInvoice() === invoice.id) {
-                <div class="flex gap-2">
-                  <p-button
-                    icon="pi pi-check"
-                    size="small"
-                    severity="success"
-                    (click)="saveInvoice(invoice.id)"
-                  />
-                  <p-button
-                    icon="pi pi-times"
-                    size="small"
-                    variant="outlined"
-                    severity="contrast"
-                    (click)="cancelEdit()"
-                  />
-                </div>
-                } @else {
-                <div class="flex gap-2">
-                  <p-button
-                    icon="pi pi-pencil"
-                    size="small"
-                    variant="outlined"
-                    severity="contrast"
-                    (click)="editInvoice(invoice.id)"
-                  />
-                  <p-button
-                    icon="pi pi-trash"
-                    size="small"
-                    variant="outlined"
-                    severity="danger"
-                    (click)="deleteInvoice(invoice.id)"
-                  />
-                </div>
-                }
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-        } @else {
-        <div class="p-5">
-          <div
-            class="border rounded-2xl border-surface border-dashed h-96 flex items-center justify-center text-muted-color text-lg"
+          <p-table
+            [value]="addedInvoice()"
+            dataKey="id"
+            stripedRows="true"
+            size="small"
+            showGridlines="true"
+            [scrollable]="true"
+            scrollHeight="400px"
+            [resizableColumns]="true"
+            columnResizeMode="expand"
           >
-            Add an invoice to see details here.
+            <ng-template #header>
+              <tr>
+                <th pResizableColumn>Vendor Name</th>
+                <th pResizableColumn>Invoice Type</th>
+                <th pResizableColumn>Invoice Date</th>
+                <th pResizableColumn>Invoice No</th>
+                <th pResizableColumn>Invoice Due Date</th>
+                <th pResizableColumn>Invoiced Fund Name</th>
+                <th pResizableColumn>Vendor CCy</th>
+                <th pResizableColumn>Fee Type</th>
+                <th pResizableColumn>Net Amount</th>
+                <th pResizableColumn>Tax Amount</th>
+                <th pResizableColumn>Gross Amount</th>
+                <th pResizableColumn>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-invoice>
+              <tr>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-select
+                      [(ngModel)]="invoice.vendorName"
+                      [options]="vendors"
+                      optionLabel="displayName"
+                      optionValue="displayName"
+                    />
+                  } @else {
+                    {{ invoice.vendorName }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-select
+                      [(ngModel)]="invoice.invoiceType"
+                      [options]="invoiceTypes"
+                      optionLabel="name"
+                      optionValue="name"
+                    />
+                  } @else {
+                    {{ invoice.invoiceType }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-datepicker [(ngModel)]="invoice.invoiceDate" />
+                  } @else {
+                    {{ invoice.invoiceDate | date: 'shortDate' }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <input [(ngModel)]="invoice.invoiceNo" pInputText />
+                  } @else {
+                    {{ invoice.invoiceNo }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-datepicker [(ngModel)]="invoice.invoiceDueDate" />
+                  } @else {
+                    {{ invoice.invoiceDueDate | date: 'shortDate' }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-select
+                      [(ngModel)]="invoice.invoicedFundName"
+                      [options]="funds"
+                      optionLabel="name"
+                      optionValue="name"
+                    />
+                  } @else {
+                    {{ invoice.invoicedFundName }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <input [(ngModel)]="invoice.vendorCcy" pInputText />
+                  } @else {
+                    {{ invoice.vendorCcy }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <p-select
+                      [(ngModel)]="invoice.feeType"
+                      [options]="feeTypes"
+                      optionLabel="name"
+                      optionValue="name"
+                    />
+                  } @else {
+                    {{ invoice.feeType }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <input [(ngModel)]="invoice.netAmount" type="number" pInputText />
+                  } @else {
+                    ${{ invoice.netAmount | number }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <input [(ngModel)]="invoice.taxAmount" type="number" pInputText />
+                  } @else {
+                    ${{ invoice.taxAmount | number }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <input [(ngModel)]="invoice.grossAmount" type="number" pInputText />
+                  } @else {
+                    ${{ invoice.grossAmount | number }}
+                  }
+                </td>
+                <td>
+                  @if (editingInvoice() === invoice.id) {
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-check"
+                        size="small"
+                        severity="success"
+                        (click)="saveInvoice(invoice.id)"
+                      />
+                      <p-button
+                        icon="pi pi-times"
+                        size="small"
+                        variant="outlined"
+                        severity="contrast"
+                        (click)="cancelEdit()"
+                      />
+                    </div>
+                  } @else {
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-pencil"
+                        size="small"
+                        variant="outlined"
+                        severity="contrast"
+                        (click)="editInvoice(invoice.id)"
+                      />
+                      <p-button
+                        icon="pi pi-trash"
+                        size="small"
+                        variant="outlined"
+                        severity="danger"
+                        (click)="deleteInvoice(invoice.id)"
+                      />
+                    </div>
+                  }
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        } @else {
+          <div class="p-5">
+            <div
+              class="border rounded-2xl border-surface border-dashed h-96 flex items-center justify-center text-muted-color text-lg"
+            >
+              Add an invoice to see details here.
+            </div>
           </div>
-        </div>
         }
       </div>
     </div>

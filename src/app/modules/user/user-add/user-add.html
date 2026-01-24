@@ -1,377 +1,507 @@
 <div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl" [formGroup]="userForm">
-  <div class="border border-surface bg-primary-contrast rounded-2xl py-4 px-4">
-    <h1 class="text-3xl font-medium">User Add</h1>
-    <p-tabs value="0" class="tab-pl-0">
-      <p-tablist>
-        <p-tab value="0">Basic Information</p-tab>
-        <p-tab value="1">Organization & Fund</p-tab>
-        <p-tab value="2">Authentication & Security</p-tab>
-        <p-tab value="3">Workflow & Notifications</p-tab>
-      </p-tablist>
-      <p-tabpanels>
-        <p-tabpanel value="0">
-          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
-            <div class="col-span-6">
-              <div>User ID</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="System generated"
-                formControlName="userId"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Title</div>
-              <p-select
-                appendTo="body"
-                formControlName="title"
-                [options]="titleOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select Title"
-                fluid
-              />
-            </div>
-            <div class="col-span-6">
-              <div>First Name</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter first name"
-                formControlName="firstName"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Middle Name</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter middle name (optional)"
-                formControlName="middleName"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Last Name</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter last name"
-                formControlName="lastName"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Display Name</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter display name"
-                formControlName="displayName"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Organization Name</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter organization name"
-                formControlName="organizationName"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Employee ID</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter employee ID"
-                formControlName="employeeId"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Email Address</div>
-              <input
-                fluid
-                type="email"
-                pInputText
-                placeholder="Enter work email"
-                formControlName="emailAddress"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Mobile Number</div>
-              <input
-                fluid
-                type="tel"
-                pInputText
-                placeholder="Enter mobile number"
-                formControlName="mobileNumber"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Alternate Contact Number</div>
-              <input
-                fluid
-                type="tel"
-                pInputText
-                placeholder="Enter alternate number (optional)"
-                formControlName="alternateContact"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Role</div>
-              <p-select
-                appendTo="body"
-                formControlName="role"
-                [options]="roleOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select Role"
-                [filter]="true"
-                filterBy="label"
-                fluid
-              />
-            </div>
-          </div>
-        </p-tabpanel>
-        <p-tabpanel value="1">
-          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
-            <div class="col-span-6">
-              <div>Legal Entity Name</div>
-              <p-multiselect
-                formControlName="legalEntities"
-                [options]="entityOptions"
-                optionLabel="label"
-                placeholder="Select Legal Entities"
-                appendTo="body"
-                fluid
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Fund Name(s)</div>
-              <p-multiselect
-                formControlName="funds"
-                [options]="fundOptions"
-                optionLabel="label"
-                placeholder="Select Funds"
-                appendTo="body"
-                fluid
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Department / Function</div>
-              <p-select
-                appendTo="body"
-                formControlName="department"
-                [options]="departmentOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select Department"
-                [filter]="true"
-                filterBy="label"
-                fluid
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Office Location</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter city / country"
-                formControlName="officeLocation"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Time Zone</div>
-              <p-select
-                appendTo="body"
-                formControlName="timezone"
-                [options]="timezoneOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select Time Zone"
-                [filter]="true"
-                filterBy="label"
-                fluid
-              />
-            </div>
-          </div>
-        </p-tabpanel>
-        <p-tabpanel value="2">
-          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
-            <div class="col-span-6">
-              <div>Username</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter username"
-                formControlName="username"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Password</div>
-              <p-password fluid placeholder="Enter password" formControlName="password" />
-            </div>
-            <div class="col-span-6">
-              <div>Login Method</div>
-              <p-select
-                appendTo="body"
-                formControlName="loginMethod"
-                [options]="loginMethodOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select Login Method"
-                fluid
-              />
-            </div>
-            <div class="col-span-6">
-              <div>IP Restriction</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter IP range (optional)"
-                formControlName="ipRestriction"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Device Restriction</div>
-              <input
-                fluid
-                type="text"
-                pInputText
-                placeholder="Enter device restrictions (optional)"
-                formControlName="deviceRestriction"
-              />
-            </div>
-            <div class="col-span-6">
-              <div>Password Expiry Policy</div>
-              <input
-                fluid
-                type="number"
-                pInputText
-                placeholder="Enter days"
-                formControlName="passwordExpiry"
-              />
-            </div>
-            <div class="col-span-12">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="twoFactorEnabled"
-                  [binary]="true"
-                  inputId="twoFactor"
+  <div class="border border-surface bg-primary-contrast rounded-2xl mb-4">
+    <div
+      class="flex items-center py-2 border px-4 rounded-t-2xl"
+      [ngClass]="{
+        'bg-blue-200 text-blue-800 border-blue-700': isViewMode(),
+        'bg-green-200 text-green-800 border-green-700': isAddMode(),
+        'bg-amber-200 text-amber-800 border-amber-700': isEditMode(),
+      }"
+    >
+      <span
+        class="pi font-medium! mr-3"
+        [ngClass]="{
+          'pi-eye': isViewMode(),
+          'pi-plus': isAddMode(),
+          'pi-pencil': isEditMode(),
+        }"
+      ></span>
+      <h1 class="text-2xl font-medium">
+        @if (isViewMode()) {
+          View User
+        } @else if (isEditMode()) {
+          Edit User
+        } @else {
+          Add User
+        }
+      </h1>
+    </div>
+    <div class="px-4">
+      <p-tabs value="0" class="tab-pl-0">
+        <p-tablist>
+          <p-tab value="0">Basic Information</p-tab>
+          <p-tab value="1">Organization & Fund</p-tab>
+          <p-tab value="2">Authentication & Security</p-tab>
+          <p-tab value="3">Workflow & Notifications</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+              <div class="col-span-3">
+                <div>User ID</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="System generated"
+                  formControlName="userId"
                 />
-                <label for="twoFactor">Two-Factor Authentication Enabled</label>
               </div>
-            </div>
-          </div>
-        </p-tabpanel>
-        <p-tabpanel value="3">
-          <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
-            <div class="col-span-12 flex my-2 items-center gap-2">
-              <span class="text-sm text-muted-color">Workflow Roles</span>
-              <div class="h-px bg-surface-300 flex-1"></div>
-            </div>
-            <div class="col-span-4">
-              <div class="flex items-center gap-2">
-                <p-checkbox formControlName="isMaker" [binary]="true" inputId="maker" />
-                <label for="maker">Maker</label>
-              </div>
-            </div>
-            <div class="col-span-4">
-              <div class="flex items-center gap-2">
-                <p-checkbox formControlName="isChecker" [binary]="true" inputId="checker" />
-                <label for="checker">Checker</label>
-              </div>
-            </div>
-            <div class="col-span-4">
-              <div class="flex items-center gap-2">
-                <p-checkbox formControlName="isApprover" [binary]="true" inputId="approver" />
-                <label for="approver">Approver</label>
-              </div>
-            </div>
-            <div class="col-span-12 flex my-2 items-center gap-2">
-              <span class="text-sm text-muted-color">Notification Settings</span>
-              <div class="h-px bg-surface-300 flex-1"></div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="emailNotifications"
-                  [binary]="true"
-                  inputId="emailNotif"
+              <div class="col-span-3">
+                <div>Title</div>
+                <p-select
+                  appendTo="body"
+                  formControlName="title"
+                  [options]="titleOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select Title"
+                  fluid
                 />
-                <label for="emailNotif">Email Notifications</label>
               </div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="invoiceUploaded"
-                  [binary]="true"
-                  inputId="invoiceUploaded"
+              <div class="col-span-3">
+                <div class="required">First Name</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter first name"
+                  formControlName="firstName"
                 />
-                <label for="invoiceUploaded">Invoice Uploaded</label>
               </div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="invoiceReviewed"
-                  [binary]="true"
-                  inputId="invoiceReviewed"
+              <div class="col-span-3">
+                <div>Middle Name</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter middle name (optional)"
+                  formControlName="middleName"
                 />
-                <label for="invoiceReviewed">Invoice Reviewed</label>
               </div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="paymentApproved"
-                  [binary]="true"
-                  inputId="paymentApproved"
+              <div class="col-span-3">
+                <div class="required">Last Name</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter last name"
+                  formControlName="lastName"
                 />
-                <label for="paymentApproved">Payment Approved</label>
               </div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="paymentReleased"
-                  [binary]="true"
-                  inputId="paymentReleased"
+              <div class="col-span-3">
+                <div>Display Name</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter display name"
+                  formControlName="displayName"
                 />
-                <label for="paymentReleased">Payment Released</label>
               </div>
-            </div>
-            <div class="col-span-6">
-              <div class="flex items-center gap-2">
-                <p-checkbox
-                  formControlName="invoiceOverdue"
-                  [binary]="true"
-                  inputId="invoiceOverdue"
+              <div class="col-span-3">
+                <div class="required">Organization Name</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter organization name"
+                  formControlName="organizationName"
                 />
-                <label for="invoiceOverdue">Invoice Overdue</label>
+              </div>
+              <div class="col-span-3">
+                <div class="required">Employee ID</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter employee ID"
+                  formControlName="employeeId"
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Email Address</div>
+                <input
+                  fluid
+                  type="email"
+                  pInputText
+                  placeholder="Enter work email"
+                  formControlName="emailAddress"
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Mobile Number</div>
+                <input
+                  fluid
+                  type="tel"
+                  pInputText
+                  placeholder="Enter mobile number"
+                  formControlName="mobileNumber"
+                />
+              </div>
+              <div class="col-span-3">
+                <div>Alternate Contact Number</div>
+                <input
+                  fluid
+                  type="tel"
+                  pInputText
+                  placeholder="Enter alternate number (optional)"
+                  formControlName="alternateContact"
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Role</div>
+                <p-select
+                  appendTo="body"
+                  formControlName="role"
+                  [options]="roleOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select Role"
+                  [filter]="true"
+                  filterBy="label"
+                  fluid
+                />
               </div>
             </div>
-          </div>
-        </p-tabpanel>
-      </p-tabpanels>
-    </p-tabs>
+          </p-tabpanel>
+          <p-tabpanel value="1">
+            <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+              <div class="col-span-3">
+                <div class="required">Legal Entity Name</div>
+                <p-multiselect
+                  formControlName="legalEntities"
+                  [options]="entityOptions"
+                  optionLabel="label"
+                  placeholder="Select Legal Entities"
+                  appendTo="body"
+                  fluid
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Fund Name(s)</div>
+                <p-multiselect
+                  formControlName="funds"
+                  [options]="fundOptions"
+                  optionLabel="label"
+                  placeholder="Select Funds"
+                  appendTo="body"
+                  fluid
+                />
+              </div>
+              <div class="col-span-3">
+                <div>Department / Function</div>
+                <p-select
+                  appendTo="body"
+                  formControlName="department"
+                  [options]="departmentOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select Department"
+                  [filter]="true"
+                  filterBy="label"
+                  fluid
+                />
+              </div>
+              <div class="col-span-3">
+                <div>Office Location</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter city / country"
+                  formControlName="officeLocation"
+                />
+              </div>
+              <div class="col-span-3">
+                <div>Time Zone</div>
+                <p-select
+                  appendTo="body"
+                  formControlName="timezone"
+                  [options]="timezoneOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select Time Zone"
+                  [filter]="true"
+                  filterBy="label"
+                  fluid
+                />
+              </div>
+            </div>
+          </p-tabpanel>
+          <p-tabpanel value="2">
+            <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+              <div class="col-span-3">
+                <div class="required">Username</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter username"
+                  formControlName="username"
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Password</div>
+                <p-password fluid placeholder="Enter password" formControlName="password" />
+              </div>
+              <div class="col-span-3">
+                <div>IP Restriction</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter IP range (optional)"
+                  formControlName="ipRestriction"
+                />
+              </div>
+              <div class="col-span-3">
+                <div>Device Restriction</div>
+                <input
+                  fluid
+                  type="text"
+                  pInputText
+                  placeholder="Enter device restrictions (optional)"
+                  formControlName="deviceRestriction"
+                />
+              </div>
+              <div class="col-span-3">
+                <div class="required">Password Expiry Policy</div>
+                <input
+                  fluid
+                  type="number"
+                  pInputText
+                  placeholder="Enter days"
+                  formControlName="passwordExpiry"
+                />
+              </div>
+            </div>
+          </p-tabpanel>
+          <p-tabpanel value="3">
+            <div class="grid grid-cols-12 gap-4 max-h-[400px] pr-4 overflow-y-auto">
+              <div class="col-span-12 flex my-2 items-center gap-2">
+                <span class="text-sm text-muted-color">Notification Settings</span>
+                <div class="h-px bg-surface-300 flex-1"></div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="emailNotifications"
+                    [binary]="true"
+                    inputId="emailNotif"
+                  />
+                  <label for="emailNotif">Email Notifications</label>
+                </div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="invoiceUploaded"
+                    [binary]="true"
+                    inputId="invoiceUploaded"
+                  />
+                  <label for="invoiceUploaded">Invoice Uploaded</label>
+                </div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="invoiceReviewed"
+                    [binary]="true"
+                    inputId="invoiceReviewed"
+                  />
+                  <label for="invoiceReviewed">Invoice Reviewed</label>
+                </div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="paymentApproved"
+                    [binary]="true"
+                    inputId="paymentApproved"
+                  />
+                  <label for="paymentApproved">Payment Approved</label>
+                </div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="paymentReleased"
+                    [binary]="true"
+                    inputId="paymentReleased"
+                  />
+                  <label for="paymentReleased">Payment Released</label>
+                </div>
+              </div>
+              <div class="col-span-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox
+                    formControlName="invoiceOverdue"
+                    [binary]="true"
+                    inputId="invoiceOverdue"
+                  />
+                  <label for="invoiceOverdue">Invoice Overdue</label>
+                </div>
+              </div>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+    <div
+      class="col-span-12 flex justify-end gap-2 border-t border-surface-300 p-2 px-4 rounded-b-2xl"
+    >
+      @if (isViewMode() || isEditMode()) {
+        <p-button
+          icon="pi pi-times-circle"
+          severity="contrast"
+          variant="outlined"
+          label="Clear Selection"
+          (onClick)="clearVendorSelection()"
+        />
+      }
+      <p-button icon="pi pi-plus-circle" severity="success" label="Add User" />
+    </div>
   </div>
-  <div class="col-span-12 flex justify-end mt-2">
-    <p-button
-      icon="pi pi-plus-circle"
-      severity="contrast"
-      label="Add User"
-      (click)="onSaveUser()"
-    />
+
+  <div class="border border-surface bg-primary-contrast rounded-2xl">
+    <div
+      class="w-full bg-surface-200 text-surface-800 border border-surface-700 rounded-t-2xl px-4"
+    >
+      <div class="grid grid-cols-12 p-2">
+        <div class="col-span-6 flex items-center">
+          <span class="pi pi-list mr-3"></span>
+          <h1 class="text-2xl font-medium">User List</h1>
+        </div>
+        <div class="col-span-6 flex items-end justify-end gap-2">
+          <input
+            class="lg:w-auto"
+            pInputText
+            type="text"
+            placeholder="Search"
+            (input)="entityTable.filterGlobal($event.target.value, 'contains')"
+          />
+          <p-button [size]="'small'" icon="pi pi-trash" severity="danger" variant="outlined" />
+          <p-button [size]="'small'" icon="pi pi-print" severity="contrast" variant="outlined" />
+          <p-button
+            [size]="'small'"
+            icon="pi pi-file-excel"
+            severity="contrast"
+            variant="outlined"
+          />
+        </div>
+      </div>
+    </div>
+    <p-table
+      #entityTable
+      [value]="userData()"
+      [(selection)]="selectedUsers"
+      dataKey="invoiceNumber"
+      stripedRows="true"
+      size="small"
+      showGridlines="true"
+      [scrollable]="true"
+      scrollHeight="370px"
+      class="table-dashboard-invoice"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
+    >
+      <ng-template #header>
+        <tr>
+          <th class="w-10"><p-tableHeaderCheckbox /></th>
+          <th pSortableColumn="fundName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Name
+              <div>
+                <p-sortIcon field="fundName" />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="fundName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Employee ID
+              <div>
+                <p-sortIcon field="fundName" />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Organization Name
+              <div>
+                <p-sortIcon field="vendorName" />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Entity Name
+              <div>
+                <p-sortIcon field="vendorName" />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="invoiceNumber" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Role
+              <div>
+                <p-sortIcon field="invoiceNumber" />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="invoiceDate" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Email
+              <div>
+                <p-sortIcon field="invoiceDate" />
+              </div>
+            </div>
+          </th>
+          <th style="width: 150px"></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="user" />
+          </td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.employeeId }}</td>
+          <td>{{ user.organization }}</td>
+          <td>{{ user.entityName }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <div class="flex justify-end gap-2">
+              <p-button
+                size="small"
+                icon="pi pi-eye"
+                styleClass="p-1!"
+                severity="info"
+                variant="outlined"
+                (onClick)="viewEntity(user)"
+              />
+              <p-button
+                size="small"
+                styleClass="p-1!"
+                icon="pi pi-pencil"
+                severity="contrast"
+                variant="outlined"
+                (onClick)="editEntity(user)"
+              />
+              <p-button
+                size="small"
+                styleClass="p-1!"
+                icon="pi pi-trash"
+                severity="danger"
+                variant="outlined"
+                (onClick)="deleteEntity(user)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>

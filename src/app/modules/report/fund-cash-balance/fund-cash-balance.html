@@ -14,29 +14,27 @@
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-3">
-          <div>Portfolio</div>
+          <div class="required">Portfolio</div>
           <p-multiselect fluid [options]="vendorOptions()" placeholder="Select portfolio" />
         </div>
-        <div class="col-span-1">
-          <div>Base Currency</div>
-          <div class="mt-2 text-lg font-medium">{{ baseCurrency() }}</div>
-        </div>
-        <div class="col-span-2 flex items-end justify-end">
+        <div class="col-span-2 flex items-end justify-between">
           <p-button icon="pi pi-search" severity="contrast" label="Search" (onClick)="onSearch()" />
-          <p-button
-            icon="pi pi-print"
-            aria-label="Download PDF"
-            variant="outlined"
-            severity="contrast"
-            class="mr-2"
-          />
-          <p-button
-            icon="pi pi-file-excel"
-            aria-label="Download Excel"
-            variant="outlined"
-            severity="contrast"
-            class="mr-2"
-          />
+          <div>
+            <p-button
+              icon="pi pi-print"
+              aria-label="Download PDF"
+              variant="outlined"
+              severity="contrast"
+              class="mr-2"
+            />
+            <p-button
+              icon="pi pi-file-excel"
+              aria-label="Download Excel"
+              variant="outlined"
+              severity="contrast"
+              class="mr-2"
+            />
+          </div>
         </div>
       </div>
 

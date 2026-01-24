@@ -274,6 +274,7 @@ export class Dashboard implements OnInit {
           title: 'Invoice Review',
           componentName: 'InvoiceReview',
           component: InvoiceReview,
+          autoMaximize: true,
         },
         draggable: true,
         resizable: true,

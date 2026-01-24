@@ -9,6 +9,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
 import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import CategoryTypeOptions from '../../core/mocks/category-type-mock.json';
 
 @Component({
   selector: 'app-expenses-report',
@@ -28,6 +29,8 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 export class ExpensesReport {
   expensesData = signal<any[]>([]);
   filteredData = signal<any[]>(expensesMockData);
+
+  categoryOptions = signal([...CategoryTypeOptions, { id: 3, label: 'Expenses' }]);
 
   currencyOptions = signal([
     { label: 'Base Currency', id: 1 },

@@ -36,6 +36,36 @@ export class CashBalance {
   dateTo = signal<Date | null>(null);
   baseCurrency = signal('USD');
 
+  categoryOptions = signal([
+    {
+      id: 1,
+      label: 'Bank',
+    },
+    {
+      id: 2,
+      label: 'Account',
+    },
+  ]);
+
+  currencyOptions = signal([
+    {
+      id: 1,
+      label: 'USD',
+    },
+    {
+      id: 2,
+      label: 'EUR',
+    },
+    {
+      id: 3,
+      label: 'GBP',
+    },
+    {
+      id: 4,
+      label: 'SGD',
+    },
+  ]);
+
   bankOptions = signal([
     { label: 'Bank of America', value: 'Bank of America' },
     { label: 'Chase Bank UK', value: 'Chase Bank UK' },
@@ -52,11 +82,11 @@ export class CashBalance {
     return {
       beginningBalance: data.reduce(
         (sum, item) => sum + (item.usdBalance * (item.beginningBalance / item.endingBalance) || 0),
-        0
+        0,
       ),
       forThePeriod: data.reduce(
         (sum, item) => sum + (item.usdBalance * (item.forThePeriod / item.endingBalance) || 0),
-        0
+        0,
       ),
       endingBalance: data.reduce((sum, item) => sum + (item.usdBalance || 0), 0),
       usdBalance: data.reduce((sum, item) => sum + (item.usdBalance || 0), 0),

@@ -18,7 +18,7 @@
             <form [formGroup]="addForm">
               <div class="grid grid-cols-12 gap-4 mb-4">
                 <div class="col-span-3">
-                  <label class="block text-sm font-medium mb-2">Entity Name</label>
+                  <label class="block text-sm font-medium mb-2 required">Entity Name</label>
                   <p-select
                     formControlName="entity"
                     [options]="entities"
@@ -40,7 +40,7 @@
                   />
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium mb-2">Date of Pricing</label>
+                  <label class="block text-sm font-medium mb-2 required">Date of Pricing</label>
                   <p-datepicker formControlName="pricingDate" fluid="true" appendTo="body">
                   </p-datepicker>
                   <small class="text-gray-500">Cannot be the day of a holiday</small>
@@ -52,42 +52,43 @@
               </div>
 
               @if (ratesArray.length > 0) {
-              <div class="mb-4">
-                <h3 class="text-lg font-semibold mb-3">Forex Rates</h3>
-                <p-table
-                  size="small"
-                  stripedRows="true"
-                  [value]="ratesArray.controls"
-                  class="w-full"
-                >
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th>Region Name</th>
-                      <th>Symbol</th>
-                      <th>Value</th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-rateControl let-i="rowIndex">
-                    <tr>
-                      <td>{{ rateControl.get('regionName')?.value }}</td>
-                      <td>{{ rateControl.get('symbol')?.value }}</td>
-                      <td>
-                        <p-inputNumber
-                          [formControl]="rateControl.get('value')"
-                          mode="decimal"
-                          [minFractionDigits]="2"
-                          [maxFractionDigits]="4"
-                          [readonly]="
-                            rateControl.get('symbol')?.value === addForm.get('baseCurrency')?.value
-                          "
-                          fluid="true"
-                        >
-                        </p-inputNumber>
-                      </td>
-                    </tr>
-                  </ng-template>
-                </p-table>
-              </div>
+                <div class="mb-4">
+                  <h3 class="text-lg font-semibold mb-3">Forex Rates</h3>
+                  <p-table
+                    size="small"
+                    stripedRows="true"
+                    [value]="ratesArray.controls"
+                    class="w-full"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Region Name</th>
+                        <th>Symbol</th>
+                        <th>Value</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rateControl let-i="rowIndex">
+                      <tr>
+                        <td>{{ rateControl.get('regionName')?.value }}</td>
+                        <td>{{ rateControl.get('symbol')?.value }}</td>
+                        <td>
+                          <p-inputNumber
+                            [formControl]="rateControl.get('value')"
+                            mode="decimal"
+                            [minFractionDigits]="2"
+                            [maxFractionDigits]="4"
+                            [readonly]="
+                              rateControl.get('symbol')?.value ===
+                              addForm.get('baseCurrency')?.value
+                            "
+                            fluid="true"
+                          >
+                          </p-inputNumber>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
               }
 
               <div class="flex justify-end">
@@ -107,7 +108,7 @@
             <form [formGroup]="viewForm">
               <div class="grid grid-cols-12 gap-4 mb-4">
                 <div class="col-span-3">
-                  <label class="block text-sm font-medium mb-2">Entity Name</label>
+                  <label class="block text-sm font-medium mb-2 required">Entity Name</label>
                   <p-select
                     formControlName="entity"
                     [options]="entities"
@@ -120,7 +121,7 @@
                 </div>
 
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium mb-2">Date From</label>
+                  <label class="block text-sm font-medium mb-2 required">Date From</label>
                   <p-datepicker
                     formControlName="dateFrom"
                     (onSelect)="onViewFormChange()"
@@ -132,7 +133,7 @@
                 </div>
 
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium mb-2">Date To</label>
+                  <label class="block text-sm font-medium mb-2 required">Date To</label>
                   <p-datepicker
                     formControlName="dateTo"
                     (onSelect)="onViewFormChange()"
@@ -144,7 +145,7 @@
                 </div>
 
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium mb-2">Symbol</label>
+                  <label class="block text-sm font-medium mb-2 required">Symbol</label>
                   <p-multiselect
                     formControlName="symbol"
                     [options]="symbols"
@@ -162,31 +163,31 @@
             </form>
 
             @if (historicalRecords.length > 0) {
-            <div>
-              <h3 class="text-lg font-semibold mb-3">Historical Records</h3>
-              <p-table size="small" stripedRows="true" [value]="historicalRecords" class="w-full">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>Date</th>
-                    <th>Region Name</th>
-                    <th>Symbol</th>
-                    <th>Value</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-record>
-                  <tr>
-                    <td>{{ record.date | date : 'M/d/yyyy' }}</td>
-                    <td>{{ record.regionName }}</td>
-                    <td>{{ record.symbol }}</td>
-                    <td>{{ record.value | number : '1.2-4' }}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-3">Historical Records</h3>
+                <p-table size="small" stripedRows="true" [value]="historicalRecords" class="w-full">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Date</th>
+                      <th>Region Name</th>
+                      <th>Symbol</th>
+                      <th>Value</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-record>
+                    <tr>
+                      <td>{{ record.date | date: 'M/d/yyyy' }}</td>
+                      <td>{{ record.regionName }}</td>
+                      <td>{{ record.symbol }}</td>
+                      <td>{{ record.value | number: '1.2-4' }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
             } @else {
-            <div class="text-center py-8 text-gray-500">
-              No records found for the selected criteria.
-            </div>
+              <div class="text-center py-8 text-gray-500">
+                No records found for the selected criteria.
+              </div>
             }
           </p-tabpanel>
         </p-tabpanels>

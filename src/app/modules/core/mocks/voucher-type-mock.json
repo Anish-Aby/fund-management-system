@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "label": "Invoice"
+  },
+  {
+    "id": "2",
+    "label": "Payment"
+  },
+  {
+    "id": "3",
+    "label": "Journal"
+  }
+]

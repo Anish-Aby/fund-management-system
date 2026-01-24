@@ -14,27 +14,33 @@
         class="grid gap-y-4 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
       >
         <div class="col-span-2">
-          <div>Bank Name</div>
+          <div class="required">Category</div>
+          <p-select fluid [options]="categoryOptions()" placeholder="Choose category" />
+        </div>
+
+        <div class="col-span-2">
+          <div class="required">Account Type</div>
           <p-multiselect
             fluid
             [options]="bankOptions()"
-            placeholder="All / Specific bank"
+            placeholder="Select account"
             [ngModel]="selectedBanks()"
             (ngModelChange)="selectedBanks.set($event)"
           />
         </div>
         <div class="col-span-2">
-          <div>Date From</div>
+          <div class="required">Currency</div>
+          <p-multiselect fluid [options]="currencyOptions()" placeholder="Select currency" />
+        </div>
+        <div class="col-span-2">
+          <div class="required">Date From</div>
           <p-datepicker fluid [ngModel]="dateFrom()" (ngModelChange)="dateFrom.set($event)" />
         </div>
         <div class="col-span-2">
-          <div>Date To</div>
+          <div class="required">Date To</div>
           <p-datepicker fluid [ngModel]="dateTo()" (ngModelChange)="dateTo.set($event)" />
         </div>
-        <div class="col-span-1">
-          <div>Base Currency</div>
-          <div class="mt-2 text-lg font-medium">{{ baseCurrency() }}</div>
-        </div>
+
         <div class="col-span-2 flex items-end justify-between">
           <p-button icon="pi pi-search" severity="contrast" label="Search" (onClick)="onSearch()" />
           <div>

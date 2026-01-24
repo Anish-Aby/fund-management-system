@@ -15,7 +15,7 @@
         class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner @container mb-2"
       >
         <div class="col-span-6 @3xl:col-span-2">
-          <div>Account</div>
+          <div class="required">Account</div>
           <p-multiselect
             [options]="funds"
             formControlName="selectedFund"
@@ -28,7 +28,7 @@
           />
         </div>
         <div class="col-span-6 @3xl:col-span-2">
-          <div>As on Date</div>
+          <div class="required">As on Date</div>
           <p-datepicker
             formControlName="asOnDate"
             placeholder="Select date"
