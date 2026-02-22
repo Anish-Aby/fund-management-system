@@ -52,3 +52,125 @@ body {
     background-color 0.3s ease,
     color 0.3s ease;
 }
+
+/* ===== WINDOW RESIZE HANDLES ===== */
+
+.app-window-resize-handle {
+  position: absolute;
+  z-index: 5;
+}
+
+/* edges */
+.app-resize-right {
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.app-resize-left {
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.app-resize-bottom {
+  bottom: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  cursor: ns-resize;
+}
+.app-resize-top {
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  cursor: ns-resize;
+}
+
+/* corners */
+.app-resize-br {
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+}
+.app-resize-bl {
+  left: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nesw-resize;
+}
+.app-resize-tr {
+  right: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nesw-resize;
+}
+.app-resize-tl {
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+}
+
+// ══════════════════════════════════════════════════════
+// GLOBAL SCROLLBAR — Vercel-style, thin and subtle
+// Applies universally; can be scoped if needed.
+// ══════════════════════════════════════════════════════
+
+// ── Webkit (Chrome, Edge, Safari) ────────────────────
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; // slate-300 — visible but not loud
+  border-radius: 999px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #94a3b8; // slate-400 — slightly darker on hover
+  }
+
+  &:active {
+    background: #64748b; // slate-500
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+// ── Firefox ───────────────────────────────────────────
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+body.app-dragging {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  cursor: grabbing !important;
+}
+
+.app-drag-ghost {
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(40, 40, 40, 0.35);
+}

@@ -1,0 +1,455 @@
+<div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <!-- ══════════════════════════════════════════════════════
+       MAIN CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Page header -->
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+          <i class="pi pi-shield text-white" style="font-size: 14px"></i>
+        </div>
+        <div>
+          <h1 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+            Audit Trail
+          </h1>
+          <p class="text-[12px] text-slate-400 leading-none">
+            Track all system events, user activity and data changes
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <p-button
+          icon="pi pi-file-excel"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          pTooltip="Export Excel"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-print"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          pTooltip="Print / PDF"
+          tooltipPosition="bottom"
+        />
+      </div>
+    </div>
+
+    <!-- ── Filter bar ──────────────────────────────────── -->
+    <div class="px-4 py-3 bg-[#f4f4f5] border-b border-slate-200/80">
+      <div class="flex items-center gap-3 mb-3">
+        <span
+          class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+          >Filter</span
+        >
+        <div class="h-px bg-slate-200 flex-1"></div>
+        <!-- Active filter count badge -->
+        @if (activeFilterCount() > 0) {
+          <span
+            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold"
+          >
+            <i class="pi pi-filter-fill" style="font-size: 8px"></i>
+            {{ activeFilterCount() }} active
+          </span>
+        }
+        <p-button
+          label="Reset"
+          icon="pi pi-times"
+          variant="text"
+          severity="secondary"
+          size="small"
+          (onClick)="resetFilters()"
+        />
+      </div>
+
+      <div class="grid grid-cols-12 gap-x-2 gap-y-2 items-end">
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Date From</label>
+          <p-datepicker
+            [(ngModel)]="filters.dateFrom"
+            placeholder="Start date"
+            fluid
+            appendTo="body"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Date To</label>
+          <p-datepicker [(ngModel)]="filters.dateTo" placeholder="End date" fluid appendTo="body" />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">User</label>
+          <p-multiselect
+            [(ngModel)]="filters.users"
+            [options]="userOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="All users"
+            fluid
+            appendTo="body"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Operation</label>
+          <p-multiselect
+            [(ngModel)]="filters.operations"
+            [options]="operationOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="All operations"
+            fluid
+            appendTo="body"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Module</label>
+          <p-multiselect
+            [(ngModel)]="filters.modules"
+            [options]="moduleOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="All modules"
+            fluid
+            appendTo="body"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">IP Origin</label>
+          <input
+            pInputText
+            fluid
+            placeholder="e.g. 192.168.1.1"
+            [(ngModel)]="filters.ipAddress"
+            class="!font-mono !text-[12px]"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Status</label>
+          <p-select
+            [(ngModel)]="filters.status"
+            [options]="statusOptions"
+            placeholder="All statuses"
+            fluid
+            appendTo="body"
+          />
+        </div>
+
+        <div class="col-span-2 flex items-end">
+          <p-button
+            icon="pi pi-search"
+            label="Search"
+            severity="contrast"
+            size="small"
+            class="w-full"
+            (onClick)="onSearch()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Summary stat strip ─────────────────────────── -->
+    <div class="px-6 py-3 border-b border-slate-100 flex items-center gap-5">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-list text-slate-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Total Events
+          </div>
+          <div class="text-[13px] font-bold text-slate-900 tabular-nums font-mono leading-none">
+            {{ auditData().length }}
+          </div>
+        </div>
+      </div>
+
+      <div class="w-px h-7 bg-slate-100"></div>
+
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-check-circle text-emerald-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Success
+          </div>
+          <div class="text-[13px] font-bold text-emerald-600 tabular-nums font-mono leading-none">
+            {{ successCount() }}
+          </div>
+        </div>
+      </div>
+
+      <div class="w-px h-7 bg-slate-100"></div>
+
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-rose-50 border border-rose-100 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-times-circle text-rose-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Failed
+          </div>
+          <div class="text-[13px] font-bold text-rose-600 tabular-nums font-mono leading-none">
+            {{ failedCount() }}
+          </div>
+        </div>
+      </div>
+
+      <div class="w-px h-7 bg-slate-100"></div>
+
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-exclamation-triangle text-amber-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Warnings
+          </div>
+          <div class="text-[13px] font-bold text-amber-600 tabular-nums font-mono leading-none">
+            {{ warningCount() }}
+          </div>
+        </div>
+      </div>
+
+      <div class="w-px h-7 bg-slate-100"></div>
+
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-users text-sky-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Unique Users
+          </div>
+          <div class="text-[13px] font-bold text-sky-600 tabular-nums font-mono leading-none">
+            {{ uniqueUsers() }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — live search input -->
+      <div class="ml-auto relative">
+        <i
+          class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+          style="font-size: 11px"
+        ></i>
+        <input
+          pInputText
+          type="text"
+          placeholder="Quick search..."
+          class="!pl-8 !h-8 !text-[13px] !rounded-lg !border-slate-200 !w-52"
+          (input)="auditTable.filterGlobal($event.target.value, 'contains')"
+        />
+      </div>
+    </div>
+
+    <!-- ── Table ──────────────────────────────────────── -->
+    <p-table
+      #auditTable
+      [value]="auditData()"
+      [stripedRows]="true"
+      size="small"
+      [showGridlines]="true"
+      [scrollable]="true"
+      scrollHeight="550px"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[25, 50, 100]"
+      class="table-dashboard-invoice"
+      [globalFilterFields]="['user', 'operation', 'module', 'ipAddress', 'description', 'recordId']"
+    >
+      <ng-template #header>
+        <tr>
+          <th pResizableColumn style="width: 160px">
+            <div class="flex items-center gap-1.5">Timestamp</div>
+          </th>
+          <th pResizableColumn>
+            <div class="flex items-center gap-1.5">User</div>
+          </th>
+          <th pResizableColumn>
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0"></span>
+              Operation
+            </div>
+          </th>
+          <th pResizableColumn>
+            <div class="flex items-center gap-1.5">Module</div>
+          </th>
+          <th pResizableColumn>Description</th>
+          <th pResizableColumn>
+            <div class="flex items-center gap-1.5">Record ID</div>
+          </th>
+          <th pResizableColumn>
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-globe text-slate-400" style="font-size: 10px"></i>
+              IP Origin
+            </div>
+          </th>
+          <th pResizableColumn style="width: 100px">Status</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-log>
+        <tr>
+          <!-- Timestamp -->
+          <td>
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[12px] font-mono text-slate-700 tabular-nums leading-none">{{
+                log.date
+              }}</span>
+              <span class="text-[11px] font-mono text-slate-400 tabular-nums leading-none">{{
+                log.time
+              }}</span>
+            </div>
+          </td>
+
+          <!-- User -->
+          <td>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
+                [style.background]="getAvatarColor(log.user)"
+              >
+                {{ getInitials(log.user) }}
+              </div>
+              <div class="flex flex-col gap-0">
+                <span class="text-[12px] font-semibold text-slate-800 leading-none">{{
+                  log.user
+                }}</span>
+                <span class="text-[11px] text-slate-400 leading-none">{{ log.role }}</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Operation -->
+          <td>
+            <span
+              class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold"
+              [ngClass]="getOperationClass(log.operation)"
+            >
+              <i class="pi text-[9px]" [ngClass]="getOperationIcon(log.operation)"></i>
+              {{ log.operation }}
+            </span>
+          </td>
+
+          <!-- Module -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <i class="pi text-slate-400 text-[10px]" [ngClass]="getModuleIcon(log.module)"></i>
+              <span class="text-[13px] text-slate-600">{{ log.module }}</span>
+            </div>
+          </td>
+
+          <!-- Description -->
+          <td>
+            <span class="text-[13px] text-slate-600 line-clamp-1" [title]="log.description">{{
+              log.description
+            }}</span>
+          </td>
+
+          <!-- Record ID -->
+          <td>
+            <span
+              class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-mono"
+            >
+              {{ log.recordId }}
+            </span>
+          </td>
+
+          <!-- IP Address -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <span
+                class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                [ngClass]="log.ipAddress.startsWith('192') ? 'bg-sky-400' : 'bg-violet-400'"
+              ></span>
+              <span class="text-[12px] font-mono text-slate-600 tabular-nums">{{
+                log.ipAddress
+              }}</span>
+            </div>
+          </td>
+
+          <!-- Status -->
+          <td>
+            @if (log.status === 'Success') {
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold"
+              >
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                Success
+              </span>
+            } @else if (log.status === 'Failed') {
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-semibold"
+              >
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0"></span>
+                Failed
+              </span>
+            } @else {
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse flex-shrink-0"
+                ></span>
+                Warning
+              </span>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="8">
+            <div class="flex flex-col items-center justify-center py-16 gap-4">
+              <div
+                class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center"
+              >
+                <i class="pi pi-shield text-slate-300" style="font-size: 22px"></i>
+              </div>
+              <div class="text-center">
+                <p class="text-[14px] font-semibold text-slate-500 mb-1">No audit records found</p>
+                <p class="text-[12px] text-slate-400">
+                  Adjust your filters and click Search to load results
+                </p>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

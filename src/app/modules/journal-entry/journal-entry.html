@@ -1,4 +1,4 @@
-<div class="p-5">
+<!-- <div class="p-5">
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5" @container>
     <div class="flex justify-between items-center mb-4">
       <div>
@@ -153,5 +153,644 @@
         <p-button icon="pi pi-check" severity="success" label="Save" />
       </div>
     </div>
+  </div>
+</div> -->
+<!-- <div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+          <i class="pi pi-book text-white" style="font-size: 14px"></i>
+        </div>
+        <div>
+          <h1 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+            Journal Entry
+          </h1>
+          <p class="text-[12px] text-slate-400 leading-none">
+            Record credits and debits for entities
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="text-[11px] font-medium text-slate-500">Draft</span>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 bg-[#f4f4f5] border-b border-slate-200/80">
+      <div class="flex items-center gap-3 mb-3">
+        <span
+          class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+          >Filter</span
+        >
+        <div class="h-px bg-slate-200 flex-1"></div>
+      </div>
+      <div class="grid grid-cols-12 gap-x-4 gap-y-3 items-end">
+        <div class="col-span-4 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Entity Name</label>
+          <input
+            placeholder="Entity Name"
+            value="Global Investments Inc"
+            fluid
+            pInputText
+            disabled
+          />
+        </div>
+
+        <div class="col-span-3 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500">Date</label>
+          <p-datepicker
+            [(ngModel)]="today"
+            [maxDate]="today"
+            fluid
+            appendTo="body"
+            placeholder="Select date"
+          />
+        </div>
+
+        <div class="col-span-2">
+          <p-button
+            icon="pi pi-search"
+            iconPos="left"
+            label="Search"
+            severity="contrast"
+            size="small"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 pt-5 pb-3">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span
+            class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+            >Journal Entries</span
+          >
+          <div class="h-px bg-slate-100 w-24"></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 text-[11px]">
+            <span class="text-slate-400 font-medium">Total Debit</span>
+            <span class="font-bold text-slate-800 tabular-nums font-mono"
+              >${{ getTotalDebit() }}</span
+            >
+          </div>
+          <div class="w-px h-3 bg-slate-200"></div>
+          <div class="flex items-center gap-1.5 text-[11px]">
+            <span class="text-slate-400 font-medium">Total Credit</span>
+            <span class="font-bold text-slate-800 tabular-nums font-mono"
+              >${{ getTotalCredit() }}</span
+            >
+          </div>
+          <div class="w-px h-3 bg-slate-200"></div>
+          <div
+            class="flex items-center gap-1.5 px-2 py-1 rounded-md"
+            [ngClass]="
+              getTotalDebit() === getTotalCredit()
+                ? 'bg-emerald-50 border border-emerald-200'
+                : 'bg-rose-50 border border-rose-200'
+            "
+          >
+            <i
+              class="pi text-[9px]"
+              [ngClass]="
+                getTotalDebit() === getTotalCredit()
+                  ? 'pi-check text-emerald-600'
+                  : 'pi-times text-rose-600'
+              "
+            >
+            </i>
+            <span
+              class="text-[10px] font-semibold"
+              [ngClass]="
+                getTotalDebit() === getTotalCredit() ? 'text-emerald-700' : 'text-rose-600'
+              "
+            >
+              {{ getTotalDebit() === getTotalCredit() ? 'Balanced' : 'Unbalanced' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p-table
+        scrollHeight="400px"
+        [value]="journalEntries"
+        size="small"
+        [showGridlines]="true"
+        class="table-dashboard-invoice"
+      >
+        <ng-template #header>
+          <tr>
+            <th>Account Type</th>
+            <th>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-400 flex-shrink-0"></span>
+                Debit From
+              </div>
+            </th>
+            <th>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-400 flex-shrink-0"></span>
+                Debit Amount
+              </div>
+            </th>
+            <th>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                Credit To
+              </div>
+            </th>
+            <th>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                Credit Amount
+              </div>
+            </th>
+            <th style="width: 90px">Actions</th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-entry let-i="rowIndex">
+          <tr>
+            <td>
+              <p-select
+                [(ngModel)]="entry.accountType"
+                [options]="accountTypes"
+                placeholder="Select type"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <p-select
+                [(ngModel)]="entry.debitEntity"
+                [options]="entities"
+                placeholder="Select company"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <input
+                [(ngModel)]="entry.debitAmount"
+                pInputText
+                type="number"
+                min="0"
+                placeholder="0.00"
+                fluid
+                class="!text-rose-600 !font-mono"
+              />
+            </td>
+            <td>
+              <p-select
+                [(ngModel)]="entry.creditEntity"
+                [options]="entities"
+                placeholder="Select company"
+                fluid
+                appendTo="body"
+              />
+            </td>
+            <td>
+              <input
+                [(ngModel)]="entry.creditAmount"
+                pInputText
+                type="number"
+                min="0"
+                placeholder="0.00"
+                fluid
+                class="!text-emerald-600 !font-mono"
+              />
+            </td>
+            <td>
+              <div class="flex items-center gap-1">
+                <p-button
+                  icon="pi pi-plus"
+                  variant="outlined"
+                  severity="secondary"
+                  size="small"
+                  pTooltip="Add row"
+                  tooltipPosition="bottom"
+                  (click)="addRow()"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  variant="outlined"
+                  size="small"
+                  pTooltip="Remove row"
+                  tooltipPosition="bottom"
+                  (click)="removeRow(i)"
+                  [disabled]="journalEntries.length === 1"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #footer>
+          <tr>
+            <td colspan="2">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400"
+                >Totals</span
+              >
+            </td>
+            <td>
+              <span class="text-[13px] font-bold text-rose-600 tabular-nums font-mono"
+                >${{ getTotalDebit() }}</span
+              >
+            </td>
+            <td></td>
+            <td>
+              <span class="text-[13px] font-bold text-emerald-600 tabular-nums font-mono"
+                >${{ getTotalCredit() }}</span
+              >
+            </td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="px-6 pb-5 pt-3 border-t border-slate-100 flex flex-col gap-4">
+      <div class="flex flex-col gap-1.5">
+        <div class="flex items-center gap-2">
+          <label class="text-[11px] font-medium text-slate-500">Narration</label>
+          <span class="text-[10px] text-slate-400"
+            >— describe the purpose of this journal entry</span
+          >
+        </div>
+        <textarea
+          [(ngModel)]="narration"
+          pTextarea
+          rows="3"
+          placeholder="Enter narration for this journal entry..."
+          fluid
+        ></textarea>
+      </div>
+      <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+        <div class="flex items-center gap-2 text-[12px] text-slate-400">
+          <i class="pi pi-info-circle" style="font-size: 11px"></i>
+          <span>Ensure debits and credits are balanced before saving</span>
+        </div>
+        <p-button
+          icon="pi pi-check-circle"
+          iconPos="left"
+          label="Save Journal Entry"
+          severity="contrast"
+          size="small"
+        />
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <!-- ══════════════════════════════════════════════════════
+       PAGE HEADER
+  ══════════════════════════════════════════════════════ -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0 shadow-sm"
+      >
+        <i class="pi pi-book text-white" style="font-size: 14px"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">Journal Entry</h1>
+        <p class="text-[12px] text-slate-400 mt-1 leading-none">
+          Record credits and debits for entities
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Balance indicator -->
+      <div
+        class="flex items-center gap-2 px-3 py-1.5 rounded-full border text-[11px] font-semibold"
+        [ngClass]="
+          getTotalDebit() === getTotalCredit()
+            ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+            : 'bg-rose-50 border-rose-200 text-rose-600'
+        "
+      >
+        <i
+          class="pi text-[9px]"
+          [ngClass]="
+            getTotalDebit() === getTotalCredit() ? 'pi-check-circle' : 'pi-exclamation-triangle'
+          "
+        >
+        </i>
+        {{ getTotalDebit() === getTotalCredit() ? 'Balanced' : 'Unbalanced' }}
+      </div>
+
+      <!-- Draft status -->
+      <div
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse flex-shrink-0"></span>
+        <span class="text-[11px] font-semibold text-slate-500">Draft</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       FILTER CARD
+  ══════════════════════════════════════════════════════ -->
+  <div class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center gap-2">
+      <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+        <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
+      </div>
+      <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Entry Details</span>
+    </div>
+    <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-3 items-end">
+      <div class="col-span-4 flex flex-col gap-1.5">
+        <label class="text-[11px] font-medium text-slate-500">Entity Name</label>
+        <input pInputText fluid placeholder="Entity Name" value="Global Investments Inc" disabled />
+      </div>
+      <div class="col-span-3 flex flex-col gap-1.5">
+        <label class="text-[11px] font-medium text-slate-500">Date</label>
+        <p-datepicker
+          [(ngModel)]="today"
+          [maxDate]="today"
+          fluid
+          appendTo="body"
+          placeholder="Select date"
+        />
+      </div>
+      <div class="col-span-2 flex items-end">
+        <p-button icon="pi pi-search" label="Search" severity="contrast" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TOTALS STRIP
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] px-5 py-3 flex items-center gap-6"
+  >
+    <div class="flex items-center gap-2">
+      <div
+        class="w-7 h-7 rounded-lg bg-rose-50 border border-rose-100 flex items-center justify-center flex-shrink-0"
+      >
+        <i class="pi pi-arrow-up text-rose-500" style="font-size: 10px"></i>
+      </div>
+      <div>
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+        >
+          Total Debit
+        </div>
+        <div class="text-[13px] font-bold text-rose-600 tabular-nums font-mono leading-none">
+          ${{ getTotalDebit() }}
+        </div>
+      </div>
+    </div>
+
+    <div class="w-px h-7 bg-slate-100"></div>
+
+    <div class="flex items-center gap-2">
+      <div
+        class="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0"
+      >
+        <i class="pi pi-arrow-down text-emerald-500" style="font-size: 10px"></i>
+      </div>
+      <div>
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+        >
+          Total Credit
+        </div>
+        <div class="text-[13px] font-bold text-emerald-600 tabular-nums font-mono leading-none">
+          ${{ getTotalCredit() }}
+        </div>
+      </div>
+    </div>
+
+    <div class="w-px h-7 bg-slate-100"></div>
+
+    <div class="flex items-center gap-2">
+      <div
+        class="w-7 h-7 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
+      >
+        <i class="pi pi-list text-slate-500" style="font-size: 10px"></i>
+      </div>
+      <div>
+        <div
+          class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+        >
+          Entries
+        </div>
+        <div class="text-[13px] font-bold text-slate-800 tabular-nums font-mono leading-none">
+          {{ journalEntries.length }}
+        </div>
+      </div>
+    </div>
+
+    <div class="ml-auto">
+      <button
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-slate-300 transition-colors"
+        (click)="addRow()"
+      >
+        <i class="pi pi-plus text-slate-500" style="font-size: 10px"></i>
+        <span class="text-[12px] font-semibold text-slate-600">Add Entry</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       JOURNAL ENTRY CARDS
+  ══════════════════════════════════════════════════════ -->
+  @for (entry of journalEntries; track entry; let i = $index) {
+    <div
+      class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+    >
+      <!-- Entry card header -->
+      <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white text-[10px] font-bold leading-none flex-shrink-0"
+          >
+            {{ i + 1 }}
+          </span>
+          <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Journal Entry</span>
+
+          <!-- Account type pill if selected -->
+          @if (entry.accountType) {
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-semibold"
+            >
+              {{ entry.accountType }}
+            </span>
+          }
+        </div>
+        <button
+          class="w-7 h-7 rounded-md flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+          [class.opacity-30]="journalEntries.length === 1"
+          [disabled]="journalEntries.length === 1"
+          (click)="removeRow(i)"
+          title="Remove entry"
+        >
+          <i class="pi pi-trash" style="font-size: 11px"></i>
+        </button>
+      </div>
+
+      <!-- Entry body -->
+      <div class="p-5 flex flex-col gap-4">
+        <!-- Account type + debit + credit in one row -->
+        <div class="grid grid-cols-12 gap-3 items-end">
+          <!-- Account type -->
+          <div class="col-span-2 flex flex-col gap-1.5">
+            <label class="text-[11px] font-medium text-slate-500">Account Type</label>
+            <p-select
+              [(ngModel)]="entry.accountType"
+              [options]="accountTypes"
+              placeholder="Select type"
+              fluid
+              appendTo="body"
+            />
+          </div>
+
+          <!-- Debit section -->
+          <div class="col-span-5 flex flex-col gap-2">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-400 flex-shrink-0"></span>
+              <span class="text-[11px] font-bold text-rose-500 uppercase tracking-widest"
+                >Debit</span
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-medium text-slate-400">From</label>
+                <p-select
+                  [(ngModel)]="entry.debitEntity"
+                  [options]="entities"
+                  placeholder="Select entity"
+                  fluid
+                  appendTo="body"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-medium text-slate-400">Amount</label>
+                <input
+                  [(ngModel)]="entry.debitAmount"
+                  pInputText
+                  type="number"
+                  min="0"
+                  placeholder="0.00"
+                  fluid
+                  class="!text-rose-600 !font-mono !font-semibold"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider arrow -->
+          <div class="col-span-1 flex items-end justify-center pb-1">
+            <div class="flex flex-col items-center gap-1">
+              <div class="w-px h-4 bg-slate-200"></div>
+              <i class="pi pi-arrow-right text-slate-300" style="font-size: 10px"></i>
+              <div class="w-px h-4 bg-slate-200"></div>
+            </div>
+          </div>
+
+          <!-- Credit section -->
+          <div class="col-span-4 flex flex-col gap-2">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest"
+                >Credit</span
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-medium text-slate-400">To</label>
+                <p-select
+                  [(ngModel)]="entry.creditEntity"
+                  [options]="entities"
+                  placeholder="Select entity"
+                  fluid
+                  appendTo="body"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-medium text-slate-400">Amount</label>
+                <input
+                  [(ngModel)]="entry.creditAmount"
+                  pInputText
+                  type="number"
+                  min="0"
+                  placeholder="0.00"
+                  fluid
+                  class="!text-emerald-600 !font-mono !font-semibold"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Narration — per entry -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+            <i class="pi pi-align-left text-slate-400" style="font-size: 10px"></i>
+            Narration
+          </label>
+          <textarea
+            [(ngModel)]="entry.narration"
+            pTextarea
+            rows="2"
+            placeholder="Describe the purpose of this entry..."
+            fluid
+            class="!text-[13px] !text-slate-600 !resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Per-entry balance check -->
+        @if (entry.debitAmount || entry.creditAmount) {
+          <div class="flex items-center gap-2">
+            <div
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold border"
+              [ngClass]="
+                (+entry.debitAmount || 0) === (+entry.creditAmount || 0)
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                  : 'bg-amber-50 border-amber-200 text-amber-700'
+              "
+            >
+              <i
+                class="pi text-[9px]"
+                [ngClass]="
+                  (+entry.debitAmount || 0) === (+entry.creditAmount || 0)
+                    ? 'pi-check'
+                    : 'pi-exclamation-triangle'
+                "
+              >
+              </i>
+              {{
+                (+entry.debitAmount || 0) === (+entry.creditAmount || 0)
+                  ? 'Entry balanced'
+                  : 'Entry unbalanced — debit ≠ credit'
+              }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER ACTIONS
+  ══════════════════════════════════════════════════════ -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2 text-[12px] text-slate-400">
+      <i class="pi pi-info-circle" style="font-size: 11px"></i>
+      <span>Ensure all debits and credits are balanced before saving</span>
+    </div>
+    <p-button icon="pi pi-check-circle" label="Save Journal Entry" severity="contrast" />
   </div>
 </div>

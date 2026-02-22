@@ -6,7 +6,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputTextModule } from 'primeng/inputtext';
 import vendorMockData from '../../core/mocks/vendor-list-mock.json';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DialogWindowService } from '../../shared/services/dialog-window';
 import { VendorAdd } from '../vendor-add/vendor-add';
 import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
 
@@ -28,9 +27,8 @@ export class VendorList {
   selectedVendors = signal<Vendor[]>([]);
 
   constructor(
-    private dialogWindowService: DialogWindowService,
     private dialogService: DialogService,
-    public ref: DynamicDialogRef
+    public ref: DynamicDialogRef,
   ) {}
 
   getInitials(name: string): string {
@@ -43,23 +41,23 @@ export class VendorList {
   }
 
   showAddVendorModal(): void {
-    if (!this.dialogWindowService.restoreByComponent('VendorAdd')) {
-      this.dialogService.open(VendorAdd, {
-        data: {
-          title: 'Vendor Add',
-          componentName: 'VendorAdd',
-          component: VendorAdd,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    // if (!this.dialogWindowService.restoreByComponent('VendorAdd')) {
+    //   this.dialogService.open(VendorAdd, {
+    //     data: {
+    //       title: 'Vendor Add',
+    //       componentName: 'VendorAdd',
+    //       component: VendorAdd,
+    //     },
+    //     draggable: true,
+    //     resizable: true,
+    //     modal: false,
+    //     maximizable: true,
+    //     focusOnShow: false,
+    //     position: 'center',
+    //     templates: {
+    //       header: DialogHeader,
+    //     },
+    //   });
+    // }
   }
 }

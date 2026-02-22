@@ -1,42 +1,259 @@
 p-table {
-  .p-datatable-thead > tr {
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15) !important;
-    position: relative;
+  // ── Container ────────────────────────────────────────
+  .p-datatable {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.07) !important,
+      0 4px 16px -4px rgba(0, 0, 0, 0.08) !important;
   }
 
-  .p-datatable-thead > tr > th {
-    .app-light & {
-      background-color: #f0f9ff !important;
-      color: #1f2937 !important;
-    }
-    .app-dark & {
-      background-color: #1e293b !important;
-      color: #f1f5f9 !important;
-    }
-    &.p-datatable-column-sorted {
-      background-color: var(--p-primary-color) !important;
-      color: var(--p-primary-contrast-color) !important;
+  .p-datatable-wrapper {
+    border-radius: 14px 14px 0 0 !important;
+    overflow-x: auto !important;
 
-      .p-button-text.p-button-secondary {
-        color: var(--p-primary-contrast-color) !important;
+    &::-webkit-scrollbar {
+      height: 4px !important;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent !important;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db !important;
+      border-radius: 999px !important;
 
-        &:hover {
-          color: var(--p-primary-color) !important;
-        }
+      &:hover {
+        background: #9ca3af !important;
       }
     }
   }
 
-  .p-datatable-tbody tr {
-    transition: all 0.3s ease-in-out;
+  // ── Header ───────────────────────────────────────────
+  .p-datatable-thead > tr {
+    box-shadow: none !important;
+  }
+
+  .p-datatable-thead > tr > th {
+    background: #f4f6f8 !important;
+    color: #6b7280 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.075em !important;
+    text-transform: uppercase !important;
+    padding: 12px 16px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    white-space: nowrap !important;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease !important;
+
     &:hover {
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transform: translateY(-2px);
+      background: #eef0f3 !important;
+      color: #374151 !important;
+      cursor: pointer !important;
+    }
+
+    &.p-datatable-column-sorted {
+      background: #eef0f3 !important;
+      color: #111827 !important;
+
+      .p-button-text.p-button-secondary {
+        color: #111827 !important;
+      }
+
+      .p-datatable-sort-icon {
+        color: #111827 !important;
+      }
+    }
+
+    .p-sortable-column-icon {
+      width: 11px !important;
+      height: 11px !important;
+      margin-left: 5px !important;
+      color: #9ca3af !important;
+      vertical-align: middle !important;
+    }
+
+    .p-datatable-filter {
+      .p-datatable-column-filter-button {
+        padding: 0 !important;
+        height: auto !important;
+      }
     }
   }
 
+  // ── Body rows ────────────────────────────────────────
+  .p-datatable-tbody > tr {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    transition:
+      background-color 0.12s ease,
+      box-shadow 0.12s ease !important;
+
+    // Alternating stripe
+    &:nth-child(even) {
+      background-color: #f9fafb !important;
+    }
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    // Hover: inset left accent bar via box-shadow (no pseudo-element, no layout shift)
+    &:hover {
+      cursor: pointer !important;
+      background-color: #f1f5f9 !important;
+      box-shadow: inset 3px 0 0 #374151 !important;
+
+      // ── Subtle tint only (no accent bar) — swap in if preferred:
+      // background-color: #f1f5f9 !important;
+      // box-shadow: none !important;
+    }
+  }
+
+  // ── Selected row ─────────────────────────────────────
+  .p-datatable-tbody > tr.p-highlight {
+    background-color: #eff6ff !important;
+    box-shadow: inset 3px 0 0 #3b82f6 !important;
+
+    &:nth-child(even) {
+      background-color: #e8f2ff !important;
+    }
+
+    td {
+      color: #1e3a5f !important;
+    }
+  }
+
+  // ── Cells ────────────────────────────────────────────
+  .p-datatable-tbody > tr > td {
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+    color: #374151 !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    border: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    vertical-align: middle !important;
+  }
+
+  // ── Empty state ──────────────────────────────────────
+  .p-datatable-emptymessage > td {
+    text-align: center !important;
+    padding: 56px 16px !important;
+    color: #9ca3af !important;
+    font-size: 13px !important;
+    background: #ffffff !important;
+    border: none !important;
+  }
+
+  // ── Paginator ────────────────────────────────────────
+  .p-paginator {
+    background: #f4f6f8 !important;
+    border: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.07) !important;
+    border-radius: 0 0 14px 14px !important;
+    padding: 8px 14px !important;
+
+    .p-paginator-current {
+      font-size: 12px !important;
+      color: #6b7280 !important;
+    }
+
+    .p-paginator-page {
+      font-size: 12px !important;
+      min-width: 30px !important;
+      height: 30px !important;
+      border-radius: 7px !important;
+      color: #374151 !important;
+      transition: background 0.12s ease !important;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06) !important;
+      }
+
+      &.p-highlight {
+        background: #374151 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+      }
+    }
+
+    .p-paginator-first,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-last {
+      min-width: 30px !important;
+      height: 30px !important;
+      border-radius: 7px !important;
+      color: #6b7280 !important;
+      transition:
+        background 0.12s ease,
+        color 0.12s ease !important;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06) !important;
+        color: #374151 !important;
+      }
+
+      &:disabled {
+        opacity: 0.3 !important;
+      }
+    }
+  }
+
+  // ── Dashboard invoice variant ─────────────────────────
   &.table-dashboard-invoice {
-    min-height: 370px;
+    min-height: 370px !important;
   }
 }
+
+// ── Gridlines ─────────────────────────────────────────────
+// p-table {
+//   .p-datatable-gridlines {
+//     // Outer border
+//     .p-datatable-table {
+//       border-collapse: collapse !important;
+//     }
+
+//     // Header cell borders
+//     .p-datatable-thead > tr > th {
+//       border: 1px solid #e9ecef !important;
+//       border-bottom: 2px solid #dee2e6 !important; // stronger header bottom line
+//     }
+
+//     // Body cell borders
+//     .p-datatable-tbody > tr > td {
+//       border: 1px solid #f1f3f5 !important; // very subtle inner lines
+//     }
+
+//     // Footer cell borders
+//     .p-datatable-tfoot > tr > td {
+//       border: 1px solid #e9ecef !important;
+//       border-top: 2px solid #dee2e6 !important; // stronger footer top line
+//     }
+
+//     // Hover still works on top of gridlines
+//     .p-datatable-tbody > tr:hover > td {
+//       border-color: #e2e8f0 !important;
+//     }
+
+//     // Selected row gridlines
+//     .p-datatable-tbody > tr.p-highlight > td {
+//       border-color: #dbeafe !important;
+//     }
+//   }
+
+//   // ── Right-align numeric columns ──────────────────────────
+//   // Apply .col-numeric to any <th> and <td> that holds amounts
+//   .col-numeric {
+//     text-align: right !important;
+
+//     .p-column-header-content {
+//       justify-content: flex-end !important;
+//     }
+//   }
+// }

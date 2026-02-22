@@ -1,4 +1,4 @@
-<div class="p-5">
+<!-- <div class="p-5">
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
     <div class="flex justify-between items-center mb-4">
       <div>
@@ -170,5 +170,328 @@
         }
       </div>
     </div>
+  </div>
+</div> -->
+
+<div class="min-h-full bg-[#f4f4f5] p-6 flex flex-col gap-4">
+  <!-- ── Page Header ──────────────────────────────────── -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-sm flex-shrink-0"
+      >
+        <i class="pi pi-building-columns text-white" style="font-size: 14px"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">
+          Cash Balance Report
+        </h1>
+        <p class="text-[12px] text-slate-400 mt-1 leading-none">
+          Bank account balances and cash positions across currencies
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-button
+        icon="pi pi-file-excel"
+        label="Excel"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+      <p-button
+        icon="pi pi-print"
+        label="PDF"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+    </div>
+  </div>
+
+  <!-- ── Filter Card ──────────────────────────────────── -->
+  <div class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+          <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
+        </div>
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Filters</span>
+      </div>
+      <p-button label="Clear all" variant="text" severity="secondary" size="small" />
+    </div>
+
+    <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-3 items-end">
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Category</label>
+        <p-select
+          fluid
+          [options]="categoryOptions()"
+          placeholder="Choose category"
+          appendTo="body"
+        />
+      </div>
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Account Type</label>
+        <p-multiselect
+          fluid
+          [options]="bankOptions()"
+          placeholder="Select account"
+          appendTo="body"
+          [ngModel]="selectedBanks()"
+          (ngModelChange)="selectedBanks.set($event)"
+        />
+      </div>
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Currency</label>
+        <p-multiselect
+          fluid
+          [options]="currencyOptions()"
+          placeholder="Select currency"
+          appendTo="body"
+        />
+      </div>
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">From</label>
+        <p-datepicker
+          fluid
+          appendTo="body"
+          [ngModel]="dateFrom()"
+          (ngModelChange)="dateFrom.set($event)"
+        />
+      </div>
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">To</label>
+        <p-datepicker
+          fluid
+          appendTo="body"
+          [ngModel]="dateTo()"
+          (ngModelChange)="dateTo.set($event)"
+        />
+      </div>
+      <div class="col-span-2 flex items-end">
+        <p-button icon="pi pi-search" label="Search" severity="contrast" (onClick)="onSearch()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Table Card ───────────────────────────────────── -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col flex-1 overflow-hidden"
+  >
+    <!-- Toolbar -->
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Accounts</span>
+        @if (filteredData().length > 0) {
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold tabular-nums leading-none"
+          >
+            {{ filteredData().length }}
+          </span>
+        }
+      </div>
+      @if (filteredData().length > 0) {
+        <span class="text-[11px] text-slate-400 tracking-tight"
+          >All amounts in account currency · USD Balance converted</span
+        >
+      }
+    </div>
+
+    @if (filteredData().length === 0) {
+      <app-no-data-placeholder class="flex-1" />
+    } @else {
+      <p-table
+        #dt
+        [value]="filteredData()"
+        [stripedRows]="true"
+        size="small"
+        [scrollable]="true"
+        scrollHeight="400px"
+        class="table-dashboard-invoice"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
+      >
+        <ng-template #header>
+          <tr>
+            <th pResizableColumn pSortableColumn="bankName">
+              <div class="flex items-center gap-1.5">Bank Name <p-sortIcon field="bankName" /></div>
+            </th>
+            <th pResizableColumn pSortableColumn="accountNo">
+              <div class="flex items-center gap-1.5">
+                Account No <p-sortIcon field="accountNo" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="accountName">
+              <div class="flex items-center gap-1.5">
+                Account Name <p-sortIcon field="accountName" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="currency">
+              <div class="flex items-center gap-1.5">Currency <p-sortIcon field="currency" /></div>
+            </th>
+            <th pResizableColumn pSortableColumn="region">
+              <div class="flex items-center gap-1.5">Region <p-sortIcon field="region" /></div>
+            </th>
+            <th pResizableColumn pSortableColumn="beginningBalance" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                Beginning <p-sortIcon field="beginningBalance" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="forThePeriod" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                For the Period <p-sortIcon field="forThePeriod" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="endingBalance" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                Ending Balance <p-sortIcon field="endingBalance" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="usdBalance" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                <span
+                  class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold font-mono"
+                  >USD</span
+                >
+                Balance
+                <p-sortIcon field="usdBalance" />
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-cashBalance>
+          <tr>
+            <!-- Bank name — primary, with bank icon -->
+            <td>
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-5 h-5 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="pi pi-building-columns text-emerald-600" style="font-size: 8px"></i>
+                </div>
+                <span class="text-[13px] font-semibold text-slate-800">{{
+                  cashBalance.bankName
+                }}</span>
+              </div>
+            </td>
+
+            <!-- Account number — mono -->
+            <td>
+              <span
+                class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-mono"
+              >
+                {{ cashBalance.accountNo }}
+              </span>
+            </td>
+
+            <!-- Account name -->
+            <td>
+              <span class="text-[13px] text-slate-600">{{ cashBalance.accountName }}</span>
+            </td>
+
+            <!-- Currency badge -->
+            <td>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold tracking-wide font-mono"
+              >
+                {{ cashBalance.currency }}
+              </span>
+            </td>
+
+            <!-- Region -->
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+                <span class="text-[13px] text-slate-500">{{ cashBalance.region }}</span>
+              </div>
+            </td>
+
+            <!-- Beginning balance -->
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] text-slate-500">
+                {{ formatCurrency(cashBalance.beginningBalance, cashBalance.currency) }}
+              </span>
+            </td>
+
+            <!-- For the period — directional color -->
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
+                [class]="
+                  cashBalance.forThePeriod >= 0
+                    ? 'text-emerald-700 bg-emerald-50'
+                    : 'text-rose-600 bg-rose-50'
+                "
+              >
+                <i
+                  [class]="
+                    cashBalance.forThePeriod >= 0
+                      ? 'pi pi-arrow-up-right text-[9px]'
+                      : 'pi pi-arrow-down-right text-[9px]'
+                  "
+                ></i>
+                {{
+                  formatCurrency(
+                    cashBalance.forThePeriod < 0
+                      ? -cashBalance.forThePeriod
+                      : cashBalance.forThePeriod,
+                    cashBalance.currency
+                  )
+                }}
+              </span>
+            </td>
+
+            <!-- Ending balance -->
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-semibold text-slate-700">
+                {{ formatCurrency(cashBalance.endingBalance, cashBalance.currency) }}
+              </span>
+            </td>
+
+            <!-- USD balance — most prominent -->
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                ${{ cashBalance.usdBalance.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #footer>
+          <tr>
+            <td colspan="5">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+                >Grand Total</span
+              >
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-semibold text-slate-600">
+                ${{ totals().beginningBalance.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-bold"
+                [class]="totals().forThePeriod >= 0 ? 'text-emerald-700' : 'text-rose-600'"
+              >
+                ${{ totals().forThePeriod.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-semibold text-slate-700">
+                ${{ totals().endingBalance.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                ${{ totals().usdBalance.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
   </div>
 </div>

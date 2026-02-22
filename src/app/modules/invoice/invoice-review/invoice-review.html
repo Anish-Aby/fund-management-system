@@ -1,389 +1,727 @@
-<div class="p-5">
-  <p-splitter
-    [minSizes]="[30, 30]"
-    [panelSizes]="[60, 40]"
-    class="w-full h-[80dvh] splitter-invoice"
-  >
+<div class="bg-[#f4f4f5] p-5 h-full">
+  <p-splitter [minSizes]="[30, 30]" [panelSizes]="[60, 40]" class="w-full h-full splitter-invoice">
+    <!-- ══════════════════════════════════════════════════
+         LEFT PANEL — Invoice Review
+    ══════════════════════════════════════════════════ -->
     <ng-template #panel>
-      <div class="h-full overflow-y-auto">
-        <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col">
-          <div class="flex w-full justify-between items-center">
-            <div class="flex flex-col">
-              <h1 class="text-3xl font-medium mb-1">Invoice Review</h1>
-              <p class="text-sm text-muted-color mb-2">
-                Review invoices, approve or reject them. Change tabs for viewing the invoices
-              </p>
+      <div class="h-full overflow-y-auto pr-1">
+        <div
+          class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col"
+        >
+          <!-- Page header -->
+          <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-file-check text-white" style="font-size: 14px"></i>
+              </div>
+              <div>
+                <h1 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+                  Invoice Review
+                </h1>
+                <p class="text-[12px] text-slate-400 leading-none">
+                  Review, approve or reject invoices
+                </p>
+              </div>
             </div>
             <p-select
-              class="mb-4 w-80"
+              class="w-64"
+              appendTo="body"
               panelStyleClass="w-60"
               [options]="invoiceOptions()"
               [ngModel]="selectedInvoiceId()"
               (ngModelChange)="onInvoiceSelect($event)"
               [filter]="true"
               [showClear]="true"
-              placeholder="Select Vendor"
+              placeholder="Jump to vendor..."
             />
           </div>
-          <p-tabs [value]="selectedTabValue()" scrollable>
-            <p-tablist>
-              @for(invoice of invoiceData(); track invoice.basicInformation.invoiceNo){
-              <p-tab
-                [value]="invoice.basicInformation.invoiceNo"
-                [pTooltip]="invoice.basicInformation.vendorName"
-                tooltipPosition="top"
-              >
-                {{
-                  invoice.basicInformation.vendorName.length > 15
-                    ? invoice.basicInformation.vendorName.substring(0, 15) + '...'
-                    : invoice.basicInformation.vendorName
-                }}
-              </p-tab>
 
-              }
-            </p-tablist>
-            <p-tabpanels>
-              @for(invoice of invoiceData(); track invoice.basicInformation.invoiceNo){
-              <p-tabpanel [value]="invoice.basicInformation.invoiceNo">
-                <div class="text-3xl grid grid-cols-12 py-2 font-medium mb-3 @container">
-                  <div class="col-span-12 @2xl:col-span-5 flex items-center">
-                    <div class="mr-6">
-                      {{ invoice.basicInformation.vendorName }}
-                    </div>
-                    <p-tag
-                      class="h-max capitalize"
-                      [value]="invoice.invoiceStatus"
-                      [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
-                    />
-                  </div>
-                  <div
-                    class="col-span-12 mt-2 @2xl:mt-0 @2xl:col-span-7 flex justify-end text-primary"
+          <!-- Tabs -->
+          <div class="px-6 flex-1">
+            <p-tabs [value]="selectedTabValue()" scrollable>
+              <p-tablist>
+                @for (invoice of invoiceData(); track invoice.basicInformation.invoiceNo) {
+                  <p-tab
+                    [value]="invoice.basicInformation.invoiceNo"
+                    [pTooltip]="invoice.basicInformation.vendorName"
+                    tooltipPosition="top"
                   >
-                    @if (editMode()) {
-                    <div class="flex items-start gap-4">
-                      <p-button
-                        icon="pi pi-check-circle"
-                        label="Save Edit"
-                        severity="success"
-                        variant="outlined"
-                        (onClick)="saveChanges()"
-                      />
+                    {{
+                      invoice.basicInformation.vendorName.length > 15
+                        ? invoice.basicInformation.vendorName.substring(0, 15) + '...'
+                        : invoice.basicInformation.vendorName
+                    }}
+                  </p-tab>
+                }
+              </p-tablist>
+
+              <p-tabpanels>
+                @for (invoice of invoiceData(); track invoice.basicInformation.invoiceNo) {
+                  <p-tabpanel [value]="invoice.basicInformation.invoiceNo">
+                    <!-- Invoice hero row -->
+                    <div
+                      class="flex items-center justify-between py-3 mb-4 border-b border-slate-100"
+                    >
+                      <div class="flex items-center gap-3">
+                        <div>
+                          <div
+                            class="text-[16px] font-semibold tracking-tight text-slate-800 leading-none mb-2"
+                          >
+                            {{ invoice.basicInformation.vendorName }}
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <p-tag
+                              class="capitalize"
+                              [value]="invoice.invoiceStatus"
+                              [severity]="utilityService.getSeverity(invoice.invoiceStatus)"
+                            />
+                            <span
+                              class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-mono"
+                            >
+                              {{ invoice.basicInformation.invoiceNo }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        @if (editMode()) {
+                          <p-button
+                            icon="pi pi-check-circle"
+                            label="Save"
+                            severity="success"
+                            size="small"
+                            (onClick)="saveChanges()"
+                          />
+                          <p-button
+                            icon="pi pi-times-circle"
+                            label="Cancel"
+                            severity="secondary"
+                            variant="outlined"
+                            size="small"
+                            (onClick)="cancelEdit()"
+                          />
+                        } @else {
+                          <p-button
+                            icon="pi pi-pencil"
+                            label="Edit"
+                            severity="secondary"
+                            variant="outlined"
+                            size="small"
+                            (onClick)="toggleEditMode()"
+                          />
+                        }
+                        <p-button
+                          icon="pi pi-envelope"
+                          label="View Email"
+                          severity="secondary"
+                          variant="outlined"
+                          size="small"
+                          (onClick)="viewEmail(invoice)"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- ── Section: Basic Information ──────────── -->
+                    <div class="mb-3 rounded-xl border border-slate-200/80 overflow-hidden">
+                      <div
+                        class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center justify-between"
+                      >
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-5 h-5 rounded-md bg-slate-200 flex items-center justify-center"
+                          >
+                            <i class="pi pi-building text-slate-500" style="font-size: 9px"></i>
+                          </div>
+                          <span
+                            class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                            >Basic Information</span
+                          >
+                        </div>
+                        <span class="text-[10px] text-slate-400 font-medium">{{
+                          invoice.basicInformation.invoiceDate
+                        }}</span>
+                      </div>
+                      <div class="grid grid-cols-12 gap-x-4 gap-y-3 px-5 py-4 @container">
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Vendor Name</span
+                          >
+                          <span class="text-[13px] text-slate-700">{{
+                            invoice.basicInformation.vendorName
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Portfolio Name</span
+                          >
+                          <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.basicInformation.portfolioName
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Invoice No</span
+                          >
+                          <span
+                            class="inline-flex w-fit items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono"
+                          >
+                            {{ invoice.basicInformation.invoiceNo }}
+                          </span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Invoice Date</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums">{{
+                            invoice.basicInformation.invoiceDate
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Due Date</span
+                          >
+                          <div class="flex items-center gap-1.5">
+                            <i class="pi pi-clock text-rose-400" style="font-size: 10px"></i>
+                            <span class="text-[13px] text-rose-600 tabular-nums">{{
+                              invoice.basicInformation.invoiceDueDate
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Fund Balance</span
+                          >
+                          <span class="text-[13px] text-emerald-600 tabular-nums">{{
+                            invoice.basicInformation.fundBalance
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Payable Amount</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums font-semibold">{{
+                            invoice.basicInformation.payableAmount
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Amount Paid to Date</span
+                          >
+                          <span class="text-[13px] text-sky-600 tabular-nums">{{
+                            invoice.basicInformation.amountPaidAsOnDate
+                          }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ── Section: Financial Details ──────────── -->
+                    <div class="mb-3 rounded-xl border border-slate-200/80 overflow-hidden">
+                      <div
+                        class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center gap-2"
+                      >
+                        <div
+                          class="w-5 h-5 rounded-md bg-violet-100 flex items-center justify-center"
+                        >
+                          <i class="pi pi-chart-bar text-violet-500" style="font-size: 9px"></i>
+                        </div>
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                          >Financial Details</span
+                        >
+                      </div>
+
+                      <div class="px-5 pt-4 pb-3">
+                        <!-- Local CCY sub-section -->
+                        <div class="flex items-center gap-2 mb-3">
+                          <span
+                            class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                          >
+                            LOCAL CCY — {{ invoice.financialDetails.vendorCcy }}
+                          </span>
+                          <div class="h-px bg-slate-100 flex-1"></div>
+                        </div>
+
+                        <div class="grid grid-cols-12 gap-x-4 gap-y-3 mb-4 @container">
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Tax Type</span
+                            >
+                            @if (editMode()) {
+                              <p-select
+                                class="w-full"
+                                appendTo="body"
+                                [options]="taxTypeOptions()"
+                              />
+                            } @else {
+                              <span class="text-[13px] text-slate-700">{{
+                                invoice.financialDetails.taxType
+                              }}</span>
+                            }
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Net Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.invoiceNetAmount
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Tax %</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.taxPercent
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Local Tax Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.taxAmount
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Gross Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums font-semibold">{{
+                              invoice.financialDetails.invoiceGrossAmount
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >FX (per ECB)</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.fxBaseCcy
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <!-- Base CCY sub-section -->
+                        <div class="flex items-center gap-2 mb-3">
+                          <span
+                            class="inline-flex items-center px-2 py-0.5 rounded-md bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                          >
+                            BASE CCY — {{ invoice.financialDetails.entityCcy }}
+                          </span>
+                          <div class="h-px bg-slate-100 flex-1"></div>
+                        </div>
+
+                        <div class="grid grid-cols-12 gap-x-4 gap-y-3 @container">
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Net Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.netAmount
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Tax Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums">{{
+                              invoice.financialDetails.taxAmountEntityCcy
+                            }}</span>
+                          </div>
+
+                          <div
+                            class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1"
+                          >
+                            <span
+                              class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                              >Gross Amount</span
+                            >
+                            <span class="text-[13px] text-slate-700 tabular-nums font-semibold">{{
+                              invoice.financialDetails.baseCcyGrossAmount
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ── Section: Payment Information ───────── -->
+                    <div class="mb-3 rounded-xl border border-slate-200/80 overflow-hidden">
+                      <div
+                        class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center gap-2"
+                      >
+                        <div
+                          class="w-5 h-5 rounded-md bg-emerald-100 flex items-center justify-center"
+                        >
+                          <i class="pi pi-credit-card text-emerald-600" style="font-size: 9px"></i>
+                        </div>
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                          >Payment Information</span
+                        >
+                      </div>
+                      <div class="grid grid-cols-12 gap-x-4 gap-y-3 px-5 py-4 @container">
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Fee Type</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              optionLabel="name"
+                              [options]="feeTypeOptions()"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.feeType
+                            }}</span>
+                          }
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Paid By</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              optionLabel="label"
+                              [options]="paidByOptions()"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.paidBy
+                            }}</span>
+                          }
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Paid From</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              optionLabel="name"
+                              [options]="fundOptions()"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.paidFrom
+                            }}</span>
+                          }
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Released Bank</span
+                          >
+                          <span class="text-[13px] text-slate-700">{{
+                            invoice.paymentInformation.releasedBank
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Description (Invoice)</span
+                          >
+                          <span class="text-[13px] text-slate-700">{{
+                            invoice.paymentInformation.descriptionAsPerInvoice
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Description Service</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              [options]="serviceDescriptionOptions()"
+                              [editable]="true"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.descriptionService
+                            }}</span>
+                          }
+                        </div>
+
+                        <div class="col-span-12 @xl:col-span-8 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Classification for Accounting</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              [options]="serviceDescriptionOptions()"
+                              [editable]="true"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.classificationForAccounting
+                            }}</span>
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ── Section: Approvals ──────────────────── -->
+                    <div class="mb-4 rounded-xl border border-slate-200/80 overflow-hidden">
+                      <div
+                        class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center gap-2"
+                      >
+                        <div
+                          class="w-5 h-5 rounded-md bg-amber-100 flex items-center justify-center"
+                        >
+                          <i class="pi pi-shield text-amber-600" style="font-size: 9px"></i>
+                        </div>
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                          >Approvals</span
+                        >
+                      </div>
+                      <div class="grid grid-cols-12 gap-x-4 gap-y-3 px-5 py-4 @container">
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Reviewed By</span
+                          >
+                          <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.approvals.reviewedBy
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Reviewed Date</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums">{{
+                            invoice.approvals.reviewedDate
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Approved By</span
+                          >
+                          <div class="flex items-center gap-1.5">
+                            <span
+                              class="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"
+                            ></span>
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.approvals.approvedBy
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Approved Date</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums">{{
+                            invoice.approvals.approvedDate
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Released By</span
+                          >
+                          <div class="flex items-center gap-1.5">
+                            <span
+                              class="w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0"
+                            ></span>
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.approvals.releasedBy
+                            }}</span>
+                          </div>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Released Date</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums">{{
+                            invoice.approvals.releasedDate
+                          }}</span>
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Paid From</span
+                          >
+                          @if (editMode()) {
+                            <p-select
+                              class="w-full"
+                              appendTo="body"
+                              optionLabel="name"
+                              [options]="fundOptions()"
+                            />
+                          } @else {
+                            <span class="text-[13px] text-slate-700">{{
+                              invoice.paymentInformation.paidFrom
+                            }}</span>
+                          }
+                        </div>
+
+                        <div class="col-span-6 @xl:col-span-4 @2xl:col-span-3 flex flex-col gap-1">
+                          <span
+                            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+                            >Paid Date</span
+                          >
+                          <span class="text-[13px] text-slate-700 tabular-nums">{{
+                            invoice.approvals.paidDate
+                          }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ── Action bar ──────────────────────────── -->
+                    <div
+                      class="flex items-center justify-between py-3 border-t border-slate-100 gap-2"
+                    >
                       <p-button
                         icon="pi pi-times-circle"
-                        variant="outlined"
-                        severity="contrast"
-                        label="Cancel Edit"
-                        class="mr-2"
-                        (onClick)="cancelEdit()"
+                        label="Reject Invoice"
+                        severity="danger"
+                        size="small"
+                        (onClick)="showApproveDialog(invoice, 'reject')"
                       />
-                    </div>
-                    } @else {
-                    <p-button
-                      icon="pi pi-pencil"
-                      variant="outlined"
-                      severity="contrast"
-                      label="Edit Invoice"
-                      class="mr-2"
-                      (onClick)="toggleEditMode()"
-                    />
-                    }
-                    <p-button
-                      icon="pi pi-envelope"
-                      variant="outlined"
-                      severity="contrast"
-                      label="View Email"
-                      class="mr-2"
-                      (onClick)="viewEmail(invoice)"
-                    />
-                  </div>
-                </div>
-                <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Basic Information</div>
-                  </div>
-
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Vendor Name</div>
-                      <div class="font-medium">{{ invoice.basicInformation.vendorName }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Portfolio Name</div>
-                      <div class="font-medium">{{ invoice.basicInformation.portfolioName }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Invoice No</div>
-                      <div class="font-medium">{{ invoice.basicInformation.invoiceNo }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Invoice Date</div>
-                      <div class="font-medium">{{ invoice.basicInformation.invoiceDate }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Invoice Due Date</div>
-                      <div class="font-medium">{{ invoice.basicInformation.invoiceDueDate }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Fund Balance</div>
-                      <div class="font-medium">{{ invoice.basicInformation.fundBalance }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Payable Amount</div>
-                      <div class="font-medium">{{ invoice.basicInformation.payableAmount }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Amount Paid as on date
-                      </div>
-                      <div class="font-medium">
-                        {{ invoice.basicInformation.amountPaidAsOnDate }}
+                      <div class="flex items-center gap-2">
+                        <p-button
+                          icon="pi pi-clone"
+                          label="Split Invoice"
+                          severity="secondary"
+                          variant="outlined"
+                          size="small"
+                          (onClick)="splitInvoice(invoice)"
+                        />
+                        <p-button
+                          icon="pi pi-file-check"
+                          label="View Agreement"
+                          severity="secondary"
+                          variant="outlined"
+                          size="small"
+                        />
+                        <p-button
+                          icon="pi pi-check-circle"
+                          label="Approve Invoice"
+                          severity="success"
+                          size="small"
+                          (onClick)="showApproveDialog(invoice, 'approve')"
+                        />
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Financial Details</div>
-                  </div>
-
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Ccy (Vendor)</div>
-                      <div class="font-medium">{{ invoice.financialDetails.vendorCcy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Tax Type</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" [options]="taxTypeOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.financialDetails.taxType }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Net Amount</div>
-                      <div class="font-medium">{{ invoice.financialDetails.invoiceNetAmount }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Tax %</div>
-                      <div class="font-medium">{{ invoice.financialDetails.taxPercent }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Local Tax Amount</div>
-                      <div class="font-medium">{{ invoice.financialDetails.taxAmount }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Gross Amount</div>
-                      <div class="font-medium">
-                        {{ invoice.financialDetails.invoiceGrossAmount }}
-                      </div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">FX (per ECB)</div>
-                      <div class="font-medium">{{ invoice.financialDetails.fxBaseCcy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3"></div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Base Ccy (Entity)</div>
-                      <div class="font-medium">{{ invoice.financialDetails.entityCcy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Net Amount</div>
-                      <div class="font-medium">{{ invoice.financialDetails.netAmount }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Tax Amount</div>
-                      <div class="font-medium">
-                        {{ invoice.financialDetails.taxAmountEntityCcy }}
-                      </div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Gross Amount</div>
-                      <div class="font-medium">
-                        {{ invoice.financialDetails.baseCcyGrossAmount }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-4 border border-surface rounded-xl @container">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Payment Information</div>
-                  </div>
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2">
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Fee Type</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" optionLabel="name" [options]="feeTypeOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.paymentInformation.feeType }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Paid By</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" optionLabel="label" [options]="paidByOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.paymentInformation.paidBy }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Paid from</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" optionLabel="name" [options]="fundOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.paymentInformation.paidFrom }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Released Bank</div>
-                      <div class="font-medium">{{ invoice.paymentInformation.releasedBank }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Description as per Invoice
-                      </div>
-                      <div class="font-medium">
-                        {{ invoice.paymentInformation.descriptionAsPerInvoice }}
-                      </div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Description Service</div>
-                      @if (editMode()) {
-                      <p-select
-                        class="w-full"
-                        [options]="serviceDescriptionOptions()"
-                        [editable]="true"
-                      />
-                      } @else {
-                      <div class="font-medium">
-                        {{ invoice.paymentInformation.descriptionService }}
-                      </div>
-                      }
-                    </div>
-                    <div class="col-span-12 lg:col-span-4 xl:col-span-6">
-                      <div class="text-muted-color uppercase text-xs mb-1">
-                        Classification for Accounting
-                      </div>
-                      @if (editMode()) {
-                      <p-select
-                        class="w-full"
-                        [options]="serviceDescriptionOptions()"
-                        [editable]="true"
-                      />
-                      } @else {
-                      <div class="font-medium">
-                        {{ invoice.paymentInformation.classificationForAccounting }}
-                      </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-4 border border-surface rounded-xl">
-                  <div class="bg-slate-100 dark:bg-slate-800 rounded-xl rounded-b-none shadow-sm">
-                    <div class="text-xl font-medium pl-4 pt-2">Approvals</div>
-                  </div>
-
-                  <div class="grid grid-cols-12 gap-3 mt-4 px-4 pb-2 @container">
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Reviewed by</div>
-                      <div class="font-medium">{{ invoice.approvals.reviewedBy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Reviewed Date</div>
-                      <div class="font-medium">{{ invoice.approvals.reviewedDate }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Approved by</div>
-                      <div class="font-medium">{{ invoice.approvals.approvedBy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Approved Date</div>
-                      <div class="font-medium">{{ invoice.approvals.approvedDate }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Released by</div>
-                      <div class="font-medium">{{ invoice.approvals.releasedBy }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Released Date</div>
-                      <div class="font-medium">{{ invoice.approvals.releasedDate }}</div>
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Paid from</div>
-                      @if (editMode()) {
-                      <p-select class="w-full" optionLabel="name" [options]="fundOptions()" />
-                      } @else {
-                      <div class="font-medium">{{ invoice.paymentInformation.paidFrom }}</div>
-                      }
-                    </div>
-                    <div class="col-span-12 @xl:col-span-4 @2xl:col-span-3">
-                      <div class="text-muted-color uppercase text-xs mb-1">Paid Date</div>
-                      <div class="font-medium">{{ invoice.approvals.paidDate }}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex justify-between">
-                  <p-button
-                    icon="pi pi-times-circle"
-                    severity="danger"
-                    label="Reject Invoice"
-                    class="mr-2"
-                    (onClick)="showApproveDialog(invoice, 'reject')"
-                  />
-                  <p-button
-                    icon="pi pi-clone"
-                    variant="outlined"
-                    severity="contrast"
-                    label="Split Invoice"
-                    class="mr-2"
-                    (onClick)="splitInvoice(invoice)"
-                  />
-
-                  <p-button
-                    icon="pi pi-file-check"
-                    variant="outlined"
-                    severity="contrast"
-                    label="View Agreement"
-                    class="mr-2"
-                  />
-                  <p-button
-                    icon="pi pi-check-circle"
-                    severity="success"
-                    label="Approve Invoice"
-                    class="mr-2"
-                    (onClick)="showApproveDialog(invoice, 'approve')"
-                  />
-                </div>
-              </p-tabpanel>
-              }
-            </p-tabpanels>
-          </p-tabs>
+                  </p-tabpanel>
+                }
+              </p-tabpanels>
+            </p-tabs>
+          </div>
         </div>
       </div>
     </ng-template>
+
+    <!-- ══════════════════════════════════════════════════
+         RIGHT PANEL — PDF Viewer
+    ══════════════════════════════════════════════════ -->
     <ng-template #panel>
-      <div class="">
+      <div class="h-full pl-1">
         <div
-          class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 flex flex-col h-full"
+          class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col h-full"
         >
-          <div class="grid grid-cols-12">
-            <div class="col-span-6 flex flex-col">
-              <h1 class="text-3xl font-medium mb-1">Invoice PDF View</h1>
-              <p class="text-sm text-muted-color mb-2">Review the invoice PDF here</p>
+          <!-- PDF header -->
+          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-file-pdf text-rose-500" style="font-size: 14px"></i>
+              </div>
+              <div>
+                <h2 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+                  Invoice PDF
+                </h2>
+                <p class="text-[12px] text-slate-400 leading-none">Original document view</p>
+              </div>
             </div>
-            <div class="col-span-6 flex items-center justify-end">
-              <p-button
-                icon="pi pi-save"
-                variant="outlined"
-                severity="contrast"
-                label="Save Invoice PDF"
-              />
-            </div>
+            <p-button
+              icon="pi pi-download"
+              label="Save PDF"
+              severity="secondary"
+              variant="outlined"
+              size="small"
+            />
           </div>
-          <div class="h-full">
+
+          <!-- PDF viewer -->
+          <div class="flex-1 overflow-hidden">
             <ngx-extended-pdf-viewer
               [src]="'assets/sample-invoice.pdf'"
               [height]="'100%'"
@@ -405,88 +743,3 @@
     </ng-template>
   </p-splitter>
 </div>
-
-<p-dialog [modal]="true" [visible]="confirmDialogVisible()">
-  <ng-template #headless>
-    <div class="min-w-150">
-      <div class="py-3 shadow-3xl px-3 flex justify-between items-center border-b border-surface">
-        <span class="text-2xl font-semibold">
-          @if (reviewConfirmType() === 'approve') { Approve Invoice } @else { Reject Invoice }
-        </span>
-        <p-button
-          (onClick)="cancelApproveDialog()"
-          icon="pi pi-times"
-          size="small"
-          variant="outlined"
-          severity="contrast"
-        />
-      </div>
-      <div class="">
-        <div
-          [ngClass]="{
-            'bg-emerald-100': reviewConfirmType() === 'approve',
-            'bg-red-100': reviewConfirmType() === 'reject'
-          }"
-          class="px-3 py-3 flex items-center"
-        >
-          <div
-            [ngClass]="{
-              'text-emerald-600 pi-verified': reviewConfirmType() === 'approve',
-              'text-red-600 pi-times-circle': reviewConfirmType() === 'reject'
-            }"
-            class="pi mr-4 text-5xl!"
-          ></div>
-          @if (reviewConfirmType() === 'approve') {
-          <div
-            class="font-semibold"
-            [ngClass]="{
-              'dark:text-emerald-600': reviewConfirmType() === 'approve',
-            }"
-          >
-            Are you sure you want to approve {{ invoiceToApprove().basicInformation?.invoiceNo }}
-          </div>
-          } @else {
-          <div
-            class="font-semibold"
-            [ngClass]="{
-              'dark:text-red-600': reviewConfirmType() === 'reject'
-            }"
-          >
-            Are you sure you want to reject {{ invoiceToApprove().basicInformation?.invoiceNo }}
-          </div>
-          }
-        </div>
-      </div>
-      <div class="px-3">
-        <div class="mt-4 text-muted-color mb-1">Please provide your comments below</div>
-        <textarea fluid rows="3" pTextarea></textarea>
-      </div>
-      <div class="mt-4 px-3 py-2">
-        <div class="flex justify-between">
-          <p-button
-            icon="pi pi-times-circle"
-            variant="outlined"
-            severity="contrast"
-            label="Cancel"
-            (onClick)="cancelApproveDialog()"
-          />
-          @if (reviewConfirmType() === 'approve') {
-          <p-button
-            (onClick)="approveInvoice()"
-            icon="pi pi-check-circle"
-            severity="contrast"
-            label="Approve"
-          />
-          } @if (reviewConfirmType() === 'reject') {
-          <p-button
-            (onClick)="rejectInvoice()"
-            icon="pi pi-times-circle"
-            severity="contrast"
-            label="Reject"
-          />
-          }
-        </div>
-      </div>
-    </div>
-  </ng-template>
-</p-dialog>

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './modules/gaurds/auth-guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'app',
+    canActivate: [AuthGuard],
     loadComponent: () => import('./modules/core/core').then((m) => m.Core),
     children: [
       {
@@ -25,7 +27,7 @@ export const routes: Routes = [
             path: 'review',
             loadComponent: () =>
               import('./modules/invoice/invoice-review/invoice-review').then(
-                (m) => m.InvoiceReview
+                (m) => m.InvoiceReview,
               ),
           },
           {
@@ -47,7 +49,7 @@ export const routes: Routes = [
             path: 'expenses-report',
             loadComponent: () =>
               import('./modules/report/expenses-report/expenses-report').then(
-                (m) => m.ExpensesReport
+                (m) => m.ExpensesReport,
               ),
           },
         ],

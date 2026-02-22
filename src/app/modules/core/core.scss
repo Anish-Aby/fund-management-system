@@ -4,3 +4,169 @@
   width: 100%;
   transition: margin-left 0.3s ease;
 }
+
+// ══════════════════════════════════════════════════════
+// CONTEXT BAR — Cohesive with dashboard card aesthetic
+// Key references from dashboard:
+//   bg: #ffffff cards on #f4f4f5 page
+//   borders: border-slate-200/80 → rgba(203,213,225,0.8)
+//   text: slate-800 headings, slate-400 subtitles
+//   accent dot: bg-sky-400 (used in table rows)
+//   shadows: 0 1px 3px rgba(0,0,0,0.05)
+// ══════════════════════════════════════════════════════
+
+.context-bar {
+  display: flex;
+  align-items: stretch;
+  height: 49px;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.8); // matches border-slate-200/80
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); // matches card shadow
+  position: relative;
+  z-index: 50;
+}
+
+// ── Entity block — left, accented ─────────────────────
+
+.context-bar__entity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  min-width: 240px;
+  // Sky accent bar on left — mirrors the sky-400 dots in table rows
+  border-left: 3px solid #38bdf8; // sky-400
+  border-right: 1px solid rgba(203, 213, 225, 0.8);
+  background: #f8faff; // barely-there sky tint
+  flex-shrink: 0;
+}
+
+.context-bar__entity-icon {
+  font-size: 13px;
+  color: #38bdf8; // sky-400
+  flex-shrink: 0;
+}
+
+.context-bar__entity-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+// ── Metadata group — right side ───────────────────────
+
+.context-bar__meta-group {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  padding: 0 4px;
+}
+
+.context-bar__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 14px;
+  transition: background 0.1s ease;
+  cursor: default;
+
+  &:hover {
+    background: #f8fafc;
+  }
+}
+
+.context-bar__meta-icon {
+  font-size: 11px;
+  color: #94a3b8; // slate-400
+}
+
+// ── Typography ────────────────────────────────────────
+
+.context-bar__label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #94a3b8; // slate-400 — matches card subtitles
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.context-bar__value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b; // slate-800 — matches card headings
+  white-space: nowrap;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Inline badge (for mono values like USD) ───────────
+
+.context-bar__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+
+  &--mono {
+    background: #f1f5f9; // slate-100
+    border: 1px solid #e2e8f0; // slate-200
+    color: #475569; // slate-600
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.04em;
+  }
+}
+
+// ── Live pill — matches stat card live badge style ────
+
+.context-bar__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f0fdf4; // green-50
+  border: 1px solid #bbf7d0; // green-200
+  font-size: 10px;
+  font-weight: 600;
+  color: #16a34a; // green-600
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.context-bar__live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e; // green-500
+  animation: cbLivePulse 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes cbLivePulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0);
+  }
+}
+
+// ── Vertical separators ───────────────────────────────
+
+.context-bar__divider {
+  width: 1px;
+  margin: 12px 0;
+  background: rgba(203, 213, 225, 0.8);
+  flex-shrink: 0;
+}

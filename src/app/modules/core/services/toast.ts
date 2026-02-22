@@ -20,7 +20,7 @@ export class ToastService {
   }
 
   showWarn(message: string) {
-    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: message });
+    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: message, sticky: true });
   }
 
   showError(message: string) {

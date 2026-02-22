@@ -1,5 +1,5 @@
-<div class="p-5">
-  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
+<!-- <div class="p-4">
+  <div>
     <div class="flex justify-between items-center mb-4">
       <div>
         @if (status() === 'Received') {
@@ -149,5 +149,421 @@
         </p-table>
       </div>
     </div>
+  </div>
+</div> -->
+
+<div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- ── Page header ─────────────────────────────────── -->
+    <div
+      class="px-6 py-4 border-b border-slate-100 flex items-center justify-between"
+      [ngClass]="statusClass"
+    >
+      <div class="flex items-center gap-3">
+        <!-- Icon -->
+        <div
+          class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+          [class]="getStatusIconClass(status())"
+        >
+          <i
+            class="pi text-white"
+            style="font-size: 15px"
+            [ngClass]="{
+              'pi-inbox': status() === 'Received',
+              'pi-clock': status() === 'Pending',
+              'pi-check-circle': status() === 'Approved',
+              'pi-times-circle': status() === 'Rejected',
+              'pi-send': status() === 'Scheduled',
+              'pi-verified': status() === 'Paid',
+            }"
+          ></i>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-[15px] font-bold tracking-tight text-slate-900 leading-none">
+              @if (status() === 'Received') {
+                All Invoices Received
+              } @else if (status() === 'Pending') {
+                Pending Review & Approval
+              } @else if (status() === 'Approved') {
+                Approved Invoices
+              } @else if (status() === 'Rejected') {
+                Rejected Invoices
+              } @else if (status() === 'Scheduled') {
+                Scheduled for Payment
+              } @else if (status() === 'Paid') {
+                Paid & Cleared Invoices
+              }
+            </h1>
+            <!-- Status pill — tax report style -->
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border"
+              [ngClass]="{
+                'bg-sky-100 border-sky-200 text-sky-700': status() === 'Received',
+                'bg-amber-100 border-amber-200 text-amber-700': status() === 'Pending',
+                'bg-emerald-100 border-emerald-200 text-emerald-700': status() === 'Approved',
+                'bg-rose-100 border-rose-200 text-rose-700': status() === 'Rejected',
+                'bg-violet-100 border-violet-200 text-violet-700': status() === 'Scheduled',
+                'bg-indigo-100 border-indigo-200 text-indigo-700': status() === 'Paid',
+              }"
+            >
+              <span
+                class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                [ngClass]="{
+                  'bg-sky-500': status() === 'Received',
+                  'bg-amber-500 animate-pulse': status() === 'Pending',
+                  'bg-emerald-500': status() === 'Approved',
+                  'bg-rose-500': status() === 'Rejected',
+                  'bg-violet-500': status() === 'Scheduled',
+                  'bg-indigo-500': status() === 'Paid',
+                }"
+              ></span>
+              {{ status() }}
+            </span>
+          </div>
+          <p class="text-[12px] text-slate-400 leading-none">
+            @if (status() === 'Received') {
+              Invoices received from start — statuses shown in table
+            } @else if (status() === 'Pending') {
+              Reviewed and queued for next level of approval
+            } @else if (status() === 'Approved') {
+              Maker-approved — your approval required for release
+            } @else if (status() === 'Rejected') {
+              Rejected invoices — action required
+            } @else if (status() === 'Scheduled') {
+              Approved and ready — proceed with payment
+            } @else if (status() === 'Paid') {
+              Paid and released to vendor
+            }
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <p-button
+          icon="pi pi-file-excel"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          pTooltip="Export Excel"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-print"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          pTooltip="Print / PDF"
+          tooltipPosition="bottom"
+        />
+      </div>
+    </div>
+
+    <!-- ── Stat strip ──────────────────────────────────── -->
+    <div class="px-6 py-3 border-b border-slate-100 flex items-center gap-6 flex-wrap">
+      <!-- Record count -->
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-file text-slate-500" style="font-size: 10px"></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Invoices
+          </div>
+          <div class="text-[13px] font-bold text-slate-900 tabular-nums leading-none">
+            {{ invoices.length }}
+          </div>
+        </div>
+      </div>
+
+      <div class="w-px h-7 bg-slate-100"></div>
+
+      <!-- Gross total -->
+      <div class="flex items-center gap-2">
+        <div
+          class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 border"
+          [ngClass]="{
+            'bg-sky-50 border-sky-100': status() === 'Received',
+            'bg-amber-50 border-amber-100': status() === 'Pending',
+            'bg-emerald-50 border-emerald-100': status() === 'Approved',
+            'bg-rose-50 border-rose-100': status() === 'Rejected',
+            'bg-violet-50 border-violet-100': status() === 'Scheduled',
+            'bg-indigo-50 border-indigo-100': status() === 'Paid',
+          }"
+        >
+          <i
+            class="pi pi-dollar"
+            style="font-size: 10px"
+            [ngClass]="{
+              'text-sky-500': status() === 'Received',
+              'text-amber-500': status() === 'Pending',
+              'text-emerald-500': status() === 'Approved',
+              'text-rose-500': status() === 'Rejected',
+              'text-violet-500': status() === 'Scheduled',
+              'text-indigo-500': status() === 'Paid',
+            }"
+          ></i>
+        </div>
+        <div>
+          <div
+            class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 leading-none mb-0.5"
+          >
+            Total Amount
+          </div>
+          <div
+            class="text-[13px] font-bold tabular-nums font-mono leading-none"
+            [ngClass]="{
+              'text-sky-600': status() === 'Received',
+              'text-amber-600': status() === 'Pending',
+              'text-emerald-600': status() === 'Approved',
+              'text-rose-600': status() === 'Rejected',
+              'text-violet-600': status() === 'Scheduled',
+              'text-indigo-600': status() === 'Paid',
+            }"
+          >
+            ${{ filteredTotal.toLocaleString() }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected count — only when rows selected -->
+      @if (selectedInvoices.length > 0) {
+        <div class="w-px h-7 bg-slate-100"></div>
+        <div
+          class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700"
+        >
+          <i class="pi pi-check-square text-white" style="font-size: 9px"></i>
+          <span class="text-[11px] font-semibold text-white tabular-nums"
+            >{{ selectedInvoices.length }} selected</span
+          >
+        </div>
+      }
+    </div>
+
+    <!-- ── Filter bar ──────────────────────────────────── -->
+    <div class="px-6 py-4 border-b border-slate-100">
+      <div class="grid grid-cols-7 gap-x-4 gap-y-3 items-end">
+        @for (field of searchFields(); track field.field) {
+          <div class="col-span-1 flex flex-col gap-1.5">
+            <label class="text-[11px] font-medium text-slate-500 tracking-tight">{{
+              field.label
+            }}</label>
+            @if (field.type === 'text') {
+              <input [placeholder]="field.placeholder" fluid type="text" pInputText />
+            } @else if (field.type === 'date') {
+              <p-datepicker [placeholder]="field.placeholder" fluid appendTo="body" />
+            } @else if (field.type === 'multiselect') {
+              <p-multiselect
+                fluid
+                [options]="field.options || []"
+                [placeholder]="field.placeholder"
+                appendTo="body"
+              />
+            }
+          </div>
+        }
+
+        <div class="col-span-2 flex items-end gap-2">
+          <p-button icon="pi pi-search" label="Search" severity="contrast" />
+          <p-button
+            icon="pi pi-file-check"
+            label="Review"
+            severity="contrast"
+            [disabled]="selectedInvoices.length === 0"
+            (onClick)="onReviewInvoice()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Table ───────────────────────────────────────── -->
+    <p-table
+      #dt
+      [value]="invoices"
+      [(selection)]="selectedInvoices"
+      dataKey="invoiceNumber"
+      [stripedRows]="true"
+      size="small"
+      [showGridlines]="true"
+      [scrollable]="true"
+      scrollHeight="500px"
+      class="table-dashboard-invoice"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      (onFilter)="onTableFilter($event)"
+      [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
+    >
+      <ng-template #header>
+        <tr>
+          <th><p-tableHeaderCheckbox /></th>
+          @for (col of columns(); track col.field) {
+            <th [pSortableColumn]="col.sortable ? col.field : undefined" pResizableColumn>
+              <div class="flex items-center justify-between gap-2">
+                {{ col.header }}
+                @if (col.sortable) {
+                  <p-sortIcon [field]="col.field" />
+                }
+              </div>
+            </th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-invoice>
+        <tr>
+          <td><p-tableCheckbox [value]="invoice" /></td>
+          @for (col of columns(); track col.field) {
+            <td (click)="onInvoiceRowSelect(invoice)">
+              @if (
+                col.field === 'grossAmount' ||
+                col.field === 'netAmount' ||
+                col.field === 'taxAmount' ||
+                col.field === 'paidAmount'
+              ) {
+                <span class="tabular-nums text-[13px] font-bold text-slate-900 font-mono">
+                  ${{ invoice[col.field] | number }}
+                </span>
+              } @else if (col.field === 'fxPrice') {
+                <span class="tabular-nums text-[13px] font-semibold text-violet-700 font-mono">
+                  {{ invoice[col.field] || '—' }}
+                </span>
+              } @else if (col.field === 'vendorName') {
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="pi pi-building text-indigo-500" style="font-size: 8px"></i>
+                  </div>
+                  <span class="text-[13px] font-semibold text-slate-800">{{
+                    invoice[col.field] || '—'
+                  }}</span>
+                </div>
+              } @else if (col.field === 'portfolio' || col.field === 'fundName') {
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+                  <span class="text-[13px] text-slate-600">{{ invoice[col.field] || '—' }}</span>
+                </div>
+              } @else if (col.field === 'invoiceNumber') {
+                <span
+                  class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
+                >
+                  {{ invoice[col.field] || '—' }}
+                </span>
+              } @else if (col.field === 'expenseType') {
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
+                >
+                  {{ invoice[col.field] || '—' }}
+                </span>
+              } @else if (col.field === 'aging') {
+                <span class="tabular-nums text-[12px] font-medium text-slate-500">{{
+                  invoice[col.field] || '—'
+                }}</span>
+              } @else if (col.field === 'status') {
+                @if (invoice[col.field] === 'Received') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-[11px] font-semibold"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>Received
+                  </span>
+                } @else if (invoice[col.field] === 'Pending') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
+                  >
+                    <span
+                      class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse flex-shrink-0"
+                    ></span
+                    >Pending
+                  </span>
+                } @else if (invoice[col.field] === 'Approved') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span
+                    >Approved
+                  </span>
+                } @else if (invoice[col.field] === 'Rejected') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-semibold"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0"></span>Rejected
+                  </span>
+                } @else if (invoice[col.field] === 'Scheduled') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-semibold"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-violet-500 flex-shrink-0"></span
+                    >Scheduled
+                  </span>
+                } @else if (invoice[col.field] === 'Paid') {
+                  <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] font-semibold"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>Paid
+                  </span>
+                } @else {
+                  <p-tag
+                    [value]="invoice[col.field]"
+                    [severity]="getSeverity(invoice[col.field])"
+                  />
+                }
+              } @else if (col.field === 'recoStatus') {
+                <p-tag
+                  [value]="
+                    invoice[col.field]?.charAt(0).toUpperCase() + invoice[col.field]?.slice(1)
+                  "
+                  [severity]="getSeverity(invoice[col.field])"
+                />
+              } @else if (col.field === 'localCcy' || col.field === 'releasedEntity') {
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono"
+                >
+                  {{ invoice[col.field] || '—' }}
+                </span>
+              } @else if (col.field === 'paidBy') {
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-5 h-5 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="pi pi-user text-emerald-500" style="font-size: 8px"></i>
+                  </div>
+                  <span class="text-[13px] text-slate-600">{{ invoice[col.field] || '—' }}</span>
+                </div>
+              } @else if (col.field === 'rejectedReason') {
+                <span class="text-[12px] text-rose-500 italic">{{
+                  invoice[col.field] || '—'
+                }}</span>
+              } @else {
+                <span class="text-[13px] text-slate-500">{{ invoice[col.field] || '—' }}</span>
+              }
+            </td>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template #footer>
+        <tr>
+          <td [attr.colspan]="columns().length">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+              >Grand Total</span
+            >
+          </td>
+          <td>
+            <div class="text-right">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900 font-mono">
+                ${{ filteredTotal | number }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>

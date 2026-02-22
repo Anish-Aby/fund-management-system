@@ -1,1 +1,18 @@
-// Invoice list styles
+.status-icon-received {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+}
+.status-icon-pending {
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+}
+.status-icon-approved {
+  background: linear-gradient(135deg, #34d399, #059669);
+}
+.status-icon-rejected {
+  background: linear-gradient(135deg, #f87171, #dc2626);
+}
+.status-icon-scheduled {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+}
+.status-icon-paid {
+  background: linear-gradient(135deg, #818cf8, #4338ca);
+}

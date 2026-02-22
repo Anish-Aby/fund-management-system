@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnDestroy, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -9,6 +9,7 @@ import InvoiceListData from './../../core/mocks/invoice-list-mock.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 interface TableColumn {
   field: string;
@@ -38,7 +39,8 @@ interface SearchField {
   templateUrl: './invoice-list.html',
   styleUrl: './invoice-list.scss',
 })
-export class InvoiceList {
+export class InvoiceList implements OnDestroy {
+  ref: DynamicDialogRef | undefined;
   selectedInvoices: any[] = [];
   invoices: any[] = [];
   filteredTotal: number = 0;
@@ -60,27 +62,34 @@ export class InvoiceList {
     public utilityService: UtilityService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private dialogService: DialogService,
+    private dialogConfigData: DynamicDialogConfig,
   ) {
     const queryParams = this.activatedRoute.snapshot.queryParams;
-    console.log(queryParams);
-    this.status.set(this.getStatus(queryParams['statusId']));
+    console.log(this.dialogConfigData);
+    this.status.set(this.getStatus(this.dialogConfigData.data?.statusId));
     this.invoices = InvoiceListData.filter((invoice) => invoice.status === this.status());
     this.calculateTotal();
+    console.log('Initial status:', this.status());
   }
 
-  getStatus(statusId: string) {
+  ngOnDestroy(): void {
+    this.ref?.close();
+  }
+
+  getStatus(statusId: number) {
     switch (statusId) {
-      case '1':
+      case 1:
         return 'Received';
-      case '2':
+      case 2:
         return 'Pending';
-      case '3':
+      case 3:
         return 'Approved';
-      case '4':
+      case 4:
         return 'Rejected';
-      case '5':
+      case 5:
         return 'Scheduled';
-      case '6':
+      case 6:
         return 'Paid';
       default:
         return 'Received';
@@ -353,5 +362,40 @@ export class InvoiceList {
           { field: 'grossAmount', label: 'Gross Amount', placeholder: 'Amount', type: 'text' },
         ];
     }
+  }
+
+  getStatusIconClass(status: string | null): string {
+    switch (status) {
+      case 'Received':
+        return 'status-icon-received';
+      case 'Pending':
+        return 'status-icon-pending';
+      case 'Approved':
+        return 'status-icon-approved';
+      case 'Rejected':
+        return 'status-icon-rejected';
+      case 'Scheduled':
+        return 'status-icon-scheduled';
+      case 'Paid':
+        return 'status-icon-paid';
+      default:
+        return 'status-icon-received';
+    }
+  }
+
+  get normalizedStatus(): string | undefined {
+    return this.status()?.trim();
+  }
+
+  get statusClass(): string {
+    const map: Record<string, string> = {
+      Rejected: 'bg-gradient-to-r from-rose-50 to-white',
+      Received: 'bg-gradient-to-r from-sky-50 to-white',
+      Pending: 'bg-gradient-to-r from-amber-50 to-white',
+      Approved: 'bg-gradient-to-r from-emerald-50 to-white',
+      Scheduled: 'bg-gradient-to-r from-violet-50 to-white',
+      Paid: 'bg-gradient-to-r from-indigo-50 to-white',
+    };
+    return map[this.normalizedStatus ?? ''] ?? '';
   }
 }

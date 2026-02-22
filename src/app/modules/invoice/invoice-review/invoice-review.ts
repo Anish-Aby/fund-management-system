@@ -1,4 +1,4 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
+import { Component, signal, computed, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
 import { SelectModule } from 'primeng/select';
@@ -26,11 +26,15 @@ import { UtilityService } from '../../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
-import { DialogWindowService } from '../../shared/services/dialog-window';
+// import { DialogWindowService } from '../../shared/services/dialog-window';
 import { InvoiceSplit } from '../invoice-split/invoice-split';
 import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
 import { EmailDialog } from '../../shared/components/email-dialog/email-dialog';
 import TaxType from '../../core/mocks/tax-type-mock.json';
+import { DialogWindowService } from '../../core/services/dialog-window-service';
+import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
+import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog';
+import { ConfirmDialogService } from '../../core/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-invoice-review',
@@ -57,12 +61,13 @@ import TaxType from '../../core/mocks/tax-type-mock.json';
   styleUrl: './invoice-review.scss',
 })
 export class InvoiceReview implements OnInit {
+  @ViewChild(ConfirmDialog) confirmDialog?: ConfirmDialog;
+
   invoiceData = signal<any[]>(InvoiceDataMock as any[]);
   editMode = signal(false);
   selectedInvoiceId = signal<string | null>(null);
   selectedTabValue = signal<string>(InvoiceDataMock[0]?.basicInformation.invoiceNo || '');
   invoiceToApprove = signal<any | null>(null);
-  confirmDialogVisible = signal<boolean>(false);
   reviewConfirmType = signal<string>('');
   feeTypeOptions = signal<any>(FeeTypeDataMock);
   serviceDescriptionOptions = signal<any>(ServiceDescriptionDataMock);
@@ -73,7 +78,8 @@ export class InvoiceReview implements OnInit {
   constructor(
     private dialogService: DialogService,
     private dialogWindowService: DialogWindowService,
-    public utilityService: UtilityService
+    private confirmDialogService: ConfirmDialogService,
+    public utilityService: UtilityService,
   ) {}
 
   ngOnInit() {
@@ -84,7 +90,7 @@ export class InvoiceReview implements OnInit {
     this.invoiceData().map((invoice) => ({
       label: invoice.basicInformation.vendorName,
       value: invoice.basicInformation.invoiceNo,
-    }))
+    })),
   );
 
   fieldGroups = computed(() => this.organizeFieldsByGroup());
@@ -130,92 +136,50 @@ export class InvoiceReview implements OnInit {
     this.editMode.set(false);
   }
 
-  showApproveDialog(invoice: any, reviewType: string): void {
-    if (reviewType === 'approve') {
-      this.reviewConfirmType.set('approve');
-    } else {
-      this.reviewConfirmType.set('reject');
-    }
-    this.invoiceToApprove.set(invoice);
-    this.confirmDialogVisible.set(true);
-  }
-
-  cancelApproveDialog(): void {
-    this.confirmDialogVisible.set(false);
-    this.invoiceToApprove.set(null);
-  }
-
-  approveInvoice(): void {
-    this.confirmDialogVisible.set(false);
-  }
-
-  rejectInvoice(): void {
-    this.confirmDialogVisible.set(false);
-  }
-
   viewEmail(invoice: any): void {
-    this.dialogService.open(EmailDialog, {
-      data: {
-        title: 'Email Details',
-        emailData: {
-          from: 'vendor@example.com',
-          to: 'finance@company.com',
-          subject: `Invoice ${invoice.basicInformation.invoiceNo} - ${invoice.basicInformation.vendorName}`,
-          date: new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-          body: `Dear Finance Team,
+    const data = {
+      emailData: {
+        from: 'vendor@example.com',
+        to: 'finance@company.com',
+        subject: `Invoice ${invoice.basicInformation.invoiceNo} - ${invoice.basicInformation.vendorName}`,
+        date: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        body: `Dear Finance Team,
 
-Please find attached the invoice for services rendered.
+    Please find attached the invoice for services rendered.
 
-Invoice Details:
-- Invoice Number: ${invoice.basicInformation.invoiceNo}
-- Vendor: ${invoice.basicInformation.vendorName}
-- Amount: ${invoice.basicInformation.payableAmount}
-- Due Date: ${invoice.basicInformation.invoiceDueDate}
+    Invoice Details:
+    - Invoice Number: ${invoice.basicInformation.invoiceNo}
+    - Vendor: ${invoice.basicInformation.vendorName}
+    - Amount: ${invoice.basicInformation.payableAmount}
+    - Due Date: ${invoice.basicInformation.invoiceDueDate}
 
-Please process payment at your earliest convenience.
+    Please process payment at your earliest convenience.
 
-Best regards,
-${invoice.basicInformation.vendorName}`,
-          attachments: [`Invoice_${invoice.basicInformation.invoiceNo}.pdf`],
-        },
+    Best regards,
+    ${invoice.basicInformation.vendorName}`,
+        attachments: [`Invoice_${invoice.basicInformation.invoiceNo}.pdf`],
       },
-      templates: {
-        header: DialogHeader,
-      },
-      draggable: true,
-      resizable: true,
-      width: '50%',
-      modal: false,
-      maximizable: true,
-      focusOnShow: false,
-      position: 'center',
-    });
+    };
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.EMAIL_DETAILS, data);
   }
 
   splitInvoice(invoice: any): void {
-    if (!this.dialogWindowService.restoreByComponent('InvoiceSplit')) {
-      this.dialogService.open(InvoiceSplit, {
-        data: {
-          title: 'Invoice Split',
-          componentName: 'InvoiceSplit',
-          component: InvoiceSplit,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_SPLIT);
+  }
+
+  async showApproveDialog(invoice: any, reviewType: string): Promise<void> {
+    await this.confirmDialogService.open({
+      title: 'Approve Invoice',
+      message: 'Confirm approval of INV-2024-001',
+      severity: 'success',
+      confirmLabel: 'Confirm Approval',
+      data: { subMessage: 'This invoice will be approved and routed for payment processing.' },
+    });
   }
 }

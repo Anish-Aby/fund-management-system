@@ -1,1 +1,4 @@
 <router-outlet></router-outlet> <p-toast />
+@if (loaderService.isLoading()) {
+  <app-main-loader />
+}

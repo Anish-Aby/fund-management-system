@@ -30,7 +30,7 @@ export class ExpensesReport {
   expensesData = signal<any[]>([]);
   filteredData = signal<any[]>(expensesMockData);
 
-  categoryOptions = signal([...CategoryTypeOptions, { id: 3, label: 'Expenses' }]);
+  categoryOptions = signal([...CategoryTypeOptions]);
 
   currencyOptions = signal([
     { label: 'Base Currency', id: 1 },

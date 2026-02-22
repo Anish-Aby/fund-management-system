@@ -12,13 +12,14 @@ import { Router } from '@angular/router';
 import { UtilityService } from '../shared/services/utility.service';
 import { InvoiceAdd } from '../invoice/invoice-add/invoice-add';
 import { DialogService } from 'primeng/dynamicdialog';
-import { DialogWindowService } from '../shared/services/dialog-window';
 import { DialogHeader } from '../shared/components/dialog-header/dialog-header';
 import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import EntityMockData from './../core/mocks/entity-mock.json';
 import { ExpensesReport } from '../report/expenses-report/expenses-report';
+import { DialogWindowService } from '../core/services/dialog-window-service';
+import { DIALOG_COMPONENT_TITLES } from '../shared/constants/const';
 
 @Component({
   selector: 'app-dashboard',
@@ -57,7 +58,6 @@ export class Dashboard implements OnInit {
 
   constructor(
     private router: Router,
-    private dialogService: DialogService,
     private dialogWindowService: DialogWindowService,
     private fb: FormBuilder,
     public utilityService: UtilityService,
@@ -243,96 +243,54 @@ export class Dashboard implements OnInit {
       return;
     }
     const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
-    // this.router.navigate(['app/invoice/review']);
-
-    if (!this.dialogWindowService.restoreByComponent('InvoiceReview')) {
-      this.dialogService.open(InvoiceReview, {
-        data: {
-          title: 'Invoice Review',
-          componentName: 'InvoiceReview',
-          component: InvoiceReview,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW, {
+      invoiceIds: invoiceIds,
+    });
   }
 
   onInvoiceRowSelect(event: any): void {
-    console.log('here');
-    // this.router.navigate(['app/invoice/review']);
-    if (!this.dialogWindowService.restoreByComponent('InvoiceReview')) {
-      this.dialogService.open(InvoiceReview, {
-        data: {
-          title: 'Invoice Review',
-          componentName: 'InvoiceReview',
-          component: InvoiceReview,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    console.log(event);
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW, {
+      invoiceId: event.invoiceNumber,
+    });
   }
 
   onCardClick(statusId: number): void {
-    this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
-  }
-
-  showAddInvoice(): void {
-    if (!this.dialogWindowService.restoreByComponent('InvoiceAdd')) {
-      this.dialogService.open(InvoiceAdd, {
-        data: {
-          title: 'Invoice Add',
-          componentName: 'InvoiceAdd',
-          component: InvoiceAdd,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
+    if (!statusId) {
+      return;
     }
+    let componentTitle = '';
+    switch (statusId) {
+      case 1:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_ALL;
+        break;
+      case 2:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_PENDING;
+        break;
+      case 3:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_APPROVED;
+        break;
+      case 4:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_REJECTED;
+        break;
+      case 5:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_PAID;
+        break;
+      case 6:
+        componentTitle = DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_LIST_SCHEDULED;
+        break;
+      default:
+        return;
+    }
+    this.dialogWindowService.showComponent(componentTitle, {
+      statusId,
+    });
+    // this.router.navigate(['app/invoice/list'], { queryParams: { statusId } });
   }
 
   onPortfolioSelect(portfolio: any): void {
-    if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
-      const dialogRef = this.dialogService.open(ExpensesReport, {
-        data: {
-          title: 'Expenses Report',
-          componentName: 'ExpensesReport',
-          component: ExpensesReport,
-          showData: true,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.EXPENSES_REPORT, {
+      showData: true,
+    });
   }
 }

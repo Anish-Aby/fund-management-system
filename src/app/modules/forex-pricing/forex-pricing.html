@@ -1,4 +1,4 @@
-<div class="p-5">
+<!-- <div class="p-5">
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
     <div class="flex justify-between items-center">
       <div>
@@ -193,5 +193,364 @@
         </p-tabpanels>
       </p-tabs>
     </div>
+  </div>
+</div> -->
+<div class="min-h-full bg-[#f4f4f5] p-6 flex flex-col gap-4">
+  <!-- ── Page Header ──────────────────────────────────── -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center shadow-sm flex-shrink-0"
+      >
+        <i class="pi pi-chart-line text-white" style="font-size: 14px"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">Forex Pricing</h1>
+        <p class="text-[12px] text-slate-400 mt-1 leading-none">
+          Add and view forex pricing records
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tabs Card ────────────────────────────────────── -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col flex-1 overflow-hidden"
+  >
+    <p-tabs value="0">
+      <p-tablist>
+        <p-tab value="0">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-plus-circle" style="font-size: 11px"></i>
+            Add New Record
+          </div>
+        </p-tab>
+        <p-tab value="1">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-history" style="font-size: 11px"></i>
+            View Records
+          </div>
+        </p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <!-- ══════════════════════════════════════════════
+             TAB 1 — Add New Record
+        ══════════════════════════════════════════════ -->
+        <p-tabpanel value="0">
+          <div class="flex flex-col gap-6">
+            <!-- Filter header -->
+            <div class="px-1">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+                  <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
+                </div>
+                <span class="text-[12px] font-semibold text-slate-600 tracking-tight"
+                  >Search Criteria</span
+                >
+              </div>
+
+              <form [formGroup]="addForm">
+                <div class="grid grid-cols-12 gap-x-3 gap-y-3 items-start">
+                  <div class="col-span-3 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >Entity Name</label
+                    >
+                    <p-select
+                      formControlName="entity"
+                      [options]="entities"
+                      placeholder="Select entity"
+                      appendTo="body"
+                      fluid
+                    />
+                  </div>
+
+                  <div class="col-span-2 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight"
+                      >Base Currency</label
+                    >
+                    <input
+                      pInputText
+                      formControlName="baseCurrency"
+                      readonly
+                      placeholder="Auto-populated"
+                      class="!text-slate-400 !cursor-default"
+                    />
+                  </div>
+
+                  <div class="col-span-3 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >Date of Pricing</label
+                    >
+                    <p-datepicker formControlName="pricingDate" fluid appendTo="body" />
+                    <span class="text-[10px] text-slate-400 mt-0.5 leading-tight"
+                      >Cannot be the day of a holiday</span
+                    >
+                  </div>
+
+                  <div class="col-span-4 mt-5 flex items-end">
+                    <p-button
+                      icon="pi pi-search"
+                      label="Search"
+                      severity="contrast"
+                      (onClick)="getEntityForex()"
+                    />
+                  </div>
+                </div>
+
+                <!-- Rates section -->
+                @if (ratesArray.length > 0) {
+                  <div class="mt-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="text-[12px] font-semibold text-slate-600 tracking-tight"
+                          >Forex Rates</span
+                        >
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded-full bg-sky-600 text-white text-[10px] font-bold tabular-nums leading-none"
+                        >
+                          {{ ratesArray.length }}
+                        </span>
+                      </div>
+                      <span class="text-[11px] text-slate-400">Enter rate values per currency</span>
+                    </div>
+
+                    <div
+                      class="rounded-xl border border-slate-200/80 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+                    >
+                      <p-table size="small" [stripedRows]="true" [value]="ratesArray.controls">
+                        <ng-template #header>
+                          <tr>
+                            <th pResizableColumn>
+                              <div class="flex items-center gap-1.5">Region Name</div>
+                            </th>
+                            <th pResizableColumn>
+                              <div class="flex items-center gap-1.5">Symbol</div>
+                            </th>
+                            <th pResizableColumn class="col-numeric">
+                              <div class="flex items-center gap-1.5">Rate Value</div>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template #body let-rateControl let-i="rowIndex">
+                          <tr>
+                            <td>
+                              <div class="flex items-center gap-2">
+                                <span
+                                  class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"
+                                ></span>
+                                <span class="text-[13px] font-medium text-slate-700">{{
+                                  rateControl.get('regionName')?.value
+                                }}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <span
+                                class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold tracking-wide font-mono"
+                              >
+                                {{ rateControl.get('symbol')?.value }}
+                              </span>
+                            </td>
+                            <td class="col-numeric">
+                              <p-inputNumber
+                                [formControl]="rateControl.get('value')"
+                                mode="decimal"
+                                [minFractionDigits]="2"
+                                [maxFractionDigits]="4"
+                                [readonly]="
+                                  rateControl.get('symbol')?.value ===
+                                  addForm.get('baseCurrency')?.value
+                                "
+                                fluid
+                              />
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+
+                    <div class="flex justify-end pt-1">
+                      <p-button
+                        label="Save Rates"
+                        severity="contrast"
+                        icon="pi pi-save"
+                        (onClick)="onSave()"
+                        [disabled]="!addForm.get('entity')?.value || ratesArray.length === 0"
+                      />
+                    </div>
+                  </div>
+                }
+              </form>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <!-- ══════════════════════════════════════════════
+             TAB 2 — View Records
+        ══════════════════════════════════════════════ -->
+        <p-tabpanel value="1">
+          <div class="flex flex-col gap-6">
+            <div class="px-1">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+                  <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
+                </div>
+                <span class="text-[12px] font-semibold text-slate-600 tracking-tight"
+                  >Search Criteria</span
+                >
+              </div>
+
+              <form [formGroup]="viewForm">
+                <div class="grid grid-cols-12 gap-x-3 gap-y-3 items-end">
+                  <div class="col-span-3 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >Entity Name</label
+                    >
+                    <p-select
+                      formControlName="entity"
+                      [options]="entities"
+                      placeholder="Select entity"
+                      appendTo="body"
+                      fluid
+                      (onChange)="onViewFormChange()"
+                    />
+                  </div>
+
+                  <div class="col-span-2 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >From</label
+                    >
+                    <p-datepicker
+                      formControlName="dateFrom"
+                      fluid
+                      appendTo="body"
+                      (onSelect)="onViewFormChange()"
+                    />
+                  </div>
+
+                  <div class="col-span-2 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >To</label
+                    >
+                    <p-datepicker
+                      formControlName="dateTo"
+                      fluid
+                      appendTo="body"
+                      (onSelect)="onViewFormChange()"
+                    />
+                  </div>
+
+                  <div class="col-span-2 flex flex-col gap-1 min-w-0">
+                    <label class="text-[11px] font-medium text-slate-500 tracking-tight required"
+                      >Symbol</label
+                    >
+                    <p-multiselect
+                      formControlName="symbol"
+                      [options]="symbols"
+                      placeholder="Select symbol"
+                      appendTo="body"
+                      fluid
+                      (onChange)="onViewFormChange()"
+                    />
+                  </div>
+
+                  <div class="col-span-3 flex items-end">
+                    <p-button icon="pi pi-search" label="Search" severity="contrast" />
+                  </div>
+                </div>
+
+                <!-- Historical records -->
+                @if (historicalRecords.length > 0) {
+                  <div class="mt-6 flex flex-col gap-3">
+                    <div class="flex items-center gap-2">
+                      <span class="text-[12px] font-semibold text-slate-600 tracking-tight"
+                        >Historical Records</span
+                      >
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-full bg-sky-600 text-white text-[10px] font-bold tabular-nums leading-none"
+                      >
+                        {{ historicalRecords.length }}
+                      </span>
+                    </div>
+
+                    <div
+                      class="rounded-xl border border-slate-200/80 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+                    >
+                      <p-table
+                        size="small"
+                        [stripedRows]="true"
+                        [value]="historicalRecords"
+                        [scrollable]="true"
+                        scrollHeight="450px"
+                      >
+                        <ng-template #header>
+                          <tr>
+                            <th pSortableColumn="date">
+                              <div class="flex items-center gap-1.5">
+                                Date <p-sortIcon field="date" />
+                              </div>
+                            </th>
+                            <th pSortableColumn="regionName">
+                              <div class="flex items-center gap-1.5">
+                                Region <p-sortIcon field="regionName" />
+                              </div>
+                            </th>
+                            <th pSortableColumn="symbol">
+                              <div class="flex items-center gap-1.5">
+                                Symbol <p-sortIcon field="symbol" />
+                              </div>
+                            </th>
+                            <th pSortableColumn="value" class="col-numeric">
+                              <div class="flex items-center gap-1.5">
+                                Rate <p-sortIcon field="value" />
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template #body let-record>
+                          <tr>
+                            <td>
+                              <span class="tabular-nums text-[12px] text-slate-500">{{
+                                record.date | date: 'dd MMM yyyy'
+                              }}</span>
+                            </td>
+                            <td>
+                              <div class="flex items-center gap-2">
+                                <span
+                                  class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"
+                                ></span>
+                                <span class="text-[13px] font-medium text-slate-700">{{
+                                  record.regionName
+                                }}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <span
+                                class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold tracking-wide font-mono"
+                              >
+                                {{ record.symbol }}
+                              </span>
+                            </td>
+                            <td class="col-numeric">
+                              <span class="tabular-nums text-[13px] font-semibold text-slate-800">
+                                {{ record.value | number: '1.2-4' }}
+                              </span>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="mt-6">
+                    <app-no-data-placeholder class="flex-1" />
+                  </div>
+                }
+              </form>
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
   </div>
 </div>

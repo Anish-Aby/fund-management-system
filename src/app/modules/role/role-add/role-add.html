@@ -1,4 +1,4 @@
-<div class="p-5" [formGroup]="roleForm">
+<!-- <div class="p-5" [formGroup]="roleForm">
   <p-tabs value="0">
     <p-tablist>
       <p-tab value="0">Role Add / Edit / View</p-tab>
@@ -37,12 +37,6 @@
           <div class="px-4 py-4">
             <div class="grid grid-cols-12 gap-2">
               <div class="col-span-2">
-                <!-- <label for="roleName" class="flex items-center gap-2 mb-1">
-                  Role Name
-                  <span class="text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded">
-                    Required
-                  </span>
-                </label> -->
                 <label for="roleName" class="required"> Role Name </label>
                 <input
                   id="roleName"
@@ -318,6 +312,473 @@
                       styleClass="p-1!"
                       severity="contrast"
                       variant="outlined"
+                      (onClick)="editRole(role)"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div> -->
+
+<div class="bg-[#f4f4f5] p-5" [formGroup]="roleForm">
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-shield" style="font-size: 11px"></i>
+          Role Add / Edit / View
+        </div>
+      </p-tab>
+      <p-tab value="1">
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-list" style="font-size: 11px"></i>
+          Roles List
+        </div>
+      </p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <!-- ══════════════════════════════════════════════
+           TAB 1 — Add / Edit / View
+      ══════════════════════════════════════════════ -->
+      <p-tabpanel value="0">
+        <div
+          class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+        >
+          <!-- Mode header -->
+          <div
+            class="px-6 py-4 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
+            [ngClass]="{
+              'border-l-sky-500': isViewMode(),
+              'border-l-emerald-500': isAddMode(),
+              'border-l-amber-500': isEditMode(),
+            }"
+          >
+            <div
+              class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              [ngClass]="{
+                'bg-sky-100': isViewMode(),
+                'bg-emerald-100': isAddMode(),
+                'bg-amber-100': isEditMode(),
+              }"
+            >
+              <i
+                class="pi text-[13px]"
+                [ngClass]="{
+                  'pi-eye text-sky-600': isViewMode(),
+                  'pi-plus text-emerald-600': isAddMode(),
+                  'pi-pencil text-amber-600': isEditMode(),
+                }"
+              ></i>
+            </div>
+            <div>
+              <h2 class="text-[14px] font-semibold tracking-tight text-slate-800 leading-none mb-1">
+                @if (isViewMode()) {
+                  View Role
+                } @else if (isEditMode()) {
+                  Edit Role
+                } @else {
+                  Add New Role
+                }
+              </h2>
+              <p class="text-[12px] leading-none text-slate-400">
+                @if (isViewMode()) {
+                  Read-only view of role permissions
+                } @else if (isEditMode()) {
+                  Modify role name and permissions
+                } @else {
+                  Define a new role and assign module permissions
+                }
+              </p>
+            </div>
+          </div>
+
+          <!-- Role name + description -->
+          <div class="px-6 pt-5 pb-5 border-b border-slate-100">
+            <div class="grid grid-cols-12 gap-x-4 gap-y-3">
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label for="roleName" class="text-[11px] font-medium text-slate-500">
+                  Role Name <span class="text-red-400">*</span>
+                </label>
+                <input
+                  id="roleName"
+                  pInputText
+                  type="text"
+                  fluid
+                  required
+                  formControlName="roleName"
+                  [readonly]="isViewMode()"
+                  placeholder="e.g. Finance Manager"
+                />
+              </div>
+              <div class="col-span-6 flex flex-col gap-1.5">
+                <label for="roleDescription" class="text-[11px] font-medium text-slate-500">
+                  Description
+                </label>
+                <input
+                  id="roleDescription"
+                  pInputText
+                  type="text"
+                  fluid
+                  [readonly]="isViewMode()"
+                  placeholder="Briefly describe what this role can do"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Module Permissions -->
+          <div class="px-6 py-5 flex flex-col gap-3">
+            <div class="flex items-center gap-3 mb-1">
+              <span
+                class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+                >Module Permissions</span
+              >
+              <div class="h-px bg-slate-100 flex-1"></div>
+            </div>
+
+            @for (category of menuCategories; track category.name) {
+              <!-- <div class="rounded-xl border border-slate-200/80 overflow-hidden"> -->
+              <p-fieldset [toggleable]="true">
+                <ng-template #header>
+                  <div class="flex items-center gap-2.5 px-1">
+                    <div
+                      class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center flex-shrink-0"
+                    >
+                      <i [class]="category.icon + ' text-slate-500'" style="font-size: 11px"></i>
+                    </div>
+                    <span class="text-[13px] font-semibold text-slate-700 tracking-tight">{{
+                      category.name
+                    }}</span>
+                  </div>
+                </ng-template>
+
+                <!-- Select All -->
+                <div class="flex justify-end items-center gap-2 mb-3 -mt-1">
+                  <label
+                    [for]="category.name.toLowerCase() + 'SelectAll'"
+                    class="text-[11px] font-medium text-slate-500 cursor-pointer select-none"
+                    >Select All</label
+                  >
+                  <p-checkbox
+                    [inputId]="category.name.toLowerCase() + 'SelectAll'"
+                    [formControlName]="category.name.toLowerCase() + 'SelectAll'"
+                    (onChange)="onSelectAll(category.name)"
+                    [binary]="true"
+                  />
+                </div>
+
+                <p-table
+                  [value]="category.permissions"
+                  dataKey="key"
+                  [stripedRows]="true"
+                  size="small"
+                  [showGridlines]="true"
+                  [scrollable]="true"
+                  scrollHeight="400px"
+                  [resizableColumns]="true"
+                  columnResizeMode="fit"
+                >
+                  <ng-template #header>
+                    <tr>
+                      <th pResizableColumn>Module</th>
+                      <th pResizableColumn>
+                        <div class="flex items-center gap-2">
+                          <p-checkbox
+                            [binary]="true"
+                            [formControlName]="category.name.toLowerCase() + 'CreateAll'"
+                            (onChange)="onSelectColumn(category.name, 'create')"
+                          />
+                          <span>Create</span>
+                        </div>
+                      </th>
+                      <th pResizableColumn>
+                        <div class="flex items-center gap-2">
+                          <p-checkbox
+                            [binary]="true"
+                            [formControlName]="category.name.toLowerCase() + 'ReadAll'"
+                            (onChange)="onSelectColumn(category.name, 'read')"
+                          />
+                          <span>Read</span>
+                        </div>
+                      </th>
+                      <th pResizableColumn>
+                        <div class="flex items-center gap-2">
+                          <p-checkbox
+                            [binary]="true"
+                            [formControlName]="category.name.toLowerCase() + 'UpdateAll'"
+                            (onChange)="onSelectColumn(category.name, 'update')"
+                          />
+                          <span>Update</span>
+                        </div>
+                      </th>
+                      <th pResizableColumn>
+                        <div class="flex items-center gap-2">
+                          <p-checkbox
+                            [binary]="true"
+                            [formControlName]="category.name.toLowerCase() + 'DeleteAll'"
+                            (onChange)="onSelectColumn(category.name, 'delete')"
+                          />
+                          <span>Delete</span>
+                        </div>
+                      </th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template #body let-permission>
+                    <tr>
+                      <td>
+                        <span class="text-[13px] font-medium text-slate-700">{{
+                          permission.name
+                        }}</span>
+                      </td>
+                      <td
+                        (click)="togglePermission(permission.key, 'create')"
+                        class="cursor-pointer"
+                      >
+                        <p-checkbox
+                          [binary]="true"
+                          [formControlName]="permission.key + '_create'"
+                          (click)="$event.stopPropagation()"
+                        />
+                      </td>
+                      <td (click)="togglePermission(permission.key, 'read')" class="cursor-pointer">
+                        <p-checkbox
+                          [binary]="true"
+                          [formControlName]="permission.key + '_read'"
+                          (click)="$event.stopPropagation()"
+                        />
+                      </td>
+                      <td
+                        (click)="togglePermission(permission.key, 'update')"
+                        class="cursor-pointer"
+                      >
+                        <p-checkbox
+                          [binary]="true"
+                          [formControlName]="permission.key + '_update'"
+                          (click)="$event.stopPropagation()"
+                        />
+                      </td>
+                      <td
+                        (click)="togglePermission(permission.key, 'delete')"
+                        class="cursor-pointer"
+                      >
+                        <p-checkbox
+                          [binary]="true"
+                          [formControlName]="permission.key + '_delete'"
+                          (click)="$event.stopPropagation()"
+                        />
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </p-fieldset>
+              <!-- </div> -->
+            }
+          </div>
+
+          <!-- Form footer -->
+          <div
+            class="px-6 py-3 border-t border-slate-100 bg-white flex items-center justify-end gap-2"
+          >
+            @if (isViewMode() || isEditMode()) {
+              <p-button
+                icon="pi pi-times-circle"
+                label="Clear Selection"
+                variant="outlined"
+                severity="secondary"
+                size="small"
+                (onClick)="clearRoleSelection()"
+              />
+            }
+            <p-button
+              icon="pi pi-check-circle"
+              label="Save Role"
+              severity="contrast"
+              size="small"
+              (click)="onSaveRole()"
+            />
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ══════════════════════════════════════════════
+           TAB 2 — Roles List
+      ══════════════════════════════════════════════ -->
+      <p-tabpanel value="1">
+        <div
+          class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+        >
+          <!-- Toolbar -->
+          <div
+            class="px-5 py-3 border-b border-slate-100 bg-white flex items-center justify-between"
+          >
+            <div class="flex items-center gap-2.5">
+              <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+                <i class="pi pi-shield text-slate-500" style="font-size: 9px"></i>
+              </div>
+              <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Role List</span>
+              @if (rolesData().length > 0) {
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+                >
+                  {{ rolesData().length }}
+                </span>
+              }
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <i
+                  class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                  style="font-size: 11px"
+                ></i>
+                <input
+                  pInputText
+                  type="text"
+                  placeholder="Search roles..."
+                  class="!pl-8 !h-8 !text-[13px] !rounded-lg !border-slate-200 !w-52"
+                  (input)="entityTable.filterGlobal($event.target.value, 'contains')"
+                />
+              </div>
+              <p-button
+                icon="pi pi-file-excel"
+                severity="secondary"
+                variant="outlined"
+                size="small"
+                pTooltip="Export Excel"
+                tooltipPosition="bottom"
+              />
+              <p-button
+                icon="pi pi-print"
+                severity="secondary"
+                variant="outlined"
+                size="small"
+                pTooltip="Print"
+                tooltipPosition="bottom"
+              />
+            </div>
+          </div>
+
+          <!-- Table -->
+          <p-table
+            #entityTable
+            [value]="rolesData()"
+            [(selection)]="selectedRoles"
+            dataKey="invoiceNumber"
+            [stripedRows]="true"
+            size="small"
+            [showGridlines]="true"
+            [scrollable]="true"
+            scrollHeight="370px"
+            class="table-dashboard-invoice"
+            [resizableColumns]="true"
+            columnResizeMode="expand"
+            [globalFilterFields]="['fundName', 'vendorName', 'invoiceNumber', 'status']"
+          >
+            <ng-template #header>
+              <tr>
+                <th pSortableColumn="fundName" pResizableColumn>
+                  <div class="flex items-center justify-between">
+                    Role Name
+                    <p-sortIcon field="fundName" />
+                  </div>
+                </th>
+                <th pSortableColumn="vendorName" pResizableColumn>
+                  <div class="flex items-center justify-between">
+                    User Assigned count
+                    <p-sortIcon field="vendorName" />
+                  </div>
+                </th>
+                <th pSortableColumn="invoiceNumber" pResizableColumn>
+                  <div class="flex items-center justify-between">
+                    Has Admin Rights
+                    <p-sortIcon field="invoiceNumber" />
+                  </div>
+                </th>
+                <th pSortableColumn="invoiceNumber" pResizableColumn>
+                  <div class="flex items-center justify-between">
+                    Description
+                    <p-sortIcon field="invoiceNumber" />
+                  </div>
+                </th>
+                <th style="width: 100px"></th>
+              </tr>
+            </ng-template>
+
+            <ng-template #body let-role>
+              <tr>
+                <!-- Role Name -->
+                <td>
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-5 h-5 rounded-md bg-violet-50 border border-violet-100 flex items-center justify-center flex-shrink-0"
+                    >
+                      <i class="pi pi-shield text-violet-500" style="font-size: 8px"></i>
+                    </div>
+                    <span class="font-semibold text-slate-800 text-[13px] tracking-tight">{{
+                      role.name
+                    }}</span>
+                  </div>
+                </td>
+
+                <!-- User count -->
+                <td>
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-semibold tabular-nums"
+                  >
+                    {{ role.userAssignedCount }}
+                  </span>
+                </td>
+
+                <!-- Admin rights -->
+                <td>
+                  @if (role.hasAdminRights) {
+                    <span
+                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+                      Admin
+                    </span>
+                  } @else {
+                    <span
+                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-500 text-[11px] font-semibold"
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0"></span>
+                      Standard
+                    </span>
+                  }
+                </td>
+
+                <!-- Description -->
+                <td>
+                  <span class="text-[13px] text-slate-500">{{ role.description }}</span>
+                </td>
+
+                <!-- Actions -->
+                <td>
+                  <div class="flex items-center justify-end gap-1">
+                    <p-button
+                      size="small"
+                      icon="pi pi-eye"
+                      severity="secondary"
+                      variant="outlined"
+                      pTooltip="View"
+                      tooltipPosition="bottom"
+                      (onClick)="viewRole(role)"
+                    />
+                    <p-button
+                      size="small"
+                      icon="pi pi-pencil"
+                      severity="secondary"
+                      variant="outlined"
+                      pTooltip="Edit"
+                      tooltipPosition="bottom"
                       (onClick)="editRole(role)"
                     />
                   </div>

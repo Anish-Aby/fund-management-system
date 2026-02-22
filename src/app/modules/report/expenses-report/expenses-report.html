@@ -1,155 +1,538 @@
-<div class="p-5">
-  <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5 h-full flex flex-col">
-    <div class="flex justify-between items-center mb-4">
-      <div>
-        <h1 class="text-3xl font-medium mb-1">Expenses Report</h1>
-        <p class="text-sm text-muted-color">
-          View detailed financial transactions and account balances
-        </p>
+<!-- <div class="min-h-full bg-[#f5f5f5] p-6 flex flex-col gap-5">
+  <div class="flex items-start justify-between">
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
+          <i class="pi pi-chart-bar text-white text-xs"></i>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900">Expenses Report</h1>
+      </div>
+      <p class="text-[13px] text-slate-400 pl-11">
+        Financial transactions and account balances across all portfolios
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-button
+        icon="pi pi-file-excel"
+        label="Export Excel"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+      <p-button
+        icon="pi pi-print"
+        label="Print PDF"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+    </div>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-sliders-h text-slate-400 text-xs"></i>
+        <span class="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Filters</span>
+      </div>
+      <p-button label="Clear all" variant="text" severity="secondary" size="small" />
+    </div>
+    <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-4 items-end">
+      <div class="col-span-2 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">Category</label>
+        <p-select
+          fluid
+          [options]="categoryOptions()"
+          placeholder="Portfolio / vendor"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">Account Type</label>
+        <p-multiselect
+          fluid
+          [options]="vendorOptions()"
+          placeholder="Select account"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">Currency</label>
+        <p-select
+          fluid
+          [options]="currencyOptions()"
+          placeholder="Select currency"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">Tax</label>
+        <p-select fluid [options]="taxOptions()" placeholder="With / without tax" appendTo="body" />
+      </div>
+
+      <div class="col-span-1 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">From</label>
+        <p-datepicker fluid appendTo="body" />
+      </div>
+
+      <div class="col-span-1 flex flex-col gap-1.5 min-w-0">
+        <label class="text-[11px] font-semibold text-slate-500">To</label>
+        <p-datepicker fluid appendTo="body" />
+      </div>
+
+      <div class="col-span-2 flex items-end">
+        <p-button
+          icon="pi pi-search"
+          label="Search"
+          severity="contrast"
+          size="small"
+          (onClick)="getExpensesReport()"
+        />
       </div>
     </div>
-
-    <div class="border border-surface bg-primary-contrast rounded-t-xl flex-1 flex flex-col">
-      <div
-        class="grid gap-y-1 grid-cols-12 gap-x-4 py-5 px-5 bg-slate-50 dark:bg-slate-800 rounded-t-xl shadow-inner"
-      >
-        <div class="col-span-2">
-          <div class="required">Category</div>
-          <p-select fluid [options]="categoryOptions()" placeholder="Choose portfolio / vendor" />
-        </div>
-        <div class="col-span-2">
-          <div class="required">Account Type</div>
-          <p-multiselect fluid [options]="vendorOptions()" placeholder="Select account" />
-        </div>
-        <div class="col-span-2">
-          <div class="required">Currency</div>
-          <p-select fluid [options]="currencyOptions()" placeholder="Select currency" />
-        </div>
-        <div class="col-span-2">
-          <div class="required">Tax</div>
-          <p-select fluid [options]="taxOptions()" placeholder="Select with / without tax" />
-        </div>
-        <div class="col-span-1">
-          <div class="required">Date From</div>
-          <p-datepicker fluid />
-        </div>
-        <div class="col-span-1">
-          <div class="required">Date To</div>
-          <p-datepicker fluid />
-        </div>
-        <div class="col-span-2 flex items-end justify-between">
-          <p-button
-            icon="pi pi-search"
-            severity="contrast"
-            label="Search"
-            (onClick)="getExpensesReport()"
-          />
-          <div>
-            <p-button
-              icon="pi pi-print"
-              aria-label="Download PDF"
-              variant="outlined"
-              severity="contrast"
-              class="mr-2"
-            />
-            <p-button
-              icon="pi pi-file-excel"
-              aria-label="Download Excel"
-              variant="outlined"
-              severity="contrast"
-              class="mr-2"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-span-12 flex-1">
-        @if (expensesData().length === 0) {
-          <app-no-data-placeholder
-            message="No expenses data found for the selected criteria."
-            class="h-full"
-          ></app-no-data-placeholder>
-        } @else {
-          <p-table
-            #expensesTable
-            [value]="expensesData()"
-            stripedRows="true"
-            size="small"
-            showGridlines="true"
-            [scrollable]="true"
-            scrollHeight="500px"
-            class="table-dashboard-invoice"
-            [resizableColumns]="true"
-            columnResizeMode="expand"
-            (onFilter)="onTableFilter($event)"
-            [globalFilterFields]="['name', 'fundLocation', 'portfolioCurrency']"
+  </div>
+  <div
+    class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col flex-1"
+  >
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Results</span>
+        @if (expensesData().length > 0) {
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold"
           >
-            <ng-template #header>
-              <tr>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Name</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Fund Location</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Portfolio Currency</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Beginning Amount</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">For the Period</div>
-                </th>
-                <th pResizableColumn>
-                  <div class="flex items-center justify-between gap-3">Ending Amount</div>
-                </th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-expense>
-              <tr>
-                <td>{{ expense.name }}</td>
-                <td>{{ expense.fundLocation }}</td>
-                <td>{{ expense.portfolioCurrency }}</td>
-                <td>
-                  <div class="text-right">${{ expense.beginningAmount.toLocaleString() }}</div>
-                </td>
-                <td>
-                  <div class="text-right">${{ expense.forThePeriod.toLocaleString() }}</div>
-                </td>
-                <td>
-                  <div class="text-right">${{ expense.endingAmount.toLocaleString() }}</div>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template #footer>
-              <tr>
-                <td
-                  colspan="3"
-                  class="font-semibold text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base"
-                >
-                  Total
-                </td>
-                <td>
-                  <div class="text-right font-semibold">
-                    ${{ totals().beginningAmount.toLocaleString() }}
-                  </div>
-                </td>
-                <td>
-                  <div class="text-right font-semibold">
-                    ${{ totals().forThePeriod.toLocaleString() }}
-                  </div>
-                </td>
-                <td>
-                  <div class="text-right font-semibold">
-                    ${{ totals().endingAmount.toLocaleString() }}
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+            {{ expensesData().length }}
+          </span>
         }
       </div>
+      @if (expensesData().length > 0) {
+        <span class="text-[11px] text-slate-400">All amounts in selected currency</span>
+      }
     </div>
+
+    @if (expensesData().length === 0) {
+      <app-no-data-placeholder
+        message="No expenses data found for the selected criteria."
+        class="flex-1"
+      />
+    } @else {
+      <p-table
+        #expensesTable
+        [value]="expensesData()"
+        [stripedRows]="true"
+        size="small"
+        [scrollable]="true"
+        scrollHeight="flex"
+        class="table-dashboard-invoice"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
+        (onFilter)="onTableFilter($event)"
+        [globalFilterFields]="['name', 'fundLocation', 'portfolioCurrency']"
+      >
+        <ng-template #header>
+          <tr>
+            <th pResizableColumn pSortableColumn="name">
+              <div class="flex items-center gap-2">Name <p-sortIcon field="name" /></div>
+            </th>
+            <th pResizableColumn pSortableColumn="fundLocation">
+              <div class="flex items-center gap-2">
+                Fund Location <p-sortIcon field="fundLocation" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="portfolioCurrency">
+              <div class="flex items-center gap-2">
+                Currency <p-sortIcon field="portfolioCurrency" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="beginningAmount" class="col-numeric">
+              <div class="flex items-center justify-end gap-2">
+                Beginning <p-sortIcon field="beginningAmount" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="forThePeriod" class="col-numeric">
+              <div class="flex items-center justify-end gap-2">
+                For the Period <p-sortIcon field="forThePeriod" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="endingAmount" class="col-numeric">
+              <div class="flex items-center justify-end gap-2">
+                Ending <p-sortIcon field="endingAmount" />
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-expense>
+          <tr>
+            <td>
+              <span class="font-semibold text-slate-800 text-[13px]">{{ expense.name }}</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0"></span>
+                <span class="text-slate-500 text-[13px]">{{ expense.fundLocation }}</span>
+              </div>
+            </td>
+            <td>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-100 text-violet-700 text-[11px] font-bold tracking-wide"
+              >
+                {{ expense.portfolioCurrency }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] text-slate-600">
+                ${{ expense.beginningAmount.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-medium inline-flex items-center gap-1 justify-end"
+                [class]="expense.forThePeriod >= 0 ? 'text-emerald-600' : 'text-red-500'"
+              >
+                <i
+                  [class]="
+                    expense.forThePeriod >= 0
+                      ? 'pi pi-arrow-up text-[9px]'
+                      : 'pi pi-arrow-down text-[9px]'
+                  "
+                ></i>
+                ${{
+                  (expense.forThePeriod < 0
+                    ? -expense.forThePeriod
+                    : expense.forThePeriod
+                  ).toLocaleString()
+                }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                ${{ expense.endingAmount.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #footer>
+          <tr>
+            <td colspan="3">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400"
+                  >Grand Total</span
+                >
+              </div>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-semibold text-slate-700">
+                ${{ totals().beginningAmount.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-semibold"
+                [class]="totals().forThePeriod >= 0 ? 'text-emerald-600' : 'text-red-500'"
+              >
+                ${{ totals().forThePeriod.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                ${{ totals().endingAmount.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </div>
+</div> -->
+
+<div class="min-h-full bg-[#f4f4f5] p-6 flex flex-col gap-4">
+  <!-- ── Page Header ──────────────────────────────────── -->
+  <div class="flex items-center justify-between">
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shadow-sm flex-shrink-0"
+        >
+          <i class="pi pi-wallet text-white" style="font-size: 14px"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">
+            Expenses Report
+          </h1>
+          <p class="text-[12px] text-slate-400 mt-1 leading-none">
+            Financial transactions and account balances
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-button
+        icon="pi pi-file-excel"
+        label="Excel"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+      <p-button
+        icon="pi pi-print"
+        label="PDF"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+      />
+    </div>
+  </div>
+
+  <!-- ── Filter Card ──────────────────────────────────── -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05),_0_1px_2px_rgba(0,0,0,0.04)]"
+  >
+    <!-- Filter header -->
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+          <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
+        </div>
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Filters</span>
+      </div>
+      <p-button label="Clear all" variant="text" severity="secondary" size="small" />
+    </div>
+
+    <!-- Filter fields -->
+    <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-3 items-end">
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Category</label>
+        <p-select
+          fluid
+          [options]="categoryOptions()"
+          placeholder="Portfolio / vendor"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Account Type</label>
+        <p-multiselect
+          fluid
+          [options]="vendorOptions()"
+          placeholder="Select account"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Currency</label>
+        <p-select
+          fluid
+          [options]="currencyOptions()"
+          placeholder="Select currency"
+          appendTo="body"
+        />
+      </div>
+
+      <div class="col-span-2 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Tax</label>
+        <p-select fluid [options]="taxOptions()" placeholder="With / without tax" appendTo="body" />
+      </div>
+
+      <div class="col-span-1 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">From</label>
+        <p-datepicker fluid appendTo="body" />
+      </div>
+
+      <div class="col-span-1 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">To</label>
+        <p-datepicker fluid appendTo="body" />
+      </div>
+
+      <div class="col-span-2 flex items-end">
+        <p-button
+          icon="pi pi-search"
+          label="Search"
+          severity="contrast"
+          (onClick)="getExpensesReport()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Table Card ───────────────────────────────────── -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05),_0_1px_2px_rgba(0,0,0,0.04)] flex flex-col flex-1 overflow-hidden"
+  >
+    <!-- Table toolbar -->
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Results</span>
+        @if (expensesData().length > 0) {
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+          >
+            {{ expensesData().length }}
+          </span>
+        }
+      </div>
+      @if (expensesData().length > 0) {
+        <span class="text-[11px] text-slate-400 tracking-tight">Amounts in selected currency</span>
+      }
+    </div>
+
+    @if (expensesData().length === 0) {
+      <app-no-data-placeholder
+        message="No expenses data found for the selected criteria."
+        class="flex-1"
+      />
+    } @else {
+      <p-table
+        #expensesTable
+        [value]="expensesData()"
+        [stripedRows]="true"
+        size="small"
+        [scrollable]="true"
+        scrollHeight="flex"
+        class="table-dashboard-invoice"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
+        (onFilter)="onTableFilter($event)"
+        [globalFilterFields]="['name', 'fundLocation', 'portfolioCurrency']"
+      >
+        <ng-template #header>
+          <tr>
+            <th pResizableColumn pSortableColumn="name">
+              <div class="flex items-center gap-1.5">Name <p-sortIcon field="name" /></div>
+            </th>
+            <th pResizableColumn pSortableColumn="fundLocation">
+              <div class="flex items-center gap-1.5">
+                Fund Location <p-sortIcon field="fundLocation" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="portfolioCurrency">
+              <div class="flex items-center gap-1.5">
+                Currency <p-sortIcon field="portfolioCurrency" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="beginningAmount" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                Beginning <p-sortIcon field="beginningAmount" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="forThePeriod" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                For the Period <p-sortIcon field="forThePeriod" />
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="endingAmount" class="col-numeric">
+              <div class="flex items-center gap-1.5">
+                Ending Amount <p-sortIcon field="endingAmount" />
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-expense>
+          <tr>
+            <!-- Name — primary identifier, bold -->
+            <td>
+              <span class="font-semibold text-slate-800 text-[13px] tracking-tight">
+                {{ expense.name }}
+              </span>
+            </td>
+
+            <!-- Fund location — muted with colored dot -->
+            <td>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-sky-400 flex-shrink-0"></span>
+                <span class="text-slate-500 text-[13px] tracking-tight">{{
+                  expense.fundLocation
+                }}</span>
+              </div>
+            </td>
+
+            <!-- Currency badge — colored pill -->
+            <td>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold tracking-wide"
+              >
+                {{ expense.portfolioCurrency }}
+              </span>
+            </td>
+
+            <!-- Beginning amount -->
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] text-slate-500 tracking-tight">
+                ${{ expense.beginningAmount.toLocaleString() }}
+              </span>
+            </td>
+
+            <!-- Period — green/red with directional icon -->
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
+                [class]="
+                  expense.forThePeriod >= 0
+                    ? 'text-emerald-700 bg-emerald-50'
+                    : 'text-red-600 bg-red-50'
+                "
+              >
+                <i
+                  [class]="
+                    expense.forThePeriod >= 0
+                      ? 'pi pi-arrow-up-right text-[9px]'
+                      : 'pi pi-arrow-down-right text-[9px]'
+                  "
+                ></i>
+                ${{
+                  (expense.forThePeriod < 0
+                    ? -expense.forThePeriod
+                    : expense.forThePeriod
+                  ).toLocaleString()
+                }}
+              </span>
+            </td>
+
+            <!-- Ending amount — most prominent -->
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900 tracking-tight">
+                ${{ expense.endingAmount.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #footer>
+          <tr>
+            <td colspan="3">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+                  >Grand Total</span
+                >
+              </div>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-semibold text-slate-600">
+                ${{ totals().beginningAmount.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span
+                class="tabular-nums text-[13px] font-bold"
+                [class]="totals().forThePeriod >= 0 ? 'text-emerald-700' : 'text-red-600'"
+              >
+                ${{ totals().forThePeriod.toLocaleString() }}
+              </span>
+            </td>
+            <td class="col-numeric">
+              <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                ${{ totals().endingAmount.toLocaleString() }}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
   </div>
 </div>

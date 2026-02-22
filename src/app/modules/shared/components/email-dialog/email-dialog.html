@@ -1,4 +1,4 @@
-<div class="email-dialog p-6">
+<!-- <div class="email-dialog p-6">
   <div class="email-header mb-6">
     <div class="flex justify-between items-start mb-4">
       <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Email Details</h2>
@@ -57,4 +57,155 @@
     </div>
   </div>
   }
+</div> -->
+
+<div class="flex h-full bg-white">
+  <!-- ══════════════════════════════════════════════════
+       LEFT SIDEBAR — meta + attachments
+  ══════════════════════════════════════════════════ -->
+  <div class="w-64 flex-shrink-0 border-r border-slate-200 flex flex-col bg-slate-50">
+    <!-- Sender block -->
+    <div class="px-5 pt-6 pb-5 border-b border-slate-200">
+      <div
+        class="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center mb-3 shadow-sm"
+      >
+        <span class="text-[16px] font-bold text-white leading-none">
+          {{ emailData().from?.charAt(0)?.toUpperCase() }}
+        </span>
+      </div>
+      <div class="text-[13px] font-bold text-slate-900 leading-none mb-1 truncate">
+        {{ emailData().from }}
+      </div>
+      <div class="text-[11px] text-slate-500 leading-none truncate">Sender</div>
+    </div>
+
+    <!-- Meta list -->
+    <div class="px-5 py-4 flex flex-col gap-4 border-b border-slate-200">
+      <div class="flex flex-col gap-1.5">
+        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</span>
+        <div
+          class="flex items-center gap-1.5 w-fit px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-300"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          <span class="text-[11px] font-semibold text-emerald-700">Received</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Date</span>
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-clock text-slate-500" style="font-size: 10px"></i>
+          <span class="text-[12px] font-medium text-slate-700 tabular-nums">{{
+            emailData().date
+          }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">To</span>
+        <div class="flex flex-col gap-1.5">
+          @for (recipient of emailData().to.split(','); track recipient) {
+            <div class="flex items-center gap-2">
+              <div
+                class="w-5 h-5 rounded-full bg-sky-100 border border-sky-300 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-user text-sky-600" style="font-size: 8px"></i>
+              </div>
+              <span class="text-[12px] font-medium text-slate-700 truncate">{{
+                recipient.trim()
+              }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Attachments -->
+    @if (emailData().attachments?.length > 0) {
+      <div class="px-5 py-4 flex flex-col gap-3 border-b border-slate-200">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest"
+            >Attachments</span
+          >
+          <span
+            class="inline-flex items-center px-1.5 py-px rounded-full bg-rose-100 border border-rose-300 text-rose-700 text-[10px] font-bold leading-none"
+          >
+            {{ emailData().attachments.length }}
+          </span>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          @for (attachment of emailData().attachments; track attachment) {
+            <div
+              class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-slate-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+            >
+              <div
+                class="w-7 h-7 rounded-md bg-rose-50 border border-rose-200 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-file-pdf text-rose-600" style="font-size: 12px"></i>
+              </div>
+              <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                <span class="text-[11px] font-semibold text-slate-800 truncate leading-none">{{
+                  attachment
+                }}</span>
+                <span class="text-[10px] text-slate-500 leading-none font-medium"
+                  >PDF · Read only</span
+                >
+              </div>
+              <i class="pi pi-lock text-slate-400 flex-shrink-0" style="font-size: 9px"></i>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="flex-1"></div>
+
+    <!-- View only footer -->
+    <div class="px-5 py-4 border-t border-slate-200">
+      <div
+        class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+      >
+        <i class="pi pi-lock text-slate-500" style="font-size: 10px"></i>
+        <span class="text-[11px] font-semibold text-slate-600">View only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       MAIN — subject + body
+  ══════════════════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <!-- Subject header -->
+    <div class="px-8 pt-6 pb-5 border-b border-slate-200">
+      <div class="flex items-center gap-2 mb-2.5">
+        <div
+          class="w-5 h-5 rounded-md bg-sky-100 border border-sky-200 flex items-center justify-center"
+        >
+          <i class="pi pi-envelope-open text-sky-600" style="font-size: 8px"></i>
+        </div>
+        <span class="text-[10px] font-bold text-sky-600 uppercase tracking-widest"
+          >Incoming Email</span
+        >
+      </div>
+      <h2 class="text-[18px] font-bold tracking-tight text-slate-900 leading-snug">
+        {{ emailData().subject }}
+      </h2>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="flex-1 overflow-y-auto px-8 py-6">
+      <pre class="whitespace-pre-wrap text-[13px] leading-7 text-slate-700 font-sans">{{
+        emailData().body
+      }}</pre>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-8 py-3.5 border-t border-slate-200 flex items-center gap-2 bg-slate-50">
+      <i class="pi pi-info-circle text-slate-400" style="font-size: 11px"></i>
+      <span class="text-[11px] font-medium text-slate-500"
+        >This email is read-only. No actions can be taken from this view.</span
+      >
+    </div>
+  </div>
 </div>

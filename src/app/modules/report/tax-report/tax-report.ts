@@ -39,7 +39,6 @@ interface TaxData {
     MultiSelectModule,
     DatePickerModule,
     FormsModule,
-    NoDataPlaceholder,
   ],
   templateUrl: './tax-report.html',
   styleUrl: './tax-report.scss',

@@ -1,0 +1,90 @@
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  line-height: 1;
+  white-space: nowrap;
+
+  &--received {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0369a1;
+  } // sky
+  &--pending {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #b45309;
+  } // amber
+  &--approved,
+  &--done {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #15803d;
+  } // emerald
+  &--rejected {
+    background: #fff1f2;
+    border-color: #fecdd3;
+    color: #be123c;
+  } // rose
+  &--scheduled {
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+    color: #6d28d9;
+  } // violet
+  &--paid {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
+  } // indigo
+  &--default {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+  } // slate
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+
+  &--received {
+    background: #38bdf8;
+  }
+  &--pending {
+    background: #f59e0b;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  &--approved,
+  &--done {
+    background: #22c55e;
+  }
+  &--rejected {
+    background: #f43f5e;
+  }
+  &--scheduled {
+    background: #8b5cf6;
+  }
+  &--paid {
+    background: #6366f1;
+  }
+  &--default {
+    background: #94a3b8;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

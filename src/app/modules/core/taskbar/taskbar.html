@@ -1,19 +1,65 @@
-<div
-  class="taskbar flex min-h-10 w-full px-5 border-surface border-t gap-2 bg-sky-100 dark:bg-gray-800 dark:border-gray-600"
+<!-- <div
+  class="taskbar relative z-2000 flex min-h-10 w-full px-5 border-surface border-t gap-2 bg-sky-100 dark:bg-gray-800 dark:border-gray-600"
 >
-  @for (win of dialogWindowService.minimized$ | async; track $index) {
-  <div class="flex items-center">
-    <div
-      class="col-auto border w-30 justify-between px-1 flex h-7 items-center gap-2 border-black dark:border-gray-500 rounded-lg bg-surface-100 dark:bg-gray-700 p-1 text-center cursor-pointer dark:text-white"
-      (click)="dialogWindowService.restore($index)"
-      [title]="win.title"
-    >
-      {{ win.title.length > 8 ? win.title.substring(0, 8) + '...' : win.title }}
+  @for (win of dialogWindowService.windowsObservable$ | async; track win.id) {
+    <div class="flex items-center">
       <div
-        class="pi pi-times text-xs!"
-        (click)="$event.stopPropagation(); dialogWindowService.close($index)"
-      ></div>
+        class="taskbar-item col-auto border w-30 justify-between px-2 flex h-7 items-center gap-2 rounded-lg p-1 text-center cursor-pointer transition-all duration-150"
+        [class.taskbar-item-active]="win.active"
+        [class.taskbar-item-minimized]="win.minimized"
+        [title]="win.title"
+        (click)="
+          win.minimized
+            ? dialogWindowService.restore(win.id)
+            : dialogWindowService.focusWindow(win.id)
+        "
+      >
+        <span class="truncate-text">
+          {{ win.title.length > 14 ? (win.title | slice: 0 : 14) + '…' : win.title }}
+        </span>
+
+        <i
+          class="pi pi-times text-xs taskbar-close"
+          (click)="$event.stopPropagation(); dialogWindowService.close(win.id)"
+        ></i>
+      </div>
     </div>
-  </div>
+  }
+</div> -->
+<div class="taskbar">
+  <!-- Empty state hint -->
+  @if ((dialogWindowService.windowsObservable$ | async)?.length === 0) {
+    <span class="taskbar__empty">No open windows</span>
+  }
+
+  @for (win of dialogWindowService.windowsObservable$ | async; track win.id) {
+    <div
+      class="taskbar__item"
+      [class.taskbar__item--active]="win.active"
+      [class.taskbar__item--minimized]="win.minimized && !win.active"
+      [title]="win.title"
+      (click)="
+        win.minimized
+          ? dialogWindowService.restore(win.id)
+          : dialogWindowService.focusWindow(win.id)
+      "
+    >
+      <!-- Active indicator dot -->
+      <span class="taskbar__dot"></span>
+
+      <!-- Title -->
+      <span class="taskbar__title">
+        {{ win.title.length > 16 ? (win.title | slice: 0 : 16) + '…' : win.title }}
+      </span>
+
+      <!-- Close -->
+      <button
+        class="taskbar__close"
+        (click)="$event.stopPropagation(); dialogWindowService.close(win.id)"
+        tabindex="-1"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
   }
 </div>

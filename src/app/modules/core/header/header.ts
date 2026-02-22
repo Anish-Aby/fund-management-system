@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
@@ -10,22 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ThemeService } from '../services/theme';
 import { DialogService } from 'primeng/dynamicdialog';
-import { VendorList } from '../../vendor/vendor-list/vendor-list';
-import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
-import { DialogWindowService } from '../../shared/services/dialog-window';
-import { LedgerReport } from '../../report/ledger-report/ledger-report';
-import { ExpensesReport } from '../../report/expenses-report/expenses-report';
-import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
-import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
-import { CashBalance } from '../../report/cash-balance/cash-balance';
-import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
-import { EntityAdd } from '../../entity/entity-add/entity-add';
-import { RoleAdd } from '../../role/role-add/role-add';
-import { UserAdd } from '../../user/user-add/user-add';
-import { ForexPricing } from '../../forex-pricing/forex-pricing';
-import { TaxReport } from '../../report/tax-report/tax-report';
-import { JournalEntry } from '../../journal-entry/journal-entry';
-import { Reconciliation } from '../../reconciliation/reconciliation';
+import { DialogWindowZ } from '../../shared/services/dialog-window';
+import { AuthService } from '../services/auth-service';
+import { DialogWindowService } from '../services/dialog-window-service';
+import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
 
 @Component({
   selector: 'app-header',
@@ -51,9 +39,8 @@ export class Header {
   constructor(
     public themeService: ThemeService,
     private router: Router,
-    private dialogService: DialogService,
-    private cdr: ChangeDetectorRef,
     private dialogWindowService: DialogWindowService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -172,18 +159,22 @@ export class Header {
               this.showAddVendor();
             },
           },
-          {
-            label: 'Expense Management',
-            icon: 'pi pi-money-bill',
-          },
+          // {
+          //   label: 'Expense Management',
+          //   icon: 'pi pi-money-bill',
+          // },
           {
             label: 'Portfolio Management',
             icon: 'pi pi-briefcase',
+            command: () => {
+              this.showPortfolioManagement();
+            },
           },
           {
             label: 'Bank Management',
             icon: 'pi pi-building-columns',
             command: () => {
+              this.showBankManagement();
               // this.showAddEntity();
             },
           },
@@ -272,6 +263,9 @@ export class Header {
           {
             label: 'Audit Trail',
             icon: 'pi pi-history',
+            command: () => {
+              this.showAuditTrail();
+            },
           },
         ],
       },
@@ -295,7 +289,7 @@ export class Header {
   }
 
   onLogout() {
-    this.router.navigate(['app/login']);
+    this.authService.logout();
   }
 
   onNotificationClick(type: string) {
@@ -307,307 +301,72 @@ export class Header {
     console.log('View all notifications');
   }
 
-  showVendor(): void {
-    if (!this.dialogWindowService.restoreByComponent('VendorList')) {
-      this.dialogService.open(VendorList, {
-        data: { title: 'Vendor List', componentName: 'VendorList', component: VendorList },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
-  }
-
   showLedgerReport(): void {
-    if (!this.dialogWindowService.restoreByComponent('LedgerReport')) {
-      this.dialogService.open(LedgerReport, {
-        data: {
-          title: 'Ledger Report',
-          componentName: 'LedgerReport',
-          component: LedgerReport,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.LEDGER_REPORT);
   }
 
   showExpensesReport(): void {
-    if (!this.dialogWindowService.restoreByComponent('ExpensesReport')) {
-      const dialogRef = this.dialogService.open(ExpensesReport, {
-        data: {
-          title: 'Expenses Report',
-          componentName: 'ExpensesReport',
-          component: ExpensesReport,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.EXPENSES_REPORT);
   }
 
   showAddVendor(): void {
-    if (!this.dialogWindowService.restoreByComponent('VendorAdd')) {
-      this.dialogService.open(VendorAdd, {
-        data: {
-          title: 'Vendor Add',
-          componentName: 'VendorAdd',
-          component: VendorAdd,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.VENDOR_MANAGEMENT);
   }
 
   showAddInvoice(): void {
-    if (!this.dialogWindowService.restoreByComponent('InvoiceAdd')) {
-      this.dialogService.open(InvoiceAdd, {
-        data: {
-          title: 'Invoice Add',
-          componentName: 'InvoiceAdd',
-          component: InvoiceAdd,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.FILE.ADD_INVOICE);
   }
 
   showCashBalance(): void {
-    if (!this.dialogWindowService.restoreByComponent('CashBalance')) {
-      this.dialogService.open(CashBalance, {
-        data: {
-          title: 'Cash Balance',
-          componentName: 'CashBalance',
-          component: CashBalance,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.CASH_BALANCE);
   }
 
   showFundCashBalance(): void {
-    if (!this.dialogWindowService.restoreByComponent('FundCashBalance')) {
-      this.dialogService.open(FundCashBalance, {
-        data: {
-          title: 'Fund Cash Balance',
-          componentName: 'FundCashBalance',
-          component: FundCashBalance,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.FUND_CASH_BALANCE);
   }
 
   showAddEntity(): void {
-    if (!this.dialogWindowService.restoreByComponent('EntityAdd')) {
-      this.dialogService.open(EntityAdd, {
-        data: {
-          title: 'Entity Add',
-          componentName: 'EntityAdd',
-          component: EntityAdd,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.ENTITY_MANAGEMENT);
   }
 
   showAddRoles(): void {
-    if (!this.dialogWindowService.restoreByComponent('RoleAdd')) {
-      this.dialogService.open(RoleAdd, {
-        data: {
-          title: 'Role Add',
-          componentName: 'RoleAdd',
-          component: RoleAdd,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.ROLES_MANAGEMENT);
   }
 
   showAddUsers(): void {
-    if (!this.dialogWindowService.restoreByComponent('UserAdd')) {
-      this.dialogService.open(UserAdd, {
-        data: {
-          title: 'User Add',
-          componentName: 'UserAdd',
-          component: UserAdd,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.USER_MANAGEMENT);
   }
 
   showForexPricing(): void {
-    if (!this.dialogWindowService.restoreByComponent('ForexPricing')) {
-      this.dialogService.open(ForexPricing, {
-        data: {
-          title: 'Forex Pricing',
-          componentName: 'ForexPricing',
-          component: ForexPricing,
-        },
-        draggable: true,
-        resizable: true,
-        width: '80%',
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.TOOLS.FOREX_PRICING);
   }
 
   showTaxReport(): void {
-    if (!this.dialogWindowService.restoreByComponent('TaxReport')) {
-      this.dialogService.open(TaxReport, {
-        data: {
-          title: 'Tax Report',
-          componentName: 'TaxReport',
-          component: TaxReport,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        width: '100%',
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.TAX_REPORT);
   }
 
   showJournalEntry(): void {
-    if (!this.dialogWindowService.restoreByComponent('JournalEntry')) {
-      this.dialogService.open(JournalEntry, {
-        data: {
-          title: 'Journal Entry',
-          componentName: 'JournalEntry',
-          component: JournalEntry,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.FILE.JOURNAL_ENTRY);
   }
 
   showReconciliation(): void {
-    if (!this.dialogWindowService.restoreByComponent('Reconciliation')) {
-      this.dialogService.open(Reconciliation, {
-        data: {
-          title: 'Reconciliation',
-          componentName: 'Reconciliation',
-          component: Reconciliation,
-          autoMaximize: true,
-        },
-        draggable: true,
-        resizable: true,
-        modal: false,
-        maximizable: true,
-        focusOnShow: false,
-        position: 'center',
-        templates: {
-          header: DialogHeader,
-        },
-      });
-    }
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.FILE.RECONCILIATION);
+  }
+
+  showPortfolioManagement(): void {
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.PORTFOLIO_MANAGEMENT);
+  }
+
+  showBankManagement(): void {
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.MASTERS.BANK_MANAGEMENT);
+  }
+
+  showAuditTrail(): void {
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.SETTINGS.AUDIT_TRAIL);
   }
 
   navigateToDashboard() {
     this.router.navigate(['app/dashboard']);
-    // this.dialogWindowService.minimizeAll();
+    this.dialogWindowService.minimizeAll();
   }
 }

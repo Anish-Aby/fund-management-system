@@ -8,7 +8,6 @@
   font-size: 1rem;
   appearance: none;
   text-align: center;
-  transition: all 0.2s;
   border-radius: 0;
   border: 1px solid var(--p-inputtext-border-color);
   background: transparent;
@@ -36,4 +35,70 @@
   border-right-width: 1px;
   border-right-style: solid;
   border-color: var(--p-inputtext-border-color);
+}
+
+// ── Typewriter word ───────────────────────────────────────────────
+.typewriter-word {
+  display: inline-block;
+  background: linear-gradient(90deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  white-space: nowrap;
+  // Prevents layout shift when the word is fully erased.
+  // Without this the span collapses to 0px tall, the line above jumps down,
+  // then jumps back up as typing resumes.
+  min-width: 10px;
+  min-height: 1em;
+  vertical-align: bottom;
+
+  &::after {
+    content: '|';
+    position: absolute;
+    right: -6px;
+    top: 0;
+    -webkit-text-fill-color: #818cf8;
+    animation: blink 0.7s step-end infinite;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+// ── Orb pulse animations ──────────────────────────────────────────
+// @keyframes MUST be at root scope.
+// Nesting it inside .orb { } causes the browser to re-register
+// the keyframe per-element, which resets the animation mid-cycle
+// and produces the abrupt opacity snap you were seeing.
+
+@keyframes orbPulse {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.32;
+    transform: scale(1.06);
+  }
+}
+
+.orb--indigo {
+  animation: orbPulse 6s ease-in-out infinite 0s;
+}
+
+.orb--violet {
+  animation: orbPulse 8s ease-in-out infinite 1s;
+}
+
+.orb--sky {
+  animation: orbPulse 5s ease-in-out infinite 2s;
 }

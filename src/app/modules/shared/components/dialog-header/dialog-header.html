@@ -1,4 +1,4 @@
-<div class="flex align-items-center justify-end w-full rounded-t-5xl">
+<!-- <div class="flex align-items-center justify-end w-full rounded-t-5xl">
   <p-buttongroup class="btn-dialog-header-group">
     <p-button
       variant="outlined"
@@ -22,4 +22,35 @@
       (click)="closeDialog()"
     />
   </p-buttongroup>
+</div> -->
+<div class="flex items-center justify-end w-full">
+  <div class="flex items-center gap-1 px-2 py-1.5">
+    <!-- Minimize -->
+    <button class="dialog-ctrl dialog-ctrl--minimize" title="Minimize" (click)="minimizeDialog()">
+      <i class="pi pi-minus"></i>
+    </button>
+
+    <!-- Maximize -->
+    <button class="dialog-ctrl dialog-ctrl--maximize" title="Maximize" (click)="maximizeDialog()">
+      <i class="pi pi-clone"></i>
+    </button>
+
+    <!-- Close -->
+    <button class="dialog-ctrl dialog-ctrl--close" title="Close" (click)="closeDialog()">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
 </div>
+<!-- <div class="dialog-header">
+  <div class="dialog-header__controls">
+    <button class="dialog-ctrl dialog-ctrl--minimize" title="Minimize" (click)="minimizeDialog()">
+      <i class="pi pi-minus"></i>
+    </button>
+    <button class="dialog-ctrl dialog-ctrl--maximize" title="Maximize" (click)="maximizeDialog()">
+      <i class="pi pi-clone"></i>
+    </button>
+    <button class="dialog-ctrl dialog-ctrl--close" title="Close" (click)="closeDialog()">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+</div> -->

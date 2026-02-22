@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
+import { CommonModule } from '@angular/common';
 
 interface JournalEntryData {
   accountType: string;
@@ -22,6 +23,7 @@ interface JournalEntryData {
     SelectModule,
     DatePickerModule,
     InputTextModule,
+    CommonModule,
     FormsModule,
     ButtonModule,
     TableModule,

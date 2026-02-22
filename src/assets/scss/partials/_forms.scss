@@ -29,3 +29,107 @@ p-table {
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
 }
+
+// ── Normalise all PrimeNG form controls ─────────────────
+::ng-deep {
+  .p-select,
+  .p-multiselect,
+  .p-datepicker {
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 8px !important;
+    border-color: #e2e8f0 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    overflow: hidden !important; // stops dropdown overflow breaking container
+
+    &:hover {
+      border-color: #cbd5e1 !important;
+    }
+
+    &.p-focus {
+      border-color: #94a3b8 !important;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2) !important;
+    }
+  }
+
+  // Input inner label / value text
+  .p-select-label,
+  .p-multiselect-label,
+  .p-datepicker-input {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    color: #374151 !important;
+  }
+
+  // Placeholder text consistent
+  .p-select-label.p-placeholder,
+  .p-multiselect-label.p-placeholder {
+    color: #9ca3af !important;
+    font-size: 13px !important;
+  }
+
+  // Dropdown trigger icon
+  .p-select-dropdown,
+  .p-multiselect-dropdown,
+  .p-datepicker-dropdown {
+    width: 32px !important;
+    color: #9ca3af !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+.cb-select.p-select {
+  width: 241px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  border-radius: 6px !important;
+  border-color: #e2e8f0 !important;
+  font-size: 11px !important;
+  background: #fff !important;
+  overflow: visible !important; // allow appendTo body to work
+
+  &:hover {
+    border-color: #94a3b8 !important;
+  }
+
+  &.p-focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15) !important;
+  }
+
+  .p-select-label {
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    padding-left: 8px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+
+    &.p-placeholder {
+      color: #9ca3af !important;
+      font-weight: 400 !important;
+    }
+  }
+
+  .p-select-dropdown {
+    width: 24px !important;
+    color: #9ca3af !important;
+
+    .p-icon {
+      width: 9px !important;
+      height: 9px !important;
+    }
+  }
+}

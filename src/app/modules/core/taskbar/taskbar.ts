@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DialogWindowService } from '../../shared/services/dialog-window';
+import { DialogWindowService } from '../services/dialog-window-service';
 
 @Component({
   selector: 'app-taskbar',

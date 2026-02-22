@@ -36,7 +36,7 @@ interface StoredDialog {
 @Injectable({
   providedIn: 'root',
 })
-export class DialogWindowService {
+export class DialogWindowZ {
   private minimizedSubject = new BehaviorSubject<MinimizedDialog[]>([]);
   minimized$: Observable<MinimizedDialog[]> = this.minimizedSubject.asObservable();
   private componentMap: { [key: string]: any } = {

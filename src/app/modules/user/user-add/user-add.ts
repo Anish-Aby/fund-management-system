@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
@@ -10,6 +10,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { PasswordModule } from 'primeng/password';
 import { TableModule } from 'primeng/table';
 import UserMockData from '../../core/mocks/users-list-mock.json';
+import { DialogWindowService } from '../../core/services/dialog-window-service';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 interface Role {
   label: string;
@@ -43,7 +45,8 @@ interface Fund {
   templateUrl: './user-add.html',
   styleUrl: './user-add.scss',
 })
-export class UserAdd {
+export class UserAdd implements OnDestroy {
+  ref: DynamicDialogRef | undefined;
   userForm: FormGroup;
 
   userData = signal(UserMockData);
@@ -101,7 +104,10 @@ export class UserAdd {
     { label: 'OTP', value: 'otp' },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private dialogWindowService: DialogWindowService,
+  ) {
     this.userForm = this.fb.group({
       userId: [{ value: '', disabled: true }],
       title: [''],
@@ -137,6 +143,12 @@ export class UserAdd {
       paymentReleased: [false],
       invoiceOverdue: [false],
     });
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 
   onSaveUser(): void {

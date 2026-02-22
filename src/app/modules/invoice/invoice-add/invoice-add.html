@@ -1,4 +1,4 @@
-<div class="p-5">
+<!-- <div class="p-5">
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
     <div class="flex justify-between items-center mb-4">
       <div>
@@ -333,6 +333,555 @@
     </div>
     <div class="flex justify-end mt-4">
       <p-button icon="pi pi-check-circle" severity="contrast" label="Save for Review" />
+    </div>
+  </div>
+</div> -->
+<div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <!-- ══════════════════════════════════════════════════════
+       MAIN CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Page header -->
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="pi pi-file-plus text-white" style="font-size: 14px"></i>
+        </div>
+        <div>
+          <h1 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+            Invoice Add
+          </h1>
+          <p class="text-[12px] text-slate-400 leading-none">
+            Create and queue invoices for review
+          </p>
+        </div>
+      </div>
+
+      <!-- Invoice count pill -->
+      @if (addedInvoice().length > 0) {
+        <div
+          class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200"
+        >
+          <i class="pi pi-file text-emerald-600" style="font-size: 10px"></i>
+          <span class="text-[11px] font-semibold text-emerald-700 tabular-nums">
+            {{ addedInvoice().length }} invoice{{ addedInvoice().length > 1 ? 's' : '' }} queued
+          </span>
+        </div>
+      }
+    </div>
+
+    <!-- ── Invoice entry form ─────────────────────────────── -->
+    <div class="px-6 py-4 bg-[#f4f4f5] border-b border-slate-200/80">
+      <!-- Section label -->
+      <!-- <div class="flex items-center gap-3 mb-4">
+        <span
+          class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+          >Invoice Details</span
+        >
+        <div class="h-px bg-slate-200 flex-1"></div>
+      </div> -->
+
+      <div class="grid grid-cols-12 gap-x-2 gap-y-2">
+        <!-- Row 1: Vendor / Type / Number / Fund / Dates -->
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Vendor Name <span class="text-red-400">*</span></label
+          >
+          <p-select
+            fluid
+            appendTo="body"
+            [options]="vendors"
+            optionLabel="displayName"
+            optionValue="displayName"
+            placeholder="Select vendor"
+            [(ngModel)]="newInvoice().vendorName"
+            (ngModelChange)="updateInvoiceField('vendorName', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Invoice Type <span class="text-red-400">*</span></label
+          >
+          <p-select
+            fluid
+            appendTo="body"
+            [options]="invoiceTypes"
+            optionLabel="name"
+            optionValue="name"
+            placeholder="Select type"
+            [(ngModel)]="newInvoice().invoiceType"
+            (ngModelChange)="updateInvoiceField('invoiceType', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Invoice No <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="e.g. INV-2024-001"
+            fluid
+            type="text"
+            pInputText
+            [(ngModel)]="newInvoice().invoiceNo"
+            (ngModelChange)="updateInvoiceField('invoiceNo', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Invoiced Fund <span class="text-red-400">*</span></label
+          >
+          <p-select
+            fluid
+            appendTo="body"
+            [options]="funds"
+            optionLabel="name"
+            optionValue="name"
+            placeholder="Select fund"
+            [(ngModel)]="newInvoice().invoicedFundName"
+            (ngModelChange)="updateInvoiceField('invoicedFundName', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Invoice Date <span class="text-red-400">*</span></label
+          >
+          <p-datepicker
+            placeholder="Select date"
+            fluid
+            appendTo="body"
+            [(ngModel)]="newInvoice().invoiceDate"
+            (ngModelChange)="updateInvoiceField('invoiceDate', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Due Date <span class="text-red-400">*</span></label
+          >
+          <p-datepicker
+            placeholder="Select date"
+            fluid
+            appendTo="body"
+            [(ngModel)]="newInvoice().invoiceDueDate"
+            (ngModelChange)="updateInvoiceField('invoiceDueDate', $event)"
+          />
+        </div>
+
+        <!-- Divider label: Financial -->
+        <!-- <div class="col-span-12 flex items-center gap-3 pt-1">
+          <span
+            class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+            >Financial</span
+          >
+          <div class="h-px bg-slate-200 flex-1"></div>
+        </div> -->
+
+        <!-- Row 2: Fee / CCY / Amounts -->
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Fee Type <span class="text-red-400">*</span></label
+          >
+          <p-select
+            fluid
+            appendTo="body"
+            [options]="feeTypes"
+            optionLabel="name"
+            optionValue="name"
+            placeholder="Select fee type"
+            [(ngModel)]="newInvoice().feeType"
+            (ngModelChange)="updateInvoiceField('feeType', $event)"
+          />
+        </div>
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Vendor Ccy <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="USD"
+            fluid
+            type="text"
+            pInputText
+            class="!font-mono !uppercase"
+            [(ngModel)]="newInvoice().vendorCcy"
+            (ngModelChange)="updateInvoiceField('vendorCcy', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Net Amount <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="0.00"
+            fluid
+            type="number"
+            pInputText
+            class="!font-mono"
+            [(ngModel)]="newInvoice().netAmount"
+            (ngModelChange)="updateInvoiceField('netAmount', $event)"
+          />
+        </div>
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Tax % <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="0.00"
+            fluid
+            type="number"
+            pInputText
+            class="!font-mono"
+            [(ngModel)]="newInvoice().taxAmount"
+            (ngModelChange)="updateInvoiceField('taxAmount', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Tax Amount <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="0.00"
+            fluid
+            type="number"
+            pInputText
+            class="!font-mono"
+            [(ngModel)]="newInvoice().taxAmount"
+            (ngModelChange)="updateInvoiceField('taxAmount', $event)"
+          />
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Gross Amount <span class="text-red-400">*</span></label
+          >
+          <input
+            placeholder="0.00"
+            fluid
+            type="number"
+            pInputText
+            class="!font-mono !font-semibold"
+            [(ngModel)]="newInvoice().grossAmount"
+            (ngModelChange)="updateInvoiceField('grossAmount', $event)"
+          />
+        </div>
+
+        <!-- Add button -->
+        <div class="col-span-2 flex items-end justify-end">
+          <p-button
+            icon="pi pi-plus-circle"
+            label="Add Invoice"
+            severity="contrast"
+            size="small"
+            (click)="addInvoice()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Queued invoices table ──────────────────────────── -->
+    <div class="px-6 pt-4 pb-5">
+      <!-- Section label + count -->
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span
+            class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+            >Queued Invoices</span
+          >
+          @if (addedInvoice().length > 0) {
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+            >
+              {{ addedInvoice().length }}
+            </span>
+          }
+          <div class="h-px bg-slate-100 w-20"></div>
+        </div>
+      </div>
+
+      @if (addedInvoice().length > 0) {
+        <p-table
+          [value]="addedInvoice()"
+          dataKey="id"
+          [stripedRows]="true"
+          size="small"
+          [showGridlines]="true"
+          [scrollable]="true"
+          scrollHeight="400px"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
+          class="table-dashboard-invoice"
+        >
+          <ng-template #header>
+            <tr>
+              <th pResizableColumn>Vendor Name</th>
+              <th pResizableColumn>Invoice Type</th>
+              <th pResizableColumn>Invoice Date</th>
+              <th pResizableColumn>Invoice No</th>
+              <th pResizableColumn>Invoice Due Date</th>
+              <th pResizableColumn>Invoiced Fund Name</th>
+              <th pResizableColumn>Vendor CCy</th>
+              <th pResizableColumn>Fee Type</th>
+              <th pResizableColumn>Net Amount</th>
+              <th pResizableColumn>Tax Amount</th>
+              <th pResizableColumn>Gross Amount</th>
+              <th pResizableColumn style="width: 90px"></th>
+            </tr>
+          </ng-template>
+
+          <ng-template #body let-invoice>
+            <tr>
+              <!-- Vendor Name -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-select
+                    [(ngModel)]="invoice.vendorName"
+                    appendTo="body"
+                    [options]="vendors"
+                    optionLabel="displayName"
+                    optionValue="displayName"
+                  />
+                } @else {
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0"
+                    >
+                      <i class="pi pi-building text-indigo-500" style="font-size: 8px"></i>
+                    </div>
+                    <span class="text-[13px] font-semibold text-slate-800 tracking-tight">{{
+                      invoice.vendorName
+                    }}</span>
+                  </div>
+                }
+              </td>
+
+              <!-- Invoice Type -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-select
+                    [(ngModel)]="invoice.invoiceType"
+                    appendTo="body"
+                    [options]="invoiceTypes"
+                    optionLabel="name"
+                    optionValue="name"
+                  />
+                } @else {
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-medium"
+                  >
+                    {{ invoice.invoiceType }}
+                  </span>
+                }
+              </td>
+
+              <!-- Invoice Date -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-datepicker [(ngModel)]="invoice.invoiceDate" appendTo="body" />
+                } @else {
+                  <span class="text-[13px] text-slate-600 tabular-nums">{{
+                    invoice.invoiceDate | date: 'shortDate'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Invoice No -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <input [(ngModel)]="invoice.invoiceNo" pInputText />
+                } @else {
+                  <span
+                    class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
+                  >
+                    {{ invoice.invoiceNo }}
+                  </span>
+                }
+              </td>
+
+              <!-- Due Date -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-datepicker [(ngModel)]="invoice.invoiceDueDate" appendTo="body" />
+                } @else {
+                  <div class="flex items-center gap-1.5">
+                    <i class="pi pi-clock text-rose-400" style="font-size: 10px"></i>
+                    <span class="text-[13px] text-rose-600 tabular-nums">{{
+                      invoice.invoiceDueDate | date: 'shortDate'
+                    }}</span>
+                  </div>
+                }
+              </td>
+
+              <!-- Fund Name -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-select
+                    [(ngModel)]="invoice.invoicedFundName"
+                    appendTo="body"
+                    [options]="funds"
+                    optionLabel="name"
+                    optionValue="name"
+                  />
+                } @else {
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+                    <span class="text-[13px] text-slate-600">{{ invoice.invoicedFundName }}</span>
+                  </div>
+                }
+              </td>
+
+              <!-- Vendor CCY -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <input [(ngModel)]="invoice.vendorCcy" pInputText />
+                } @else {
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono tracking-wide"
+                  >
+                    {{ invoice.vendorCcy }}
+                  </span>
+                }
+              </td>
+
+              <!-- Fee Type -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <p-select
+                    [(ngModel)]="invoice.feeType"
+                    appendTo="body"
+                    [options]="feeTypes"
+                    optionLabel="name"
+                    optionValue="name"
+                  />
+                } @else {
+                  <span class="text-[13px] text-slate-600">{{ invoice.feeType }}</span>
+                }
+              </td>
+
+              <!-- Net Amount -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <input [(ngModel)]="invoice.netAmount" type="number" pInputText />
+                } @else {
+                  <span class="text-[13px] text-slate-700 tabular-nums font-mono"
+                    >${{ invoice.netAmount | number }}</span
+                  >
+                }
+              </td>
+
+              <!-- Tax Amount -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <input [(ngModel)]="invoice.taxAmount" type="number" pInputText />
+                } @else {
+                  <span class="text-[13px] text-slate-600 tabular-nums font-mono"
+                    >${{ invoice.taxAmount | number }}</span
+                  >
+                }
+              </td>
+
+              <!-- Gross Amount -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <input [(ngModel)]="invoice.grossAmount" type="number" pInputText />
+                } @else {
+                  <span class="text-[13px] font-bold text-slate-900 tabular-nums font-mono"
+                    >${{ invoice.grossAmount | number }}</span
+                  >
+                }
+              </td>
+
+              <!-- Actions -->
+              <td>
+                @if (editingInvoice() === invoice.id) {
+                  <div class="flex items-center gap-1">
+                    <p-button
+                      icon="pi pi-check"
+                      size="small"
+                      severity="success"
+                      pTooltip="Save"
+                      tooltipPosition="bottom"
+                      (click)="saveInvoice(invoice.id)"
+                    />
+                    <p-button
+                      icon="pi pi-times"
+                      size="small"
+                      variant="outlined"
+                      severity="secondary"
+                      pTooltip="Cancel"
+                      tooltipPosition="bottom"
+                      (click)="cancelEdit()"
+                    />
+                  </div>
+                } @else {
+                  <div class="flex items-center gap-1">
+                    <p-button
+                      icon="pi pi-pencil"
+                      size="small"
+                      variant="outlined"
+                      severity="secondary"
+                      pTooltip="Edit"
+                      tooltipPosition="bottom"
+                      (click)="editInvoice(invoice.id)"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      size="small"
+                      variant="outlined"
+                      severity="danger"
+                      pTooltip="Delete"
+                      tooltipPosition="bottom"
+                      (click)="deleteInvoice(invoice.id)"
+                    />
+                  </div>
+                }
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      } @else {
+        <!-- Empty state -->
+        <div
+          class="rounded-xl border border-dashed border-slate-200 bg-[#f4f4f5]/50 h-48 flex flex-col items-center justify-center gap-3"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
+          >
+            <i class="pi pi-file-plus text-slate-300" style="font-size: 16px"></i>
+          </div>
+          <div class="text-center">
+            <p class="text-[13px] font-semibold text-slate-500 mb-0.5">No invoices queued yet</p>
+            <p class="text-[12px] text-slate-400">
+              Fill in the form above and click "Add Invoice" to queue one
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Page footer ───────────────────────────────────── -->
+    <div class="px-6 py-3 border-t border-slate-100 bg-white flex items-center justify-between">
+      <div class="flex items-center gap-2 text-[12px] text-slate-400">
+        <i class="pi pi-info-circle" style="font-size: 11px"></i>
+        <span>All queued invoices will be sent for review once saved</span>
+      </div>
+      <p-button
+        icon="pi pi-check-circle"
+        label="Save for Review"
+        severity="contrast"
+        size="small"
+        [disabled]="addedInvoice().length === 0"
+      />
     </div>
   </div>
 </div>

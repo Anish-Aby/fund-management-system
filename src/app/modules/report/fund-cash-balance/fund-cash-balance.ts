@@ -21,7 +21,6 @@ import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/n
     MultiSelectModule,
     DatePickerModule,
     FormsModule,
-    NoDataPlaceholder,
   ],
   templateUrl: './fund-cash-balance.html',
   styleUrl: './fund-cash-balance.scss',

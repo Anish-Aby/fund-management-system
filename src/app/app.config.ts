@@ -1,13 +1,19 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
+import { provideStore } from '@ngrx/store';
 
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
-import { definePreset } from '@primeuix/themes';
+import { headerInterceptor } from './modules/core/interceptors/header/header-interceptor';
+import { errorInterceptor } from './modules/core/interceptors/error/error-interceptor';
+import { loaderInterceptor } from './modules/core/interceptors/loader/loader-interceptor';
+import { appReducer } from './store';
 
 const Noir = definePreset(Aura, {
   semantic: {
@@ -73,6 +79,7 @@ const Noir = definePreset(Aura, {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptors([headerInterceptor, loaderInterceptor, errorInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimationsAsync(),
@@ -86,5 +93,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideStore(appReducer),
   ],
 };

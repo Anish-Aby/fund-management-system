@@ -1,4 +1,4 @@
-<div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl">
+<!-- <div class="border-surface bg-primary-contrast py-4 px-4 rounded-b-3xl">
   <div class="border border-surface bg-primary-contrast rounded-2xl mb-4">
     <div
       class="flex items-center py-2 border px-4 rounded-t-2xl"
@@ -416,5 +416,659 @@
         </ng-template>
       </p-table>
     </div>
+  </div>
+</div> -->
+<div class="bg-[#f4f4f5] p-6 flex flex-col gap-5">
+  <!-- ══════════════════════════════════════════════════════
+       FORM CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Mode header — strong left border -->
+    <div
+      class="px-6 py-4 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
+      [ngClass]="{
+        'border-l-sky-500': isViewMode(),
+        'border-l-emerald-500': isAddMode(),
+        'border-l-amber-500': isEditMode(),
+      }"
+    >
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [ngClass]="{
+          'bg-sky-100': isViewMode(),
+          'bg-emerald-100': isAddMode(),
+          'bg-amber-100': isEditMode(),
+        }"
+      >
+        <i
+          class="pi text-[13px]"
+          [ngClass]="{
+            'pi-eye text-sky-600': isViewMode(),
+            'pi-plus text-emerald-600': isAddMode(),
+            'pi-pencil text-amber-600': isEditMode(),
+          }"
+        ></i>
+      </div>
+      <div>
+        <h2 class="text-[14px] font-semibold tracking-tight text-slate-800 leading-none mb-1">
+          @if (isViewMode()) {
+            View Vendor
+          } @else if (isEditMode()) {
+            Edit Vendor
+          } @else {
+            Add New Vendor
+          }
+        </h2>
+        <p class="text-[12px] leading-none text-slate-400">
+          @if (isViewMode()) {
+            Read-only view of vendor details
+          } @else if (isEditMode()) {
+            Modify existing vendor information
+          } @else {
+            Fill in the details to create a new vendor
+          }
+        </p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="px-6">
+      <p-tabs value="0" class="tab-pl-0">
+        <p-tablist>
+          <p-tab value="0">
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-building" style="font-size: 11px"></i>
+              Vendor Info
+            </div>
+          </p-tab>
+          <p-tab value="1">
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-credit-card" style="font-size: 11px"></i>
+              Tax / Currency / Bank
+            </div>
+          </p-tab>
+          <p-tab value="2">
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-briefcase" style="font-size: 11px"></i>
+              Portfolio
+            </div>
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <!-- ── Tab 1: Vendor Info ───────────────────────── -->
+          <p-tabpanel value="0">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-2 max-h-[360px] pr-2 overflow-y-auto py-1">
+              <!-- Identity sub-section -->
+              <div class="col-span-12 flex items-center gap-3">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                >
+                  Identity
+                </span>
+                <div class="h-px bg-slate-100 flex-1"></div>
+              </div>
+
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Vendor Name <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter vendor name" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Vendor Code <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter unique code" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Display Name</label>
+                <input fluid type="text" pInputText placeholder="Enter display name" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Bank Charges <span class="text-red-400">*</span></label
+                >
+                <p-select
+                  [options]="bankChargesOptions()"
+                  [filter]="true"
+                  filterBy="label"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select charge bearer"
+                  fluid
+                  appendTo="body"
+                />
+              </div>
+
+              <!-- Address sub-section -->
+              <div class="col-span-12 flex items-center gap-3 mt-1">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                >
+                  Address
+                </span>
+                <div class="h-px bg-slate-100 flex-1"></div>
+              </div>
+
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Street</label>
+                <input fluid type="text" pInputText placeholder="Enter street address" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Street 1</label>
+                <input fluid type="text" pInputText placeholder="Enter suite/unit" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Street 2</label>
+                <input fluid type="text" pInputText placeholder="Enter building" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Street 3</label>
+                <input fluid type="text" pInputText placeholder="Enter floor/apt" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">City</label>
+                <input fluid type="text" pInputText placeholder="Enter city" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">PO Box</label>
+                <input fluid type="text" pInputText placeholder="Enter PO box" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">ZIP</label>
+                <input fluid type="text" pInputText placeholder="Enter ZIP code" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >State <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter state" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Country <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter country" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Other Identifier</label>
+                <input fluid type="text" pInputText placeholder="Enter DUNS/Tax ID" />
+              </div>
+
+              <!-- Contact sub-section -->
+              <div class="col-span-12 flex items-center gap-3 mt-1">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                >
+                  Contact Details
+                </span>
+                <div class="h-px bg-slate-100 flex-1"></div>
+              </div>
+
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Contact Person Name <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter contact name" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Contact No <span class="text-red-400">*</span></label
+                >
+                <input fluid type="tel" pInputText placeholder="Enter phone number" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Email ID 1 <span class="text-red-400">*</span></label
+                >
+                <input fluid type="email" pInputText placeholder="Enter primary email" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Email ID 2</label>
+                <input fluid type="email" pInputText placeholder="Enter secondary email" />
+              </div>
+            </div>
+          </p-tabpanel>
+
+          <!-- ── Tab 2: Tax / Currency / Bank ────────────── -->
+          <p-tabpanel value="1">
+            <div class="grid grid-cols-12 gap-x-4 gap-y-4 max-h-[360px] pr-2 overflow-y-auto py-1">
+              <!-- Tax & Currency sub-section -->
+              <div class="col-span-12 flex items-center gap-3">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                >
+                  Tax & Currency
+                </span>
+                <div class="h-px bg-slate-100 flex-1"></div>
+              </div>
+
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Tax Type <span class="text-red-400">*</span></label
+                >
+                <p-select
+                  [(ngModel)]="selectedTaxType"
+                  [options]="taxTypeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select tax type"
+                  [filter]="true"
+                  filterBy="label"
+                  appendTo="body"
+                  fluid
+                />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Tax % <span class="text-red-400">*</span></label
+                >
+                <input
+                  fluid
+                  type="number"
+                  pInputText
+                  [(ngModel)]="taxPercentage"
+                  [disabled]="!selectedTaxType"
+                  placeholder="Enter tax rate"
+                />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Local Ccy <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter currency code" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Tax ID <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter tax ID" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Bank Debit</label>
+                <input fluid type="text" pInputText placeholder="Enter debit details" />
+              </div>
+
+              <!-- Bank sub-section -->
+              <div class="col-span-12 flex items-center gap-3 mt-1">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[10px] font-bold tracking-wide whitespace-nowrap"
+                >
+                  Banking
+                </span>
+                <div class="h-px bg-slate-100 flex-1"></div>
+              </div>
+
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Bank Name <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter bank name" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Bank Account No <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter account number" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Transfer Type <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter transfer method" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Bank Country <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter bank country" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >ACH No <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter routing number" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Wire Details <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter SWIFT/wire info" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Email ID <span class="text-red-400">*</span></label
+                >
+                <input fluid type="email" pInputText placeholder="Enter bank email" />
+              </div>
+              <div class="col-span-3 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500"
+                  >Country <span class="text-red-400">*</span></label
+                >
+                <input fluid type="text" pInputText placeholder="Enter country" />
+              </div>
+            </div>
+          </p-tabpanel>
+
+          <!-- ── Tab 3: Portfolio ─────────────────────────── -->
+          <p-tabpanel value="2">
+            <div class="max-h-[360px] pr-2 overflow-y-auto py-1 flex flex-col gap-3">
+              @for (entry of fundEntries(); track $index) {
+                <div class="rounded-xl border border-slate-200/80 overflow-hidden flex-shrink-0">
+                  <!-- Fund entry header -->
+                  <div
+                    class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-100 flex items-center justify-between"
+                  >
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-5 h-5 rounded-md bg-indigo-100 flex items-center justify-center"
+                      >
+                        <i class="pi pi-briefcase text-indigo-500" style="font-size: 9px"></i>
+                      </div>
+                      <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                        >Fund {{ $index + 1 }}</span
+                      >
+                    </div>
+                    <p-button
+                      icon="pi pi-trash"
+                      severity="danger"
+                      variant="text"
+                      size="small"
+                      pTooltip="Remove fund"
+                      tooltipPosition="left"
+                      (click)="removeFund($index)"
+                    />
+                  </div>
+
+                  <!-- Fund entry body -->
+                  <div class="grid grid-cols-12 gap-x-4 gap-y-3 px-5 py-4">
+                    <div class="col-span-6 flex flex-col gap-1.5">
+                      <label class="text-[11px] font-medium text-slate-500"
+                        >Fund <span class="text-red-400">*</span></label
+                      >
+                      <p-select
+                        [ngModel]="entry.fund"
+                        (ngModelChange)="updateFund($index, $event)"
+                        [options]="funds"
+                        optionLabel="name"
+                        placeholder="Select fund"
+                        [filter]="true"
+                        filterBy="name"
+                        appendTo="body"
+                        fluid
+                      />
+                    </div>
+                    <div class="col-span-6 flex flex-col gap-1.5">
+                      <label class="text-[11px] font-medium text-slate-500"
+                        >Fee Types <span class="text-red-400">*</span></label
+                      >
+                      <p-multiselect
+                        [ngModel]="entry.feeTypes"
+                        (ngModelChange)="updateFeeTypes($index, $event)"
+                        [options]="feeTypeOptions"
+                        optionLabel="label"
+                        placeholder="Select fee types"
+                        appendTo="body"
+                        fluid
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- Add fund button -->
+              <div class="flex justify-end pt-1 flex-shrink-0">
+                <p-button
+                  icon="pi pi-plus"
+                  label="Add Fund"
+                  severity="secondary"
+                  variant="outlined"
+                  size="small"
+                  (click)="addFund()"
+                />
+              </div>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+
+    <!-- Form footer -->
+    <div class="px-6 py-3 border-t border-slate-100 bg-white flex items-center justify-end gap-2">
+      @if (isViewMode() || isEditMode()) {
+        <p-button
+          icon="pi pi-times-circle"
+          label="Clear Selection"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          (onClick)="clearVendorSelection()"
+        />
+      }
+      <p-button icon="pi pi-plus-circle" label="Add Vendor" severity="contrast" size="small" />
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       VENDOR LIST CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Toolbar -->
+    <div class="px-5 py-3 border-b border-slate-100 bg-white flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+          <i class="pi pi-list text-slate-500" style="font-size: 9px"></i>
+        </div>
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Vendor List</span>
+        @if (vendors().length > 0) {
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+          >
+            {{ vendors().length }}
+          </span>
+        }
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <i
+            class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+            style="font-size: 11px"
+          ></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search vendors..."
+            class="!pl-8 !h-8 !text-[13px] !rounded-lg !border-slate-200 !w-52"
+            (input)="vendorTable.filterGlobal($event.target.value, 'contains')"
+          />
+        </div>
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          variant="outlined"
+          size="small"
+          pTooltip="Delete selected"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-file-excel"
+          severity="secondary"
+          variant="outlined"
+          size="small"
+          pTooltip="Export Excel"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-print"
+          severity="secondary"
+          variant="outlined"
+          size="small"
+          pTooltip="Print"
+          tooltipPosition="bottom"
+        />
+      </div>
+    </div>
+
+    <!-- Table -->
+    <p-table
+      #vendorTable
+      [value]="vendors()"
+      [(selection)]="selectedVendors"
+      dataKey="id"
+      [stripedRows]="true"
+      size="small"
+      [showGridlines]="true"
+      [scrollable]="true"
+      scrollHeight="550px"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      [globalFilterFields]="['displayName', 'vendorName', 'vendorCode']"
+    >
+      <ng-template #header>
+        <tr>
+          <th><p-tableHeaderCheckbox /></th>
+          <th pSortableColumn="displayName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Display Name
+              <div class="flex items-center">
+                <p-sortIcon field="displayName" />
+                <p-columnFilter
+                  type="text"
+                  field="displayName"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorName" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Vendor Name
+              <div class="flex items-center">
+                <p-sortIcon field="vendorName" />
+                <p-columnFilter
+                  type="text"
+                  field="vendorName"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th pSortableColumn="vendorCode" pResizableColumn>
+            <div class="flex items-center justify-between">
+              Vendor Code
+              <div class="flex items-center">
+                <p-sortIcon field="vendorCode" />
+                <p-columnFilter
+                  type="text"
+                  field="vendorCode"
+                  display="menu"
+                  showMatchModes="false"
+                  showAddButton="false"
+                  showOperator="false"
+                  matchMode="contains"
+                />
+              </div>
+            </div>
+          </th>
+          <th style="width: 110px"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-vendor>
+        <tr>
+          <td><p-tableCheckbox [value]="vendor" /></td>
+
+          <!-- Display Name -->
+          <td>
+            <span class="text-[13px] font-medium text-slate-600">{{ vendor.displayName }}</span>
+          </td>
+
+          <!-- Vendor Name -->
+          <td>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-building text-indigo-500" style="font-size: 8px"></i>
+              </div>
+              <span class="font-semibold text-slate-800 text-[13px] tracking-tight">{{
+                vendor.vendorName
+              }}</span>
+            </div>
+          </td>
+
+          <!-- Vendor Code -->
+          <td>
+            <span
+              class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
+            >
+              {{ vendor.vendorCode }}
+            </span>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div class="flex items-center justify-end gap-1">
+              <p-button
+                size="small"
+                icon="pi pi-eye"
+                severity="secondary"
+                variant="outlined"
+                pTooltip="View"
+                tooltipPosition="bottom"
+                (onClick)="viewVendor(vendor)"
+              />
+              <p-button
+                size="small"
+                icon="pi pi-pencil"
+                severity="secondary"
+                variant="outlined"
+                pTooltip="Edit"
+                tooltipPosition="bottom"
+                (onClick)="editVendor(vendor)"
+              />
+              <p-button
+                size="small"
+                icon="pi pi-trash"
+                severity="danger"
+                variant="outlined"
+                pTooltip="Delete"
+                tooltipPosition="bottom"
+                (onClick)="deleteVendor(vendor)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">
+            <div class="flex flex-col items-center justify-center py-12 gap-3">
+              <div
+                class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center"
+              >
+                <i class="pi pi-building text-slate-300" style="font-size: 16px"></i>
+              </div>
+              <span class="text-[13px] text-slate-400">No vendors found</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>

@@ -9,6 +9,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { TableModule } from 'primeng/table';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { NoDataPlaceholder } from '../shared/components/no-data-placeholder/no-data-placeholder';
 
 interface Entity {
   label: string;
@@ -36,6 +37,7 @@ interface ForexPricingRecord {
     TableModule,
     InputNumberModule,
     MultiSelectModule,
+    NoDataPlaceholder,
   ],
   templateUrl: './forex-pricing.html',
   styleUrl: './forex-pricing.scss',

@@ -1,29 +1,308 @@
-:root .p-button {
-  padding: 0.6rem 1rem;
-  border-radius: 0.75rem;
-}
+// :root .p-button {
+//   padding: 0.6rem 1rem;
+//   border-radius: 0.75rem;
+// }
 
-.btn-menu {
-  display: flex !important;
-  justify-content: start !important;
-  padding-left: 0 !important;
-  border: none !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-}
+// .btn-menu {
+//   display: flex !important;
+//   justify-content: start !important;
+//   padding-left: 0 !important;
+//   border: none !important;
+//   white-space: nowrap !important;
+//   overflow: hidden !important;
+// }
 
-.btn-dialog-header-group {
+// .btn-dialog-header-group {
+//   .p-button {
+//     border-start-start-radius: 0 !important;
+//     border-end-start-radius: 0 !important;
+//     &:hover {
+//       background-color: oklch(70.7% 0.165 254.624) !important;
+//     }
+//   }
+//   .btn-close {
+//     border-end-end-radius: 0 !important;
+//     &:hover {
+//       background-color: oklch(70.4% 0.191 22.216) !important;
+//     }
+//   }
+// }
+
+// ─────────────────────────────────────────────────────────
+// buttons.scss — Global PrimeNG p-button standardisation
+// ─────────────────────────────────────────────────────────
+
+// ::ng-deep {
+//   .p-button {
+//     // ── Base ───────────────────────────────────────────────
+//     font-size: 13px !important;
+//     font-weight: 600 !important;
+//     border-radius: 8px !important;
+//     transition:
+//       background 0.15s ease,
+//       border-color 0.15s ease,
+//       box-shadow 0.15s ease,
+//       opacity 0.15s ease !important;
+//     white-space: nowrap !important;
+//     letter-spacing: -0.01em !important;
+//     line-height: 1 !important;
+
+//     // ── Sizes ─────────────────────────────────────────────
+
+//     // Small — used for toolbar actions, filter area
+//     &.p-button-sm {
+//       height: 32px !important;
+//       padding: 0 12px !important;
+//       font-size: 12px !important;
+//       border-radius: 7px !important;
+
+//       .p-button-icon {
+//         font-size: 11px !important;
+//       }
+//     }
+
+//     // Default — used for primary actions
+//     &:not(.p-button-sm):not(.p-button-lg) {
+//       height: 36px !important;
+//       padding: 0 14px !important;
+//     }
+
+//     // Large — used for hero CTAs
+//     &.p-button-lg {
+//       height: 42px !important;
+//       padding: 0 20px !important;
+//       font-size: 14px !important;
+
+//       .p-button-icon {
+//         font-size: 14px !important;
+//       }
+//     }
+
+//     // Icon only (no label)
+//     &:has(.p-button-icon):not(:has(.p-button-label)) {
+//       width: 32px !important;
+//       padding: 0 !important;
+//       justify-content: center !important;
+
+//       &:not(.p-button-sm):not(.p-button-lg) {
+//         width: 36px !important;
+//       }
+//     }
+
+//     // Icon spacing when label is present
+//     .p-button-icon + .p-button-label,
+//     .p-button-label + .p-button-icon {
+//       margin-left: 6px !important;
+//     }
+
+//     .p-button-icon {
+//       font-size: 12px !important;
+//     }
+
+//     // ── Variants ──────────────────────────────────────────
+
+//     // Contrast (primary action — dark fill)
+//     &.p-button-contrast {
+//       background: #1a1a1a !important;
+//       border-color: #1a1a1a !important;
+//       color: #ffffff !important;
+//       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+
+//       &:hover:not(:disabled) {
+//         background: #333333 !important;
+//         border-color: #333333 !important;
+//       }
+
+//       &:active:not(:disabled) {
+//         background: #000000 !important;
+//       }
+//     }
+
+//     // Secondary (outlined)
+//     &.p-button-secondary.p-button-outlined {
+//       background: #ffffff !important;
+//       border-color: #e2e8f0 !important;
+//       color: #374151 !important;
+//       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+
+//       &:hover:not(:disabled) {
+//         background: #f8fafc !important;
+//         border-color: #cbd5e1 !important;
+//         color: #1e293b !important;
+//       }
+
+//       .p-button-icon {
+//         color: #6b7280 !important;
+//       }
+//     }
+
+//     // Text / ghost
+//     &.p-button-text {
+//       background: transparent !important;
+//       border-color: transparent !important;
+//       color: #6b7280 !important;
+//       box-shadow: none !important;
+//       padding: 0 8px !important;
+
+//       &:hover:not(:disabled) {
+//         background: rgba(0, 0, 0, 0.04) !important;
+//         color: #374151 !important;
+//       }
+//     }
+
+//     // Danger
+//     &.p-button-danger {
+//       background: #dc2626 !important;
+//       border-color: #dc2626 !important;
+//       color: #ffffff !important;
+
+//       &:hover:not(:disabled) {
+//         background: #b91c1c !important;
+//         border-color: #b91c1c !important;
+//       }
+//     }
+
+//     // Success
+//     &.p-button-success {
+//       background: #16a34a !important;
+//       border-color: #16a34a !important;
+//       color: #ffffff !important;
+
+//       &:hover:not(:disabled) {
+//         background: #15803d !important;
+//         border-color: #15803d !important;
+//       }
+//     }
+
+//     // ── States ────────────────────────────────────────────
+
+//     &:disabled {
+//       opacity: 0.4 !important;
+//       cursor: not-allowed !important;
+//       pointer-events: none !important;
+//     }
+
+//     &:focus-visible {
+//       outline: 2px solid #94a3b8 !important;
+//       outline-offset: 2px !important;
+//     }
+
+//     // Loading spinner
+//     &.p-button-loading {
+//       .p-button-loading-icon {
+//         font-size: 12px !important;
+//       }
+//     }
+//   }
+// }
+
+::ng-deep {
   .p-button {
-    border-start-start-radius: 0 !important;
-    border-end-start-radius: 0 !important;
-    &:hover {
-      background-color: oklch(70.7% 0.165 254.624) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    letter-spacing: -0.01em !important;
+    transition:
+      background 0.1s ease,
+      border-color 0.1s ease,
+      color 0.1s ease !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+
+    &.p-button-sm {
+      height: 32px !important;
+      padding: 0 10px !important;
+      font-size: 12px !important;
+      border-radius: 6px !important;
+
+      .p-button-icon {
+        font-size: 11px !important;
+      }
     }
-  }
-  .btn-close {
-    border-end-end-radius: 0 !important;
-    &:hover {
-      background-color: oklch(70.4% 0.191 22.216) !important;
+
+    &:not(.p-button-sm):not(.p-button-lg) {
+      height: 36px !important;
+      padding: 0 12px !important;
+    }
+
+    &.p-button-lg {
+      height: 40px !important;
+      padding: 0 16px !important;
+    }
+
+    .p-button-icon {
+      font-size: 11px !important;
+    }
+    .p-button-icon + .p-button-label {
+      margin-left: 6px !important;
+    }
+
+    // Contrast — solid black
+    &.p-button-contrast {
+      background: #111 !important;
+      border: 1px solid #111 !important;
+      color: #fff !important;
+      box-shadow: none !important;
+
+      &:hover:not(:disabled) {
+        background: #333 !important;
+        border-color: #333 !important;
+      }
+    }
+
+    // Secondary outlined — Vercel's ghost button
+    &.p-button-secondary.p-button-outlined {
+      background: #fff !important;
+      border: 1px solid #eaeaea !important;
+      color: #444 !important;
+      box-shadow: none !important;
+
+      &:hover:not(:disabled) {
+        background: #fafafa !important;
+        border-color: #ccc !important;
+        color: #111 !important;
+      }
+
+      .p-button-icon {
+        color: #888 !important;
+      }
+    }
+
+    // Text / ghost
+    &.p-button-text {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #888 !important;
+      box-shadow: none !important;
+      padding: 0 8px !important;
+
+      &:hover:not(:disabled) {
+        background: #f4f4f4 !important;
+        color: #111 !important;
+      }
+    }
+
+    // Danger
+    &.p-button-danger {
+      background: #c00 !important;
+      border: 1px solid #c00 !important;
+      color: #fff !important;
+
+      &:hover:not(:disabled) {
+        background: #a00 !important;
+        border-color: #a00 !important;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.4 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #111 !important;
+      outline-offset: 2px !important;
     }
   }
 }

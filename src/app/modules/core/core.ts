@@ -7,6 +7,7 @@ import { Taskbar } from './taskbar/taskbar';
 import { SelectModule } from 'primeng/select';
 import EntityMockData from './mocks/entity-mock.json';
 import { CommonModule } from '@angular/common';
+import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-core',

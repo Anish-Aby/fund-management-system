@@ -52,7 +52,7 @@ export class InvoiceAdd {
     {
       id: '1',
       vendorName: 'Tech Solutions Inc',
-      invoiceType: 'Standard Invoice',
+      invoiceType: 'Credit Note',
       invoiceDate: new Date('2024-01-15'),
       invoiceNo: 'INV-2024-001',
       invoiceDueDate: new Date('2024-02-15'),
@@ -61,12 +61,12 @@ export class InvoiceAdd {
       feeType: 'Software License',
       netAmount: 12500,
       taxAmount: 2500,
-      grossAmount: 15000
+      grossAmount: 15000,
     },
     {
       id: '2',
       vendorName: 'Cloud Services Ltd',
-      invoiceType: 'Recurring Invoice',
+      invoiceType: 'Debit Note',
       invoiceDate: new Date('2024-01-20'),
       invoiceNo: 'INV-2024-002',
       invoiceDueDate: new Date('2024-02-20'),
@@ -75,12 +75,12 @@ export class InvoiceAdd {
       feeType: 'Infrastructure',
       netAmount: 7083,
       taxAmount: 1417,
-      grossAmount: 8500
+      grossAmount: 8500,
     },
     {
       id: '3',
       vendorName: 'Legal Advisors LLC',
-      invoiceType: 'Standard Invoice',
+      invoiceType: 'Credit Note',
       invoiceDate: new Date('2024-01-25'),
       invoiceNo: 'INV-2024-003',
       invoiceDueDate: new Date('2024-02-25'),
@@ -89,12 +89,12 @@ export class InvoiceAdd {
       feeType: 'Legal Services',
       netAmount: 10000,
       taxAmount: 2000,
-      grossAmount: 12000
+      grossAmount: 12000,
     },
     {
       id: '4',
       vendorName: 'Audit Partners',
-      invoiceType: 'Proforma Invoice',
+      invoiceType: 'Debit Note',
       invoiceDate: new Date('2024-01-30'),
       invoiceNo: 'INV-2024-004',
       invoiceDueDate: new Date('2024-03-01'),
@@ -103,12 +103,12 @@ export class InvoiceAdd {
       feeType: 'Audit Fees',
       netAmount: 20833,
       taxAmount: 4167,
-      grossAmount: 25000
+      grossAmount: 25000,
     },
     {
       id: '5',
       vendorName: 'Property Management Co',
-      invoiceType: 'Recurring Invoice',
+      invoiceType: 'Credit Note',
       invoiceDate: new Date('2024-02-05'),
       invoiceNo: 'INV-2024-005',
       invoiceDueDate: new Date('2024-03-05'),
@@ -117,12 +117,12 @@ export class InvoiceAdd {
       feeType: 'Management Fees',
       netAmount: 15417,
       taxAmount: 3083,
-      grossAmount: 18500
+      grossAmount: 18500,
     },
     {
       id: '6',
       vendorName: 'Marketing Agency Pro',
-      invoiceType: 'Standard Invoice',
+      invoiceType: 'Debit Note',
       invoiceDate: new Date('2024-02-10'),
       invoiceNo: 'INV-2024-006',
       invoiceDueDate: new Date('2024-03-10'),
@@ -131,12 +131,12 @@ export class InvoiceAdd {
       feeType: 'Marketing',
       netAmount: 7667,
       taxAmount: 1533,
-      grossAmount: 9200
+      grossAmount: 9200,
     },
     {
       id: '7',
       vendorName: 'Data Analytics Corp',
-      invoiceType: 'Standard Invoice',
+      invoiceType: 'Credit Note',
       invoiceDate: new Date('2024-02-12'),
       invoiceNo: 'INV-2024-007',
       invoiceDueDate: new Date('2024-03-12'),
@@ -145,7 +145,7 @@ export class InvoiceAdd {
       feeType: 'Consulting',
       netAmount: 18333,
       taxAmount: 3667,
-      grossAmount: 22000
+      grossAmount: 22000,
     },
     {
       id: '8',
@@ -159,12 +159,12 @@ export class InvoiceAdd {
       feeType: 'Maintenance',
       netAmount: 26250,
       taxAmount: 5250,
-      grossAmount: 31500
+      grossAmount: 31500,
     },
     {
       id: '9',
       vendorName: 'Financial Advisors Inc',
-      invoiceType: 'Standard Invoice',
+      invoiceType: 'Debit Note',
       invoiceDate: new Date('2024-02-18'),
       invoiceNo: 'INV-2024-009',
       invoiceDueDate: new Date('2024-03-18'),
@@ -173,7 +173,7 @@ export class InvoiceAdd {
       feeType: 'Advisory Fees',
       netAmount: 12333,
       taxAmount: 2467,
-      grossAmount: 14800
+      grossAmount: 14800,
     },
     {
       id: '10',
@@ -187,8 +187,8 @@ export class InvoiceAdd {
       feeType: 'Research',
       netAmount: 6250,
       taxAmount: 1250,
-      grossAmount: 7500
-    }
+      grossAmount: 7500,
+    },
   ]);
 
   vendors = vendorsMock;
@@ -208,7 +208,7 @@ export class InvoiceAdd {
     feeType: '',
     netAmount: 0,
     taxAmount: 0,
-    grossAmount: 0
+    grossAmount: 0,
   });
 
   editInvoice(id: string) {
@@ -224,20 +224,26 @@ export class InvoiceAdd {
   }
 
   deleteInvoice(id: string) {
-    this.addedInvoice.update(invoices => invoices.filter(inv => inv.id !== id));
+    this.addedInvoice.update((invoices) => invoices.filter((inv) => inv.id !== id));
   }
 
   addInvoice() {
     const invoice = this.newInvoice();
-    if (invoice.vendorName && invoice.invoiceType && invoice.invoiceNo && invoice.invoicedFundName && invoice.feeType) {
+    if (
+      invoice.vendorName &&
+      invoice.invoiceType &&
+      invoice.invoiceNo &&
+      invoice.invoicedFundName &&
+      invoice.feeType
+    ) {
       const newId = (this.addedInvoice().length + 1).toString();
-      this.addedInvoice.update(invoices => [...invoices, { ...invoice, id: newId } as Invoice]);
+      this.addedInvoice.update((invoices) => [...invoices, { ...invoice, id: newId } as Invoice]);
       this.resetForm();
     }
   }
 
   updateInvoiceField(field: keyof Partial<Invoice>, value: any) {
-    this.newInvoice.update(inv => ({ ...inv, [field]: value }));
+    this.newInvoice.update((inv) => ({ ...inv, [field]: value }));
   }
 
   resetForm() {
@@ -252,7 +258,7 @@ export class InvoiceAdd {
       feeType: '',
       netAmount: 0,
       taxAmount: 0,
-      grossAmount: 0
+      grossAmount: 0,
     });
   }
 }

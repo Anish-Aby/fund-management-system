@@ -1,4 +1,4 @@
-<div class="reconciliation-container p-6">
+<!-- <div class="reconciliation-container p-6">
   <div class="border border-surface bg-primary-contrast rounded-2xl py-5 px-5">
     <div class="flex justify-between items-center mb-4">
       <div>
@@ -52,7 +52,6 @@
 
       @if (isRecordsLoaded()) {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-2 px-4">
-          <!-- Internal Records -->
           <div class="bg-primary-contrast rounded-2xl shadow-sm border border-surface">
             <div class="p-4 bg-surface-50 rounded-t-2xl">
               <div class="grid grid-cols-12 justify-between items-center">
@@ -131,7 +130,6 @@
             </div>
           </div>
 
-          <!-- External Records -->
           <div class="bg-primary-contrast rounded-2xl shadow-sm border border-surface">
             <div class="p-4 bg-surface-50 rounded-t-2xl">
               <div class="grid grid-cols-12 justify-between items-center">
@@ -208,7 +206,6 @@
           </div>
         </div>
 
-        <!-- Remarks and Actions -->
         <div class="px-4">
           <div class="bg-primary-contrast border rounded-2xl shadow-sm border-surface p-4">
             <div class="mb-4">
@@ -254,4 +251,469 @@
       }
     </form>
   </div>
+</div> -->
+<div class="bg-[#f4f4f5] p-5 flex flex-col gap-4">
+  <form [formGroup]="reconciliationForm">
+    <!-- ══════════════════════════════════════════════════════
+         MAIN CARD
+    ══════════════════════════════════════════════════════ -->
+    <div
+      class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+    >
+      <!-- Page header -->
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0"
+          >
+            <i class="pi pi-arrows-h text-white" style="font-size: 14px"></i>
+          </div>
+          <div>
+            <h1 class="text-[14px] font-bold tracking-tight text-slate-900 leading-none mb-1">
+              Reconciliation
+            </h1>
+            <p class="text-[12px] text-slate-400 leading-none">
+              Reconcile internal and external records
+            </p>
+          </div>
+        </div>
+
+        <!-- Match status pill — shown when records loaded -->
+        @if (isRecordsLoaded()) {
+          <div
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full border text-[11px] font-semibold"
+            [ngClass]="
+              isSaveEnabled()
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                : internalSelectedTotal() > 0 || externalSelectedTotal() > 0
+                  ? 'bg-amber-50 border-amber-200 text-amber-700'
+                  : 'bg-slate-50 border-slate-200 text-slate-500'
+            "
+          >
+            <span
+              class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              [ngClass]="
+                isSaveEnabled()
+                  ? 'bg-emerald-500'
+                  : internalSelectedTotal() > 0 || externalSelectedTotal() > 0
+                    ? 'bg-amber-400 animate-pulse'
+                    : 'bg-slate-400'
+              "
+            >
+            </span>
+            {{
+              isSaveEnabled()
+                ? 'Matched'
+                : internalSelectedTotal() > 0 || externalSelectedTotal() > 0
+                  ? 'Unmatched'
+                  : 'Awaiting selection'
+            }}
+          </div>
+        }
+      </div>
+
+      <!-- ── Filter bar ─────────────────────────────────── -->
+      <div class="px-6 py-4 bg-[#f4f4f5] border-b border-slate-200/80">
+        <div class="flex items-center gap-3 mb-3">
+          <span
+            class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+            >Filter</span
+          >
+          <div class="h-px bg-slate-200 flex-1"></div>
+        </div>
+        <div class="grid grid-cols-12 gap-x-4 gap-y-3 items-end">
+          <div class="col-span-4 flex flex-col gap-1.5">
+            <label class="text-[11px] font-medium text-slate-500"
+              >Account <span class="text-red-400">*</span></label
+            >
+            <p-multiselect
+              [options]="funds"
+              formControlName="selectedFund"
+              placeholder="Select vendor"
+              fluid
+              optionLabel="name"
+              optionValue="id"
+              appendTo="body"
+            />
+          </div>
+
+          <div class="col-span-3 flex flex-col gap-1.5">
+            <label class="text-[11px] font-medium text-slate-500"
+              >As on Date <span class="text-red-400">*</span></label
+            >
+            <p-datepicker
+              formControlName="asOnDate"
+              placeholder="Select date"
+              fluid
+              appendTo="body"
+            />
+          </div>
+
+          <div class="col-span-2">
+            <p-button
+              icon="pi pi-search"
+              label="Search"
+              severity="contrast"
+              size="small"
+              (onClick)="onRefresh()"
+              [disabled]="reconciliationForm.invalid"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Records panel (shown after search) ───────────── -->
+      @if (isRecordsLoaded()) {
+        <!-- Side-by-side comparison strip -->
+        <div class="px-6 pt-5 pb-2 flex items-center gap-3">
+          <span
+            class="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap"
+            >Record Comparison</span
+          >
+          <div class="h-px bg-slate-100 flex-1"></div>
+          <!-- Running totals comparison -->
+          <div class="flex items-center gap-3 text-[11px]">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="text-slate-400">Internal</span>
+              <span class="font-bold text-slate-800 tabular-nums font-mono">{{
+                internalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2'
+              }}</span>
+            </div>
+            <div class="w-px h-3 bg-slate-200"></div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-violet-400 flex-shrink-0"></span>
+              <span class="text-slate-400">External</span>
+              <span class="font-bold text-slate-800 tabular-nums font-mono">{{
+                externalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2'
+              }}</span>
+            </div>
+            <div class="w-px h-3 bg-slate-200"></div>
+            <div
+              class="flex items-center gap-1.5 px-2 py-1 rounded-md border"
+              [ngClass]="
+                isSaveEnabled() ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'
+              "
+            >
+              <i
+                class="pi text-[9px]"
+                [ngClass]="isSaveEnabled() ? 'pi-check text-emerald-600' : 'pi-times text-rose-600'"
+              ></i>
+              <span
+                class="text-[10px] font-semibold"
+                [ngClass]="isSaveEnabled() ? 'text-emerald-700' : 'text-rose-600'"
+              >
+                {{ isSaveEnabled() ? 'Balanced' : 'Unbalanced' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column table layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-6 pb-4">
+          <!-- ── Internal Records ── -->
+          <div class="rounded-xl border border-slate-200/80 overflow-hidden">
+            <!-- Card header -->
+            <div
+              class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded-md bg-sky-100 flex items-center justify-center">
+                  <i class="pi pi-database text-sky-500" style="font-size: 9px"></i>
+                </div>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                  >Internal Records</span
+                >
+              </div>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-bold tabular-nums"
+              >
+                {{ internalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
+              </span>
+            </div>
+
+            <!-- Table toolbar -->
+            <div class="px-4 py-2.5 border-b border-slate-100 bg-white flex items-center gap-2">
+              <div class="relative flex-1">
+                <i
+                  class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                  style="font-size: 10px"
+                ></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="internalRecordsTable.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search internal records..."
+                  class="!pl-7 !h-8 !text-[13px] !rounded-lg !border-slate-200 w-full"
+                />
+              </div>
+              <p-select
+                formControlName="internalTransactionType"
+                [options]="transactionTypes"
+                optionLabel="label"
+                optionValue="value"
+                appendTo="body"
+                class="w-36"
+              />
+            </div>
+
+            <!-- Table -->
+            <p-table
+              #internalRecordsTable
+              size="small"
+              [value]="internalRecords()"
+              [scrollable]="true"
+              scrollHeight="400px"
+              [showGridlines]="true"
+              [globalFilterFields]="['date', 'description', 'amount']"
+              [(selection)]="selectedInternalRecords"
+              selectionMode="multiple"
+              [stripedRows]="true"
+              (onRowSelect)="onInternalRecordSelect()"
+              (onRowUnselect)="onInternalRecordSelect()"
+              (selectionChange)="onInternalRecordSelect()"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="w-10"><p-tableHeaderCheckbox /></th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th class="text-right">Amount</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-record>
+                <tr>
+                  <td><p-tableCheckbox [value]="record" /></td>
+                  <td>
+                    <span class="text-[13px] text-slate-600 tabular-nums">{{ record.date }}</span>
+                  </td>
+                  <td>
+                    <span class="text-[13px] text-slate-700">{{ record.description }}</span>
+                  </td>
+                  <td class="text-right">
+                    <span class="text-[13px] font-mono font-semibold text-slate-800 tabular-nums">
+                      {{ record.amount | currency: 'USD' : 'symbol' : '1.2-2' }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #footer>
+                <tr>
+                  <td colspan="3">
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400"
+                      >Total selected</span
+                    >
+                  </td>
+                  <td class="text-right">
+                    <span class="text-[13px] font-bold text-sky-600 tabular-nums font-mono">
+                      {{ internalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <!-- ── External Records ── -->
+          <div class="rounded-xl border border-slate-200/80 overflow-hidden">
+            <!-- Card header -->
+            <div
+              class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded-md bg-violet-100 flex items-center justify-center">
+                  <i class="pi pi-cloud text-violet-500" style="font-size: 9px"></i>
+                </div>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                  >External Records</span
+                >
+              </div>
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded-full bg-violet-50 border border-violet-200 text-violet-700 text-[10px] font-bold tabular-nums"
+              >
+                {{ externalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
+              </span>
+            </div>
+
+            <!-- Table toolbar -->
+            <div class="px-4 py-2.5 border-b border-slate-100 bg-white flex items-center gap-2">
+              <div class="relative flex-1">
+                <i
+                  class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                  style="font-size: 10px"
+                ></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="externalRecordsTable.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search external records..."
+                  class="!pl-7 !h-8 !text-[13px] !rounded-lg !border-slate-200 w-full"
+                />
+              </div>
+              <p-select
+                formControlName="externalTransactionType"
+                [options]="transactionTypes"
+                optionLabel="label"
+                optionValue="value"
+                appendTo="body"
+                class="w-36"
+              />
+            </div>
+
+            <!-- Table -->
+            <p-table
+              #externalRecordsTable
+              [value]="externalRecords()"
+              size="small"
+              [showGridlines]="true"
+              [scrollable]="true"
+              scrollHeight="400px"
+              [globalFilterFields]="['date', 'description', 'amount']"
+              [(selection)]="selectedExternalRecords"
+              [stripedRows]="true"
+              (onRowSelect)="onExternalRecordSelect()"
+              (onRowUnselect)="onExternalRecordSelect()"
+              (selectionChange)="onExternalRecordSelect()"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="w-10"><p-tableHeaderCheckbox /></th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th class="text-right">Amount</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-record>
+                <tr>
+                  <td><p-tableCheckbox [value]="record" /></td>
+                  <td>
+                    <span class="text-[13px] text-slate-600 tabular-nums">{{ record.date }}</span>
+                  </td>
+                  <td>
+                    <span class="text-[13px] text-slate-700">{{ record.description }}</span>
+                  </td>
+                  <td class="text-right">
+                    <span class="text-[13px] font-mono font-semibold text-slate-800 tabular-nums">
+                      {{ record.amount | currency: 'USD' : 'symbol' : '1.2-2' }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #footer>
+                <tr>
+                  <td colspan="3">
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400"
+                      >Total selected</span
+                    >
+                  </td>
+                  <td class="text-right">
+                    <span class="text-[13px] font-bold text-violet-600 tabular-nums font-mono">
+                      {{ externalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+        <!-- ── Remarks + actions ─────────────────────────── -->
+        <div class="px-6 pb-5 pt-0">
+          <div class="rounded-xl border border-slate-200/80 overflow-hidden">
+            <!-- Remarks header -->
+            <div
+              class="px-4 py-2.5 bg-[#f4f4f5] border-b border-slate-200/80 flex items-center gap-2"
+            >
+              <div class="w-5 h-5 rounded-md bg-slate-200 flex items-center justify-center">
+                <i class="pi pi-pencil text-slate-500" style="font-size: 9px"></i>
+              </div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500"
+                >Remarks</span
+              >
+            </div>
+
+            <div class="px-5 py-4 flex flex-col gap-4">
+              <textarea
+                pTextarea
+                formControlName="remarks"
+                rows="3"
+                class="w-full"
+                placeholder="Enter reconciliation remarks or notes..."
+                fluid
+              ></textarea>
+
+              <!-- Unbalanced warning -->
+              @if (
+                !isSaveEnabled() && (internalSelectedTotal() > 0 || externalSelectedTotal() > 0)
+              ) {
+                <div
+                  class="flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200"
+                >
+                  <div
+                    class="w-6 h-6 rounded-md bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5"
+                  >
+                    <i
+                      class="pi pi-exclamation-triangle text-amber-600"
+                      style="font-size: 10px"
+                    ></i>
+                  </div>
+                  <div>
+                    <p class="text-[12px] font-semibold text-amber-800 mb-0.5">
+                      Totals do not match
+                    </p>
+                    <p class="text-[12px] text-amber-600 leading-snug">
+                      Save is only enabled when internal and external selected totals match exactly.
+                      Internal:
+                      <span class="font-mono font-semibold">{{
+                        internalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2'
+                      }}</span>
+                      — External:
+                      <span class="font-mono font-semibold">{{
+                        externalSelectedTotal() | currency: 'USD' : 'symbol' : '1.2-2'
+                      }}</span>
+                    </p>
+                  </div>
+                </div>
+              }
+
+              <!-- Action row -->
+              <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                <p-button
+                  label="Cancel"
+                  icon="pi pi-times-circle"
+                  severity="danger"
+                  variant="outlined"
+                  size="small"
+                  (onClick)="onCancel()"
+                />
+                <p-button
+                  label="Save Reconciliation"
+                  icon="pi pi-check-circle"
+                  severity="contrast"
+                  size="small"
+                  [disabled]="!isSaveEnabled()"
+                  (onClick)="onSave()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <!-- Empty state -->
+        <div class="flex flex-col items-center justify-center py-20 gap-4">
+          <div
+            class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center"
+          >
+            <i class="pi pi-arrows-h text-slate-300" style="font-size: 22px"></i>
+          </div>
+          <div class="text-center">
+            <p class="text-[14px] font-semibold text-slate-600 mb-1">No records loaded</p>
+            <p class="text-[13px] text-slate-400">
+              Select an account and date, then click Search to load records
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </form>
 </div>

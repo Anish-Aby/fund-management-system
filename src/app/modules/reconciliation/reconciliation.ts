@@ -49,7 +49,6 @@ interface TransactionRecord {
     CardModule,
     MultiSelectModule,
     InputTextModule,
-    NoDataPlaceholder,
   ],
   templateUrl: './reconciliation.html',
   styleUrl: './reconciliation.scss',

@@ -3,6 +3,16 @@ import { Component, Input } from '@angular/core';
 
 export type CardColor = 'transparent' | 'indigo' | 'green' | 'amber' | 'rose' | 'sky' | 'purple';
 
+const COLOR_ICONS: Record<CardColor, string> = {
+  indigo: 'pi-inbox',
+  green: 'pi-check-circle',
+  amber: 'pi-clock',
+  rose: 'pi-times-circle',
+  sky: 'pi-send',
+  purple: 'pi-calendar',
+  transparent: 'pi-chart-bar',
+};
+
 @Component({
   selector: 'app-stat-card',
   imports: [CommonModule],
@@ -13,29 +23,209 @@ export class StatCard {
   @Input() title: string = '';
   @Input() value: string | number = '';
   @Input() subtitle: string = '';
-  @Input() iconClass: string = 'pi pi-window-maximize';
   @Input() color: CardColor = 'indigo';
-  @Input() colSpan: string = 'col-span-6 lg:col-span-4';
+  @Input() percentage = 0;
 
   getCardClasses(): string {
-    const baseClasses =
-      'border h-full rounded-2xl px-4 py-3 flex flex-col justify-between cursor-pointer hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-transform transition-shadow duration-300 ease-in-out';
+    return [
+      'relative bg-white rounded-xl border border-slate-200/80 px-3.5 py-3 flex flex-col h-full cursor-pointer overflow-hidden',
+      'shadow-[0_1px_3px_rgba(0,0,0,0.05)]',
+      'transition-all duration-200 ease-out',
+      'hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12)] hover:-translate-y-0.5',
+    ].join(' ');
+  }
 
-    const colorClasses = {
-      indigo:
-        'border-indigo-200 bg-indigo-100 hover:border-indigo-300 dark:border-indigo-600 dark:bg-indigo-800/60 dark:hover:border-indigo-500 dark:text-indigo-100',
-      green:
-        'border-green-200 bg-green-100 hover:border-green-300 dark:border-green-600 dark:bg-green-800/60 dark:hover:border-green-500 dark:text-green-100',
-      amber:
-        'border-amber-200 bg-amber-100 hover:border-amber-300 dark:border-amber-600 dark:bg-amber-800/60 dark:hover:border-amber-500 dark:text-amber-100',
-      rose: 'border-rose-200 bg-rose-100 hover:border-rose-300 dark:border-rose-600 dark:bg-rose-800/60 dark:hover:border-rose-500 dark:text-rose-100',
-      sky: 'border-sky-200 bg-sky-100 hover:border-sky-300 dark:border-sky-600 dark:bg-sky-800/60 dark:hover:border-sky-500 dark:text-sky-100',
-      purple:
-        'border-purple-200 bg-purple-100 hover:border-purple-300 dark:border-purple-600 dark:bg-purple-800/60 dark:hover:border-purple-500 dark:text-purple-100',
-      transparent:
-        'border-primary bg-transparent hover:border-transparent dark:border-transparent dark:bg-transparent dark:hover:border-transparent dark:text-transparent',
+  getGradientClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-gradient-to-br from-indigo-50 via-transparent to-transparent',
+      green: 'bg-gradient-to-br from-emerald-50 via-transparent to-transparent',
+      amber: 'bg-gradient-to-br from-amber-50 via-transparent to-transparent',
+      rose: 'bg-gradient-to-br from-rose-50 via-transparent to-transparent',
+      sky: 'bg-gradient-to-br from-sky-50 via-transparent to-transparent',
+      purple: 'bg-gradient-to-br from-violet-50 via-transparent to-transparent',
+      transparent: 'bg-gradient-to-br from-slate-50 via-transparent to-transparent',
     };
+    return map[this.color];
+  }
 
-    return `${this.colSpan} ${baseClasses} ${colorClasses[this.color]}`;
+  getAccentBarClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-500',
+      green: 'bg-emerald-500',
+      amber: 'bg-amber-500',
+      rose: 'bg-rose-500',
+      sky: 'bg-sky-500',
+      purple: 'bg-violet-500',
+      transparent: 'bg-slate-300',
+    };
+    return map[this.color];
+  }
+
+  getIconBgClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-100',
+      green: 'bg-emerald-100',
+      amber: 'bg-amber-100',
+      rose: 'bg-rose-100',
+      sky: 'bg-sky-100',
+      purple: 'bg-violet-100',
+      transparent: 'bg-slate-100',
+    };
+    return map[this.color];
+  }
+
+  getIconClass(): string {
+    const iconColors: Record<CardColor, string> = {
+      indigo: 'text-indigo-600',
+      green: 'text-emerald-600',
+      amber: 'text-amber-600',
+      rose: 'text-rose-600',
+      sky: 'text-sky-600',
+      purple: 'text-violet-600',
+      transparent: 'text-slate-500',
+    };
+    return `${COLOR_ICONS[this.color]} ${iconColors[this.color]}`;
+  }
+
+  getTrendBgClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-50',
+      green: 'bg-emerald-50',
+      amber: 'bg-amber-50',
+      rose: 'bg-rose-50',
+      sky: 'bg-sky-50',
+      purple: 'bg-violet-50',
+      transparent: 'bg-slate-50',
+    };
+    return map[this.color];
+  }
+
+  getTrendColor(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'text-indigo-500',
+      green: 'text-emerald-500',
+      amber: 'text-amber-500',
+      rose: 'text-rose-500',
+      sky: 'text-sky-500',
+      purple: 'text-violet-500',
+      transparent: 'text-slate-400',
+    };
+    return map[this.color];
+  }
+
+  getValueClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'text-indigo-600',
+      green: 'text-emerald-600',
+      amber: 'text-amber-600',
+      rose: 'text-rose-600',
+      sky: 'text-sky-600',
+      purple: 'text-violet-600',
+      transparent: 'text-slate-800',
+    };
+    return map[this.color];
+  }
+
+  getDividerClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'border-indigo-100',
+      green: 'border-emerald-100',
+      amber: 'border-amber-100',
+      rose: 'border-rose-100',
+      sky: 'border-sky-100',
+      purple: 'border-violet-100',
+      transparent: 'border-slate-100',
+    };
+    return map[this.color];
+  }
+
+  getDotClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-400',
+      green: 'bg-emerald-400',
+      amber: 'bg-amber-400',
+      rose: 'bg-rose-400',
+      sky: 'bg-sky-400',
+      purple: 'bg-violet-400',
+      transparent: 'bg-slate-300',
+    };
+    return map[this.color];
+  }
+
+  getAmountClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'text-indigo-600',
+      green: 'text-emerald-600',
+      amber: 'text-amber-600',
+      rose: 'text-rose-600',
+      sky: 'text-sky-600',
+      purple: 'text-violet-600',
+      transparent: 'text-slate-600',
+    };
+    return map[this.color];
+  }
+
+  // New methods needed for enriched design
+  getWatermarkClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: `pi-inbox text-indigo-600`,
+      green: `pi-check-circle text-emerald-600`,
+      amber: `pi-clock text-amber-600`,
+      rose: `pi-times-circle text-rose-600`,
+      sky: `pi-send text-sky-600`,
+      purple: `pi-calendar text-violet-600`,
+      transparent: `pi-chart-bar text-slate-600`,
+    };
+    return map[this.color];
+  }
+
+  getBarClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-500',
+      green: 'bg-emerald-500',
+      amber: 'bg-amber-500',
+      rose: 'bg-rose-500',
+      sky: 'bg-sky-500',
+      purple: 'bg-violet-500',
+      transparent: 'bg-slate-400',
+    };
+    return map[this.color];
+  }
+
+  getChangeBgClass(): string {
+    const map: Record<CardColor, string> = {
+      indigo: 'bg-indigo-50',
+      green: 'bg-emerald-50',
+      amber: 'bg-amber-50',
+      rose: 'bg-rose-50',
+      sky: 'bg-sky-50',
+      purple: 'bg-violet-50',
+      transparent: 'bg-slate-50',
+    };
+    return map[this.color];
+  }
+
+  getAccentHex(): string {
+    const map: Record<CardColor, string> = {
+      indigo: '#6366f1',
+      green: '#10b981',
+      amber: '#f59e0b',
+      rose: '#f43f5e',
+      sky: '#0ea5e9',
+      purple: '#8b5cf6',
+      transparent: '#94a3b8',
+    };
+    return map[this.color];
+  }
+
+  getBarHeights(): number[] {
+    const v = +this.value || 0;
+    return [
+      8 + (v % 3) * 4, // 8–16px
+      10 + (v % 5) * 3, // 10–22px
+      6 + (v % 4) * 5, // 6–21px
+      12 + (v % 2) * 6, // 12–18px
+      8 + (v % 7) * 2, // 8–20px
+    ];
   }
 }
