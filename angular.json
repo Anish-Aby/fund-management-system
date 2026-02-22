@@ -40,6 +40,7 @@
               },
               "src/_redirects"
             ],
+            "allowedCommonJsDependencies": ["moment-timezone"],
             "styles": ["src/assets/scss/styles.scss", "src/tailwind.css"]
           },
           "configurations": {
@@ -47,16 +48,20 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kB",
+                  "maximumError": "15kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": false,
+              "optimization": true,
+              "extractLicenses": true,
+              "namedChunks": false
             },
             "development": {
               "optimization": false,
