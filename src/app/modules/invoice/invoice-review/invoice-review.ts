@@ -1,4 +1,4 @@
-import { Component, signal, computed, OnInit, ViewChild } from '@angular/core';
+import { Component, signal, computed, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
 import { SelectModule } from 'primeng/select';
@@ -14,7 +14,6 @@ import { MessageModule } from 'primeng/message';
 import { SplitterModule } from 'primeng/splitter';
 import { TooltipModule } from 'primeng/tooltip';
 
-// import { InvoiceData, FieldGroup } from '../core/interfaces/invoice.interface';
 import { INVOICE_FIELD_CONFIG } from '../../core/config/invoice-fields.config';
 import InvoiceDataMock from '../../core/mocks/invoice-review-mock.json';
 import FeeTypeDataMock from '../../core/mocks/fee-types-mock.json';
@@ -26,15 +25,12 @@ import { UtilityService } from '../../shared/services/utility.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from 'primeng/dynamicdialog';
-// import { DialogWindowService } from '../../shared/services/dialog-window';
-import { InvoiceSplit } from '../invoice-split/invoice-split';
-import { DialogHeader } from '../../shared/components/dialog-header/dialog-header';
-import { EmailDialog } from '../../shared/components/email-dialog/email-dialog';
 import TaxType from '../../core/mocks/tax-type-mock.json';
 import { DialogWindowService } from '../../core/services/dialog-window-service';
 import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
 import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog';
 import { ConfirmDialogService } from '../../core/services/confirm-dialog.service';
+import { InvoiceTimelineComponent } from '../../invoice-timeline/invoice-timeline';
 
 @Component({
   selector: 'app-invoice-review',
@@ -56,6 +52,7 @@ import { ConfirmDialogService } from '../../core/services/confirm-dialog.service
     MessageModule,
     SplitterModule,
     TooltipModule,
+    InvoiceTimelineComponent,
   ],
   templateUrl: './invoice-review.html',
   styleUrl: './invoice-review.scss',
@@ -74,6 +71,15 @@ export class InvoiceReview implements OnInit {
   fundOptions = signal<any>(FundDataMock);
   paidByOptions = signal<any>(PaidByDataMock);
   taxTypeOptions = signal<any>(TaxType);
+  rightTab = signal<'pdf' | 'activity'>('pdf');
+  viewMode = signal<'tabs' | 'queue'>('tabs');
+  queueIndex = signal(0);
+
+  queueInvoice = computed(() => this.invoiceData()[this.queueIndex()]);
+  queueTotal = computed(() => this.invoiceData().length);
+  queuePercent = computed(() => Math.round((this.queueIndex() / this.invoiceData().length) * 100));
+  isFirstInQueue = computed(() => this.queueIndex() === 0);
+  isLastInQueue = computed(() => this.queueIndex() === this.invoiceData().length - 1);
 
   constructor(
     private dialogService: DialogService,
@@ -181,5 +187,114 @@ export class InvoiceReview implements OnInit {
       confirmLabel: 'Confirm Approval',
       data: { subMessage: 'This invoice will be approved and routed for payment processing.' },
     });
+  }
+
+  enterQueue(): void {
+    this.queueIndex.set(0);
+    this.viewMode.set('queue');
+    this.editMode.set(false);
+  }
+
+  /** Exit queue mode — syncs tab view to wherever you left off */
+  exitQueue(): void {
+    this.viewMode.set('tabs');
+    const current = this.queueInvoice();
+    if (current) {
+      this.selectedTabValue.set(current.basicInformation.invoiceNo);
+    }
+  }
+
+  /** Move to previous invoice in queue */
+  prevInvoice(): void {
+    if (this.isFirstInQueue()) return;
+    this.queueIndex.update((i) => i - 1);
+    this.editMode.set(false);
+  }
+
+  /** Move to next invoice in queue */
+  nextInvoice(): void {
+    if (this.isLastInQueue()) return;
+    this.queueIndex.update((i) => i + 1);
+    this.editMode.set(false);
+  }
+
+  /** Jump directly to a specific invoice by index (clicking a segment) */
+  jumpToInvoice(index: number): void {
+    this.queueIndex.set(index);
+    this.editMode.set(false);
+  }
+
+  /**
+   * Returns the CSS class(es) for a progress bar segment.
+   * Used in the queue command bar's track.
+   */
+  getSegmentClass(index: number): string {
+    if (index === this.queueIndex()) {
+      return 'bg-blue-400 shadow-[0_0_10px_rgba(96,165,250,0.7)] scale-y-[1.5]';
+    }
+    if (index < this.queueIndex()) {
+      return 'bg-white/[0.18]';
+    }
+    const status = (this.invoiceData()[index]?.invoiceStatus ?? '').toLowerCase();
+    if (status === 'approved') return 'bg-emerald-500/50';
+    if (status === 'rejected') return 'bg-rose-500/45';
+    return 'bg-amber-400/45';
+  }
+
+  /**
+   * Returns the dot color class for the status indicator in the command bar.
+   */
+  getStatusDotClass(status: string = ''): string {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return 'bg-emerald-400';
+      case 'rejected':
+        return 'bg-rose-400';
+      case 'paid':
+        return 'bg-sky-400';
+      default:
+        return 'bg-amber-400';
+    }
+  }
+
+  /**
+   * Returns the text color class for the status label in the command bar.
+   */
+  getStatusTextClass(status: string = ''): string {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return 'text-emerald-400';
+      case 'rejected':
+        return 'text-rose-400';
+      case 'paid':
+        return 'text-sky-400';
+      default:
+        return 'text-amber-400';
+    }
+  }
+
+  // ── 4. Add keyboard listener ──────────────────────────────────────
+  // (place inside the class body — this is a decorator-based listener)
+
+  @HostListener('document:keydown', ['$event'])
+  onQueueKeydown(event: KeyboardEvent): void {
+    // Only active in queue mode
+    if (this.viewMode() !== 'queue') return;
+
+    // Don't hijack when user is typing in an input
+    const tag = (event.target as HTMLElement)?.tagName;
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.nextInvoice();
+    }
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.prevInvoice();
+    }
+    if (event.key === 'Escape') {
+      this.exitQueue();
+    }
   }
 }

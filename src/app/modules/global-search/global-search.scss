@@ -1,0 +1,739 @@
+// ══════════════════════════════════════════════════════
+// GLOBAL SEARCH — Butter-smooth command palette
+// Key perf decisions:
+//   - No backdrop-filter blur (biggest lag source removed)
+//   - will-change: transform on modal (promotes to own GPU layer)
+//   - contain: layout style on result items (limits repaint scope)
+//   - CSS transitions only on cheap properties (opacity, transform)
+// ══════════════════════════════════════════════════════
+
+// ── Backdrop ──────────────────────────────────────────
+.search-backdrop {
+  position: fixed;
+  inset: 0;
+  // Solid semi-transparent instead of blur — blur forces full repaint every frame
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  // opacity-only animation — cheapest possible, runs on compositor thread
+  animation: backdropIn 0.12s ease both;
+  will-change: opacity;
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ── Modal shell ────────────────────────────────────────
+.search-modal {
+  width: 100%;
+  max-width: 620px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 8px 32px -8px rgba(0, 0, 0, 0.2),
+    0 24px 64px -16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 70vh;
+  // Pre-promote to compositor layer — browser knows this will animate
+  will-change: transform, opacity;
+  // Limit what needs to be repainted inside the modal
+  contain: layout style;
+  animation: modalIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// ── Input row ──────────────────────────────────────────
+.search-input-row {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  flex-shrink: 0;
+  height: 56px;
+  // Contain so typing in input doesn't trigger layout in results
+  contain: layout style;
+}
+
+.search-input-icon {
+  flex-shrink: 0;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+
+  i {
+    font-size: 15px;
+    color: #94a3b8;
+  }
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: #0f172a;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+
+  &::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+  }
+}
+
+.search-clear {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  // Only transition cheap properties
+  transition:
+    background 0.1s,
+    color 0.1s;
+  margin-right: 8px;
+
+  i {
+    font-size: 9px;
+  }
+
+  &:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+}
+
+.search-kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  font-family: ui-monospace, monospace;
+  flex-shrink: 0;
+}
+
+// ── Results container ──────────────────────────────────
+.search-results {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0;
+  // Promote scroll container to its own layer — prevents scroll jank
+  will-change: scroll-position;
+  overscroll-behavior: contain;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 999px;
+  }
+}
+
+// ── Section group ──────────────────────────────────────
+.search-section {
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+
+.search-section__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 4px;
+}
+
+.search-section__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.search-section__label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #94a3b8;
+}
+
+.search-section__clear {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition:
+    background 0.1s,
+    color 0.1s;
+
+  &:hover {
+    background: #f1f5f9;
+    color: #475569;
+  }
+}
+
+// ── Result item ────────────────────────────────────────
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  // contain: strictly limits repaint to this element's box
+  contain: layout style;
+  // Only transition background — transform/opacity on the arrow handled separately
+  transition: background 0.08s ease;
+
+  &:hover,
+  &--active {
+    background: #f8fafc;
+
+    .result-item__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &--active {
+    background: #f1f5f9;
+  }
+}
+
+// ── Result icon badge ──────────────────────────────────
+.result-item__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+
+  i {
+    font-size: 13px;
+  }
+
+  &--invoices {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    i {
+      color: #0284c7;
+    }
+  }
+  &--reports {
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+    i {
+      color: #7c3aed;
+    }
+  }
+  &--journal {
+    background: #fffbeb;
+    border-color: #fde68a;
+    i {
+      color: #d97706;
+    }
+  }
+  &--forex {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    i {
+      color: #059669;
+    }
+  }
+  &--entities {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    i {
+      color: #4338ca;
+    }
+  }
+  &--settings {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    i {
+      color: #64748b;
+    }
+  }
+  &--actions {
+    background: #fff1f2;
+    border-color: #fecdd3;
+    i {
+      color: #e11d48;
+    }
+  }
+  &--recent {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    i {
+      color: #94a3b8;
+    }
+  }
+}
+
+// ── Result text ────────────────────────────────────────
+.result-item__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-item__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-item__subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ── Result right ──────────────────────────────────────
+.result-item__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.result-item__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: 1px solid transparent;
+
+  &--invoices {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0284c7;
+  }
+  &--reports {
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+    color: #7c3aed;
+  }
+  &--journal {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #d97706;
+  }
+  &--forex {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #059669;
+  }
+  &--entities {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
+  }
+  &--settings {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #64748b;
+  }
+  &--actions {
+    background: #fff1f2;
+    border-color: #fecdd3;
+    color: #e11d48;
+  }
+  &--recent {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+  }
+}
+
+.result-item__arrow {
+  font-size: 10px;
+  color: #94a3b8;
+  opacity: 0;
+  transform: translateX(-4px);
+  // transform + opacity only — both run on compositor, zero main thread cost
+  transition:
+    opacity 0.1s,
+    transform 0.1s;
+  will-change: transform, opacity;
+}
+
+// ── Empty state ────────────────────────────────────────
+.search-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 8px;
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+
+    i {
+      font-size: 18px;
+      color: #cbd5e1;
+    }
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+    strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+}
+
+// ── Footer ────────────────────────────────────────────
+.search-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fafafa;
+  flex-shrink: 0;
+  contain: layout style;
+
+  &__hint {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+
+  &__shortcut {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 5px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    font-size: 10px;
+    font-weight: 600;
+    color: #64748b;
+    font-family: ui-monospace, monospace;
+    line-height: 1;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// DARK MODE
+// ══════════════════════════════════════════════════════
+
+:host-context(.tailwind-dark) {
+  .search-backdrop {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .search-modal {
+    background: #161616;
+    border-color: rgba(255, 255, 255, 0.09);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 8px 32px -8px rgba(0, 0, 0, 0.7),
+      0 24px 64px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  .search-input-row {
+    border-bottom-color: rgba(255, 255, 255, 0.07);
+  }
+
+  .search-input-icon i {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .search-input {
+    color: rgba(255, 255, 255, 0.9);
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .search-clear {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.4);
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .search-kbd {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.09);
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .search-results {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .search-section__label {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .search-section__clear {
+    color: rgba(255, 255, 255, 0.2);
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .result-item {
+    &:hover,
+    &--active {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    &--active {
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  .result-item__icon {
+    &--invoices {
+      background: rgba(2, 132, 199, 0.12);
+      border-color: rgba(2, 132, 199, 0.2);
+      i {
+        color: #38bdf8;
+      }
+    }
+    &--reports {
+      background: rgba(124, 58, 237, 0.12);
+      border-color: rgba(124, 58, 237, 0.2);
+      i {
+        color: #a78bfa;
+      }
+    }
+    &--journal {
+      background: rgba(217, 119, 6, 0.12);
+      border-color: rgba(217, 119, 6, 0.2);
+      i {
+        color: #fbbf24;
+      }
+    }
+    &--forex {
+      background: rgba(5, 150, 105, 0.12);
+      border-color: rgba(5, 150, 105, 0.2);
+      i {
+        color: #34d399;
+      }
+    }
+    &--entities {
+      background: rgba(67, 56, 202, 0.12);
+      border-color: rgba(67, 56, 202, 0.2);
+      i {
+        color: #818cf8;
+      }
+    }
+    &--settings {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.09);
+      i {
+        color: rgba(255, 255, 255, 0.4);
+      }
+    }
+    &--actions {
+      background: rgba(225, 29, 72, 0.12);
+      border-color: rgba(225, 29, 72, 0.2);
+      i {
+        color: #f87171;
+      }
+    }
+    &--recent {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.09);
+      i {
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  .result-item__title {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .result-item__subtitle {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .result-item__arrow {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .result-item__badge {
+    &--invoices {
+      background: rgba(2, 132, 199, 0.1);
+      border-color: rgba(2, 132, 199, 0.2);
+      color: #38bdf8;
+    }
+    &--reports {
+      background: rgba(124, 58, 237, 0.1);
+      border-color: rgba(124, 58, 237, 0.2);
+      color: #a78bfa;
+    }
+    &--journal {
+      background: rgba(217, 119, 6, 0.1);
+      border-color: rgba(217, 119, 6, 0.2);
+      color: #fbbf24;
+    }
+    &--forex {
+      background: rgba(5, 150, 105, 0.1);
+      border-color: rgba(5, 150, 105, 0.2);
+      color: #34d399;
+    }
+    &--entities {
+      background: rgba(67, 56, 202, 0.1);
+      border-color: rgba(67, 56, 202, 0.2);
+      color: #818cf8;
+    }
+    &--settings {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.09);
+      color: rgba(255, 255, 255, 0.35);
+    }
+    &--actions {
+      background: rgba(225, 29, 72, 0.1);
+      border-color: rgba(225, 29, 72, 0.2);
+      color: #f87171;
+    }
+    &--recent {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.09);
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .search-empty {
+    &__icon {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.08);
+      i {
+        color: rgba(255, 255, 255, 0.15);
+      }
+    }
+    &__text {
+      color: rgba(255, 255, 255, 0.4);
+      strong {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+    &__hint {
+      color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .search-footer {
+    background: #111111;
+    border-top-color: rgba(255, 255, 255, 0.07);
+    &__hint {
+      color: rgba(255, 255, 255, 0.2);
+    }
+    kbd {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}

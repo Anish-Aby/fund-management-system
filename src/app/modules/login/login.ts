@@ -242,23 +242,23 @@ export class Login implements AfterViewInit, OnDestroy {
   // ── Auth ─────────────────────────────────────────────────────
 
   onLogin(): void {
-    this.loginLoading.set(true);
-    setTimeout(() => {
-      this.loginLoading.set(false);
-      this.authService.setTokens('dummyAuth', 'dummyRefresh');
-      this.currentPage.set(1);
-      this.startResendTimer();
-    }, 800);
-    // this.apiService
-    //   .post('api/v1/Auth/login', this.getLoginPayload())
-    //   .pipe(takeUntilDestroyed(this.destroyRef))
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       this.userId.set(res.data.userId);
-    //       this.currentPage.set(1);
-    //       this.startResendTimer();
-    //     },
-    //   });
+    // this.loginLoading.set(true);
+    // setTimeout(() => {
+    //   this.loginLoading.set(false);
+    //   this.authService.setTokens('dummyAuth', 'dummyRefresh');
+    //   this.currentPage.set(1);
+    //   this.startResendTimer();
+    // }, 800);
+    this.apiService
+      .post('api/v1/Auth/login', this.getLoginPayload())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res: any) => {
+          this.userId.set(res.data.userId);
+          this.currentPage.set(1);
+          this.startResendTimer();
+        },
+      });
   }
 
   onResendCode(): void {
@@ -301,31 +301,31 @@ export class Login implements AfterViewInit, OnDestroy {
   }
 
   onVerifyOtp(): void {
-    this.otpLoading.set(true);
-    setTimeout(() => {
-      this.otpLoading.set(false);
-      this.toast.showSuccess('Logged in successfully!');
-      this.router.navigate(['/app/dashboard']);
-    }, 1000);
-    // const userId = this.userId();
-    // if (!userId) {
-    //   this.toast.showError('Invalid user or email');
-    //   return;
-    // }
-    // this.apiService
-    //   .post('api/v1/Auth/verify-otp', {
-    //     userId,
-    //     otp: this.otpValue(),
-    //     currentState: 'CONFIRM_LOGIN_VERIFICATION',
-    //   })
-    //   .pipe(takeUntilDestroyed(this.destroyRef))
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       this.authService.setTokens(res.data.authToken, res.data.refreshToken);
-    //       this.toast.showSuccess('Logged in successfully!');
-    //       this.router.navigate(['/app/dashboard']);
-    //     },
-    //   });
+    // this.otpLoading.set(true);
+    // setTimeout(() => {
+    //   this.otpLoading.set(false);
+    //   this.toast.showSuccess('Logged in successfully!');
+    //   this.router.navigate(['/app/dashboard']);
+    // }, 1000);
+    const userId = this.userId();
+    if (!userId) {
+      this.toast.showError('Invalid user or email');
+      return;
+    }
+    this.apiService
+      .post('api/v1/Auth/verify-otp', {
+        userId,
+        otp: this.otpValue(),
+        currentState: 'CONFIRM_LOGIN_VERIFICATION',
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res: any) => {
+          this.authService.setTokens(res.data.authToken, res.data.refreshToken);
+          this.toast.showSuccess('Logged in successfully!');
+          this.router.navigate(['/app/dashboard']);
+        },
+      });
   }
 
   getResendButtonLabel(): string {

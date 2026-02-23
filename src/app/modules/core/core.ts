@@ -8,10 +8,20 @@ import { SelectModule } from 'primeng/select';
 import EntityMockData from './mocks/entity-mock.json';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog';
+import { GlobalSearchComponent } from '../global-search/global-search';
 
 @Component({
   selector: 'app-core',
-  imports: [RouterOutlet, Header, TooltipModule, ButtonModule, Taskbar, SelectModule, CommonModule],
+  imports: [
+    RouterOutlet,
+    Header,
+    TooltipModule,
+    ButtonModule,
+    Taskbar,
+    SelectModule,
+    CommonModule,
+    GlobalSearchComponent,
+  ],
   templateUrl: './core.html',
   styleUrl: './core.scss',
 })

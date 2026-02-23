@@ -83,8 +83,28 @@
         <i class="pi text-[13px]" [ngClass]="themeService.isDarkMode() ? 'pi-sun' : 'pi-moon'"></i>
       </button> -->
 
+      <!-- Drop this into the header's end template, before the divider -->
+      <button
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-slate-300 transition-colors mr-2"
+        (click)="searchService.open()"
+        title="Search (⌘K)"
+      >
+        <i class="pi pi-search text-slate-400" style="font-size: 12px"></i>
+        <span class="text-[12px] text-slate-400 font-medium hidden md:block">Search...</span>
+        <div class="hidden md:flex items-center gap-1">
+          <kbd
+            class="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-400"
+            >⌘</kbd
+          >
+          <kbd
+            class="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-400"
+            >K</kbd
+          >
+        </div>
+      </button>
+
       <!-- Divider -->
-      <!-- <div class="w-px h-5 bg-slate-200 mx-2"></div> -->
+      <div class="w-px h-5 bg-slate-200 mx-2"></div>
 
       <!-- Notifications -->
       <div class="relative">

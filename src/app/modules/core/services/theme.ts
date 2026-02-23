@@ -9,7 +9,7 @@ export class ThemeService {
 
   constructor() {
     // Load saved theme preference
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = sessionStorage.getItem('theme');
     this.isDarkMode.set(savedTheme === 'dark');
 
     // Apply theme on initialization
@@ -23,7 +23,7 @@ export class ThemeService {
 
   toggleTheme() {
     this.isDarkMode.set(!this.isDarkMode());
-    localStorage.setItem('theme', this.isDarkMode() ? 'dark' : 'light');
+    sessionStorage.setItem('theme', this.isDarkMode() ? 'dark' : 'light');
   }
 
   private applyTheme() {

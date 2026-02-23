@@ -1,0 +1,109 @@
+@if (searchService.isOpen()) {
+  <div class="search-backdrop" (click)="onBackdropClick($event)">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Global search">
+      <!-- ── Input row ────────────────────────────────── -->
+      <div class="search-input-row">
+        <div class="search-input-icon">
+          <i class="pi pi-search"></i>
+        </div>
+        <input
+          #searchInput
+          class="search-input"
+          type="text"
+          placeholder="Search pages, reports, actions..."
+          autocomplete="off"
+          spellcheck="false"
+          [value]="inputValue"
+          (input)="onInput($any($event.target).value)"
+        />
+        @if (inputValue.length > 0) {
+          <button class="search-clear" (click)="onInput('')" title="Clear">
+            <i class="pi pi-times"></i>
+          </button>
+        }
+        <kbd class="search-kbd">esc</kbd>
+      </div>
+
+      <!-- ── Results ─────────────────────────────────── -->
+      <div class="search-results" #resultsList>
+        @if (flatResults().length === 0 && !isRecentMode()) {
+          <!-- No results -->
+          <div class="search-empty">
+            <div class="search-empty__icon">
+              <i class="pi pi-search"></i>
+            </div>
+            <div class="search-empty__text">
+              No results for <strong>"{{ inputValue }}"</strong>
+            </div>
+            <div class="search-empty__hint">Try a different keyword</div>
+          </div>
+        } @else if (isRecentMode() && flatResults().length === 0) {
+          <!-- No recents yet -->
+          <div class="search-empty">
+            <div class="search-empty__icon">
+              <i class="pi pi-clock"></i>
+            </div>
+            <div class="search-empty__text">No recent searches</div>
+            <div class="search-empty__hint">Start typing to find pages and actions</div>
+          </div>
+        } @else {
+          @for (group of groups(); track group.section) {
+            <div class="search-section">
+              <!-- Section header -->
+              <div class="search-section__header">
+                <span
+                  class="search-section__dot"
+                  [style.background]="getSectionMeta(group.section).dot"
+                ></span>
+                <span class="search-section__label">
+                  {{ getSectionMeta(group.section).label }}
+                </span>
+                @if (group.section === 'recent') {
+                  <button class="search-section__clear" (click)="clearRecents($event)">
+                    Clear
+                  </button>
+                }
+              </div>
+
+              @for (item of group.items; track item.id) {
+                <button
+                  class="result-item"
+                  [class.result-item--active]="activeIndex() === item.globalIndex"
+                  (mouseenter)="activeIndex.set(item.globalIndex)"
+                  (click)="navigate(item)"
+                >
+                  <div class="result-item__icon result-item__icon--{{ item.section }}">
+                    <i class="pi {{ item.icon }}"></i>
+                  </div>
+
+                  <div class="result-item__body">
+                    <span class="result-item__title">{{ item.title }}</span>
+                    @if (item.subtitle) {
+                      <span class="result-item__subtitle">{{ item.subtitle }}</span>
+                    }
+                  </div>
+
+                  <div class="result-item__right">
+                    <span class="result-item__badge result-item__badge--{{ item.section }}">
+                      {{ item.badge }}
+                    </span>
+                    <i class="pi pi-arrow-right result-item__arrow"></i>
+                  </div>
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <!-- ── Footer ──────────────────────────────────── -->
+      <div class="search-footer">
+        <div class="search-footer__hint"><kbd>↑</kbd><kbd>↓</kbd> navigate</div>
+        <div class="search-footer__hint"><kbd>↵</kbd> open</div>
+        <div class="search-footer__hint"><kbd>esc</kbd> close</div>
+        <div class="search-footer__spacer"></div>
+        <div class="search-footer__shortcut"><kbd>⌘</kbd><kbd>K</kbd></div>
+      </div>
+    </div>
+  </div>
+}

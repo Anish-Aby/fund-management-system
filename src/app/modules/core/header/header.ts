@@ -10,10 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ThemeService } from '../services/theme';
 import { DialogService } from 'primeng/dynamicdialog';
-import { DialogWindowZ } from '../../shared/services/dialog-window';
 import { AuthService } from '../services/auth-service';
 import { DialogWindowService } from '../services/dialog-window-service';
 import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
+import { SearchService } from '../../global-search/service/search-service';
 
 @Component({
   selector: 'app-header',
@@ -37,10 +37,11 @@ export class Header {
   notificationCount: number = 3;
 
   constructor(
-    public themeService: ThemeService,
     private router: Router,
     private dialogWindowService: DialogWindowService,
     private authService: AuthService,
+    public themeService: ThemeService,
+    public searchService: SearchService,
   ) {}
 
   ngOnInit() {
