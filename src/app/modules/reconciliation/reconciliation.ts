@@ -99,14 +99,12 @@ export class Reconciliation {
   }
 
   onInternalRecordSelect() {
-    console.log(this.selectedInternalRecords());
     this.internalSelectedTotal.set(
       this.selectedInternalRecords().reduce((sum, record) => sum + record.amount, 0),
     );
   }
 
   onExternalRecordSelect() {
-    console.log(this.selectedExternalRecords());
     this.externalSelectedTotal.set(
       this.selectedExternalRecords().reduce((sum, record) => sum + record.amount, 0),
     );
@@ -127,12 +125,6 @@ export class Reconciliation {
       const formData = this.reconciliationForm.value;
       const selectedInternal = this.internalRecords().filter((r) => r.selected);
       const selectedExternal = this.externalRecords().filter((r) => r.selected);
-      console.log('Reconciliation saved:', {
-        ...formData,
-        internalRecords: selectedInternal,
-        externalRecords: selectedExternal,
-        totalAmount: this.internalSelectedTotal(),
-      });
     }
   }
 

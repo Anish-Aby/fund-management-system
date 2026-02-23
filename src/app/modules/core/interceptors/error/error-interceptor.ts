@@ -20,7 +20,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         case HttpStatusCode.Unauthorized:
           const message = error.error.message;
           errorMessage = message ?? ERROR_MESSAGES.UNAUTHORIZED;
-          console.log(error);
           // authService.logout();
           break;
 

@@ -1,18 +1,12 @@
-<div [class]="getCardClasses()">
-  <!-- Gradient wash -->
+<!-- <div [class]="getCardClasses()">
   <div
     class="absolute inset-0 rounded-xl opacity-30 pointer-events-none"
     [class]="getGradientClass()"
   ></div>
-
-  <!-- Watermark icon -->
   <div class="absolute -bottom-1 -right-2 opacity-[0.06] pointer-events-none">
-    <i class="pi text-[100px]" [class]="getWatermarkClass()"></i>
+    <i class="pi text-[300px]" [class]="getWatermarkClass()"></i>
   </div>
-
-  <!-- Content -->
   <div class="relative flex flex-col gap-2">
-    <!-- Row 1: icon + title + live badge -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div
@@ -30,214 +24,202 @@
         <span class="text-[9px] font-semibold leading-none" [class]="getTrendColor()">Live</span>
       </div>
     </div>
-
-    <!-- Row 2: big number + mini bars — same baseline -->
     <div class="flex items-end justify-between">
       <div class="text-[24px] font-bold tracking-tight leading-none" [class]="getValueClass()">
         {{ value }}
       </div>
-      <!-- <div class="flex items-end gap-[3px] mb-[1px]">
-        <div
-          class="w-[3px] rounded-sm opacity-30"
-          [class]="getBarClass()"
-          style="height: 8px"
-        ></div>
-        <div
-          class="w-[3px] rounded-sm opacity-45"
-          [class]="getBarClass()"
-          style="height: 12px"
-        ></div>
-        <div
-          class="w-[3px] rounded-sm opacity-60"
-          [class]="getBarClass()"
-          style="height: 10px"
-        ></div>
-        <div
-          class="w-[3px] rounded-sm opacity-75"
-          [class]="getBarClass()"
-          style="height: 16px"
-        ></div>
-        <div
-          class="w-[3px] rounded-sm opacity-90"
-          [class]="getBarClass()"
-          style="height: 20px"
-        ></div>
-      </div> -->
-      <!-- 5×3 dot grid with right-side fade and active glow -->
-      <!-- <div class="flex flex-col gap-[4px] mb-[1px] opacity-80">
-        @for (
-          row of [
-            [1, 1, 0, 1, 1],
-            [1, 1, 1, 0, 1],
-            [0, 1, 1, 1, 1],
-          ];
-          track $index
-        ) {
-          <div class="flex items-center gap-[4px]">
-            @for (active of row; track $index) {
-              <div
-                class="w-[5px] h-[5px] rounded-full transition-all"
-                [ngClass]="active ? getBarClass() : 'bg-slate-200'"
-                [style.opacity]="active ? 0.4 + $index * 0.15 : 0.2"
-              ></div>
-            }
-          </div>
-        }
-      </div> -->
-      <!-- <div class="flex flex-col gap-1.5 mb-[1px] w-16">
-        <div class="w-full h-[5px] bg-slate-100 rounded-full overflow-hidden">
-          <div
-            class="h-full rounded-full transition-all duration-500"
-            [class]="getBarClass()"
-            style="width: 72%"
-          ></div>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-[9px] text-slate-400 tabular-nums">72 / 100</span>
-        </div>
-      </div> -->
-      <!-- <div class="flex flex-col gap-1 mb-[1px] w-16">
-        <div class="flex rounded-full overflow-hidden h-[5px] gap-[2px]">
-          <div class="h-full rounded-full bg-emerald-400" style="width: 48%"></div>
-          <div class="h-full rounded-full bg-amber-400" style="width: 30%"></div>
-          <div class="h-full rounded-full bg-rose-400" style="width: 14%"></div>
-          <div class="h-full rounded-full bg-slate-200" style="width: 8%"></div>
-        </div>
-        <div class="flex items-center gap-1">
-          <span class="text-[9px] text-slate-400 font-medium tabular-nums">48% of total</span>
-        </div>
-      </div> -->
-      <!-- <div class="relative w-10 h-10 flex-shrink-0 mb-[1px]">
-        <svg width="40" height="40" viewBox="0 0 40 40" class="-rotate-90">
-          <circle cx="20" cy="20" r="15" fill="none" stroke="#f1f5f9" stroke-width="3.5" />
-          <circle
-            cx="20"
-            cy="20"
-            r="15"
-            fill="none"
-            [attr.stroke]="getAccentHex()"
-            stroke-width="3.5"
-            stroke-linecap="round"
-            stroke-dasharray="94.2"
-            [attr.stroke-dashoffset]="94.2 - (94.2 * percentage) / 100"
-          />
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <span style="font-size: 9px; font-weight: 700; line-height: 1" [class]="getTrendColor()"
-            >{{ percentage }}%</span
-          >
-        </div>
-      </div> -->
-      <!-- <div class="flex flex-col items-end gap-1 mb-[1px]">
-        <span class="text-[9px] text-slate-400 font-medium leading-none">Total value</span>
-        <span
-          class="text-[11px] font-bold tabular-nums font-mono leading-none"
-          [class]="getAmountClass()"
-          >{{ totalValue }}</span
-        >
-      </div>
-      <div class="flex flex-col gap-[3px] mb-[1px]">
-        <div class="flex items-center gap-[3px]">
-          @for (i of [1, 2, 3, 4, 5, 6, 7]; track i) {
-            <div
-              class="h-[5px] rounded-full transition-all"
-              [class]="getBarClass()"
-              [style.width.px]="i <= activeBuckets ? 6 : 4"
-              [style.opacity]="i <= activeBuckets ? 0.3 + i * 0.1 : 0.12"
-            ></div>
-          }
-        </div>
-        <span class="text-[9px] text-slate-400 font-medium">
-          {{ overdueLabel }}
-        </span>
-      </div> -->
-
-      <!-- <div class="relative w-10 h-10 flex-shrink-0 mb-[1px]">
-        <svg width="40" height="40" viewBox="0 0 40 40" class="-rotate-90">
-          <circle cx="20" cy="20" r="15" fill="none" stroke="#f1f5f9" stroke-width="3.5" />
-          <circle
-            cx="20"
-            cy="20"
-            r="15"
-            fill="none"
-            [attr.stroke]="getAccentHex()"
-            stroke-width="3.5"
-            stroke-linecap="round"
-            stroke-dasharray="94.2"
-            [attr.stroke-dashoffset]="94.2 - (94.2 * percentage) / 100"
-          />
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <span style="font-size: 9px; font-weight: 700; line-height: 1" [class]="getTrendColor()"
-            >{{ percentage }}%</span
-          >
-        </div>
-      </div> -->
-      <!-- <div class="flex items-end gap-[3px] mb-[1px]">
-        @for (h of getBarHeights(); track $index) {
-          <div
-            class="w-[4px] rounded-sm"
-            [class]="getBarClass()"
-            [style.height.px]="h"
-            [style.opacity]="0.4 + $index * 0.2"
-          ></div>
-        }
-      </div> -->
-      <!-- Arc ring showing % of total invoices -->
-      <div class="relative flex-shrink-0 mb-[1px]" style="width: 36px; height: 36px">
-        <svg width="36" height="36" viewBox="0 0 36 36" class="-rotate-90">
-          <!-- Track -->
-          <circle cx="18" cy="18" r="14" fill="none" stroke="#f1f5f9" stroke-width="3" />
-          <!-- Progress arc -->
-          <circle
-            cx="18"
-            cy="18"
-            r="14"
-            fill="none"
-            [attr.stroke]="getAccentHex()"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-dasharray="87.96"
-            [attr.stroke-dashoffset]="87.96 - (87.96 * percentage) / 100"
-            style="transition: stroke-dashoffset 0.6s ease"
-          />
-        </svg>
-        <!-- Center % label -->
-        <div class="absolute inset-0 flex items-center justify-center rotate-0">
-          <span
-            style="font-size: 8px; font-weight: 800; line-height: 1; letter-spacing: -0.02em"
-            [class]="getTrendColor()"
-            >{{ percentage }}%</span
-          >
-        </div>
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [class]="getIconBgClass()"
+      >
+        <i class="pi text-[16px]" [class]="getIconClass()"></i>
       </div>
     </div>
-
-    <!-- Row 3: amount + change chip -->
     <div class="flex items-center justify-between pt-2 border-t" [class]="getDividerClass()">
       <span
         class="text-[11px] font-semibold tabular-nums leading-none"
         [class]="getAmountClass()"
         >{{ subtitle }}</span
       >
-      <!-- Arrow and % forced to exact same size via inline style -->
-      <div
-        class="flex items-center gap-[3px] px-1.5 py-[3px] rounded-md"
-        [class]="getChangeBgClass()"
-      >
-        <svg style="width: 8px; height: 8px; flex-shrink: 0" viewBox="0 0 10 10" fill="none">
-          <path
-            d="M5 8V2M5 2L2 5M5 2L8 5"
-            [attr.stroke]="getAccentHex()"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <span style="font-size: 9px; line-height: 9px; font-weight: 700" [class]="getTrendColor()"
-          >12%</span
+      <span class="flex items-center gap-1 leading-none">
+        <i class="pi pi-clock text-slate-400" style="font-size: 8px"></i>
+        <span class="text-[9px] text-slate-400">{{ lastUpdated }}</span>
+      </span>
+    </div>
+  </div>
+</div> -->
+<!-- <div [class]="getCardClasses()">
+  <div
+    class="absolute inset-0 rounded-xl opacity-30 pointer-events-none"
+    [class]="getGradientClass()"
+  ></div>
+  <div class="absolute -bottom-1 -right-2 opacity-[0.06] pointer-events-none">
+    <i class="pi text-[100px]" [class]="getWatermarkClass()"></i>
+  </div>
+  <div class="relative flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+          [class]="getIconBgClass()"
         >
+          <i class="pi text-[11px]" [class]="getIconClass()"></i>
+        </div>
+        <span class="text-[11px] font-medium text-slate-500 leading-none tracking-tight">
+          {{ title }}
+        </span>
       </div>
+      <div
+        class="w-5 h-5 rounded-lg flex items-center justify-center transition-all duration-150 opacity-40 hover:opacity-100"
+        [class]="getIconBgClass()"
+      >
+        <i class="pi pi-arrow-right text-[9px]" [class]="getTrendColor()"></i>
+      </div>
+    </div>
+    <div class="flex items-end justify-between">
+      <div class="text-[24px] font-bold tracking-tight leading-none" [class]="getValueClass()">
+        {{ value }}
+      </div>
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [class]="getIconBgClass()"
+      >
+        <i class="pi text-[16px]" [class]="getIconClass()"></i>
+      </div>
+    </div>
+    <div class="flex items-center justify-between pt-2 border-t" [class]="getDividerClass()">
+      <span
+        class="text-[11px] font-semibold tabular-nums leading-none"
+        [class]="getAmountClass()"
+        >{{ subtitle }}</span
+      >
+      <span class="flex items-center gap-1 leading-none">
+        <i class="pi pi-clock text-slate-400" style="font-size: 8px"></i>
+        <span class="text-[9px] text-slate-400">{{ lastUpdated }}</span>
+      </span>
+    </div>
+  </div>
+</div> -->
+<!-- <div [class]="getCardClasses()">
+  <div
+    class="absolute inset-0 rounded-xl opacity-60 pointer-events-none"
+    [class]="getGradientClass()"
+  ></div>
+  <div class="absolute -bottom-1 -right-2 opacity-[0.06] pointer-events-none">
+    <i class="pi text-[300px]" [class]="getWatermarkClass()"></i>
+  </div>
+  <div class="relative flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+          [class]="getIconBgClass()"
+        >
+          <i class="pi text-[11px]" [class]="getIconClass()"></i>
+        </div>
+        <span class="text-[11px] font-medium text-slate-500 leading-none tracking-tight">
+          {{ title }}
+        </span>
+      </div>
+      @if (badge) {
+        <div class="flex items-center gap-1 px-1.5 py-0.5 rounded-full" [class]="getTrendBgClass()">
+          <span class="w-1 h-1 rounded-full flex-shrink-0" [class]="getDotClass()"></span>
+          <span class="text-[9px] font-semibold leading-none" [class]="getTrendColor()">{{
+            badge
+          }}</span>
+        </div>
+      }
+    </div>
+    <div class="flex items-end justify-between">
+      <div class="text-[24px] font-bold tracking-tight leading-none" [class]="getValueClass()">
+        {{ value }}
+      </div>
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [class]="getIconBgClass()"
+      >
+        <i class="pi text-[16px]" [class]="getIconClass()"></i>
+      </div>
+    </div>
+    <div class="flex items-center justify-between pt-2 border-t" [class]="getDividerClass()">
+      <span
+        class="text-[11px] font-semibold tabular-nums leading-none"
+        [class]="getAmountClass()"
+        >{{ subtitle }}</span
+      >
+      <span class="flex items-center gap-1 leading-none">
+        <i class="pi pi-clock text-slate-400" style="font-size: 8px"></i>
+        <span class="text-[9px] text-slate-400">{{ lastUpdated }}</span>
+      </span>
+    </div>
+  </div>
+</div> -->
+<div [class]="getCardClasses()">
+  <!-- Gradient wash -->
+  <div
+    class="absolute inset-0 rounded-xl opacity-100 pointer-events-none"
+    [class]="getGradientClass()"
+  ></div>
+
+  <!-- Watermark icon -->
+  <div class="absolute -bottom-1 -right-2 opacity-[0.06] pointer-events-none">
+    <i class="pi text-[300px]" [class]="getWatermarkClass()"></i>
+  </div>
+
+  <!-- Content -->
+  <div class="relative flex flex-col gap-2">
+    <!-- Row 1: icon + title + badge pill -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+          [class]="getIconBgClass()"
+        >
+          <i class="pi text-[11px]" [class]="getIconClass()"></i>
+        </div>
+        <span class="text-[11px] font-medium leading-none tracking-tight" [class]="getValueClass()">
+          {{ title }}
+        </span>
+      </div>
+
+      @if (badge) {
+        <div class="flex items-center gap-1 px-1.5 py-0.5 rounded-full" [class]="getTrendBgClass()">
+          <span class="w-1 h-1 rounded-full flex-shrink-0" [class]="getDotClass()"></span>
+          <span class="text-[9px] font-semibold leading-none" [class]="getTrendColor()">
+            {{ badge }}
+          </span>
+        </div>
+      }
+    </div>
+
+    <!-- Row 2: count + status icon -->
+    <div class="flex items-end justify-between">
+      <div class="text-[24px] font-bold tracking-tight leading-none" [class]="getValueClass()">
+        {{ value }}
+      </div>
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [class]="getIconBgClass()"
+      >
+        <i class="pi text-[16px]" [class]="getIconClass()"></i>
+      </div>
+    </div>
+
+    <!-- Row 3: amount + last updated -->
+    <div class="flex items-center justify-between pt-2 border-t" [class]="getDividerClass()">
+      <span [class]="getAmountClass()" class="text-[11px] font-semibold tabular-nums leading-none">
+        Total
+      </span>
+      <span
+        class="text-[11px] font-semibold tabular-nums leading-none"
+        [class]="getAmountClass()"
+        >{{ subtitle }}</span
+      >
+
+      <!-- <span class="flex items-center gap-1 leading-none">
+        <i class="pi pi-clock text-slate-400 dark:text-zinc-600" style="font-size: 8px"></i>
+        <span class="text-[9px] text-slate-400 dark:text-zinc-600">{{ lastUpdated }}</span>
+      </span> -->
     </div>
   </div>
 </div>

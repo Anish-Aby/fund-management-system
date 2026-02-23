@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -10,16 +10,13 @@ import { StatCard } from '../shared/components/stat-card/stat-card';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { UtilityService } from '../shared/services/utility.service';
-import { InvoiceAdd } from '../invoice/invoice-add/invoice-add';
-import { DialogService } from 'primeng/dynamicdialog';
-import { DialogHeader } from '../shared/components/dialog-header/dialog-header';
-import { InvoiceReview } from '../invoice/invoice-review/invoice-review';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import EntityMockData from './../core/mocks/entity-mock.json';
-import { ExpensesReport } from '../report/expenses-report/expenses-report';
 import { DialogWindowService } from '../core/services/dialog-window-service';
 import { DIALOG_COMPONENT_TITLES } from '../shared/constants/const';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,6 +43,10 @@ export class Dashboard implements OnInit {
   selectedInvoices: any[] = [];
   filteredTotal: number = 0;
 
+  destroyRef = inject(DestroyRef);
+
+  readonly totalInvoices = 128;
+
   isShowDashboardContent = signal(true);
 
   entityForm: FormGroup;
@@ -57,9 +58,9 @@ export class Dashboard implements OnInit {
   home: any = { icon: 'pi pi-home', routerLink: '/' };
 
   constructor(
-    private router: Router,
     private dialogWindowService: DialogWindowService,
     private fb: FormBuilder,
+    private apiService: ApiService,
     public utilityService: UtilityService,
   ) {
     this.entityForm = this.fb.group({
@@ -227,6 +228,22 @@ export class Dashboard implements OnInit {
     ];
 
     this.calculateTotal();
+    this.getInvoiceData();
+  }
+
+  getInvoiceData() {
+    this.apiService
+      .get('api/v1/Auth/getInvoice')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res: any) => {
+          // this.invoices = res.data;
+        },
+      });
+  }
+
+  getPct(val: number): number {
+    return Math.round((val / this.totalInvoices) * 100);
   }
 
   onTableFilter(event: any) {
@@ -249,7 +266,6 @@ export class Dashboard implements OnInit {
   }
 
   onInvoiceRowSelect(event: any): void {
-    console.log(event);
     this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW, {
       invoiceId: event.invoiceNumber,
     });

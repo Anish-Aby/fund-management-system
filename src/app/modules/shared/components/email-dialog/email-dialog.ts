@@ -9,22 +9,23 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
   selector: 'app-email-dialog',
   imports: [CommonModule, ButtonModule, DividerModule, TagModule],
   templateUrl: './email-dialog.html',
-  styleUrl: './email-dialog.scss'
+  styleUrl: './email-dialog.scss',
 })
 export class EmailDialog {
   emailData = signal<any>(null);
 
   constructor(
     private ref: DynamicDialogRef,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
   ) {
     // Mock email data - replace with actual data from config
-    this.emailData.set(this.config.data?.emailData || {
-      from: 'vendor@example.com',
-      to: 'finance@company.com',
-      subject: 'Invoice #INV-2024-001 - Payment Request',
-      date: '2024-01-15 10:30 AM',
-      body: `Dear Finance Team,
+    this.emailData.set(
+      this.config.data?.emailData || {
+        from: 'vendor@example.com',
+        to: 'finance@company.com',
+        subject: 'Invoice #INV-2024-001 - Payment Request',
+        date: '2024-01-15 10:30 AM',
+        body: `Dear Finance Team,
 
 Please find attached the invoice for services rendered in December 2024.
 
@@ -39,8 +40,9 @@ Best regards,
 John Smith
 Accounts Receivable
 ABC Services Ltd.`,
-      attachments: ['Invoice_INV-2024-001.pdf']
-    });
+        attachments: ['Invoice_INV-2024-001.pdf'],
+      },
+    );
   }
 
   closeDialog(): void {
@@ -49,6 +51,5 @@ ABC Services Ltd.`,
 
   downloadAttachment(filename: string): void {
     // Implement attachment download logic
-    console.log('Downloading:', filename);
   }
 }

@@ -37,6 +37,10 @@ p-dynamicdialog {
     //   width: 100%;
     // }
 
+    app-dialog {
+      width: 100%;
+    }
+
     .p-dialog-maximize-button {
       display: none;
     }
@@ -155,6 +159,56 @@ p-dynamicdialog {
     background: rgba(248, 113, 113, 0.15);
     border-color: rgba(248, 113, 113, 0.3);
     color: #f87171;
+  }
+}
+
+.dialog-ctrl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.75); /* was 0.3 — now clearly visible */
+  transition:
+    background 0.1s ease,
+    border-color 0.1s ease,
+    color 0.1s ease,
+    transform 0.1s ease;
+
+  .pi {
+    font-size: 9px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: scale(1.12);
+  }
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &--minimize:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #7dd3fc; /* brighter sky */
+  }
+
+  &--maximize:hover {
+    background: rgba(148, 163, 184, 0.18);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  &--close:hover {
+    background: rgba(248, 113, 113, 0.2);
+    border-color: rgba(248, 113, 113, 0.45);
+    color: #fca5a5; /* brighter rose */
   }
 }
 

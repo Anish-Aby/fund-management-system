@@ -5,7 +5,8 @@
     "portfolioCurrency": "USD",
     "beginningAmount": 5000,
     "forThePeriod": 1000,
-    "endingAmount": 6000
+    "endingAmount": 6000,
+    "paidType": "Paid"
   },
   {
     "name": "Growth Equity Fund",
@@ -13,7 +14,8 @@
     "portfolioCurrency": "CAD",
     "beginningAmount": 12000,
     "forThePeriod": 2500,
-    "endingAmount": 14500
+    "endingAmount": 14500,
+    "paidType": "Unpaid"
   },
   {
     "name": "Tech Innovation Fund",
@@ -21,7 +23,8 @@
     "portfolioCurrency": "GBP",
     "beginningAmount": 8500,
     "forThePeriod": 1800,
-    "endingAmount": 10300
+    "endingAmount": 10300,
+    "paidType": "Paid"
   },
   {
     "name": "Emerging Markets Fund",
@@ -29,7 +32,8 @@
     "portfolioCurrency": "SGD",
     "beginningAmount": 15000,
     "forThePeriod": 3200,
-    "endingAmount": 18200
+    "endingAmount": 18200,
+    "paidType": "Unpaid"
   },
   {
     "name": "Bond Stability Fund",
@@ -37,7 +41,8 @@
     "portfolioCurrency": "EUR",
     "beginningAmount": 25000,
     "forThePeriod": 4500,
-    "endingAmount": 29500
+    "endingAmount": 29500,
+    "paidType": "Paid"
   },
   {
     "name": "Real Estate Fund",
@@ -45,7 +50,8 @@
     "portfolioCurrency": "AUD",
     "beginningAmount": 18500,
     "forThePeriod": 2800,
-    "endingAmount": 21300
+    "endingAmount": 21300,
+    "paidType": "Unpaid"
   },
   {
     "name": "Healthcare Innovation Fund",
@@ -53,7 +59,8 @@
     "portfolioCurrency": "CHF",
     "beginningAmount": 45000,
     "forThePeriod": 8200,
-    "endingAmount": 53200
+    "endingAmount": 53200,
+    "paidType": "Paid"
   },
   {
     "name": "Sustainable Energy Fund",
@@ -61,7 +68,8 @@
     "portfolioCurrency": "EUR",
     "beginningAmount": 67500,
     "forThePeriod": 12500,
-    "endingAmount": 80000
+    "endingAmount": 80000,
+    "paidType": "Unpaid"
   },
   {
     "name": "AI Research Fund",
@@ -69,7 +77,8 @@
     "portfolioCurrency": "JPY",
     "beginningAmount": 38000,
     "forThePeriod": 6800,
-    "endingAmount": 44800
+    "endingAmount": 44800,
+    "paidType": "Paid"
   },
   {
     "name": "Biotech Development Fund",
@@ -77,7 +86,8 @@
     "portfolioCurrency": "USD",
     "beginningAmount": 125000,
     "forThePeriod": 22000,
-    "endingAmount": 147000
+    "endingAmount": 147000,
+    "paidType": "Unpaid"
   },
   {
     "name": "Fintech Solutions Fund",
@@ -85,7 +95,8 @@
     "portfolioCurrency": "GBP",
     "beginningAmount": 19500,
     "forThePeriod": 3500,
-    "endingAmount": 23000
+    "endingAmount": 23000,
+    "paidType": "Paid"
   },
   {
     "name": "Global Infrastructure Fund",
@@ -93,6 +104,7 @@
     "portfolioCurrency": "CAD",
     "beginningAmount": 85000,
     "forThePeriod": 15200,
-    "endingAmount": 100200
+    "endingAmount": 100200,
+    "paidType": "Unpaid"
   }
 ]

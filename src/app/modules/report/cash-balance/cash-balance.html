@@ -211,7 +211,7 @@
 
   <!-- ── Filter Card ──────────────────────────────────── -->
   <div class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+    <!-- <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
           <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
@@ -219,7 +219,7 @@
         <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Filters</span>
       </div>
       <p-button label="Clear all" variant="text" severity="secondary" size="small" />
-    </div>
+    </div> -->
 
     <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-3 items-end">
       <div class="col-span-2 flex flex-col gap-1 min-w-0">
@@ -307,7 +307,7 @@
         [stripedRows]="true"
         size="small"
         [scrollable]="true"
-        scrollHeight="400px"
+        scrollHeight="550px"
         class="table-dashboard-invoice"
         [resizableColumns]="true"
         columnResizeMode="expand"
@@ -334,22 +334,22 @@
               <div class="flex items-center gap-1.5">Region <p-sortIcon field="region" /></div>
             </th>
             <th pResizableColumn pSortableColumn="beginningBalance" class="col-numeric">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center justify-end gap-1.5">
                 Beginning <p-sortIcon field="beginningBalance" />
               </div>
             </th>
             <th pResizableColumn pSortableColumn="forThePeriod" class="col-numeric">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center justify-end gap-1.5">
                 For the Period <p-sortIcon field="forThePeriod" />
               </div>
             </th>
             <th pResizableColumn pSortableColumn="endingBalance" class="col-numeric">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center justify-end gap-1.5">
                 Ending Balance <p-sortIcon field="endingBalance" />
               </div>
             </th>
             <th pResizableColumn pSortableColumn="usdBalance" class="col-numeric">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center justify-end gap-1.5">
                 <span
                   class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold font-mono"
                   >USD</span
@@ -410,51 +410,54 @@
 
             <!-- Beginning balance -->
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] text-slate-500">
-                {{ formatCurrency(cashBalance.beginningBalance, cashBalance.currency) }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] text-slate-500">
+                  {{ formatCurrency(cashBalance.beginningBalance, cashBalance.currency) }}
+                </span>
+              </div>
             </td>
 
             <!-- For the period — directional color -->
             <td class="col-numeric">
-              <span
-                class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
-                [class]="
-                  cashBalance.forThePeriod >= 0
-                    ? 'text-emerald-700 bg-emerald-50'
-                    : 'text-rose-600 bg-rose-50'
-                "
-              >
-                <i
+              <div class="flex justify-end">
+                <span
+                  class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
+                >
+                  <!-- <i
                   [class]="
                     cashBalance.forThePeriod >= 0
                       ? 'pi pi-arrow-up-right text-[9px]'
                       : 'pi pi-arrow-down-right text-[9px]'
                   "
-                ></i>
-                {{
-                  formatCurrency(
-                    cashBalance.forThePeriod < 0
-                      ? -cashBalance.forThePeriod
-                      : cashBalance.forThePeriod,
-                    cashBalance.currency
-                  )
-                }}
-              </span>
+                ></i> -->
+                  {{
+                    formatCurrency(
+                      cashBalance.forThePeriod < 0
+                        ? -cashBalance.forThePeriod
+                        : cashBalance.forThePeriod,
+                      cashBalance.currency
+                    )
+                  }}
+                </span>
+              </div>
             </td>
 
             <!-- Ending balance -->
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-semibold text-slate-700">
-                {{ formatCurrency(cashBalance.endingBalance, cashBalance.currency) }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-semibold text-slate-700">
+                  {{ formatCurrency(cashBalance.endingBalance, cashBalance.currency) }}
+                </span>
+              </div>
             </td>
 
             <!-- USD balance — most prominent -->
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-bold text-slate-900">
-                ${{ cashBalance.usdBalance.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                  ${{ cashBalance.usdBalance.toLocaleString() }}
+                </span>
+              </div>
             </td>
           </tr>
         </ng-template>
@@ -462,32 +465,35 @@
         <ng-template #footer>
           <tr>
             <td colspan="5">
-              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
-                >Grand Total</span
-              >
+              <span class="text-[11px] font-bold uppercase tracking-widest">Grand Total</span>
             </td>
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-semibold text-slate-600">
-                ${{ totals().beginningBalance.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-semibold text-slate-600">
+                  ${{ totals().beginningBalance.toLocaleString() }}
+                </span>
+              </div>
             </td>
             <td class="col-numeric">
-              <span
-                class="tabular-nums text-[13px] font-bold"
-                [class]="totals().forThePeriod >= 0 ? 'text-emerald-700' : 'text-rose-600'"
-              >
-                ${{ totals().forThePeriod.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-bold">
+                  ${{ totals().forThePeriod.toLocaleString() }}
+                </span>
+              </div>
             </td>
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-semibold text-slate-700">
-                ${{ totals().endingBalance.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-semibold text-slate-700">
+                  ${{ totals().endingBalance.toLocaleString() }}
+                </span>
+              </div>
             </td>
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-bold text-slate-900">
-                ${{ totals().usdBalance.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                  ${{ totals().usdBalance.toLocaleString() }}
+                </span>
+              </div>
             </td>
           </tr>
         </ng-template>

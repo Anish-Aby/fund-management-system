@@ -10,6 +10,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { NoDataPlaceholder } from '../../shared/components/no-data-placeholder/no-data-placeholder';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import CategoryTypeOptions from '../../core/mocks/category-type-mock.json';
+import { UtilityService } from '../../shared/services/utility.service';
 
 @Component({
   selector: 'app-expenses-report',
@@ -40,6 +41,11 @@ export class ExpensesReport {
   taxOptions = signal([
     { label: 'With Tax', id: 1 },
     { label: 'Without Tax', id: 2 },
+  ]);
+
+  statusOptions = signal([
+    { label: 'Paid', id: 1 },
+    { label: 'Unpaid', id: 2 },
   ]);
 
   entityOptions = signal([
@@ -82,7 +88,10 @@ export class ExpensesReport {
     { label: 'Professional Fee', value: 'professional-fee' },
   ]);
 
-  constructor(private config: DynamicDialogConfig) {
+  constructor(
+    private config: DynamicDialogConfig,
+    public utilityService: UtilityService,
+  ) {
     if (this.config.data?.showData) {
       this.getExpensesReport();
     }

@@ -151,9 +151,7 @@ export class RoleAdd {
     });
   }
 
-  onSaveRole(): void {
-    console.log('Role Form Value:', this.roleForm.value);
-  }
+  onSaveRole(): void {}
 
   clearRoleSelection(): void {
     this.selectedRole.set(null);

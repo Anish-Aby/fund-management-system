@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div
-      class="h-dvh w-full bg-black fixed top-0 left-0 opacity-70 z-50 flex justify-center items-center box-border"
+      class="h-dvh w-full bg-black fixed top-0 left-0 opacity-70 flex justify-center items-center box-border z-9999"
     >
       <div class="loader-container loader">
         <div class="box1"></div>

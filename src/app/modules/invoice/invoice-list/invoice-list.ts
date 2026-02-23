@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogWindowService } from '../../core/services/dialog-window-service';
+import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
 
 interface TableColumn {
   field: string;
@@ -61,16 +63,13 @@ export class InvoiceList implements OnDestroy {
   constructor(
     public utilityService: UtilityService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService,
+    private dialogWindowService: DialogWindowService,
     private dialogConfigData: DynamicDialogConfig,
   ) {
     const queryParams = this.activatedRoute.snapshot.queryParams;
-    console.log(this.dialogConfigData);
     this.status.set(this.getStatus(this.dialogConfigData.data?.statusId));
     this.invoices = InvoiceListData.filter((invoice) => invoice.status === this.status());
     this.calculateTotal();
-    console.log('Initial status:', this.status());
   }
 
   ngOnDestroy(): void {
@@ -110,7 +109,8 @@ export class InvoiceList implements OnDestroy {
   }
 
   onInvoiceRowSelect(invoice: any) {
-    this.router.navigate(['app/invoice/review']);
+    // this.router.navigate(['app/invoice/review']);
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW);
   }
 
   onReviewInvoice() {
@@ -118,7 +118,8 @@ export class InvoiceList implements OnDestroy {
       return;
     }
     const invoiceIds = this.selectedInvoices.map((invoice) => invoice.invoiceNumber);
-    this.router.navigate(['app/invoice/review']);
+    // this.router.navigate(['app/invoice/review']);
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW);
   }
 
   getColumnsForStatus(status: string | null): TableColumn[] {

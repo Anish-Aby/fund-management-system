@@ -50,35 +50,23 @@ export class WindowDragSnapService {
     const up = () => this.endDrag(dialog, move, up);
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', up);
-    console.log('Aero drag start');
   }
 
-  // 🚀 dragging
   private onDrag(e: MouseEvent, dialog: HTMLElement) {
     if (!this.state.dragging) return;
-
     this.showPreview();
-
-    console.log('dragging...');
-
     const dx = e.clientX - this.state.startX;
     const dy = e.clientY - this.state.startY;
-
     const left = this.state.startLeft + dx;
     let top = this.state.startTop + dy;
-
-    // 🔒 prevent going above workspace
     if (top < this.WORKSPACE_TOP) {
       top = this.WORKSPACE_TOP;
     }
-
     dialog.style.left = `${left}px`;
     dialog.style.top = `${top}px`;
-
     this.checkSnapPreview(e.clientX, e.clientY, dialog);
   }
 
-  // 🚀 release
   private endDrag(dialog: HTMLElement, move: (e: MouseEvent) => void, up: () => void) {
     this.state.dragging = false;
     document.body.classList.remove('app-dragging');

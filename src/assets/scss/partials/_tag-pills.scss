@@ -11,9 +11,9 @@
   white-space: nowrap;
 
   &--received {
-    background: #f0f9ff;
-    border-color: #bae6fd;
-    color: #0369a1;
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
   } // sky
   &--pending {
     background: #fffbeb;
@@ -37,9 +37,9 @@
     color: #6d28d9;
   } // violet
   &--paid {
-    background: #eef2ff;
-    border-color: #c7d2fe;
-    color: #4338ca;
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0369a1;
   } // indigo
   &--default {
     background: #f8fafc;
@@ -55,7 +55,7 @@
   flex-shrink: 0;
 
   &--received {
-    background: #38bdf8;
+    background: #6366f1;
   }
   &--pending {
     background: #f59e0b;
@@ -72,7 +72,7 @@
     background: #8b5cf6;
   }
   &--paid {
-    background: #6366f1;
+    background: #38bdf8;
   }
   &--default {
     background: #94a3b8;

@@ -257,3 +257,372 @@ p-table {
 //     }
 //   }
 // }
+
+// ══════════════════════════════════════════════════════════════════
+// TABLE STYLES — Vercel-style, light + dark
+// Dark mode via .app-dark on <html> (ThemeService)
+// ══════════════════════════════════════════════════════════════════
+
+p-table {
+  // ── Container ──────────────────────────────────────────────────
+  .p-datatable {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(0, 0, 0, 0.07) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+    .app-dark & {
+      border-color: rgba(255, 255, 255, 0.07) !important;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
+    }
+  }
+
+  .p-datatable-wrapper {
+    overflow-x: auto !important;
+
+    &::-webkit-scrollbar {
+      height: 4px !important;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent !important;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db !important;
+      border-radius: 999px !important;
+      &:hover {
+        background: #9ca3af !important;
+      }
+    }
+
+    .app-dark & {
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.12) !important;
+        &:hover {
+          background: rgba(255, 255, 255, 0.2) !important;
+        }
+      }
+    }
+  }
+
+  // ── Header ─────────────────────────────────────────────────────
+  .p-datatable-thead > tr > th {
+    background: #f8f9fa !important;
+    color: #6b7280 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.07em !important;
+    text-transform: uppercase !important;
+    padding: 10px 16px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+    white-space: nowrap !important;
+    transition:
+      background 0.12s ease,
+      color 0.12s ease !important;
+
+    &:hover {
+      background: #f1f3f5 !important;
+      color: #374151 !important;
+      cursor: pointer !important;
+    }
+
+    &.p-datatable-column-sorted {
+      background: #eef0f3 !important;
+      color: #111827 !important;
+
+      .p-datatable-sort-icon {
+        color: #111827 !important;
+      }
+    }
+
+    .p-sortable-column-icon {
+      width: 11px !important;
+      height: 11px !important;
+      margin-left: 4px !important;
+      color: #d1d5db !important;
+      vertical-align: middle !important;
+    }
+
+    // ── Dark ──────────────────────────────────────────────────────
+    .app-dark & {
+      background: #1a1a1a !important;
+      color: rgba(255, 255, 255, 0.35) !important;
+      border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+
+      &:hover {
+        background: #222222 !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      &.p-datatable-column-sorted {
+        background: #222222 !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+
+        .p-datatable-sort-icon {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+      }
+
+      .p-sortable-column-icon {
+        color: rgba(255, 255, 255, 0.15) !important;
+      }
+    }
+  }
+
+  // ── Body rows ──────────────────────────────────────────────────
+  .p-datatable-tbody > tr {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+    transition:
+      background-color 0.1s ease,
+      box-shadow 0.1s ease !important;
+
+    &:nth-child(even) {
+      background-color: #fafafa !important;
+    }
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    &:hover {
+      cursor: pointer !important;
+      background-color: #f1f5f9 !important;
+      box-shadow: inset 3px 0 0 #0f172a !important;
+    }
+
+    // ── Dark ──────────────────────────────────────────────────────
+    .app-dark & {
+      background-color: #111111 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.04) !important;
+
+      &:nth-child(even) {
+        background-color: #161616 !important;
+      }
+
+      &:hover {
+        background-color: #1e1e1e !important;
+        box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+  }
+
+  // ── Selected row ───────────────────────────────────────────────
+  .p-datatable-tbody > tr.p-highlight {
+    background-color: #eff6ff !important;
+    box-shadow: inset 3px 0 0 #3b82f6 !important;
+
+    &:nth-child(even) {
+      background-color: #e8f2ff !important;
+    }
+
+    td {
+      color: #1e3a5f !important;
+    }
+
+    .app-dark & {
+      background-color: rgba(59, 130, 246, 0.1) !important;
+      box-shadow: inset 3px 0 0 #3b82f6 !important;
+
+      &:nth-child(even) {
+        background-color: rgba(59, 130, 246, 0.12) !important;
+      }
+
+      td {
+        color: #93c5fd !important;
+      }
+    }
+  }
+
+  // ── Cells ──────────────────────────────────────────────────────
+  .p-datatable-tbody > tr > td {
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+    color: #374151 !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    border: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    vertical-align: middle !important;
+
+    .app-dark & {
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────
+  .p-datatable-tfoot > tr > td {
+    padding: 10px 16px !important;
+    background: #f8f9fa !important;
+    border: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.07) !important;
+    font-size: 12px !important;
+
+    .app-dark & {
+      background: #1a1a1a !important;
+      border-top-color: rgba(255, 255, 255, 0.06) !important;
+    }
+  }
+
+  // ── Empty state ────────────────────────────────────────────────
+  .p-datatable-emptymessage > td {
+    text-align: center !important;
+    padding: 56px 16px !important;
+    color: #9ca3af !important;
+    font-size: 13px !important;
+    background: #ffffff !important;
+    border: none !important;
+
+    .app-dark & {
+      background: #111111 !important;
+      color: rgba(255, 255, 255, 0.25) !important;
+    }
+  }
+
+  // ── Checkbox column ────────────────────────────────────────────
+  .p-datatable-thead > tr > th:has(p-tableheadercheckbox),
+  .p-datatable-tbody > tr > td:has(p-tablecheckbox) {
+    width: 44px !important;
+    padding: 0 12px !important;
+    text-align: center !important;
+  }
+
+  // ── Paginator ──────────────────────────────────────────────────
+  .p-paginator {
+    background: #f8f9fa !important;
+    border: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.07) !important;
+    border-radius: 0 0 12px 12px !important;
+    padding: 8px 14px !important;
+
+    .p-paginator-current {
+      font-size: 12px !important;
+      color: #6b7280 !important;
+    }
+
+    .p-paginator-page {
+      font-size: 12px !important;
+      min-width: 30px !important;
+      height: 30px !important;
+      border-radius: 7px !important;
+      color: #374151 !important;
+      transition: background 0.12s ease !important;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06) !important;
+      }
+
+      &.p-highlight {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+      }
+    }
+
+    .p-paginator-first,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-last {
+      min-width: 30px !important;
+      height: 30px !important;
+      border-radius: 7px !important;
+      color: #6b7280 !important;
+      transition:
+        background 0.12s ease,
+        color 0.12s ease !important;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06) !important;
+        color: #374151 !important;
+      }
+
+      &:disabled {
+        opacity: 0.3 !important;
+      }
+    }
+
+    // ── Dark ──────────────────────────────────────────────────────
+    .app-dark & {
+      background: #1a1a1a !important;
+      border-top-color: rgba(255, 255, 255, 0.06) !important;
+
+      .p-paginator-current {
+        color: rgba(255, 255, 255, 0.35) !important;
+      }
+
+      .p-paginator-page {
+        color: rgba(255, 255, 255, 0.55) !important;
+        &:hover {
+          background: rgba(255, 255, 255, 0.06) !important;
+        }
+        &.p-highlight {
+          background: rgba(255, 255, 255, 0.9) !important;
+          color: #111111 !important;
+        }
+      }
+
+      .p-paginator-first,
+      .p-paginator-prev,
+      .p-paginator-next,
+      .p-paginator-last {
+        color: rgba(255, 255, 255, 0.3) !important;
+        &:hover {
+          background: rgba(255, 255, 255, 0.06) !important;
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+      }
+    }
+  }
+
+  // ── Gridlines variant ──────────────────────────────────────────
+  .p-datatable-gridlines {
+    .p-datatable-thead > tr > th {
+      border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+    }
+    .p-datatable-tbody > tr > td {
+      border-right: 1px solid rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .app-dark & {
+      .p-datatable-thead > tr > th {
+        border-right-color: rgba(255, 255, 255, 0.05) !important;
+      }
+      .p-datatable-tbody > tr > td {
+        border-right-color: rgba(255, 255, 255, 0.03) !important;
+      }
+    }
+  }
+
+  // ── Numeric column ─────────────────────────────────────────────
+  .col-numeric {
+    text-align: right !important;
+    .p-column-header-content {
+      justify-content: flex-end !important;
+    }
+  }
+
+  // ── Dashboard invoice variant ──────────────────────────────────
+  &.table-dashboard-invoice {
+    min-height: 370px !important;
+  }
+}
+
+// ── Column filter menu ─────────────────────────────────────────────
+.p-datatable-column-filter-overlay {
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden !important;
+
+  .app-dark & {
+    background: #1e1e1e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
+
+    * {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+}

@@ -280,26 +280,19 @@ export class Header {
     this.themeService.toggleTheme();
   }
 
-  onUserProfile() {
-    console.log('User Profile clicked');
-  }
+  onUserProfile() {}
 
-  onUserSettings() {
-    console.log('User Settings clicked');
-  }
+  onUserSettings() {}
 
   onLogout() {
     this.authService.logout();
   }
 
   onNotificationClick(type: string) {
-    console.log(`Notification clicked: ${type}`);
     this.notificationCount = Math.max(0, this.notificationCount - 1);
   }
 
-  onViewAllNotifications() {
-    console.log('View all notifications');
-  }
+  onViewAllNotifications() {}
 
   showLedgerReport(): void {
     this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.REPORTS.LEDGER_REPORT);

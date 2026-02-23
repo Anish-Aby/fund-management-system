@@ -151,9 +151,7 @@ export class UserAdd implements OnDestroy {
     }
   }
 
-  onSaveUser(): void {
-    console.log('User Form Value:', this.userForm.value);
-  }
+  onSaveUser(): void {}
 
   clearVendorSelection(): void {
     this.selectedUser.set(null);

@@ -18,7 +18,6 @@ export class DialogHeader {
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private renderer: Renderer2,
     private host: ElementRef,
     private dialogWindowService: DialogWindowService,
     private resizeService: WindowResizeService,

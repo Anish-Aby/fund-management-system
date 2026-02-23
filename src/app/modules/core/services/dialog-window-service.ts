@@ -68,6 +68,8 @@ export class DialogWindowService {
     maximizable: true,
     focusOnShow: false,
     position: 'center',
+    baseZIndex: 0,
+    autoZIndex: false,
     templates: { header: DialogHeader },
     data: { autoMaximize: true },
   };
@@ -181,7 +183,6 @@ export class DialogWindowService {
       };
     }
     const ref = this.dialogService.open(component, config) as DynamicDialogRef<T> | null;
-    console.log('Dialog ref:', ref);
     if (ref) {
       this.registerWindow({
         id: windowId,
@@ -226,9 +227,7 @@ export class DialogWindowService {
   // =============================
 
   public minimize(id: string): void {
-    console.log('Minimizing window', id);
     const win = this.windows$.value.find((w) => w.id === id);
-    console.log('win', win);
     if (!win || !win.element) return;
     if (win.element) {
       win.element.style.visibility = 'hidden';
@@ -272,10 +271,12 @@ export class DialogWindowService {
   }
 
   public focusWindow(id: string): void {
+    console.log('focusing window', id);
     const win = this.windows$.value.find((w) => w.id === id);
+    console.log('found window', win);
     if (!win || win.minimized) return;
 
-    const nextZ = ++this.zIndexCounter;
+    const nextZ = (this.zIndexCounter += 2);
 
     if (win.element) win.element.style.zIndex = String(nextZ);
     if (win.dialogElement) win.dialogElement.style.zIndex = String(nextZ + 1);
@@ -295,25 +296,18 @@ export class DialogWindowService {
     elements: { mask: HTMLElement | null; dialog: HTMLElement | null },
   ): void {
     const win = this.windows$.value.find((w) => w.id === id);
-
     this.updateWindow(id, {
       element: elements.mask ?? undefined,
       dialogElement: elements.dialog ?? undefined,
     });
-
-    // ⭐ hide immediately for restored windows
     if (this.restoring && elements.mask) {
       elements.mask.style.visibility = 'hidden';
     }
-
     elements.dialog?.addEventListener('mousedown', () => this.focusWindow(id));
-
     if (win?.resolveReady) {
       win.resolveReady();
       win.resolveReady = undefined;
     }
-
-    // normal windows still focus
     if (!this.restoring) {
       queueMicrotask(() => this.focusWindow(id));
     }

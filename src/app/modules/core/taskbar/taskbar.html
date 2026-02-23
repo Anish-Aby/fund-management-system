@@ -26,12 +26,10 @@
     </div>
   }
 </div> -->
-<div class="taskbar">
-  <!-- Empty state hint -->
+<!-- <div class="taskbar">
   @if ((dialogWindowService.windowsObservable$ | async)?.length === 0) {
     <span class="taskbar__empty">No open windows</span>
   }
-
   @for (win of dialogWindowService.windowsObservable$ | async; track win.id) {
     <div
       class="taskbar__item"
@@ -44,21 +42,67 @@
           : dialogWindowService.focusWindow(win.id)
       "
     >
-      <!-- Active indicator dot -->
       <span class="taskbar__dot"></span>
-
-      <!-- Title -->
       <span class="taskbar__title">
         {{ win.title.length > 16 ? (win.title | slice: 0 : 16) + '…' : win.title }}
       </span>
-
-      <!-- Close -->
       <button
         class="taskbar__close"
         (click)="$event.stopPropagation(); dialogWindowService.close(win.id)"
         tabindex="-1"
       >
         <i class="pi pi-times"></i>
+      </button>
+    </div>
+  }
+</div> -->
+<div class="taskbar">
+  @if ((dialogWindowService.windowsObservable$ | async)?.length === 0) {
+    <span class="taskbar__empty">No open windows</span>
+  }
+
+  <!-- Scrollable track -->
+  <div class="taskbar__track" #taskbarTrack (scroll)="onTrackScroll()">
+    @for (win of dialogWindowService.windowsObservable$ | async; track win.id) {
+      <div
+        class="taskbar__item"
+        [class.taskbar__item--active]="win.active"
+        [class.taskbar__item--minimized]="win.minimized && !win.active"
+        [title]="win.title"
+        (click)="
+          win.minimized
+            ? dialogWindowService.restore(win.id)
+            : dialogWindowService.focusWindow(win.id)
+        "
+      >
+        <span class="taskbar__dot"></span>
+        <span class="taskbar__title">
+          {{ win.title.length > 16 ? (win.title | slice: 0 : 16) + '…' : win.title }}
+        </span>
+        <button
+          class="taskbar__close"
+          (click)="$event.stopPropagation(); dialogWindowService.close(win.id)"
+          tabindex="-1"
+        >
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Scroll arrows — only rendered when track overflows -->
+  @if (isOverflowing) {
+    <div class="taskbar__arrows">
+      <button
+        class="taskbar__arrow"
+        (click)="scrollLeft()"
+        [disabled]="scrollPos <= 0"
+        title="Scroll left"
+      >
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button class="taskbar__arrow" (click)="scrollRight()" title="Scroll right">
+        <i class="pi pi-chevron-right"></i>
       </button>
     </div>
   }

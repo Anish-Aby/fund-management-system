@@ -132,7 +132,6 @@ export class ForexPricing implements OnInit {
 
   onSave() {
     if (this.addForm.valid) {
-      console.log('Saving:', this.addForm.value);
       this.addForm.reset();
       this.addForm.patchValue({ pricingDate: new Date() });
       this.ratesArray.clear();

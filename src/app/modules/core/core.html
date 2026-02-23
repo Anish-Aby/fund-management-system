@@ -16,11 +16,10 @@
     </div>
   </div> -->
   <div class="context-bar">
-    <!-- Entity selector -->
     <div class="context-bar__entity">
       <i class="pi pi-building context-bar__entity-icon"></i>
       <div class="context-bar__entity-field">
-        <span class="context-bar__label">Entity</span>
+        <!-- <span class="context-bar__label">Entity</span> -->
         <p-select
           formControlName="entityId"
           [options]="entityOptions()"
@@ -30,16 +29,12 @@
         />
       </div>
     </div>
-
-    <!-- Right meta group -->
     <div class="context-bar__meta-group">
       <div class="context-bar__meta-item">
         <span class="context-bar__label">Base Currency</span>
         <span class="context-bar__badge">USD</span>
       </div>
-
       <div class="context-bar__divider"></div>
-
       <div class="context-bar__meta-item">
         <span class="context-bar__label">Status</span>
         <span class="context-bar__live ml-1.5">
@@ -47,20 +42,16 @@
           Live
         </span>
       </div>
-
       <div class="context-bar__divider"></div>
-
       <div class="context-bar__meta-item">
         <span class="context-bar__label">Fiscal Period</span>
         <span class="context-bar__value ml-1.5">{{ today | date: 'MMM yyyy' }}</span>
       </div>
-
       <div class="context-bar__divider"></div>
-
       <div class="context-bar__meta-item context-bar__meta-item--date">
         <i class="pi pi-calendar context-bar__meta-icon"></i>
         <div>
-          <span class="context-bar__label">As of</span>
+          <span class="context-bar__label">Date</span>
           <span class="context-bar__value ml-2">{{ today | date: 'dd MMM yyyy' }}</span>
         </div>
       </div>

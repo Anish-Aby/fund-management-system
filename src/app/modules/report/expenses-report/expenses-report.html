@@ -292,7 +292,7 @@
     class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05),_0_1px_2px_rgba(0,0,0,0.04)]"
   >
     <!-- Filter header -->
-    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+    <!-- <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
           <i class="pi pi-filter text-slate-500" style="font-size: 9px"></i>
@@ -300,12 +300,12 @@
         <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Filters</span>
       </div>
       <p-button label="Clear all" variant="text" severity="secondary" size="small" />
-    </div>
+    </div> -->
 
     <!-- Filter fields -->
     <div class="px-5 py-4 grid grid-cols-12 gap-x-3 gap-y-3 items-end">
       <div class="col-span-2 flex flex-col gap-1 min-w-0">
-        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Category</label>
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Account Type</label>
         <p-select
           fluid
           [options]="categoryOptions()"
@@ -315,7 +315,7 @@
       </div>
 
       <div class="col-span-2 flex flex-col gap-1 min-w-0">
-        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Account Type</label>
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Category</label>
         <p-multiselect
           fluid
           [options]="vendorOptions()"
@@ -325,11 +325,11 @@
       </div>
 
       <div class="col-span-2 flex flex-col gap-1 min-w-0">
-        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Currency</label>
-        <p-select
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Status</label>
+        <p-multiselect
           fluid
-          [options]="currencyOptions()"
-          placeholder="Select currency"
+          [options]="statusOptions()"
+          placeholder="Paid / Unpaid"
           appendTo="body"
         />
       </div>
@@ -337,6 +337,11 @@
       <div class="col-span-2 flex flex-col gap-1 min-w-0">
         <label class="text-[11px] font-medium text-slate-500 tracking-tight">Tax</label>
         <p-select fluid [options]="taxOptions()" placeholder="With / without tax" appendTo="body" />
+      </div>
+
+      <div class="col-span-1 flex flex-col gap-1 min-w-0">
+        <label class="text-[11px] font-medium text-slate-500 tracking-tight">Currency</label>
+        <p-select fluid [options]="currencyOptions()" appendTo="body" />
       </div>
 
       <div class="col-span-1 flex flex-col gap-1 min-w-0">
@@ -349,7 +354,7 @@
         <p-datepicker fluid appendTo="body" />
       </div>
 
-      <div class="col-span-2 flex items-end">
+      <div class="col-span-1 flex items-end">
         <p-button
           icon="pi pi-search"
           label="Search"
@@ -403,31 +408,45 @@
         <ng-template #header>
           <tr>
             <th pResizableColumn pSortableColumn="name">
-              <div class="flex items-center gap-1.5">Name <p-sortIcon field="name" /></div>
+              <div class="flex items-center gap-1.5">
+                Name
+                <!-- <p-sortIcon field="name" /> -->
+              </div>
             </th>
             <th pResizableColumn pSortableColumn="fundLocation">
               <div class="flex items-center gap-1.5">
-                Fund Location <p-sortIcon field="fundLocation" />
+                Fund Location
+                <!-- <p-sortIcon field="fundLocation" /> -->
               </div>
             </th>
             <th pResizableColumn pSortableColumn="portfolioCurrency">
               <div class="flex items-center gap-1.5">
-                Currency <p-sortIcon field="portfolioCurrency" />
+                Currency
+                <!-- <p-sortIcon field="portfolioCurrency" /> -->
+              </div>
+            </th>
+            <th pResizableColumn pSortableColumn="portfolioCurrency">
+              <div class="flex items-center gap-1.5">
+                Status
+                <!-- <p-sortIcon field="portfolioCurrency" /> -->
               </div>
             </th>
             <th pResizableColumn pSortableColumn="beginningAmount" class="col-numeric">
-              <div class="flex items-center gap-1.5">
-                Beginning <p-sortIcon field="beginningAmount" />
+              <div class="flex items-center justify-end gap-1.5">
+                Beginning
+                <!-- <p-sortIcon field="beginningAmount" /> -->
               </div>
             </th>
             <th pResizableColumn pSortableColumn="forThePeriod" class="col-numeric">
-              <div class="flex items-center gap-1.5">
-                For the Period <p-sortIcon field="forThePeriod" />
+              <div class="flex items-center justify-end gap-1.5">
+                For the Period
+                <!-- <p-sortIcon field="forThePeriod" /> -->
               </div>
             </th>
             <th pResizableColumn pSortableColumn="endingAmount" class="col-numeric">
-              <div class="flex items-center gap-1.5">
-                Ending Amount <p-sortIcon field="endingAmount" />
+              <div class="flex items-center justify-end gap-1.5">
+                Ending Amount
+                <!-- <p-sortIcon field="endingAmount" /> -->
               </div>
             </th>
           </tr>
@@ -461,74 +480,90 @@
               </span>
             </td>
 
+            <td>
+              @if (expense.paidType === 'Paid') {
+                <span [class]="utilityService.getStatusPillClass('Approved')">
+                  <span [class]="utilityService.getStatusDotClass('Approved')"></span>
+                  {{ expense.paidType }}
+                </span>
+              } @else {
+                <span [class]="utilityService.getStatusPillClass('Pending')">
+                  <span [class]="utilityService.getStatusDotClass('Pending')"></span>
+                  {{ expense.paidType }}
+                </span>
+              }
+            </td>
+
             <!-- Beginning amount -->
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] text-slate-500 tracking-tight">
-                ${{ expense.beginningAmount.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] text-slate-500 tracking-tight">
+                  ${{ expense.beginningAmount.toLocaleString() }}
+                </span>
+              </div>
             </td>
 
             <!-- Period — green/red with directional icon -->
             <td class="col-numeric">
-              <span
-                class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
-                [class]="
-                  expense.forThePeriod >= 0
-                    ? 'text-emerald-700 bg-emerald-50'
-                    : 'text-red-600 bg-red-50'
-                "
-              >
-                <i
+              <div class="flex justify-end">
+                <span
+                  class="tabular-nums text-[13px] font-semibold inline-flex items-center gap-1 justify-end px-2 py-0.5 rounded-md"
+                >
+                  <!-- <i
                   [class]="
                     expense.forThePeriod >= 0
                       ? 'pi pi-arrow-up-right text-[9px]'
                       : 'pi pi-arrow-down-right text-[9px]'
                   "
-                ></i>
-                ${{
-                  (expense.forThePeriod < 0
-                    ? -expense.forThePeriod
-                    : expense.forThePeriod
-                  ).toLocaleString()
-                }}
-              </span>
+                ></i> -->
+                  ${{
+                    (expense.forThePeriod < 0
+                      ? -expense.forThePeriod
+                      : expense.forThePeriod
+                    ).toLocaleString()
+                  }}
+                </span>
+              </div>
             </td>
 
             <!-- Ending amount — most prominent -->
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-bold text-slate-900 tracking-tight">
-                ${{ expense.endingAmount.toLocaleString() }}
-              </span>
+              <div class="flex justify-end">
+                <span class="tabular-nums text-[13px] font-bold text-slate-900 tracking-tight">
+                  ${{ expense.endingAmount.toLocaleString() }}
+                </span>
+              </div>
             </td>
           </tr>
         </ng-template>
 
         <ng-template #footer>
           <tr>
-            <td colspan="3">
+            <td colspan="4">
               <div class="flex items-center gap-2">
-                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
-                  >Grand Total</span
-                >
+                <span class="text-[11px] font-bold uppercase tracking-widest">Total</span>
               </div>
             </td>
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-semibold text-slate-600">
-                ${{ totals().beginningAmount.toLocaleString() }}
-              </span>
+              <div class="flex justify-end mr-2">
+                <span class="tabular-nums text-[13px] font-semibold text-slate-600">
+                  ${{ totals().beginningAmount.toLocaleString() }}
+                </span>
+              </div>
             </td>
             <td class="col-numeric">
-              <span
-                class="tabular-nums text-[13px] font-bold"
-                [class]="totals().forThePeriod >= 0 ? 'text-emerald-700' : 'text-red-600'"
-              >
-                ${{ totals().forThePeriod.toLocaleString() }}
-              </span>
+              <div class="flex justify-end mr-3">
+                <span class="tabular-nums text-[13px] font-bold">
+                  ${{ totals().forThePeriod.toLocaleString() }}
+                </span>
+              </div>
             </td>
             <td class="col-numeric">
-              <span class="tabular-nums text-[13px] font-bold text-slate-900">
-                ${{ totals().endingAmount.toLocaleString() }}
-              </span>
+              <div class="flex justify-end mr-2">
+                <span class="tabular-nums text-[13px] font-bold text-slate-900">
+                  ${{ totals().endingAmount.toLocaleString() }}
+                </span>
+              </div>
             </td>
           </tr>
         </ng-template>

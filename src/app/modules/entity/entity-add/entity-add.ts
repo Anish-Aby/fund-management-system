@@ -185,7 +185,6 @@ export class EntityAdd {
 
   saveEntity(): void {
     if (this.entityForm.valid) {
-      console.log('Entity saved:', this.entityForm.value);
     }
   }
 }
