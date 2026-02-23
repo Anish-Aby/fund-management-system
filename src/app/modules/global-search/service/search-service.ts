@@ -78,14 +78,14 @@ const DIALOG_META: Record<string, Omit<SearchItem, 'id' | 'path'>> = {
     badge: 'Invoice',
     keywords: ['add', 'new', 'create', 'invoice'],
   },
-  [DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW]: {
-    title: 'Invoice Review',
-    subtitle: 'Review & approve invoices',
-    section: 'invoices',
-    icon: 'pi-file-check',
-    badge: 'Invoice',
-    keywords: ['review', 'approve'],
-  },
+  // [DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_REVIEW]: {
+  //   title: 'Invoice Review',
+  //   subtitle: 'Review & approve invoices',
+  //   section: 'invoices',
+  //   icon: 'pi-file-check',
+  //   badge: 'Invoice',
+  //   keywords: ['review', 'approve'],
+  // },
   // [DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_SPLIT]: {
   //   title: 'Invoice Split',
   //   subtitle: 'Split invoice by fund',

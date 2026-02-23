@@ -351,7 +351,7 @@
                                 {{ rateControl.get('symbol')?.value }}
                               </span>
                             </td>
-                            <td class="col-numeric">
+                            <td>
                               <p-inputNumber
                                 [formControl]="rateControl.get('value')"
                                 mode="decimal"
@@ -500,7 +500,7 @@
                                 Symbol <p-sortIcon field="symbol" />
                               </div>
                             </th>
-                            <th pSortableColumn="value" class="col-numeric">
+                            <th pSortableColumn="value">
                               <div class="flex items-center gap-1.5">
                                 Rate <p-sortIcon field="value" />
                               </div>
@@ -531,7 +531,7 @@
                                 {{ record.symbol }}
                               </span>
                             </td>
-                            <td class="col-numeric">
+                            <td>
                               <span class="tabular-nums text-[13px] font-semibold text-slate-800">
                                 {{ record.value | number: '1.2-4' }}
                               </span>
