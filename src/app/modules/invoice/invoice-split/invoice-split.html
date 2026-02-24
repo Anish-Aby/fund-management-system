@@ -528,14 +528,14 @@
             <td>
               <div class="flex items-center gap-1">
                 <button
-                  class="w-7 h-7 rounded-md flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                  class="w-7 h-7 rounded-md flex items-center justify-center text-rose-500 border-rose-500 border hover:bg-rose-50 transition-colors"
                   (click)="deleteSplitRow(i)"
                   title="Delete row"
                 >
                   <i class="pi pi-trash" style="font-size: 11px"></i>
                 </button>
                 <button
-                  class="w-7 h-7 rounded-md flex items-center justify-center text-slate-300 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                  class="w-7 h-7 rounded-md flex items-center justify-center text-emerald-600 border-emerald-600 border hover:bg-emerald-50 transition-colors"
                   (click)="addSplitRow()"
                   title="Add row"
                 >
@@ -605,7 +605,7 @@
     <p-button
       icon="pi pi-check-circle"
       label="Save Split"
-      severity="contrast"
+      severity="success"
       [disabled]="getTotalSplitAmount() > invoiceDetails.grossAmount"
     />
   </div>
