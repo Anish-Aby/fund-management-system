@@ -128,6 +128,9 @@ export class Header {
           {
             label: 'Import File',
             icon: 'pi pi-file-import',
+            command: () => {
+              this.showImportFile();
+            },
           },
           {
             label: 'Export File',
@@ -357,6 +360,10 @@ export class Header {
 
   showAuditTrail(): void {
     this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.SETTINGS.AUDIT_TRAIL);
+  }
+
+  showImportFile(): void {
+    this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.FILE.IMPORT_FILE);
   }
 
   navigateToDashboard() {

@@ -24,6 +24,7 @@ import { EmailDialog } from '../../shared/components/email-dialog/email-dialog';
 import { PortfolioManagement } from '../../portfolio-management/portfolio-management';
 import { BankManagementComponent } from '../../bank-management/bank-management';
 import { AuditTrailComponent } from '../../audit-trail/audit-trail';
+import { ImportFileComponent } from '../../import-file/import-file';
 
 type WindowClosingReason = 'minimize' | 'close';
 
@@ -152,6 +153,8 @@ export class DialogWindowService {
         return this.openSingleInstanceWindow(BankManagementComponent, componentName, data);
       case DIALOG_COMPONENT_TITLES.SETTINGS.AUDIT_TRAIL:
         return this.openSingleInstanceWindow(AuditTrailComponent, componentName, data);
+      case DIALOG_COMPONENT_TITLES.FILE.IMPORT_FILE:
+        return this.openSingleInstanceWindow(ImportFileComponent, componentName, data);
       default:
         console.error(`No component found for ${componentName}`);
         return null;

@@ -224,6 +224,27 @@ const DIALOG_META: Record<string, Omit<SearchItem, 'id' | 'path'>> = {
     badge: 'Settings',
     keywords: ['audit', 'log', 'history', 'activity'],
   },
+
+  // ── File ──────────────────────────────────────────────────
+  [DIALOG_COMPONENT_TITLES.FILE.IMPORT_FILE]: {
+    title: 'Import File',
+    subtitle: 'Bulk upload invoices or bank balances',
+    section: 'invoices',
+    icon: 'pi-upload',
+    badge: 'Import',
+    keywords: [
+      'bulk',
+      'import',
+      'excel',
+      'xlsx',
+      'csv',
+      'upload',
+      'file',
+      'bank',
+      'balance',
+      'invoice',
+    ],
+  },
 };
 
 // ── Manual extras — add anything here that isn't a dialog ─────
