@@ -61,4 +61,35 @@ export class UtilityService {
         return 'status-dot status-dot--default';
     }
   }
+
+  public formatDate(date: Date | string, format: string = 'MM/dd/yyyy'): string {
+    if (!date) {
+      return '';
+    }
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const year = d.getFullYear();
+    switch (format) {
+      case 'dd/MM/yyyy':
+        return `${day}/${month}/${year}`;
+      case 'MM/dd/yyyy':
+      default:
+        return `${month}/${day}/${year}`;
+    }
+  }
+
+  public getCurrencySymbol(currencyCode: string | null, locale: string = 'en'): string {
+    if (!currencyCode) return '';
+    try {
+      const parts = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currencyCode,
+        currencyDisplay: 'symbol',
+      }).formatToParts(0);
+      return parts.find((p) => p.type === 'currency')?.value || currencyCode;
+    } catch {
+      return currencyCode;
+    }
+  }
 }

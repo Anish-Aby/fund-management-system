@@ -807,14 +807,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="invoiceNumber" pResizableColumn>
+            <th pSortableColumn="invoiceCode" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
                 Invoice No
                 <div class="flex items-center">
-                  <p-sortIcon field="invoiceNumber" />
+                  <p-sortIcon field="invoiceCode" />
                   <p-columnFilter
                     type="text"
-                    field="invoiceNumber"
+                    field="invoiceCode"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -840,14 +840,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="dueDate" pResizableColumn>
+            <th pSortableColumn="invoiceDueDate" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
                 Due Date
                 <div class="flex items-center">
-                  <p-sortIcon field="dueDate" />
+                  <p-sortIcon field="invoiceDueDate" />
                   <p-columnFilter
                     type="date"
-                    field="dueDate"
+                    field="invoiceDueDate"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -873,14 +873,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="expenseType" pResizableColumn>
+            <th pSortableColumn="invoiceDescription" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
-                Expenses
+                Fee Type
                 <div class="flex items-center">
-                  <p-sortIcon field="expenseType" />
+                  <p-sortIcon field="invoiceDescription" />
                   <p-columnFilter
                     type="text"
-                    field="expenseType"
+                    field="invoiceDescription"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -938,64 +938,116 @@
             <td (click)="onInvoiceRowSelect(invoice)">
               <div class="flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
-                <span class="text-slate-700 dark:text-zinc-200 text-[13px] font-medium">{{
-                  invoice.fundName
-                }}</span>
+                <span class="text-slate-700 dark:text-zinc-200 text-[13px] font-medium">
+                  @if (invoice.fundName) {
+                    {{ invoice.fundName }}
+                  } @else {
+                    -
+                  }
+                </span>
               </div>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
-              <span class="text-slate-500 dark:text-zinc-400 text-[13px]">{{
-                invoice.vendorName
-              }}</span>
+              <span class="text-slate-500 dark:text-zinc-400 text-[13px]">
+                @if (invoice.vendorName) {
+                  {{ invoice.vendorName }}
+                } @else {
+                  -
+                }
+              </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
               <span
                 class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-slate-500 dark:text-zinc-400 text-[11px] font-mono"
               >
-                {{ invoice.invoiceNumber }}
+                @if (invoice.invoiceCode) {
+                  {{ invoice.invoiceCode }}
+                } @else {
+                  -
+                }
               </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
-              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">{{
-                invoice.invoiceDate
-              }}</span>
+              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">
+                @if (invoice.invoiceDate) {
+                  {{ utilityService.formatDate(invoice.invoiceDate) }}
+                } @else {
+                  -
+                }
+              </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
-              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">{{
-                invoice.dueDate
-              }}</span>
+              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">
+                @if (invoice.invoiceDueDate) {
+                  {{ utilityService.formatDate(invoice.invoiceDueDate) }}
+                } @else {
+                  -
+                }
+              </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
-              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">{{
-                invoice.aging
-              }}</span>
+              <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">
+                @if (invoice.aging) {
+                  {{ invoice.aging }}
+                } @else {
+                  -
+                }
+              </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
               <span
                 class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20 text-violet-700 dark:text-violet-400 text-[11px] font-semibold"
               >
-                {{ invoice.expenseType }}
+                @if (invoice.invoiceDescription) {
+                  <span
+                    [pTooltip]="
+                      invoice.invoiceDescription.length > 20 ? invoice.invoiceDescription : null
+                    "
+                    tooltipPosition="top"
+                  >
+                    {{
+                      invoice.invoiceDescription.length > 20
+                        ? (invoice.invoiceDescription | slice: 0 : 20) + '...'
+                        : invoice.invoiceDescription
+                    }}
+                  </span>
+                } @else {
+                  -
+                }
               </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
               <span
                 class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-slate-500 dark:text-zinc-400 text-[11px] font-mono font-medium"
               >
-                {{ invoice.currency }}
+                @if (invoice.currency) {
+                  {{ invoice.currency }}
+                } @else {
+                  -
+                }
               </span>
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
-              <span [class]="utilityService.getStatusPillClass(invoice.status)">
-                <span [class]="utilityService.getStatusDotClass(invoice.status)"></span>
-                {{ invoice.status }}
-              </span>
+              @if (invoice.status) {
+                <span [class]="utilityService.getStatusPillClass(invoice.status)">
+                  <span [class]="utilityService.getStatusDotClass(invoice.status)"></span>
+                  {{ invoice.status }}
+                </span>
+              } @else {
+                -
+              }
             </td>
             <td (click)="onInvoiceRowSelect(invoice)" class="col-numeric">
               <div class="flex justify-end">
                 <span
                   class="tabular-nums font-semibold text-slate-800 dark:text-zinc-100 text-[13px]"
                 >
-                  ${{ invoice.grossAmount }}
+                  @if (invoice.grossAmount) {
+                    {{ utilityService.getCurrencySymbol(invoice.currency)
+                    }}{{ invoice.grossAmount }}
+                  } @else {
+                    -
+                  }
                 </span>
               </div>
             </td>
