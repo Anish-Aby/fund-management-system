@@ -807,14 +807,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="invoiceCode" pResizableColumn>
+            <th pSortableColumn="invoiceNumber" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
                 Invoice No
                 <div class="flex items-center">
-                  <p-sortIcon field="invoiceCode" />
+                  <p-sortIcon field="invoiceNumber" />
                   <p-columnFilter
                     type="text"
-                    field="invoiceCode"
+                    field="invoiceNumber"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -840,14 +840,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="invoiceDueDate" pResizableColumn>
+            <th pSortableColumn="dueDate" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
                 Due Date
                 <div class="flex items-center">
-                  <p-sortIcon field="invoiceDueDate" />
+                  <p-sortIcon field="dueDate" />
                   <p-columnFilter
                     type="date"
-                    field="invoiceDueDate"
+                    field="dueDate"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -978,8 +978,8 @@
             </td>
             <td (click)="onInvoiceRowSelect(invoice)">
               <span class="text-slate-500 dark:text-zinc-400 text-[13px] tabular-nums">
-                @if (invoice.invoiceDueDate) {
-                  {{ utilityService.formatDate(invoice.invoiceDueDate) }}
+                @if (invoice.dueDate) {
+                  {{ utilityService.formatDate(invoice.dueDate) }}
                 } @else {
                   -
                 }
