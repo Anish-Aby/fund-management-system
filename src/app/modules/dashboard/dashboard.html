@@ -873,14 +873,14 @@
                 </div>
               </div>
             </th>
-            <th pSortableColumn="invoiceDescription" pResizableColumn>
+            <th pSortableColumn="expenseType" pResizableColumn>
               <div class="flex items-center justify-between gap-2">
                 Fee Type
                 <div class="flex items-center">
-                  <p-sortIcon field="invoiceDescription" />
+                  <p-sortIcon field="expenseType" />
                   <p-columnFilter
                     type="text"
-                    field="invoiceDescription"
+                    field="expenseType"
                     display="menu"
                     showMatchModes="false"
                     showAddButton="false"
@@ -960,8 +960,8 @@
               <span
                 class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-slate-500 dark:text-zinc-400 text-[11px] font-mono"
               >
-                @if (invoice.invoiceCode) {
-                  {{ invoice.invoiceCode }}
+                @if (invoice.invoiceNumber) {
+                  {{ invoice.invoiceNumber }}
                 } @else {
                   -
                 }
@@ -998,17 +998,15 @@
               <span
                 class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20 text-violet-700 dark:text-violet-400 text-[11px] font-semibold"
               >
-                @if (invoice.invoiceDescription) {
+                @if (invoice.expenseType) {
                   <span
-                    [pTooltip]="
-                      invoice.invoiceDescription.length > 20 ? invoice.invoiceDescription : null
-                    "
+                    [pTooltip]="invoice.expenseType.length > 20 ? invoice.expenseType : null"
                     tooltipPosition="top"
                   >
                     {{
-                      invoice.invoiceDescription.length > 20
-                        ? (invoice.invoiceDescription | slice: 0 : 20) + '...'
-                        : invoice.invoiceDescription
+                      invoice.expenseType.length > 20
+                        ? (invoice.expenseType | slice: 0 : 20) + '...'
+                        : invoice.expenseType
                     }}
                   </span>
                 } @else {
