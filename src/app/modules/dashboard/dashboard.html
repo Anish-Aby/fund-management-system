@@ -549,7 +549,7 @@
             size="small"
             [showGridlines]="true"
             [scrollable]="true"
-            scrollHeight="285px"
+            scrollHeight="289px"
             [resizableColumns]="true"
             columnResizeMode="expand"
             [globalFilterFields]="['code', 'name', 'region', 'amount']"
@@ -574,7 +574,7 @@
                 </th>
                 <th pSortableColumn="region" pResizableColumn>
                   <div class="flex items-center justify-between gap-2">
-                    Region
+                    Currency
                     <div class="flex items-center">
                       <p-sortIcon field="region" />
                     </div>
@@ -582,7 +582,15 @@
                 </th>
                 <th pSortableColumn="amount" pResizableColumn>
                   <div class="flex items-center justify-end gap-2">
-                    Amount
+                    Unpaid
+                    <div class="flex items-center">
+                      <p-sortIcon field="amount" />
+                    </div>
+                  </div>
+                </th>
+                <th pSortableColumn="amount" pResizableColumn>
+                  <div class="flex items-center justify-end gap-2">
+                    Paid
                     <div class="flex items-center">
                       <p-sortIcon field="amount" />
                     </div>
@@ -621,6 +629,42 @@
                       class="tabular-nums font-semibold text-slate-800 dark:text-zinc-100 text-[13px]"
                     >
                       ${{ product.amount }}
+                    </span>
+                  </div>
+                </td>
+                <td class="col-numeric">
+                  <div class="w-full flex justify-end">
+                    <span
+                      class="tabular-nums font-semibold text-slate-800 dark:text-zinc-100 text-[13px]"
+                    >
+                      ${{ product.amount }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #footer>
+              <tr>
+                <td colspan="3">
+                  <span class="text-[11px] font-bold dark:text-zinc-500 uppercase tracking-widest"
+                    >Total</span
+                  >
+                </td>
+                <td class="col-numeric">
+                  <div class="flex justify-end">
+                    <span
+                      class="tabular-nums text-[13px] font-bold text-slate-900 dark:text-zinc-100"
+                    >
+                      ${{ filteredTotal }}
+                    </span>
+                  </div>
+                </td>
+                <td class="col-numeric">
+                  <div class="flex justify-end">
+                    <span
+                      class="tabular-nums text-[13px] font-bold text-slate-900 dark:text-zinc-100"
+                    >
+                      ${{ filteredTotal }}
                     </span>
                   </div>
                 </td>
