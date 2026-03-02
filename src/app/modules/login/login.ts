@@ -916,6 +916,284 @@
 //     }, 1000);
 //   }
 // }
+// import {
+//   Component,
+//   OnInit,
+//   OnDestroy,
+//   signal,
+//   inject,
+//   ChangeDetectionStrategy,
+//   DestroyRef,
+// } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+// import { Router } from '@angular/router';
+// import { ButtonModule } from 'primeng/button';
+// import { InputTextModule } from 'primeng/inputtext';
+// import { PasswordModule } from 'primeng/password';
+// import { InputOtpModule } from 'primeng/inputotp';
+// import { ToastService } from '../core/services/toast';
+// import { ApiService } from '../shared/services/api.service';
+// import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+// import { AuthService } from '../core/services/auth-service';
+
+// export type SlideIconId = 'chart' | 'ai' | 'workflow' | 'audit';
+// export interface PanelSlide {
+//   id: number;
+//   iconId: SlideIconId;
+//   title: string;
+//   sub: string;
+// }
+// export interface PanelFeature {
+//   icon: string;
+//   label: string;
+// }
+
+// // ── Timing constants (keep in sync with SCSS) ──────────────────────
+// // Exit: icon + title + sub all slide out → right
+// //   each element: 300ms duration, stagger 0 / 60 / 120 ms
+// //   last element done at: 300 + 120 = 420ms → wait 460ms to be safe
+// const EXIT_DURATION_MS = 460;
+
+// // Enter: elements arrive one by one after exit is fully done
+// //   delays defined in SCSS: icon 0ms, title 130ms, sub 260ms
+// //   (these are relative to when displaySlide changes)
+
+// // Auto-advance: how long each panel stays fully visible
+// const PANEL_VISIBLE_MS = 4000;
+
+// @Component({
+//   selector: 'app-login',
+//   standalone: true,
+//   imports: [
+//     CommonModule,
+//     ReactiveFormsModule,
+//     ButtonModule,
+//     InputTextModule,
+//     PasswordModule,
+//     InputOtpModule,
+//   ],
+//   templateUrl: './login.html',
+//   styleUrl: './login.scss',
+//   changeDetection: ChangeDetectionStrategy.OnPush,
+// })
+// export class Login implements OnInit, OnDestroy {
+//   private destroyRef = inject(DestroyRef);
+
+//   currentPage = signal(0);
+//   loginLoading = signal(false);
+//   otpLoading = signal(false);
+//   resendDisabled = signal(true);
+//   resendCountdown = signal(30);
+
+//   private userId = signal<number | null>(null);
+
+//   loginForm: FormGroup;
+//   otpForm: FormGroup;
+
+//   constructor(
+//     private fb: FormBuilder,
+//     private toastService: ToastService,
+//     private router: Router,
+//     private apiService: ApiService,
+//     private authService: AuthService,
+//   ) {
+//     this.loginForm = this.fb.group({
+//       email: ['', [Validators.required, Validators.email]],
+//       password: ['', Validators.required],
+//     });
+//     this.otpForm = this.fb.group({
+//       otp: ['', [Validators.required, Validators.minLength(6)]],
+//     });
+//   }
+
+//   // loginForm = this.fb.group({
+//   //   email: ['', [Validators.required, Validators.email]],
+//   //   password: ['', [Validators.required, Validators.minLength(6)]],
+//   // });
+//   // otpForm = this.fb.group({
+//   //   otp: ['', [Validators.required, Validators.minLength(6)]],
+//   // });
+
+//   readonly rightSlides: PanelSlide[] = [
+//     {
+//       id: 0,
+//       iconId: 'chart',
+//       title: 'Manage funds\nwith precision',
+//       sub: 'Track invoices, approvals, and cashflows across all portfolios in one place.',
+//     },
+//     {
+//       id: 1,
+//       iconId: 'ai',
+//       title: 'AI-powered\ninvoice extraction',
+//       sub: 'Upload any PDF — our AI reads vendor, amounts, and line items automatically. No manual entry.',
+//     },
+//     {
+//       id: 2,
+//       iconId: 'workflow',
+//       title: 'Automate\napproval workflows',
+//       sub: 'Multi-level approvals with configurable routing rules, live status, and instant notifications.',
+//     },
+//     {
+//       id: 3,
+//       iconId: 'audit',
+//       title: 'Full audit\ntrail built-in',
+//       sub: 'Every action logged with timestamps, user IDs, and change history — full compliance visibility.',
+//     },
+//   ];
+
+//   readonly rightFeatures: PanelFeature[] = [
+//     { icon: 'pi-file-plus', label: 'Invoice processing' },
+//     { icon: 'pi-sparkles', label: 'AI extraction' },
+//     { icon: 'pi-chart-bar', label: 'Fund reporting' },
+//   ];
+
+//   // ── Slide state ─────────────────────────────────────────────────────
+//   displaySlide = signal(0); // which slide is rendered
+//   slideKey = signal(0); // increments on enter → forces DOM recreation → CSS fires
+//   isExiting = signal(false); // true while exit animation plays
+
+//   private slideTimer?: ReturnType<typeof setInterval>;
+//   private exitTimeout?: ReturnType<typeof setTimeout>;
+//   private resendTimer?: ReturnType<typeof setInterval>;
+
+//   ngOnInit(): void {
+//     this.startSlideTimer();
+//   }
+
+//   ngOnDestroy(): void {
+//     clearInterval(this.slideTimer);
+//     clearTimeout(this.exitTimeout);
+//     clearInterval(this.resendTimer);
+//   }
+
+//   // ── Slide sequencing ─────────────────────────────────────────────────
+//   // Full cycle:
+//   //   1. isExiting → true  (CSS exit animation plays: icon→title→sub slide right+fade)
+//   //   2. Wait EXIT_DURATION_MS for animation to finish
+//   //   3. Update displaySlide + increment slideKey (CSS enter plays: icon→title→sub slide in from left)
+//   //   4. isExiting → false
+
+//   private startSlideTimer(): void {
+//     this.slideTimer = setInterval(
+//       () => {
+//         this.advanceTo((this.displaySlide() + 1) % this.rightSlides.length);
+//       },
+//       PANEL_VISIBLE_MS + EXIT_DURATION_MS + 810,
+//     ); // visible + exit + enter
+//   }
+
+//   setSlide(index: number): void {
+//     if (index === this.displaySlide() || this.isExiting()) return;
+//     clearInterval(this.slideTimer);
+//     this.advanceTo(index);
+//     this.startSlideTimer();
+//   }
+
+//   private advanceTo(next: number): void {
+//     // Step 1 — trigger exit CSS
+//     this.isExiting.set(true);
+
+//     // Step 2 — after exit finishes, swap slide + trigger enter CSS
+//     this.exitTimeout = setTimeout(() => {
+//       this.displaySlide.set(next);
+//       this.slideKey.update((k) => k + 1); // new DOM node → enter keyframe fires
+//       this.isExiting.set(false);
+//     }, EXIT_DURATION_MS);
+//   }
+
+//   // ── Form actions ─────────────────────────────────────────────────────
+//   onLogin(): void {
+//     if (!this.loginForm.valid) return;
+//     this.apiService
+//       .post('api/v1/Auth/login', this.getLoginPayload())
+//       .pipe(takeUntilDestroyed(this.destroyRef))
+//       .subscribe({
+//         next: (res: any) => {
+//           this.userId.set(res.data.userId);
+//           this.currentPage.set(1);
+//           this.startResendCountdown();
+//         },
+//       });
+//   }
+
+//   getLoginPayload(): any {
+//     return {
+//       emailId: this.loginForm.get('email')?.value,
+//       password: this.loginForm.get('password')?.value,
+//     };
+//   }
+
+//   onVerifyOtp(): void {
+//     const userId = this.userId();
+//     if (!userId) {
+//       this.toastService.showError('Please go back and login again.');
+//       return;
+//     }
+//     if (this.otpForm.invalid) {
+//       return;
+//     }
+//     this.apiService
+//       .post('api/v1/Auth/verify-otp', {
+//         userId,
+//         otp: this.otpForm.get('otp')?.value,
+//       })
+//       .pipe(takeUntilDestroyed(this.destroyRef))
+//       .subscribe({
+//         next: (res: any) => {
+//           this.authService.setTokens(res.data.authToken, res.data.refreshToken);
+//           this.toastService.showSuccess('Logged in successfully!');
+//           this.router.navigate(['/app/dashboard']);
+//         },
+//       });
+//   }
+
+//   onOtpChange(_e: unknown): void {}
+
+//   onResendCode(): void {
+//     this.startResendCountdown();
+//   }
+//   navigateToLogin(): void {
+//     clearInterval(this.resendTimer);
+//     this.otpForm.reset();
+//     this.currentPage.set(0);
+//   }
+//   getResendButtonLabel(): string {
+//     return this.resendDisabled() ? `Resend in ${this.resendCountdown()}s` : 'Resend code';
+//   }
+//   private startResendCountdown(): void {
+//     clearInterval(this.resendTimer);
+//     this.resendDisabled.set(true);
+//     this.resendCountdown.set(30);
+//     this.resendTimer = setInterval(() => {
+//       const n = this.resendCountdown() - 1;
+//       this.resendCountdown.set(n);
+//       if (n <= 0) {
+//         clearInterval(this.resendTimer);
+//         this.resendDisabled.set(false);
+//       }
+//     }, 1000);
+//   }
+// }
+
+// ─────────────────────────────────────────────────────────────────
+// CHANGES TO login.ts — two things:
+//   1. Replace `slideKey` signal with `showSlide` signal
+//   2. Update `advanceTo()` to use destroy-then-recreate pattern
+//
+// HOW IT WORKS:
+//   isExiting = true   → exit CSS animation plays on existing DOM
+//   setTimeout(460ms)  → exit animation finishes
+//   showSlide = false  → Angular destroys the @if content (DOM gone)
+//   rAF callback       → next browser frame, Angular has flushed
+//   displaySlide = N   → update slide data
+//   showSlide = true   → Angular recreates @if content with fresh DOM
+//   isExiting = false  → element gets .panel-enter → enter CSS fires
+//
+// This is identical behaviour to the @for slideKey trick but without
+// the NG0956 warning, because @if is designed for destroy/recreate.
+// ─────────────────────────────────────────────────────────────────
+
 import {
   Component,
   OnInit,
@@ -949,17 +1227,7 @@ export interface PanelFeature {
   label: string;
 }
 
-// ── Timing constants (keep in sync with SCSS) ──────────────────────
-// Exit: icon + title + sub all slide out → right
-//   each element: 300ms duration, stagger 0 / 60 / 120 ms
-//   last element done at: 300 + 120 = 420ms → wait 460ms to be safe
 const EXIT_DURATION_MS = 460;
-
-// Enter: elements arrive one by one after exit is fully done
-//   delays defined in SCSS: icon 0ms, title 130ms, sub 260ms
-//   (these are relative to when displaySlide changes)
-
-// Auto-advance: how long each panel stays fully visible
 const PANEL_VISIBLE_MS = 4000;
 
 @Component({
@@ -1007,14 +1275,6 @@ export class Login implements OnInit, OnDestroy {
     });
   }
 
-  // loginForm = this.fb.group({
-  //   email: ['', [Validators.required, Validators.email]],
-  //   password: ['', [Validators.required, Validators.minLength(6)]],
-  // });
-  // otpForm = this.fb.group({
-  //   otp: ['', [Validators.required, Validators.minLength(6)]],
-  // });
-
   readonly rightSlides: PanelSlide[] = [
     {
       id: 0,
@@ -1048,10 +1308,14 @@ export class Login implements OnInit, OnDestroy {
     { icon: 'pi-chart-bar', label: 'Fund reporting' },
   ];
 
-  // ── Slide state ─────────────────────────────────────────────────────
-  displaySlide = signal(0); // which slide is rendered
-  slideKey = signal(0); // increments on enter → forces DOM recreation → CSS fires
-  isExiting = signal(false); // true while exit animation plays
+  // ── Slide state ──────────────────────────────────────────────────
+  displaySlide = signal(0);
+  isExiting = signal(false);
+
+  // ✅ NEW: replaces slideKey — controls @if in the template
+  showSlide = signal(true);
+
+  // ❌ REMOVED: slideKey = signal(0);  ← no longer needed
 
   private slideTimer?: ReturnType<typeof setInterval>;
   private exitTimeout?: ReturnType<typeof setTimeout>;
@@ -1067,20 +1331,11 @@ export class Login implements OnInit, OnDestroy {
     clearInterval(this.resendTimer);
   }
 
-  // ── Slide sequencing ─────────────────────────────────────────────────
-  // Full cycle:
-  //   1. isExiting → true  (CSS exit animation plays: icon→title→sub slide right+fade)
-  //   2. Wait EXIT_DURATION_MS for animation to finish
-  //   3. Update displaySlide + increment slideKey (CSS enter plays: icon→title→sub slide in from left)
-  //   4. isExiting → false
-
   private startSlideTimer(): void {
     this.slideTimer = setInterval(
-      () => {
-        this.advanceTo((this.displaySlide() + 1) % this.rightSlides.length);
-      },
+      () => this.advanceTo((this.displaySlide() + 1) % this.rightSlides.length),
       PANEL_VISIBLE_MS + EXIT_DURATION_MS + 810,
-    ); // visible + exit + enter
+    );
   }
 
   setSlide(index: number): void {
@@ -1091,18 +1346,25 @@ export class Login implements OnInit, OnDestroy {
   }
 
   private advanceTo(next: number): void {
-    // Step 1 — trigger exit CSS
+    // Step 1 — trigger exit CSS on current DOM node
     this.isExiting.set(true);
 
-    // Step 2 — after exit finishes, swap slide + trigger enter CSS
+    // Step 2 — after exit animation finishes, destroy then recreate
     this.exitTimeout = setTimeout(() => {
-      this.displaySlide.set(next);
-      this.slideKey.update((k) => k + 1); // new DOM node → enter keyframe fires
-      this.isExiting.set(false);
+      // Destroy the @if content — Angular removes the DOM node
+      this.showSlide.set(false);
+
+      // Wait one rAF so Angular flushes the destruction before recreating.
+      // rAF fires after the browser has painted the empty state.
+      requestAnimationFrame(() => {
+        this.displaySlide.set(next); // update data while node is gone
+        this.isExiting.set(false); // next render gets .panel-enter
+        this.showSlide.set(true); // recreate — fresh DOM, CSS fires
+      });
     }, EXIT_DURATION_MS);
   }
 
-  // ── Form actions ─────────────────────────────────────────────────────
+  // ── Form actions ─────────────────────────────────────────────────
   onLogin(): void {
     if (!this.loginForm.valid) return;
     this.apiService
@@ -1130,9 +1392,7 @@ export class Login implements OnInit, OnDestroy {
       this.toastService.showError('Please go back and login again.');
       return;
     }
-    if (this.otpForm.invalid) {
-      return;
-    }
+    if (this.otpForm.invalid) return;
     this.apiService
       .post('api/v1/Auth/verify-otp', {
         userId,
@@ -1153,14 +1413,17 @@ export class Login implements OnInit, OnDestroy {
   onResendCode(): void {
     this.startResendCountdown();
   }
+
   navigateToLogin(): void {
     clearInterval(this.resendTimer);
     this.otpForm.reset();
     this.currentPage.set(0);
   }
+
   getResendButtonLabel(): string {
     return this.resendDisabled() ? `Resend in ${this.resendCountdown()}s` : 'Resend code';
   }
+
   private startResendCountdown(): void {
     clearInterval(this.resendTimer);
     this.resendDisabled.set(true);
