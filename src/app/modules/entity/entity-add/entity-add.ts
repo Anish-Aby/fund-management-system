@@ -1,6 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  FormBuilder,
+} from '@angular/forms';
 import { TabsModule } from 'primeng/tabs';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -38,45 +44,47 @@ interface Currency {
   styleUrl: './entity-add.scss',
 })
 export class EntityAdd {
-  entityForm = new FormGroup({
-    entityId: new FormControl(''),
-    entityCode: new FormControl(''),
-    entityName: new FormControl(''),
-    shortName: new FormControl(''),
-    entityType: new FormControl(''),
-    industry: new FormControl(''),
-    registrationNo: new FormControl(''),
-    taxId: new FormControl(''),
-    incorporationDate: new FormControl(''),
-    status: new FormControl(''),
-    addressLine1: new FormControl(''),
-    addressLine2: new FormControl(''),
-    city: new FormControl(''),
-    postalCode: new FormControl(''),
-    state: new FormControl(''),
-    country: new FormControl(''),
-    primaryEmail: new FormControl(''),
-    phoneNumber: new FormControl(''),
-    website: new FormControl(''),
-    baseCurrency: new FormControl(''),
-    reportingCurrency: new FormControl(''),
-    fiscalYearStart: new FormControl(''),
-    fiscalYearEnd: new FormControl(''),
-    bankName: new FormControl(''),
-    accountNumber: new FormControl(''),
-    swiftCode: new FormControl(''),
-    iban: new FormControl(''),
-    timezone: new FormControl(''),
-    dateFormat: new FormControl(''),
-    numberFormat: new FormControl(''),
-    language: new FormControl(''),
-    multiCurrency: new FormControl(false),
-    autoForex: new FormControl(false),
-    approvalWorkflow: new FormControl(false),
-    auditTrail: new FormControl(false),
-    taxReporting: new FormControl(false),
-    consolidation: new FormControl(false),
-  });
+  // entityForm = new FormGroup({
+  //   entityId: new FormControl(''),
+  //   entityCode: new FormControl(''),
+  //   entityName: new FormControl(''),
+  //   shortName: new FormControl(''),
+  //   entityType: new FormControl(''),
+  //   industry: new FormControl(''),
+  //   registrationNo: new FormControl(''),
+  //   taxId: new FormControl(''),
+  //   incorporationDate: new FormControl(''),
+  //   status: new FormControl(''),
+  //   addressLine1: new FormControl(''),
+  //   addressLine2: new FormControl(''),
+  //   city: new FormControl(''),
+  //   postalCode: new FormControl(''),
+  //   state: new FormControl(''),
+  //   country: new FormControl(''),
+  //   primaryEmail: new FormControl(''),
+  //   phoneNumber: new FormControl(''),
+  //   website: new FormControl(''),
+  //   baseCurrency: new FormControl(''),
+  //   reportingCurrency: new FormControl(''),
+  //   fiscalYearStart: new FormControl(''),
+  //   fiscalYearEnd: new FormControl(''),
+  //   bankName: new FormControl(''),
+  //   accountNumber: new FormControl(''),
+  //   swiftCode: new FormControl(''),
+  //   iban: new FormControl(''),
+  //   timezone: new FormControl(''),
+  //   dateFormat: new FormControl(''),
+  //   numberFormat: new FormControl(''),
+  //   language: new FormControl(''),
+  //   multiCurrency: new FormControl(false),
+  //   autoForex: new FormControl(false),
+  //   approvalWorkflow: new FormControl(false),
+  //   auditTrail: new FormControl(false),
+  //   taxReporting: new FormControl(false),
+  //   consolidation: new FormControl(false),
+  // });
+
+  entityForm: FormGroup;
 
   entityTypeOptions = [
     { label: 'Subsidiary', value: 'subsidiary' },
@@ -141,7 +149,7 @@ export class EntityAdd {
     { label: 'JPY', value: 'JPY' },
   ];
 
-  entityData = signal(EntityMockData);
+  entityData = signal<any[]>([]);
   selectedEntities = signal<any[] | null>([]);
 
   isEditMode = signal<boolean>(false);
@@ -153,6 +161,51 @@ export class EntityAdd {
   taxPercentage: number | null = null;
   allowedVendor: boolean = false;
   selectedBaseCurrency: string | null = null;
+
+  constructor(private fb: FormBuilder) {
+    this.entityForm = fb.group({
+      entityId: [''],
+      entityCode: [''],
+      entityName: [''],
+      shortName: [''],
+      entityType: [''],
+      industry: [''],
+      registrationNo: [''],
+      taxId: [''],
+      incorporationDate: [''],
+      status: [''],
+      addressLine1: [''],
+      addressLine2: [''],
+      city: [''],
+      postalCode: [''],
+      state: [''],
+      country: [''],
+      primaryEmail: [''],
+      phoneNumber: [''],
+      website: [''],
+      baseCurrency: [''],
+      reportingCurrency: [''],
+      fiscalYearStart: [''],
+      fiscalYearEnd: [''],
+      bankName: [''],
+      accountNumber: [''],
+      swiftCode: [''],
+      iban: [''],
+      timezone: [''],
+      dateFormat: [''],
+      numberFormat: [''],
+      language: [''],
+      bankRegion: [''],
+      bankCurrency: [''],
+      multiCurrency: [false],
+      autoForex: [false],
+      approvalWorkflow: [false],
+      auditTrail: [false],
+      taxReporting: [false],
+      consolidation: [false],
+    });
+    this.entityData.set(EntityMockData);
+  }
 
   viewEntity(entity: any): void {
     this.selectedEntity.set(entity);

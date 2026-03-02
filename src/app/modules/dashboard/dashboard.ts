@@ -46,6 +46,8 @@ export class Dashboard implements OnInit {
   invoices!: any[];
   selectedInvoices: any[] = [];
   filteredTotal: number = 0;
+  unpaidPortfolioTotal: number = 0;
+  paidPortfolioTotal: number = 0;
 
   destroyRef = inject(DestroyRef);
 
@@ -74,26 +76,146 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     this.portfolio = [
-      { code: 'GEF001', name: 'Growth Equity Fund', region: 'USA', amount: 45000 },
-      { code: 'TIF002', name: 'Tech Innovation Fund', region: 'USA', amount: 62000 },
-      { code: 'EMF003', name: 'Emerging Markets Fund', region: 'EU', amount: 28500 },
-      { code: 'BSF004', name: 'Bond Stability Fund', region: 'UAE', amount: 75000 },
-      { code: 'REF005', name: 'Real Estate Fund', region: 'JP', amount: 22500 },
-      { code: 'HIF006', name: 'Healthcare Innovation Fund', region: 'USA', amount: 38000 },
-      { code: 'ESG007', name: 'ESG Sustainable Fund', region: 'EU', amount: 52000 },
-      { code: 'CRF008', name: 'Crypto Research Fund', region: 'USA', amount: 19500 },
-      { code: 'AIF009', name: 'AI Technology Fund', region: 'USA', amount: 67000 },
-      { code: 'GIF010', name: 'Green Infrastructure Fund', region: 'EU', amount: 41000 },
-      { code: 'BIF011', name: 'Biotech Innovation Fund', region: 'USA', amount: 33500 },
-      { code: 'EEF012', name: 'Energy Efficiency Fund', region: 'UAE', amount: 29000 },
-      { code: 'FTF013', name: 'Fintech Ventures Fund', region: 'USA', amount: 58000 },
-      { code: 'SMF014', name: 'Small Cap Markets Fund', region: 'JP', amount: 24500 },
-      { code: 'DIF015', name: 'Digital Infrastructure Fund', region: 'EU', amount: 46000 },
-      { code: 'RIF016', name: 'Renewable Infrastructure Fund', region: 'UAE', amount: 71000 },
-      { code: 'VCF017', name: 'Venture Capital Fund', region: 'USA', amount: 85000 },
-      { code: 'PEF018', name: 'Private Equity Fund', region: 'EU', amount: 92000 },
-      { code: 'HDF019', name: 'Hedge Diversified Fund', region: 'USA', amount: 78000 },
-      { code: 'CIF020', name: 'Consumer Innovation Fund', region: 'JP', amount: 36000 },
+      {
+        code: 'GEF001',
+        name: 'Growth Equity Fund',
+        region: 'USA',
+        unpaidAmount: 3200,
+        paidAmount: 45000,
+      },
+      {
+        code: 'TIF002',
+        name: 'Tech Innovation Fund',
+        region: 'USA',
+        unpaidAmount: 5400,
+        paidAmount: 62000,
+      },
+      {
+        code: 'EMF003',
+        name: 'Emerging Markets Fund',
+        region: 'EU',
+        unpaidAmount: 2100,
+        paidAmount: 28500,
+      },
+      {
+        code: 'BSF004',
+        name: 'Bond Stability Fund',
+        region: 'UAE',
+        unpaidAmount: 1500,
+        paidAmount: 75000,
+      },
+      {
+        code: 'REF005',
+        name: 'Real Estate Fund',
+        region: 'JP',
+        unpaidAmount: 4700,
+        paidAmount: 22500,
+      },
+      {
+        code: 'HIF006',
+        name: 'Healthcare Innovation Fund',
+        region: 'USA',
+        unpaidAmount: 3800,
+        paidAmount: 38000,
+      },
+      {
+        code: 'ESG007',
+        name: 'ESG Sustainable Fund',
+        region: 'EU',
+        unpaidAmount: 2600,
+        paidAmount: 52000,
+      },
+      {
+        code: 'CRF008',
+        name: 'Crypto Research Fund',
+        region: 'USA',
+        unpaidAmount: 6900,
+        paidAmount: 19500,
+      },
+      {
+        code: 'AIF009',
+        name: 'AI Technology Fund',
+        region: 'USA',
+        unpaidAmount: 4100,
+        paidAmount: 67000,
+      },
+      {
+        code: 'GIF010',
+        name: 'Green Infrastructure Fund',
+        region: 'EU',
+        unpaidAmount: 2300,
+        paidAmount: 41000,
+      },
+      {
+        code: 'BIF011',
+        name: 'Biotech Innovation Fund',
+        region: 'USA',
+        unpaidAmount: 3600,
+        paidAmount: 33500,
+      },
+      {
+        code: 'EEF012',
+        name: 'Energy Efficiency Fund',
+        region: 'UAE',
+        unpaidAmount: 1950,
+        paidAmount: 29000,
+      },
+      {
+        code: 'FTF013',
+        name: 'Fintech Ventures Fund',
+        region: 'USA',
+        unpaidAmount: 5200,
+        paidAmount: 58000,
+      },
+      {
+        code: 'SMF014',
+        name: 'Small Cap Markets Fund',
+        region: 'JP',
+        unpaidAmount: 2800,
+        paidAmount: 24500,
+      },
+      {
+        code: 'DIF015',
+        name: 'Digital Infrastructure Fund',
+        region: 'EU',
+        unpaidAmount: 3300,
+        paidAmount: 46000,
+      },
+      {
+        code: 'RIF016',
+        name: 'Renewable Infrastructure Fund',
+        region: 'UAE',
+        unpaidAmount: 2400,
+        paidAmount: 71000,
+      },
+      {
+        code: 'VCF017',
+        name: 'Venture Capital Fund',
+        region: 'USA',
+        unpaidAmount: 7600,
+        paidAmount: 85000,
+      },
+      {
+        code: 'PEF018',
+        name: 'Private Equity Fund',
+        region: 'EU',
+        unpaidAmount: 8200,
+        paidAmount: 92000,
+      },
+      {
+        code: 'HDF019',
+        name: 'Hedge Diversified Fund',
+        region: 'USA',
+        unpaidAmount: 6100,
+        paidAmount: 78000,
+      },
+      {
+        code: 'CIF020',
+        name: 'Consumer Innovation Fund',
+        region: 'JP',
+        unpaidAmount: 2950,
+        paidAmount: 36000,
+      },
     ];
 
     this.invoices = [
@@ -232,6 +354,8 @@ export class Dashboard implements OnInit {
     ];
 
     this.calculateTotal();
+    this.unpaidPortfolioTotal = this.portfolio.reduce((sum, item) => sum + item.unpaidAmount, 0);
+    this.paidPortfolioTotal = this.portfolio.reduce((sum, item) => sum + item.paidAmount, 0);
     // this.getInvoiceData();
   }
 
