@@ -1366,17 +1366,18 @@ export class Login implements OnInit, OnDestroy {
 
   // ── Form actions ─────────────────────────────────────────────────
   onLogin(): void {
-    if (!this.loginForm.valid) return;
-    this.apiService
-      .post('api/v1/Auth/login', this.getLoginPayload())
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res: any) => {
-          this.userId.set(res.data.userId);
-          this.currentPage.set(1);
-          this.startResendCountdown();
-        },
-      });
+    // if (!this.loginForm.valid) return;
+    // this.apiService
+    //   .post('api/v1/Auth/login', this.getLoginPayload())
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       this.userId.set(res.data.userId);
+    //       this.currentPage.set(1);
+    //       this.startResendCountdown();
+    //     },
+    //   });
+    this.router.navigate(['/app/dashboard']);
   }
 
   getLoginPayload(): any {
