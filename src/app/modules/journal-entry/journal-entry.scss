@@ -1,0 +1,53 @@
+/*
+  journal-entry.component.scss
+  ──────────────────────────────────────────────────────────────
+  Minimal — Tailwind handles all layout and visual styling.
+  Only the two things Tailwind cannot target cleanly:
+    1. PrimeNG table th/td internal padding reset
+    2. Paginator styling
+*/
+
+:host ::ng-deep {
+  .p-datatable {
+    // Let Tailwind !py-X and !px-X classes on th/td take full control
+    .p-datatable-thead > tr > th {
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .p-datatable-tbody > tr > td {
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    .p-datatable-tfoot > tr > td {
+      padding: 0 !important;
+      border: none !important;
+    }
+
+    .p-datatable-tbody > tr {
+      background: transparent !important;
+    }
+  }
+
+  // Paginator — match the app's clean aesthetic
+  .p-paginator {
+    background: #f8fafc !important;
+    border-top: 1px solid #f1f5f9 !important;
+    padding: 8px 20px !important;
+
+    .p-paginator-page,
+    .p-paginator-next,
+    .p-paginator-prev,
+    .p-paginator-first,
+    .p-paginator-last {
+      border-radius: 8px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      min-width: 32px !important;
+      height: 32px !important;
+    }
+  }
+}

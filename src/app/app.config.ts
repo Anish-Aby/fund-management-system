@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
@@ -85,6 +85,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     MessageService,
     DialogService,
+    ConfirmationService,
     providePrimeNG({
       theme: {
         preset: Noir,

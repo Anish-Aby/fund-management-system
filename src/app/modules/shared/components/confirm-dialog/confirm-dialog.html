@@ -1,0 +1,781 @@
+@if (state) {
+  <!-- ── Backdrop ──────────────────────────────────────────────────────── -->
+  <div
+    class="cd-backdrop fixed inset-0 z-[9998] bg-black/40 backdrop-blur-[2px]"
+    (click)="onBackdropClick()"
+  ></div>
+
+  <!-- ── Centering shell ───────────────────────────────────────────────── -->
+  <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
+    <div
+      class="cd-dialog cd-card pointer-events-auto w-full bg-white rounded-2xl overflow-hidden flex flex-col"
+      [ngClass]="isEmailMode ? 'max-w-[740px]' : 'max-w-[520px]'"
+    >
+      <!-- ╔══════════════════════════════════════════════════════════╗ -->
+      <!-- ║  EMAIL COMPOSE MODE  (Design 2 — light)                 ║ -->
+      <!-- ╚══════════════════════════════════════════════════════════╝ -->
+      @if (isEmailMode) {
+        <!-- Accent bar -->
+        <div class="h-[3px] w-full flex-shrink-0 bg-rose-500"></div>
+
+        <!-- ── Top bar ──────────────────────────────────────────────── -->
+        <div
+          class="px-[22px] py-[18px] flex items-center justify-between border-b border-slate-100"
+        >
+          <div class="flex items-center gap-[10px]">
+            <!-- Icon badge -->
+            <div
+              class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-500 flex items-center justify-center flex-shrink-0"
+            >
+              <i class="pi pi-times" style="font-size: 13px"></i>
+            </div>
+            <!-- Title + subtitle -->
+            <div>
+              <div class="text-[14px] font-bold text-slate-900 tracking-[-0.02em]">
+                {{ state.config.title }}
+              </div>
+              @if (emailConfig?.invoiceRef) {
+                <div class="text-[11px] text-slate-400 font-mono mt-[1px]">
+                  {{ emailConfig!.invoiceRef!.id }} · {{ emailConfig!.invoiceRef!.vendor }}
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Pills + close -->
+          <div class="flex items-center gap-[10px]">
+            <div class="flex items-center gap-[6px]">
+              <span
+                class="inline-flex items-center gap-1 px-[9px] py-[3px] rounded-full text-[10px] font-bold tracking-[0.04em] uppercase border bg-rose-50 text-rose-600 border-rose-200"
+              >
+                <span class="w-[5px] h-[5px] rounded-full bg-current flex-shrink-0"></span>Rejection
+              </span>
+              <span
+                class="inline-flex items-center gap-1 px-[9px] py-[3px] rounded-full text-[10px] font-bold tracking-[0.04em] uppercase border bg-amber-50 text-amber-600 border-amber-200"
+              >
+                <span class="w-[5px] h-[5px] rounded-full bg-current flex-shrink-0"></span>Email
+                draft
+              </span>
+            </div>
+            <button
+              (click)="dismiss()"
+              class="w-7 h-7 rounded-lg border border-slate-200 bg-slate-50 text-slate-400 flex items-center justify-center cursor-pointer transition-all duration-150 hover:bg-slate-100 hover:text-slate-600"
+            >
+              <i class="pi pi-times" style="font-size: 11px"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Invoice context strip ──────────────────────────────────── -->
+        @if (emailConfig?.invoiceRef) {
+          <div
+            class="mx-[22px] mt-4 px-[14px] py-[11px] rounded-[9px] bg-slate-50 border border-slate-200 flex items-center gap-[14px]"
+          >
+            <div
+              class="w-9 h-9 rounded-lg bg-rose-50 border border-rose-200 text-rose-500 flex items-center justify-center flex-shrink-0"
+            >
+              <i class="pi pi-file" style="font-size: 14px"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-bold text-slate-800">
+                {{ emailConfig!.invoiceRef!.vendor }}
+              </div>
+              <div class="text-[11px] text-slate-400 font-mono mt-[2px]">
+                {{ emailConfig!.invoiceRef!.id }}
+                @if (emailConfig!.invoiceRef!.fund) {
+                  · {{ emailConfig!.invoiceRef!.fund }}
+                }
+                @if (emailConfig!.invoiceRef!.due) {
+                  · Due {{ emailConfig!.invoiceRef!.due }}
+                }
+              </div>
+            </div>
+            <div class="text-[15px] font-bold font-mono text-rose-500 flex-shrink-0">
+              {{ emailConfig!.invoiceRef!.amount }}
+            </div>
+          </div>
+        }
+
+        <!-- ── Reason chips ───────────────────────────────────────────── -->
+        @if (emailConfig?.reasons?.length) {
+          <div class="mx-[22px] mt-4 flex flex-col gap-2">
+            <!-- Comment-style section label -->
+            <div
+              class="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-400 font-mono"
+            >
+              // rejection_reason
+            </div>
+            <div class="flex flex-wrap gap-[6px]">
+              @for (reason of emailConfig!.reasons!; track reason) {
+                <button
+                  (click)="selectedReason = reason"
+                  class="px-3 py-[5px] rounded-[7px] text-[12px] font-medium border cursor-pointer transition-all duration-150 bg-transparent"
+                  [ngClass]="
+                    selectedReason === reason
+                      ? 'bg-rose-50 border-rose-300 text-rose-600 font-semibold'
+                      : 'bg-white border-slate-200 text-slate-500 hover:border-rose-200 hover:text-slate-700'
+                  "
+                >
+                  {{ reason }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ── Email compose block ────────────────────────────────────── -->
+        <div class="mx-[22px] mt-4 rounded-[10px] border border-slate-200 overflow-hidden">
+          <!-- Compose label bar -->
+          <div
+            class="px-[14px] py-[10px] border-b border-slate-100 bg-slate-50 flex items-center gap-[6px]"
+          >
+            <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
+            <span
+              class="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-400 font-mono"
+            >
+              compose_rejection_email
+            </span>
+          </div>
+
+          <!-- To -->
+          <div class="flex items-start border-b border-slate-100 px-[14px] py-[9px] gap-3">
+            <span
+              class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400 font-mono w-9 flex-shrink-0 pt-[4px]"
+              >to:</span
+            >
+            <div class="flex flex-wrap items-center gap-[5px] flex-1 min-w-0">
+              @for (r of emailTo; track r.email) {
+                <span
+                  class="inline-flex items-center gap-[5px] px-[7px] py-[3px] rounded-[5px] bg-slate-50 border border-slate-200 text-[11px] text-slate-600 font-mono"
+                >
+                  <span
+                    class="w-4 h-4 rounded-[3px] text-[8px] font-bold flex items-center justify-center flex-shrink-0"
+                    [ngClass]="getAvatarClass(r.color)"
+                    >{{ r.initials }}</span
+                  >
+                  {{ r.email }}
+                  <span
+                    (click)="removeRecipient('to', r.email)"
+                    class="text-slate-300 hover:text-rose-400 cursor-pointer text-[9px] ml-0.5 transition-colors"
+                    >✕</span
+                  >
+                </span>
+              }
+              <input
+                [(ngModel)]="toInput"
+                (keydown.enter)="addRecipient('to'); $event.preventDefault()"
+                (keydown.tab)="addRecipient('to')"
+                placeholder="add_recipient@…"
+                class="text-[12px] text-slate-500 bg-transparent border-none outline-none min-w-[120px] flex-1 py-[3px] placeholder:text-slate-300 font-mono"
+              />
+            </div>
+          </div>
+
+          <!-- CC -->
+          <div class="flex items-start border-b border-slate-100 px-[14px] py-[9px] gap-3">
+            <span
+              class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400 font-mono w-9 flex-shrink-0 pt-[4px]"
+              >cc:</span
+            >
+            <div class="flex flex-wrap items-center gap-[5px] flex-1 min-w-0">
+              @for (r of emailCc; track r.email) {
+                <span
+                  class="inline-flex items-center gap-[5px] px-[7px] py-[3px] rounded-[5px] bg-slate-50 border border-slate-200 text-[11px] text-slate-600 font-mono"
+                >
+                  <span
+                    class="w-4 h-4 rounded-[3px] text-[8px] font-bold flex items-center justify-center flex-shrink-0"
+                    [ngClass]="getAvatarClass(r.color)"
+                    >{{ r.initials }}</span
+                  >
+                  {{ r.email }}
+                  <span
+                    (click)="removeRecipient('cc', r.email)"
+                    class="text-slate-300 hover:text-rose-400 cursor-pointer text-[9px] ml-0.5 transition-colors"
+                    >✕</span
+                  >
+                </span>
+              }
+              <input
+                [(ngModel)]="ccInput"
+                (keydown.enter)="addRecipient('cc'); $event.preventDefault()"
+                (keydown.tab)="addRecipient('cc')"
+                placeholder="add_cc@…"
+                class="text-[12px] text-slate-500 bg-transparent border-none outline-none min-w-[100px] flex-1 py-[3px] placeholder:text-slate-300 font-mono"
+              />
+            </div>
+          </div>
+
+          <!-- BCC -->
+          <div class="flex items-start border-b border-slate-100 px-[14px] py-[9px] gap-3">
+            <span
+              class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400 font-mono w-9 flex-shrink-0 pt-[4px]"
+              >bcc:</span
+            >
+            <div class="flex flex-wrap items-center gap-[5px] flex-1 min-w-0">
+              @for (r of emailBcc; track r.email) {
+                <span
+                  class="inline-flex items-center gap-[5px] px-[7px] py-[3px] rounded-[5px] bg-slate-50 border border-slate-200 text-[11px] text-slate-600 font-mono"
+                >
+                  <span
+                    class="w-4 h-4 rounded-[3px] text-[8px] font-bold flex items-center justify-center flex-shrink-0"
+                    [ngClass]="getAvatarClass(r.color)"
+                    >{{ r.initials }}</span
+                  >
+                  {{ r.email }}
+                  <span
+                    (click)="removeRecipient('bcc', r.email)"
+                    class="text-slate-300 hover:text-rose-400 cursor-pointer text-[9px] ml-0.5 transition-colors"
+                    >✕</span
+                  >
+                </span>
+              }
+              <input
+                [(ngModel)]="bccInput"
+                (keydown.enter)="addRecipient('bcc'); $event.preventDefault()"
+                (keydown.tab)="addRecipient('bcc')"
+                placeholder="add_bcc@…"
+                class="text-[12px] text-slate-500 bg-transparent border-none outline-none min-w-[100px] flex-1 py-[3px] placeholder:text-slate-300 font-mono"
+              />
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="flex items-center border-b border-slate-100 px-[14px] py-[9px] gap-3">
+            <span
+              class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400 font-mono w-9 flex-shrink-0"
+              >subj:</span
+            >
+            <input
+              [(ngModel)]="emailSubject"
+              placeholder="Subject…"
+              class="flex-1 text-[13px] font-semibold text-slate-900 tracking-[-0.01em] bg-transparent border-none outline-none placeholder:text-slate-300 placeholder:font-normal"
+            />
+          </div>
+
+          <!-- Body -->
+          <div class="border-t border-slate-100">
+            <textarea
+              [(ngModel)]="emailBody"
+              rows="7"
+              placeholder="Write your message…"
+              class="w-full px-[14px] py-[14px] text-[12px] text-slate-500 font-mono leading-[1.7] bg-transparent border-none outline-none resize-none placeholder:text-slate-300"
+            ></textarea>
+          </div>
+
+          <!-- Formatting toolbar -->
+          <div
+            class="px-[14px] py-[8px] border-t border-slate-100 bg-slate-50 flex items-center gap-[3px]"
+          >
+            <button
+              class="w-[26px] h-[26px] rounded-[5px] border-none bg-transparent text-slate-400 hover:bg-slate-200 hover:text-slate-600 flex items-center justify-center cursor-pointer transition-all text-[11px] font-bold"
+            >
+              <b>B</b>
+            </button>
+            <button
+              class="w-[26px] h-[26px] rounded-[5px] border-none bg-transparent text-slate-400 hover:bg-slate-200 hover:text-slate-600 flex items-center justify-center cursor-pointer transition-all text-[11px]"
+            >
+              <i>I</i>
+            </button>
+            <button
+              class="w-[26px] h-[26px] rounded-[5px] border-none bg-transparent text-slate-400 hover:bg-slate-200 hover:text-slate-600 flex items-center justify-center cursor-pointer transition-all text-[11px]"
+            >
+              <u>U</u>
+            </button>
+            <div class="w-px h-4 bg-slate-200 mx-[3px]"></div>
+            <button
+              class="w-[26px] h-[26px] rounded-[5px] border-none bg-transparent text-slate-400 hover:bg-slate-200 hover:text-slate-600 flex items-center justify-center cursor-pointer transition-all"
+            >
+              <i class="pi pi-paperclip" style="font-size: 11px"></i>
+            </button>
+            <button
+              class="w-[26px] h-[26px] rounded-[5px] border-none bg-transparent text-slate-400 hover:bg-slate-200 hover:text-slate-600 flex items-center justify-center cursor-pointer transition-all"
+            >
+              <i class="pi pi-link" style="font-size: 11px"></i>
+            </button>
+            <!-- Auto-attached files -->
+            @if (emailConfig?.attachments?.length) {
+              <div class="w-px h-4 bg-slate-200 mx-[3px]"></div>
+              @for (att of emailConfig!.attachments!; track att) {
+                <span
+                  class="inline-flex items-center gap-[5px] px-[8px] py-[3px] rounded-[5px] bg-white border border-slate-200 text-[10px] text-slate-500 font-mono ml-1"
+                >
+                  <i class="pi pi-file text-slate-400" style="font-size: 9px"></i>
+                  {{ att }}
+                </span>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- ── Footer ─────────────────────────────────────────────────── -->
+        <div
+          class="px-[22px] pt-[14px] pb-[18px] mt-4 border-t border-slate-100 flex items-center justify-between gap-3"
+        >
+          <div class="flex items-center gap-[6px] font-mono text-[11px] text-slate-400">
+            <span
+              class="inline-flex items-center justify-center px-[6px] py-[1px] rounded bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-400"
+              >Esc</span
+            >
+            <span>cancel</span>
+            @if (emailConfig?.attachments?.length) {
+              <span class="text-slate-300">·</span>
+              <span>PDF auto-attached</span>
+            }
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <p-button
+              [label]="state.config.cancelLabel || 'Cancel'"
+              variant="outlined"
+              severity="secondary"
+              size="small"
+              (onClick)="dismiss()"
+            />
+            <p-button
+              [label]="state.config.confirmLabel || 'Send rejection'"
+              icon="pi pi-send"
+              severity="danger"
+              size="small"
+              [disabled]="!canConfirmEmail()"
+              [loading]="loading"
+              (onClick)="onConfirmEmail()"
+            />
+          </div>
+        </div>
+      } @else {
+        <!-- ╔══════════════════════════════════════════════════════════╗ -->
+        <!-- ║  GENERIC CONFIRM MODE                                   ║ -->
+        <!-- ╚══════════════════════════════════════════════════════════╝ -->
+
+        <!-- Accent bar -->
+        <div class="h-[3px] w-full flex-shrink-0" [ngClass]="accentBarClass"></div>
+
+        <!-- Top row: badge + close -->
+        <div class="px-[22px] pt-[18px] flex items-center justify-between">
+          <span
+            class="inline-flex items-center gap-[5px] px-[10px] py-[3px] rounded-full text-[11px] font-bold tracking-[0.04em] uppercase border"
+            [ngClass]="badgePillClass"
+          >
+            <span class="w-[5px] h-[5px] rounded-full bg-current flex-shrink-0"></span>
+            {{ badgeLabel }}
+          </span>
+          <button
+            (click)="dismiss()"
+            class="w-7 h-7 rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-400 flex items-center justify-center cursor-pointer transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-600"
+          >
+            <i class="pi pi-times" style="font-size: 11px"></i>
+          </button>
+        </div>
+
+        <!-- Header: icon badge + title + description -->
+        <div class="px-[22px] pt-4 flex items-start gap-3">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border"
+            [ngClass]="iconBadgeClass"
+          >
+            <i class="pi" [ngClass]="resolvedIcon" style="font-size: 17px"></i>
+          </div>
+          <div class="flex-1 min-w-0 pt-0.5">
+            <h2 class="text-[15px] font-bold text-slate-900 tracking-[-0.02em] leading-snug">
+              {{ state.config.title }}
+            </h2>
+            @if (state.config.description) {
+              <p class="text-[13px] text-slate-500 leading-relaxed mt-1">
+                {{ state.config.description }}
+              </p>
+            }
+          </div>
+        </div>
+
+        <!-- Entity card -->
+        @if (entityCard) {
+          <div
+            class="mx-[22px] mt-4 rounded-[9px] border border-neutral-200 bg-neutral-50 overflow-hidden"
+          >
+            <div class="px-3.5 py-[9px] border-b border-neutral-100 flex items-center gap-2">
+              @if (entityCard.label) {
+                <span class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400">{{
+                  entityCard.label
+                }}</span>
+              }
+              <span class="text-[13px] font-bold text-slate-900">{{ entityCard.name }}</span>
+              @if (entityCard.id) {
+                <span class="text-[11px] text-slate-400 font-mono ml-auto">{{
+                  entityCard.id
+                }}</span>
+              }
+            </div>
+            @for (row of entityCard.rows; track row.key; let last = $last) {
+              <div
+                class="flex items-center justify-between px-3.5 py-[7px]"
+                [ngClass]="last ? '' : 'border-b border-neutral-100'"
+              >
+                <span class="text-[11px] text-slate-400 font-mono">{{ row.key }}</span>
+                @if (row.pill) {
+                  <span
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border"
+                    [ngClass]="entityPillClass(row.pill.color)"
+                  >
+                    <span class="w-1 h-1 rounded-full bg-current flex-shrink-0"></span>
+                    {{ row.pill.text }}
+                  </span>
+                }
+                @if (!row.pill) {
+                  <span
+                    class="text-[11px] font-semibold font-mono"
+                    [ngClass]="entityValueClass(row.color)"
+                    >{{ row.value }}</span
+                  >
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- ── Details section (grid or list layout) ─────────────── -->
+        @if (details) {
+          <div
+            class="mx-[22px] mt-4 rounded-[9px] border border-neutral-200 bg-neutral-50 overflow-hidden"
+          >
+            <!-- Section header -->
+            @if (details.title) {
+              <div class="px-3.5 py-[9px] border-b border-neutral-100 flex items-center gap-2">
+                <span class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-400">
+                  {{ details.title }}
+                </span>
+              </div>
+            }
+
+            <!-- GRID layout — 2-column cards (default) -->
+            @if (!details.layout || details.layout === 'grid') {
+              <div class="p-3 grid grid-cols-2 gap-2">
+                @for (item of details.items; track $index) {
+                  <div
+                    class="bg-white rounded-xl border border-neutral-200 px-3.5 py-3 flex flex-col gap-1 group relative"
+                    [ngClass]="item.highlight ? 'ring-1 ring-neutral-300' : ''"
+                  >
+                    <span
+                      class="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.05em] leading-none"
+                    >
+                      {{ item.label }}
+                    </span>
+                    <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                      @if (item.icon) {
+                        <i
+                          class="pi text-slate-400 flex-shrink-0"
+                          [ngClass]="item.icon"
+                          style="font-size: 11px"
+                        ></i>
+                      }
+                      @if (!item.badge) {
+                        <span
+                          class="leading-snug break-all"
+                          [ngClass]="{
+                            'text-[15px] font-bold text-slate-900': item.highlight,
+                            'text-[13px] font-semibold text-slate-800': !item.highlight,
+                            'font-mono': item.mono,
+                          }"
+                          >{{ item.value }}</span
+                        >
+                      }
+                      @if (item.badge) {
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border"
+                          [ngClass]="detailBadgeClass(item.badge.color)"
+                          >{{ item.badge.text }}</span
+                        >
+                      }
+                      @if (item.copyable) {
+                        <button
+                          (click)="copyValue(item.value)"
+                          class="opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0 w-5 h-5 rounded flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer border-0 bg-transparent"
+                        >
+                          <i class="pi pi-copy" style="font-size: 9px"></i>
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- LIST layout — monospace key/value rows matching entity card style -->
+            @if (details.layout === 'list') {
+              @for (item of details.items; track $index; let last = $last) {
+                <div
+                  class="flex items-center justify-between px-3.5 py-[7px] group"
+                  [ngClass]="last ? '' : 'border-b border-neutral-100'"
+                >
+                  <!-- Key (label) — monospace gray, like entity card .er-key -->
+                  <span class="text-[11px] text-slate-400 font-mono">{{ item.label }}</span>
+
+                  <!-- Value — monospace semibold dark, with optional color / badge / copy -->
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    @if (!item.badge) {
+                      <span
+                        class="text-[11px] font-semibold font-mono"
+                        [ngClass]="{
+                          'text-slate-800': !item.highlight,
+                          'text-[13px] font-bold text-slate-900': item.highlight,
+                        }"
+                        >{{ item.value }}</span
+                      >
+                    }
+                    @if (item.badge) {
+                      <span
+                        class="inline-flex items-center gap-1 px-2 py-[2px] rounded-full text-[10px] font-bold border"
+                        [ngClass]="detailBadgeClass(item.badge.color)"
+                      >
+                        <span class="w-1 h-1 rounded-full bg-current flex-shrink-0"></span>
+                        {{ item.badge.text }}
+                      </span>
+                    }
+                    @if (item.copyable) {
+                      <button
+                        (click)="copyValue(item.value)"
+                        class="opacity-0 group-hover:opacity-100 transition-opacity w-5 h-5 rounded flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-neutral-200 cursor-pointer border-0 bg-transparent"
+                      >
+                        <i class="pi pi-copy" style="font-size: 9px"></i>
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+
+        <!-- Alert strips -->
+        @if (alerts?.length) {
+          <div class="flex flex-col gap-2 mx-[22px] mt-3">
+            @for (alert of alerts!; track $index) {
+              <div
+                class="flex items-start gap-[9px] px-3 py-[10px] rounded-lg border text-[12px] leading-relaxed"
+                [ngClass]="alertBgClass(alert.type)"
+              >
+                <i
+                  class="pi flex-shrink-0 mt-px"
+                  style="font-size: 13px"
+                  [ngClass]="[alertIcon(alert.type, alert.icon), alertIconClass(alert.type)]"
+                ></i>
+                <span>{{ alert.message }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Form fields -->
+        @if (state.config.fields?.length) {
+          <div
+            class="mx-[22px] mt-[14px] px-[18px] py-4 rounded-[9px] bg-neutral-50 border border-neutral-100"
+          >
+            <form [formGroup]="form" class="flex flex-col gap-4">
+              @for (field of state.config.fields!; track field.key) {
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between">
+                    <label
+                      [for]="field.key"
+                      class="text-[10px] font-bold uppercase tracking-[0.06em] text-slate-500 flex items-center"
+                    >
+                      {{ field.label }}
+                      @if (field.required) {
+                        <span class="text-rose-500 ml-0.5">*</span>
+                      }
+                    </label>
+                    @if (field.hint) {
+                      <span class="text-[11px] italic text-slate-400">{{ field.hint }}</span>
+                    }
+                  </div>
+                  @if (field.type === 'text' || field.type === 'email') {
+                    <input
+                      [id]="field.key"
+                      [formControlName]="field.key"
+                      [type]="field.type"
+                      [placeholder]="field.placeholder || ''"
+                      pInputText
+                      fluid
+                      class="!text-[13px] !bg-white !rounded-lg"
+                      [ngClass]="
+                        isInvalid(field.key)
+                          ? '!border-rose-400 !ring-1 !ring-rose-200'
+                          : '!border-neutral-200'
+                      "
+                    />
+                  }
+                  @if (field.type === 'number') {
+                    <p-inputnumber
+                      [formControlName]="field.key"
+                      [placeholder]="field.placeholder || ''"
+                      [mode]="field.numberMode || 'decimal'"
+                      [currency]="field.currency || 'USD'"
+                      locale="en-US"
+                      fluid
+                      inputStyleClass="!text-[13px] !bg-white !rounded-lg"
+                    />
+                  }
+                  @if (field.type === 'textarea') {
+                    <textarea
+                      [id]="field.key"
+                      [formControlName]="field.key"
+                      [placeholder]="field.placeholder || ''"
+                      [rows]="field.rows || 3"
+                      pTextarea
+                      fluid
+                      class="!text-[13px] !resize-none !bg-white !rounded-lg"
+                      [ngClass]="isInvalid(field.key) ? '!border-rose-400' : '!border-neutral-200'"
+                    ></textarea>
+                  }
+                  @if (field.type === 'select') {
+                    <p-select
+                      [formControlName]="field.key"
+                      [options]="field.options || []"
+                      [optionLabel]="field.optionLabel || 'label'"
+                      [optionValue]="field.optionValue || 'value'"
+                      [placeholder]="field.placeholder || 'Select an option'"
+                      fluid
+                      appendTo="body"
+                    />
+                  }
+                  @if (field.type === 'multiselect') {
+                    <p-multiselect
+                      [formControlName]="field.key"
+                      [options]="field.options || []"
+                      [optionLabel]="field.optionLabel || 'label'"
+                      [optionValue]="field.optionValue || 'value'"
+                      [placeholder]="field.placeholder || 'Select options'"
+                      fluid
+                      appendTo="body"
+                    />
+                  }
+                  @if (field.type === 'password') {
+                    <p-password
+                      [formControlName]="field.key"
+                      [placeholder]="field.placeholder || ''"
+                      [feedback]="field.passwordFeedback ?? false"
+                      [toggleMask]="true"
+                      fluid
+                      inputStyleClass="!text-[13px] !bg-white !rounded-lg"
+                    />
+                  }
+                  @if (field.type === 'checkbox') {
+                    <div class="flex items-center gap-2.5 py-0.5">
+                      <p-checkbox
+                        [formControlName]="field.key"
+                        [binary]="true"
+                        [inputId]="field.key"
+                      />
+                      <label
+                        [for]="field.key"
+                        class="text-[13px] text-slate-600 cursor-pointer select-none"
+                      >
+                        {{ field.checkboxLabel || field.label }}
+                      </label>
+                    </div>
+                  }
+                  @if (isInvalid(field.key)) {
+                    <div
+                      class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-rose-50 border border-rose-100"
+                    >
+                      <i
+                        class="pi pi-exclamation-circle text-rose-500 flex-shrink-0"
+                        style="font-size: 10px"
+                      ></i>
+                      <span class="text-[11px] text-rose-600 font-medium">{{
+                        getError(field.key)
+                      }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </form>
+          </div>
+        }
+
+        <!-- Type-to-confirm -->
+        @if (state.config.confirmText) {
+          <div class="mx-[22px] mt-3 px-3.5 py-3 rounded-lg bg-amber-50 border border-amber-200">
+            <div class="flex items-start gap-2 mb-2.5">
+              <div
+                class="w-5 h-5 rounded-md bg-amber-100 border border-amber-200 text-amber-600 flex items-center justify-center flex-shrink-0 mt-px"
+              >
+                <i class="pi pi-lock" style="font-size: 8px"></i>
+              </div>
+              <p class="text-[12px] text-amber-800 leading-relaxed">
+                Type
+                <code
+                  class="font-mono font-bold text-[11px] bg-amber-100 border border-amber-200 text-amber-900 px-1.5 py-px rounded mx-0.5"
+                  >{{ state.config.confirmText }}</code
+                >
+                to confirm.
+              </p>
+            </div>
+            <input
+              [(ngModel)]="confirmTextInput"
+              [placeholder]="state.config.confirmText"
+              pInputText
+              fluid
+              class="!text-[13px] !font-mono !bg-white !rounded-lg !border-amber-300"
+              [ngClass]="
+                confirmTextInput && confirmTextInput !== state.config.confirmText
+                  ? '!border-rose-400'
+                  : ''
+              "
+            />
+          </div>
+        }
+
+        <!-- Checkbox confirm -->
+        @if (confirmCheckbox) {
+          <label
+            class="mx-[22px] mt-3 px-3.5 py-3 rounded-lg bg-neutral-50 border border-neutral-200 flex items-start gap-3 cursor-pointer select-none"
+          >
+            <p-checkbox
+              [(ngModel)]="checkboxConfirmed"
+              [binary]="true"
+              inputId="confirmCheck"
+              class="flex-shrink-0 mt-[1px]"
+            />
+            <span class="text-[12px] text-slate-600 leading-relaxed">{{
+              confirmCheckbox.label
+            }}</span>
+          </label>
+        }
+
+        <!-- Footer -->
+        <div
+          class="px-[22px] pt-[14px] pb-5 mt-[18px] border-t border-neutral-100 flex items-center justify-between gap-3"
+        >
+          <div class="flex items-center gap-1.5 flex-1 min-w-0">
+            @if (state.config.footerNote) {
+              <i class="pi pi-info-circle text-slate-400 flex-shrink-0" style="font-size: 10px"></i>
+              <span class="text-[11px] text-slate-400 truncate">{{ state.config.footerNote }}</span>
+            } @else {
+              <span
+                class="inline-flex items-center justify-center px-[7px] py-[2px] rounded bg-neutral-100 border border-neutral-200 font-mono text-[10px] text-slate-400 flex-shrink-0"
+                >Esc</span
+              >
+              <span class="text-[11px] text-slate-400">to cancel</span>
+            }
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <p-button
+              [label]="state.config.cancelLabel || 'Cancel'"
+              variant="outlined"
+              severity="secondary"
+              size="small"
+              (onClick)="dismiss()"
+            />
+            <p-button
+              [label]="state.config.confirmLabel || 'Confirm'"
+              [icon]="resolvedConfirmIcon"
+              [severity]="confirmSeverity"
+              size="small"
+              [disabled]="!canConfirm()"
+              [loading]="loading"
+              (onClick)="onConfirm()"
+            />
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

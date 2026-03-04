@@ -28,9 +28,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import TaxType from '../../core/mocks/tax-type-mock.json';
 import { DialogWindowService } from '../../core/services/dialog-window-service';
 import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
-import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog';
 import { ConfirmDialogService } from '../../core/services/confirm-dialog.service';
 import { InvoiceTimelineComponent } from '../../invoice-timeline/invoice-timeline';
+import { ConfirmService } from '../../shared/services/confirm.service';
 
 @Component({
   selector: 'app-invoice-review',
@@ -58,7 +58,7 @@ import { InvoiceTimelineComponent } from '../../invoice-timeline/invoice-timelin
   styleUrl: './invoice-review.scss',
 })
 export class InvoiceReview implements OnInit {
-  @ViewChild(ConfirmDialog) confirmDialog?: ConfirmDialog;
+  // @ViewChild(ConfirmDialog) confirmDialog?: ConfirmDialog;
 
   invoiceData = signal<any[]>(InvoiceDataMock as any[]);
   editMode = signal(false);
@@ -84,7 +84,7 @@ export class InvoiceReview implements OnInit {
   constructor(
     private dialogService: DialogService,
     private dialogWindowService: DialogWindowService,
-    private confirmDialogService: ConfirmDialogService,
+    private confirmService: ConfirmService,
     public utilityService: UtilityService,
   ) {}
 
@@ -179,13 +179,79 @@ export class InvoiceReview implements OnInit {
     this.dialogWindowService.showComponent(DIALOG_COMPONENT_TITLES.OTHERS.INVOICE_SPLIT);
   }
 
+  async rejectInvoice(invoice: any): Promise<void> {
+    const result = await this.confirmService.open({
+      title: 'Reject invoice',
+      severity: 'danger',
+      confirmLabel: 'Send rejection',
+      cancelLabel: 'Cancel',
+      email: {
+        invoiceRef: {
+          id: invoice.basicInformation.invoiceNo,
+          vendor: invoice.basicInformation.vendorName,
+          amount: invoice.basicInformation.payableAmount,
+          fund: invoice.basicInformation.fund ?? undefined,
+          due: invoice.basicInformation.invoiceDueDate ?? undefined,
+        },
+        attachments: [`${invoice.basicInformation.invoiceNo}.pdf`],
+        defaultSubject: `Re: Invoice ${invoice.basicInformation.invoiceNo} — Rejection Notice`,
+      },
+    } as any);
+    if (result.confirmed) {
+      const { to, cc, bcc, subject, body, reason } = result.values;
+      console.log('Sending rejection email', { to, cc, bcc, subject, body, reason });
+    }
+  }
+
   async showApproveDialog(invoice: any, reviewType: string): Promise<void> {
-    await this.confirmDialogService.open({
-      title: 'Approve Invoice',
-      message: 'Confirm approval of INV-2024-001',
+    this.confirmService.open({
+      title: `Approve Invoice`,
       severity: 'success',
+      description: `Confirm approval of ${invoice.basicInformation.invoiceNo}`,
       confirmLabel: 'Confirm Approval',
-      data: { subMessage: 'This invoice will be approved and routed for payment processing.' },
+      details: {
+        title: 'Invoice Summary',
+        items: [
+          {
+            label: 'Vendor',
+            value: invoice.basicInformation.vendorName,
+          },
+          {
+            label: 'Invoice Number',
+            value: invoice.basicInformation.invoiceNo,
+          },
+          {
+            label: 'Amount',
+            value: invoice.basicInformation.payableAmount,
+            highlight: true,
+          },
+          {
+            label: 'Due Date',
+            value: invoice.basicInformation.invoiceDueDate,
+          },
+          {
+            label: 'Fund',
+            value: invoice.basicInformation.portfolioName,
+          },
+        ],
+        layout: 'list',
+      },
+      fields: [
+        {
+          key: 'comments',
+          label: 'Comments',
+          type: 'textarea',
+          placeholder: 'Add approval comments (optional)',
+          rows: 4,
+        },
+      ],
+      alerts: [
+        {
+          type: 'success',
+          message:
+            'By approving this invoice, you declare that the information provided is correct. This invoice will be approved and will be taken to the next process.',
+        },
+      ],
     });
   }
 

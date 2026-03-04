@@ -6,10 +6,21 @@ import { PrimeNG } from 'primeng/config';
 import { LoaderService } from './modules/core/services/loader-service';
 import { MainLoaderComponent } from './modules/shared/components/main-loader';
 import { DialogWindowService } from './modules/core/services/dialog-window-service';
+import { CommonModule } from '@angular/common';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmDialog } from './modules/shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, RouterOutlet, ToastModule, MainLoaderComponent],
+  imports: [
+    ButtonModule,
+    RouterOutlet,
+    ToastModule,
+    MainLoaderComponent,
+    CommonModule,
+    ConfirmDialogModule,
+    ConfirmDialog,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

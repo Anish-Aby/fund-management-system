@@ -1,0 +1,107 @@
+<!--
+  journal-entry-view.component.html
+  ──────────────────────────────────────────────────────────────────
+  Opened via DialogService.open() — NOT a nested <p-dialog>.
+  DialogService renders it at the root overlay layer, completely
+  independent of the parent dynamic dialog's DOM.
+-->
+<div class="flex flex-col gap-4 p-5 min-w-[460px]">
+  @if (entry) {
+    <!-- Account type -->
+    @if (entry.accountType) {
+      <div class="flex items-center gap-3">
+        <span
+          class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider w-24 flex-shrink-0"
+          >Type</span
+        >
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded-md bg-violet-50 border border-violet-100 text-violet-700 text-[12px] font-semibold"
+        >
+          {{ entry.accountType }}
+        </span>
+      </div>
+    }
+
+    <!-- Debit / Credit cards -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="p-4 rounded-xl bg-rose-50 border border-rose-100 flex flex-col gap-2">
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-arrow-up text-rose-500" style="font-size: 10px"></i>
+          <span class="text-[10px] font-bold text-rose-600 uppercase tracking-wider">Debit</span>
+        </div>
+        <p class="text-[22px] font-bold text-rose-600 font-mono tabular-nums leading-none">
+          {{ entry.debitAmount | currency: 'USD' : 'symbol' : '1.2-2' }}
+        </p>
+        @if (entry.debitEntity) {
+          <p class="text-[11px] text-slate-500">{{ entry.debitEntity }}</p>
+        }
+      </div>
+
+      <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100 flex flex-col gap-2">
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-arrow-down text-emerald-600" style="font-size: 10px"></i>
+          <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider"
+            >Credit</span
+          >
+        </div>
+        <p class="text-[22px] font-bold text-emerald-600 font-mono tabular-nums leading-none">
+          {{ entry.creditAmount | currency: 'USD' : 'symbol' : '1.2-2' }}
+        </p>
+        @if (entry.creditEntity) {
+          <p class="text-[11px] text-slate-500">{{ entry.creditEntity }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- Balance status -->
+    <div
+      class="flex items-center gap-2 px-3 py-2.5 rounded-lg border"
+      [ngClass]="isBalanced ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-100'"
+    >
+      <i
+        class="pi text-[11px]"
+        [ngClass]="
+          isBalanced ? 'pi-check-circle text-emerald-600' : 'pi-exclamation-triangle text-rose-500'
+        "
+      ></i>
+      <span
+        class="text-[12px] font-semibold"
+        [ngClass]="isBalanced ? 'text-emerald-700' : 'text-rose-600'"
+      >
+        {{ isBalanced ? 'Entry is balanced' : 'Entry is unbalanced — debit ≠ credit' }}
+      </span>
+    </div>
+
+    <!-- Narration -->
+    @if (entry.narration) {
+      <div class="flex flex-col gap-1.5">
+        <span
+          class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5"
+        >
+          <i class="pi pi-align-left" style="font-size: 10px"></i>
+          Narration
+        </span>
+        <p
+          class="text-[13px] text-slate-600 leading-relaxed bg-slate-50 rounded-lg px-4 py-3 border border-slate-100"
+        >
+          {{ entry.narration }}
+        </p>
+      </div>
+    }
+
+    <!-- Footer actions -->
+    <div class="flex items-center justify-between pt-2 border-t border-slate-100 mt-1">
+      <p-button
+        label="Edit this entry"
+        icon="pi pi-pencil"
+        variant="outlined"
+        severity="secondary"
+        size="small"
+        (onClick)="editEntry()"
+      />
+      <p-button label="Close" severity="contrast" size="small" (onClick)="close()" />
+    </div>
+  } @else {
+    <p class="text-[13px] text-slate-400 text-center py-8">No entry data.</p>
+  }
+</div>
