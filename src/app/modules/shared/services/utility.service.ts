@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -91,5 +92,12 @@ export class UtilityService {
     } catch {
       return currencyCode;
     }
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const pw = control.get('password')?.value;
+    const cp = control.get('confirmPassword')?.value;
+    if (!cp) return null;
+    return pw === cp ? null : { mismatch: true };
   }
 }

@@ -5,6 +5,16 @@ export const ROUTER_PATHS = {
   LOGIN: 'app/login',
 };
 
+export const LOGIN_TEXT_EXIT_DURATION = 460;
+export const LOGIN_PANEL_VISIBLE_DURATION = 4000;
+
+export const API_URLS = {
+  LOGIN: 'api/v1/auth/login',
+  VERIFY_OTP: 'api/v1/auth/verify-otp',
+  FORGOT_PASSWORD: 'api/v1/auth/forgot-password',
+  RESET_PASSWORD: 'api/v1/auth/reset-password',
+};
+
 export const DIALOG_COMPONENT_TITLES = {
   MASTERS: {
     USER_MANAGEMENT: 'User Management',
@@ -59,6 +69,8 @@ export const ERROR_MESSAGES = {
 
 export const TOAST_MESSAGES = {
   LOGGED_OUT_SUCCESSFULLY: 'Logged out successfully',
+  LOGGED_IN_SUCCESSFULLY: 'Logged in successfully',
+  PLEASE_LOG_IN_AGAIN: 'Please go back and login again.',
 };
 
 export const SESSION_STORAGE_KEYS = {

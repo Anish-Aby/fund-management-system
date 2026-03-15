@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "iconId": "chart",
+    "title": "Manage funds\nwith precision",
+    "sub": "Track invoices, approvals, and cashflows across all portfolios in one place."
+  },
+  {
+    "id": 1,
+    "iconId": "ai",
+    "title": "AI-powered\ninvoice extraction",
+    "sub": "Upload any PDF — our AI reads vendor, amounts, and line items automatically. No manual entry."
+  },
+  {
+    "id": 2,
+    "iconId": "workflow",
+    "title": "Automate\napproval workflows",
+    "sub": "Multi-level approvals with configurable routing rules, live status, and instant notifications."
+  },
+  {
+    "id": 3,
+    "iconId": "audit",
+    "title": "Full audit\ntrail built-in",
+    "sub": "Every action logged with timestamps, user IDs, and change history — full compliance visibility."
+  }
+]
