@@ -274,9 +274,7 @@ export class DialogWindowService {
   }
 
   public focusWindow(id: string): void {
-    console.log('focusing window', id);
     const win = this.windows$.value.find((w) => w.id === id);
-    console.log('found window', win);
     if (!win || win.minimized) return;
 
     const nextZ = (this.zIndexCounter += 2);

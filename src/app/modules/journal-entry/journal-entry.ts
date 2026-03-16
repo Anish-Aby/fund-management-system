@@ -363,11 +363,8 @@ export class JournalEntry {
       },
     });
     if (result.confirmed) {
-      console.log('delete');
     }
   }
 
-  saveJournal(): void {
-    console.log('Saving journal:', this.journalEntries);
-  }
+  saveJournal(): void {}
 }

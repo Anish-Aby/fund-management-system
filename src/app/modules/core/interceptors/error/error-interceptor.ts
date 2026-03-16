@@ -1,10 +1,38 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { catchError, throwError } from 'rxjs';
 import { ToastService } from '../../services/toast';
 import { ERROR_MESSAGES } from '../../../shared/constants/const';
+
+const extractErrorMessage = (error: HttpErrorResponse): string => {
+  const body = error.error;
+
+  if (!body) return ERROR_MESSAGES.UNKOWN_ERROR;
+
+  // Validation error shape: { errors: { field: string[] } }
+  if (body.errors && typeof body.errors === 'object') {
+    const messages = Object.entries(body.errors as Record<string, string[]>).flatMap(
+      ([field, msgs]) => msgs.map((msg) => `${formatFieldName(field)}: ${msg}`),
+    );
+
+    if (messages.length) return messages.join('\n');
+  }
+
+  // Standard message field
+  if (body.message) return body.message;
+
+  // RFC 9110 / ProblemDetails title fallback
+  if (body.title) return body.title;
+
+  return ERROR_MESSAGES.UNKOWN_ERROR;
+};
+
+const formatFieldName = (field: string): string =>
+  field
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
+    .trim();
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -12,34 +40,27 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let errorMessage = ERROR_MESSAGES.UNKOWN_ERROR;
       if (!(error instanceof HttpErrorResponse)) {
-        toastService.showError(errorMessage);
+        toastService.showError(ERROR_MESSAGES.UNKOWN_ERROR);
+        return throwError(() => error);
       }
+
+      const errorMessage = extractErrorMessage(error);
+
       switch (error.status) {
         case HttpStatusCode.Unauthorized:
-          const message = error.error.message;
-          errorMessage = message ?? ERROR_MESSAGES.UNAUTHORIZED;
           // authService.logout();
           break;
 
-        case HttpStatusCode.InternalServerError:
-          error.error.message
-            ? (errorMessage = error.error.message)
-            : (errorMessage = ERROR_MESSAGES.INTERNAL_SERVER_ERROR);
-          break;
-
-        case HttpStatusCode.NotFound:
-        case HttpStatusCode.ServiceUnavailable:
         case HttpStatusCode.Forbidden:
-        case HttpStatusCode.BadRequest:
         case HttpStatusCode.NotFound:
-          errorMessage = error.error.message;
-          break;
-
+        case HttpStatusCode.BadRequest:
+        case HttpStatusCode.InternalServerError:
+        case HttpStatusCode.ServiceUnavailable:
         default:
-          errorMessage = error.error?.message ?? ERROR_MESSAGES.UNKOWN_ERROR;
+          break;
       }
+
       toastService.showError(errorMessage);
       return throwError(() => error);
     }),

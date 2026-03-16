@@ -189,7 +189,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res: any) => {
-          this.authService.setTokens(res.token, res.token);
+          // this.authService.setTokens(res.token, res.token);
+          this.authService.setTokens('awdawd', 'awdawd');
           this.toastService.showSuccess(TOAST_MESSAGES.LOGGED_IN_SUCCESSFULLY);
           this.router.navigate([ROUTER_PATHS.DASHBOARD]);
         },

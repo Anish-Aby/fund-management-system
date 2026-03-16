@@ -1,19 +1,7 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-bank-management',
-//   imports: [],
-//   templateUrl: './bank-management.html',
-//   styleUrl: './bank-management.scss',
-// })
-// export class BankManagement {
-
-// }
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-// PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -22,32 +10,28 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
-// Mock data
 import mockBanks from '../core/mocks/bank-list-mock.json';
-// ── Types ──────────────────────────────────────────────────────────────────
+import { ApiService } from '../shared/services/api.service';
+import { API_URLS } from '../shared/constants/const';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ConfirmService } from '../shared/services/confirm.service';
+import { ToastService } from '../core/services/toast';
 
 export type FormMode = 'add' | 'edit' | 'view';
 
 export interface Bank {
-  id: string;
+  bankMasterId: string;
   bankCode: string;
   bankName: string;
   bankAccountNo: string;
   bankRegion: string;
   accountCcy: string;
-  achNo: string;
+  achno: string;
   swiftNo: string;
   contactPerson: string;
   contactNo: string;
   emailId: string;
 }
-
-export interface SelectOption {
-  label: string;
-  value: string;
-}
-
-// ── Component ──────────────────────────────────────────────────────────────
 
 @Component({
   selector: 'app-bank-management',
@@ -67,7 +51,7 @@ export interface SelectOption {
   providers: [MessageService],
 })
 export class BankManagementComponent implements OnInit {
-  // ── Form ────────────────────────────────────────────────────────────────
+  private destroyRef = inject(DestroyRef);
 
   bankForm!: FormGroup;
   private mode = signal<FormMode>('add');
@@ -77,63 +61,99 @@ export class BankManagementComponent implements OnInit {
   isEditMode = computed(() => this.mode() === 'edit');
   isViewMode = computed(() => this.mode() === 'view');
 
-  // ── Table data (seeded from mock JSON) ──────────────────────────────────
-
-  bankData = signal<Bank[]>(mockBanks as Bank[]);
+  bankData = signal<Bank[]>([]);
   selectedBanks: Bank[] = [];
 
-  // ── Dropdown options ─────────────────────────────────────────────────────
-
-  regionOptions: SelectOption[] = [
-    { label: 'North America', value: 'North America' },
-    { label: 'Europe', value: 'Europe' },
-    { label: 'Asia Pacific', value: 'Asia Pacific' },
-    { label: 'Middle East', value: 'Middle East' },
-    { label: 'Latin America', value: 'Latin America' },
-    { label: 'Africa', value: 'Africa' },
-  ];
-
-  currencyOptions: SelectOption[] = [
-    { label: 'USD – US Dollar', value: 'USD' },
-    { label: 'EUR – Euro', value: 'EUR' },
-    { label: 'GBP – British Pound', value: 'GBP' },
-    { label: 'JPY – Japanese Yen', value: 'JPY' },
-    { label: 'CHF – Swiss Franc', value: 'CHF' },
-    { label: 'AUD – Australian Dollar', value: 'AUD' },
-    { label: 'CAD – Canadian Dollar', value: 'CAD' },
-    { label: 'SGD – Singapore Dollar', value: 'SGD' },
-    { label: 'HKD – Hong Kong Dollar', value: 'HKD' },
-    { label: 'AED – UAE Dirham', value: 'AED' },
-  ];
+  regionOptions = signal([]);
+  currencyOptions = signal([]);
+  countryOptions = signal([]);
 
   // ── Constructor ──────────────────────────────────────────────────────────
 
   constructor(
     private fb: FormBuilder,
+    private apiService: ApiService,
+    private confirmService: ConfirmService,
     private messageService: MessageService,
+    private toastService: ToastService,
   ) {}
 
   // ── Lifecycle ────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
     this.buildForm();
+    this.getBankListData();
+    this.getBankLookupData();
   }
-
-  // ── Form helpers ─────────────────────────────────────────────────────────
 
   private buildForm(): void {
     this.bankForm = this.fb.group({
       bankCode: ['', Validators.required],
       bankName: ['', Validators.required],
       bankAccountNo: ['', Validators.required],
-      bankRegion: ['', Validators.required],
-      accountCcy: ['', Validators.required],
-      achNo: ['', Validators.required],
+      bankRegionID: ['', Validators.required],
+      bankCountryID: ['', Validators.required],
+      accountCurrencyID: ['', Validators.required],
+      achno: ['', Validators.required],
       swiftNo: ['', Validators.required],
-      contactPerson: ['', Validators.required],
-      contactNo: ['', Validators.required],
-      emailId: ['', [Validators.required, Validators.email]],
+      contactPersonName: ['', Validators.required],
+      contactPhoneNo: ['', Validators.required],
+      contactEmailId: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  getBankLookupData(): void {
+    this.getCountryLookup();
+    this.getCurrencyLookup();
+    this.getFundRegionLookup();
+  }
+
+  getFundRegionLookup(): void {
+    this.apiService
+      .get(API_URLS.FUND_REGION_LOOKUP)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: any) => {
+          console.log('region', response);
+          this.regionOptions.set(response);
+        },
+      });
+  }
+
+  getCountryLookup(): void {
+    this.apiService
+      .get(API_URLS.COUNTRY_LOOKUP)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: any) => {
+          this.countryOptions.set(response);
+          console.log(response);
+        },
+      });
+  }
+
+  getCurrencyLookup(): void {
+    this.apiService
+      .get(API_URLS.CURRENCY_LOOKUP)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.currencyOptions.set(response);
+        },
+      });
+  }
+
+  getBankListData(): void {
+    this.apiService
+      .get(API_URLS.BANK_LIST_DATA)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (reponse: any) => {
+          console.log(reponse);
+          this.bankData.set(reponse);
+        },
+      });
   }
 
   private resetForm(): void {
@@ -159,41 +179,50 @@ export class BankManagementComponent implements OnInit {
   saveBank(): void {
     if (this.bankForm.invalid) {
       this.bankForm.markAllAsTouched();
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Please fill in all required fields.',
-      });
+      this.toastService.showWarn('Please fill all required fields');
       return;
     }
-
-    const value = this.bankForm.getRawValue();
-
-    if (this.isEditMode() && this.editingId) {
-      this.bankData.update((banks) =>
-        banks.map((b) => (b.id === this.editingId ? { ...b, ...value } : b)),
-      );
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Updated',
-        detail: `${value.bankName} has been updated.`,
+    const payload = this.getBankPayload();
+    this.apiService
+      .post(API_URLS.BANK_ADD, payload)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: any) => {
+          console.log('add bank response', response);
+          this.toastService.showSuccess('Bank added successfully');
+          this.getBankListData();
+        },
       });
-    } else {
-      const newBank: Bank = { id: crypto.randomUUID(), ...value };
-      this.bankData.update((banks) => [...banks, newBank]);
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Added',
-        detail: `${value.bankName} has been added.`,
-      });
-    }
-
     this.resetForm();
+  }
+
+  getBankPayload(): any {
+    const value = this.bankForm.value;
+    let payload: any = {
+      bankCode: value.bankCode,
+      bankName: value.bankName,
+      bankAccountNo: value.bankAccountNo,
+      bankRegionID: value.bankRegionID,
+      bankCountryID: value.bankCountryID,
+      accountCurrencyID: value.accountCurrencyID,
+      achNo: value.achno,
+      swiftNo: value.swiftNo,
+      contactPersonName: value.contactPersonName,
+      contactPhoneNo: value.contactPhoneNo,
+      contactEmailID: value.contactEmailId,
+    };
+    if (this.isEditMode() && this.editingId) {
+      payload = {
+        ...payload,
+        bankMasterID: this.editingId,
+      };
+    }
+    return payload;
   }
 
   viewBank(bank: Bank): void {
     this.mode.set('view');
-    this.editingId = bank.id;
+    this.editingId = bank.bankMasterId;
     this.bankForm.patchValue(bank);
     this.bankForm.disable();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -201,22 +230,62 @@ export class BankManagementComponent implements OnInit {
 
   editBank(bank: Bank): void {
     this.mode.set('edit');
-    this.editingId = bank.id;
+    this.editingId = bank.bankMasterId;
     this.bankForm.patchValue(bank);
     this.bankForm.enable();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  deleteBank(bank: Bank): void {
-    this.bankData.update((banks) => banks.filter((b) => b.id !== bank.id));
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Deleted',
-      detail: `${bank.bankName} has been removed.`,
+  async showDeleteDialog(bank: Bank): Promise<void> {
+    const result = await this.confirmService.delete(`Bank: ${bank.bankName}`, {
+      details: {
+        title: 'Bank Details',
+        items: [
+          {
+            label: 'Name',
+            value: bank.bankName,
+          },
+          {
+            label: 'Code',
+            value: bank.bankCode,
+            badge: { text: bank.bankCode, color: 'amber' },
+          },
+          {
+            label: 'Account Number',
+            value: bank.bankAccountNo,
+            mono: true,
+          },
+          {
+            label: 'Region',
+            value: bank.bankRegion,
+          },
+          {
+            label: 'ACH Number',
+            value: bank.achno,
+          },
+        ],
+        layout: 'list',
+      },
     });
-    if (this.editingId === bank.id) {
-      this.resetForm();
+    console.log('result from delete', result);
+    if (result.confirmed) {
+      this.deleteBank(bank);
     }
+  }
+
+  deleteBank(bank: any): void {
+    this.apiService
+      .delete(`${API_URLS.BANK_LIST_DATA}/${bank.bankMasterId}`)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        complete: () => {
+          this.toastService.showSuccess(`Bank: ${bank.bankName} Deleted Successfully`);
+          if (this.editingId === bank.bankMasterId) {
+            this.resetForm();
+          }
+          this.getBankListData();
+        },
+      });
   }
 
   clearBankSelection(): void {

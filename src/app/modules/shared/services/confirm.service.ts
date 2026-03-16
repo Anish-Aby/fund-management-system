@@ -172,7 +172,7 @@ export class ConfirmService {
 
   warn(
     title: string,
-    description: string,
+    description?: string,
     opts?: Partial<ConfirmDialogConfig>,
   ): Promise<ConfirmDialogResult> {
     return this.open({ title, description, severity: 'warn', confirmLabel: 'Continue', ...opts });

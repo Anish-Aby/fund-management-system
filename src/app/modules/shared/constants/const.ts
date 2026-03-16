@@ -13,6 +13,11 @@ export const API_URLS = {
   VERIFY_OTP: 'api/v1/auth/verify-otp',
   FORGOT_PASSWORD: 'api/v1/auth/forgot-password',
   RESET_PASSWORD: 'api/v1/auth/reset-password',
+  BANK_LIST_DATA: 'api/V1/Bank',
+  COUNTRY_LOOKUP: 'api/common/countries',
+  CURRENCY_LOOKUP: 'api/common/currencies',
+  FUND_REGION_LOOKUP: 'api/common/fund-regions',
+  BANK_ADD: 'api/v1/bank/add-update',
 };
 
 export const DIALOG_COMPONENT_TITLES = {

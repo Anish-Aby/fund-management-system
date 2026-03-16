@@ -3,7 +3,7 @@
        FORM CARD
   ══════════════════════════════════════════════════════ -->
   <div
-    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+    class="bg-[#f4f4f5] rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
   >
     <!-- Mode header -->
     <div
@@ -60,13 +60,7 @@
           <label class="text-[11px] font-medium text-slate-500"
             >Bank Code <span class="text-red-400">*</span></label
           >
-          <input
-            fluid
-            pInputText
-            placeholder="e.g. BNK-001"
-            formControlName="bankCode"
-            class="!font-mono"
-          />
+          <input fluid pInputText placeholder="e.g. BNK-001" formControlName="bankCode" />
         </div>
 
         <div class="col-span-2 flex flex-col gap-1.5">
@@ -80,13 +74,7 @@
           <label class="text-[11px] font-medium text-slate-500"
             >Bank A/c No <span class="text-red-400">*</span></label
           >
-          <input
-            fluid
-            pInputText
-            placeholder="Account number"
-            formControlName="bankAccountNo"
-            class="!font-mono"
-          />
+          <input fluid pInputText placeholder="Account number" formControlName="bankAccountNo" />
         </div>
 
         <div class="col-span-2 flex flex-col gap-1.5">
@@ -96,10 +84,29 @@
           <p-select
             fluid
             appendTo="body"
-            [options]="regionOptions"
+            [options]="regionOptions()"
+            optionLabel="fundRegionName"
+            optionValue="fundRegionId"
             placeholder="Select region"
-            formControlName="bankRegion"
+            formControlName="bankRegionID"
             [filter]="true"
+            resetFilterOnHide="true"
+          />
+        </div>
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-500"
+            >Bank Country <span class="text-red-400">*</span></label
+          >
+          <p-select
+            fluid
+            appendTo="body"
+            [options]="countryOptions()"
+            optionLabel="countryName"
+            optionValue="countryMasterId"
+            placeholder="Select region"
+            formControlName="bankCountryID"
+            [filter]="true"
+            resetFilterOnHide="true"
           />
         </div>
 
@@ -110,43 +117,34 @@
           <p-select
             fluid
             appendTo="body"
-            [options]="currencyOptions"
+            [options]="currencyOptions()"
+            optionLabel="currencyCode"
+            optionValue="currencyMasterId"
             placeholder="Select currency"
-            formControlName="accountCcy"
+            formControlName="accountCurrencyID"
             [filter]="true"
+            resetFilterOnHide="true"
           />
         </div>
         <div class="col-span-2 flex flex-col gap-1.5">
           <label class="text-[11px] font-medium text-slate-500"
             >ACH No <span class="text-red-400">*</span></label
           >
-          <input
-            fluid
-            pInputText
-            placeholder="ACH routing number"
-            formControlName="achNo"
-            class="!font-mono"
-          />
+          <input fluid pInputText placeholder="ACH routing number" formControlName="achno" />
         </div>
         <div class="col-span-2 flex flex-col gap-1.5">
           <label class="text-[11px] font-medium text-slate-500"
             >SWIFT No <span class="text-red-400">*</span></label
           >
-          <input
-            fluid
-            pInputText
-            placeholder="SWIFT / BIC code"
-            formControlName="swiftNo"
-            class="!font-mono"
-          />
+          <input fluid pInputText placeholder="SWIFT / BIC code" formControlName="swiftNo" />
         </div>
         <div class="col-span-2 flex flex-col gap-1.5">
           <label class="text-[11px] font-medium text-slate-500"
             >Contact Person <span class="text-red-400">*</span></label
           >
-          <input fluid pInputText placeholder="Full name" formControlName="contactPerson" />
+          <input fluid pInputText placeholder="Full name" formControlName="contactPersonName" />
         </div>
-        <div class="col-span-3 flex flex-col gap-1.5">
+        <div class="col-span-2 flex flex-col gap-1.5">
           <label class="text-[11px] font-medium text-slate-500"
             >Contact No <span class="text-red-400">*</span></label
           >
@@ -155,7 +153,7 @@
             pInputText
             type="tel"
             placeholder="+1 000 000 0000"
-            formControlName="contactNo"
+            formControlName="contactPhoneNo"
           />
         </div>
         <div class="col-span-2 flex flex-col gap-1.5">
@@ -167,34 +165,40 @@
             pInputText
             type="email"
             placeholder="contact@bank.com"
-            formControlName="emailId"
+            formControlName="contactEmailId"
           />
+        </div>
+
+        <div
+          class="col-span-2 p-0 border-t border-slate-100 flex items-center justify-end gap-2 h-full"
+        >
+          @if (isViewMode() || isEditMode()) {
+            <p-button
+              icon="pi pi-times-circle"
+              label="Clear Selection"
+              variant="outlined"
+              severity="secondary"
+              size="small"
+              (onClick)="clearBankSelection()"
+              class="mt-5"
+            />
+          }
+          @if (!isViewMode()) {
+            <p-button
+              icon="pi pi-plus-circle"
+              [label]="isEditMode() ? 'Update Bank' : 'Save Bank'"
+              severity="success"
+              size="small"
+              (onClick)="saveBank()"
+              [disabled]="bankForm.invalid"
+              class="mt-5"
+            />
+          }
         </div>
       </div>
     </div>
 
     <!-- Form footer -->
-    <div class="px-6 py-3 border-t border-slate-100 bg-white flex items-center justify-end gap-2">
-      @if (isViewMode() || isEditMode()) {
-        <p-button
-          icon="pi pi-times-circle"
-          label="Clear Selection"
-          variant="outlined"
-          severity="secondary"
-          size="small"
-          (onClick)="clearBankSelection()"
-        />
-      }
-      @if (!isViewMode()) {
-        <p-button
-          icon="pi pi-plus-circle"
-          [label]="isEditMode() ? 'Update Bank' : 'Add Bank'"
-          severity="contrast"
-          size="small"
-          (onClick)="saveBank()"
-        />
-      }
-    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
@@ -234,14 +238,6 @@
           />
         </div>
         <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          variant="outlined"
-          size="small"
-          pTooltip="Delete selected"
-          tooltipPosition="bottom"
-        />
-        <p-button
           icon="pi pi-file-excel"
           severity="secondary"
           variant="outlined"
@@ -265,7 +261,7 @@
       #bankTable
       [value]="bankData()"
       [(selection)]="selectedBanks"
-      dataKey="id"
+      dataKey="bankMasterID"
       [stripedRows]="true"
       size="small"
       [showGridlines]="true"
@@ -301,6 +297,9 @@
           <th pSortableColumn="bankRegion" pResizableColumn>
             <div class="flex items-center gap-1.5">Region <p-sortIcon field="bankRegion" /></div>
           </th>
+          <th pSortableColumn="bankRegion" pResizableColumn>
+            <div class="flex items-center gap-1.5">Country <p-sortIcon field="bankRegion" /></div>
+          </th>
           <th pSortableColumn="accountCcy" pResizableColumn>
             <div class="flex items-center gap-1.5">CCY <p-sortIcon field="accountCcy" /></div>
           </th>
@@ -316,8 +315,6 @@
       <ng-template #body let-bank>
         <tr>
           <td><p-tableCheckbox [value]="bank" /></td>
-
-          <!-- Bank Code -->
           <td>
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
@@ -325,8 +322,6 @@
               {{ bank.bankCode }}
             </span>
           </td>
-
-          <!-- Bank Name -->
           <td>
             <div class="flex items-center gap-2">
               <div
@@ -355,18 +350,24 @@
             </div>
           </td>
 
+          <td>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[13px] text-slate-600">{{ bank.bankCountry }}</span>
+            </div>
+          </td>
+
           <!-- Account CCY -->
           <td>
             <span
               class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono tracking-wide"
             >
-              {{ bank.accountCcy }}
+              {{ bank.accountCurrency }}
             </span>
           </td>
 
           <!-- ACH No -->
           <td>
-            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{ bank.achNo }}</span>
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{ bank.achno }}</span>
           </td>
 
           <!-- SWIFT No -->
@@ -386,7 +387,7 @@
               >
                 <i class="pi pi-user text-slate-400" style="font-size: 8px"></i>
               </div>
-              <span class="text-[13px] text-slate-700">{{ bank.contactPerson }}</span>
+              <span class="text-[13px] text-slate-700">{{ bank.contactPersonName }}</span>
             </div>
           </td>
 
@@ -394,7 +395,7 @@
           <td>
             <div class="flex items-center gap-1.5">
               <i class="pi pi-phone text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600 tabular-nums">{{ bank.contactNo }}</span>
+              <span class="text-[13px] text-slate-600 tabular-nums">{{ bank.contactPhoneNo }}</span>
             </div>
           </td>
 
@@ -402,7 +403,7 @@
           <td>
             <div class="flex items-center gap-1.5">
               <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600">{{ bank.emailId }}</span>
+              <span class="text-[13px] text-slate-600">{{ bank.contactEmailId }}</span>
             </div>
           </td>
 
@@ -434,7 +435,7 @@
                 variant="outlined"
                 pTooltip="Delete"
                 tooltipPosition="bottom"
-                (onClick)="deleteBank(bank)"
+                (onClick)="showDeleteDialog(bank)"
               />
             </div>
           </td>
