@@ -284,9 +284,11 @@
         'bankName',
         'bankAccountNo',
         'bankRegion',
-        'accountCcy',
+        'bankCountry',
+        'accountCurrency',
         'swiftNo',
-        'contactPerson',
+        'contactPersonName',
+        'contactEmailId',
       ]"
     >
       <ng-template #header>
@@ -306,11 +308,11 @@
           <th pSortableColumn="bankRegion" pResizableColumn>
             <div class="flex items-center gap-1.5">Region <p-sortIcon field="bankRegion" /></div>
           </th>
-          <th pSortableColumn="bankRegion" pResizableColumn>
-            <div class="flex items-center gap-1.5">Country <p-sortIcon field="bankRegion" /></div>
+          <th pSortableColumn="bankCountry" pResizableColumn>
+            <div class="flex items-center gap-1.5">Country <p-sortIcon field="bankCountry" /></div>
           </th>
-          <th pSortableColumn="accountCcy" pResizableColumn>
-            <div class="flex items-center gap-1.5">CCY <p-sortIcon field="accountCcy" /></div>
+          <th pSortableColumn="accountCurrency" pResizableColumn>
+            <div class="flex items-center gap-1.5">CCY <p-sortIcon field="accountCurrency" /></div>
           </th>
           <th pResizableColumn>ACH No</th>
           <th pResizableColumn>SWIFT No</th>
