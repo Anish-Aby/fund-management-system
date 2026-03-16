@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, DestroyRef, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, DestroyRef, inject, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -52,6 +52,7 @@ export interface Bank {
 })
 export class BankManagementComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
+  private el = inject(ElementRef);
 
   bankForm!: FormGroup;
   private mode = signal<FormMode>('add');
@@ -68,8 +69,6 @@ export class BankManagementComponent implements OnInit {
   currencyOptions = signal([]);
   countryOptions = signal([]);
 
-  // ── Constructor ──────────────────────────────────────────────────────────
-
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -77,8 +76,6 @@ export class BankManagementComponent implements OnInit {
     private messageService: MessageService,
     private toastService: ToastService,
   ) {}
-
-  // ── Lifecycle ────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
     this.buildForm();
@@ -100,6 +97,22 @@ export class BankManagementComponent implements OnInit {
       contactPhoneNo: ['', Validators.required],
       contactEmailId: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  scrollToFormTop(): void {
+    let node: HTMLElement | null = this.el.nativeElement as HTMLElement;
+    while (node) {
+      if (node.classList?.contains('p-dialog-content')) {
+        node.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      if (node.scrollHeight > node.clientHeight && getComputedStyle(node).overflowY !== 'visible') {
+        node.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      node = node.parentElement;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   getBankLookupData(): void {
@@ -174,8 +187,6 @@ export class BankManagementComponent implements OnInit {
     this.bankForm.enable();
   }
 
-  // ── CRUD actions ─────────────────────────────────────────────────────────
-
   saveBank(): void {
     if (this.bankForm.invalid) {
       this.bankForm.markAllAsTouched();
@@ -212,10 +223,7 @@ export class BankManagementComponent implements OnInit {
       contactEmailID: value.contactEmailId,
     };
     if (this.isEditMode() && this.editingId) {
-      payload = {
-        ...payload,
-        bankMasterID: this.editingId,
-      };
+      payload = { ...payload, bankMasterID: this.editingId };
     }
     return payload;
   }
@@ -225,7 +233,7 @@ export class BankManagementComponent implements OnInit {
     this.editingId = bank.bankMasterId;
     this.bankForm.patchValue(bank);
     this.bankForm.disable();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.scrollToFormTop(); // ← replaces window.scrollTo
   }
 
   editBank(bank: Bank): void {
@@ -233,7 +241,7 @@ export class BankManagementComponent implements OnInit {
     this.editingId = bank.bankMasterId;
     this.bankForm.patchValue(bank);
     this.bankForm.enable();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.scrollToFormTop(); // ← replaces window.scrollTo
   }
 
   async showDeleteDialog(bank: Bank): Promise<void> {
@@ -241,28 +249,11 @@ export class BankManagementComponent implements OnInit {
       details: {
         title: 'Bank Details',
         items: [
-          {
-            label: 'Name',
-            value: bank.bankName,
-          },
-          {
-            label: 'Code',
-            value: bank.bankCode,
-            badge: { text: bank.bankCode, color: 'amber' },
-          },
-          {
-            label: 'Account Number',
-            value: bank.bankAccountNo,
-            mono: true,
-          },
-          {
-            label: 'Region',
-            value: bank.bankRegion,
-          },
-          {
-            label: 'ACH Number',
-            value: bank.achno,
-          },
+          { label: 'Name', value: bank.bankName },
+          { label: 'Code', value: bank.bankCode, badge: { text: bank.bankCode, color: 'amber' } },
+          { label: 'Account Number', value: bank.bankAccountNo, mono: true },
+          { label: 'Region', value: bank.bankRegion },
+          { label: 'ACH Number', value: bank.achno },
         ],
         layout: 'list',
       },
