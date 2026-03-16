@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
@@ -8,11 +8,12 @@ import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import { ThemeService } from '../services/theme';
 import { DialogService } from 'primeng/dynamicdialog';
-import { AuthService } from '../services/auth-service';
+
+import { ThemeService } from '../services/theme';
 import { DialogWindowService } from '../services/dialog-window-service';
 import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
+import { AuthService } from '../services/auth-service';
 import { SearchService } from '../../global-search/service/search-service';
 
 @Component({
@@ -143,6 +144,13 @@ export class Header {
         icon: 'pi pi-star',
         items: [
           {
+            label: 'Bank Management',
+            icon: 'pi pi-building-columns',
+            command: () => {
+              this.showBankManagement();
+            },
+          },
+          {
             label: 'Entity Management',
             icon: 'pi pi-building',
             command: () => {
@@ -150,10 +158,10 @@ export class Header {
             },
           },
           {
-            label: 'User Management',
-            icon: 'pi pi-users',
+            label: 'Portfolio Management',
+            icon: 'pi pi-briefcase',
             command: () => {
-              this.showAddUsers();
+              this.showPortfolioManagement();
             },
           },
           {
@@ -163,30 +171,18 @@ export class Header {
               this.showAddVendor();
             },
           },
-          // {
-          //   label: 'Expense Management',
-          //   icon: 'pi pi-money-bill',
-          // },
-          {
-            label: 'Portfolio Management',
-            icon: 'pi pi-briefcase',
-            command: () => {
-              this.showPortfolioManagement();
-            },
-          },
-          {
-            label: 'Bank Management',
-            icon: 'pi pi-building-columns',
-            command: () => {
-              this.showBankManagement();
-              // this.showAddEntity();
-            },
-          },
           {
             label: 'Role Management',
             icon: 'pi pi-shield',
             command: () => {
               this.showAddRoles();
+            },
+          },
+          {
+            label: 'User Management',
+            icon: 'pi pi-users',
+            command: () => {
+              this.showAddUsers();
             },
           },
         ],
@@ -199,7 +195,6 @@ export class Header {
             label: 'Ledger Report',
             icon: 'pi pi-book',
             command: () => {
-              // this.router.navigate(['app/report/ledger-report']);
               this.showLedgerReport();
             },
           },
@@ -207,7 +202,6 @@ export class Header {
             label: 'Expenses Report',
             icon: 'pi pi-money-bill',
             command: () => {
-              // this.router.navigate(['app/report/expenses-report']);
               this.showExpensesReport();
             },
           },
