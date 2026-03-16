@@ -175,7 +175,7 @@
           @if (isViewMode() || isEditMode()) {
             <p-button
               icon="pi pi-times-circle"
-              label="Clear Selection"
+              label="Clear"
               variant="outlined"
               severity="secondary"
               size="small"
@@ -186,8 +186,8 @@
           @if (!isViewMode()) {
             <p-button
               icon="pi pi-plus-circle"
-              [label]="isEditMode() ? 'Update Bank' : 'Save Bank'"
-              severity="success"
+              [label]="isEditMode() ? 'Update' : 'Save'"
+              [severity]="isEditMode() ? 'warn' : 'success'"
               size="small"
               (onClick)="saveBank()"
               [disabled]="bankForm.invalid"
