@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed, DestroyRef, inject, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,12 +9,10 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { TabsModule } from 'primeng/tabs';
 
-import mockBanks from '../core/mocks/bank-list-mock.json';
 import { ApiService } from '../shared/services/api.service';
 import { API_URLS } from '../shared/constants/const';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ConfirmService } from '../shared/services/confirm.service';
 import { ToastService } from '../core/services/toast';
 
@@ -47,8 +46,8 @@ export interface Bank {
     TableModule,
     TooltipModule,
     ToastModule,
+    TabsModule,
   ],
-  providers: [MessageService],
 })
 export class BankManagementComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
@@ -65,40 +64,165 @@ export class BankManagementComponent implements OnInit {
   bankData = signal<Bank[]>([]);
   selectedBanks: Bank[] = [];
 
-  regionOptions = signal([]);
-  currencyOptions = signal([]);
-  countryOptions = signal([]);
+  // ── Dropdown option lists ─────────────────────────────────────────────────
+  regionOptions = signal<any[]>([]);
+  countryOptions = signal<any[]>([]);
+  currencyOptions = signal<any[]>([]);
+  stateOptions = signal<any[]>([]);
+  cityOptions = signal<any[]>([]);
 
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
     private confirmService: ConfirmService,
-    private messageService: MessageService,
     private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.getBankListData();
-    this.getBankLookupData();
+    this.getFundRegionLookup();
+    this.watchCascade();
   }
 
+  // ── Form ──────────────────────────────────────────────────────────────────
   private buildForm(): void {
     this.bankForm = this.fb.group({
       bankCode: ['', Validators.required],
       bankName: ['', Validators.required],
       bankAccountNo: ['', Validators.required],
       bankRegionID: ['', Validators.required],
-      bankCountryID: ['', Validators.required],
-      accountCurrencyID: ['', Validators.required],
-      achno: ['', Validators.required],
+      bankCountryID: [{ value: '', disabled: true }, Validators.required],
+      accountCurrencyID: [{ value: '', disabled: true }, Validators.required],
+      stateId: [{ value: '', disabled: true }, Validators.required],
+      cityId: [{ value: '', disabled: true }, Validators.required],
+      achno: [''],
       swiftNo: ['', Validators.required],
+      iban: [''],
+      routingNo: [''],
+      accountTypeId: ['', Validators.required],
+      zipCode: ['', Validators.required],
+      paymentMethodId: ['', Validators.required],
       contactPersonName: ['', Validators.required],
       contactPhoneNo: ['', Validators.required],
+      branchAddress: ['', Validators.required],
       contactEmailId: ['', [Validators.required, Validators.email]],
+      secondaryContactEmailId: ['', [Validators.email]],
     });
   }
 
+  // ── Cascade watchers ──────────────────────────────────────────────────────
+  //
+  // Chain: Region → Country → (Currency + State) → City
+  //
+  // All programmatic changes use { emitEvent: false } so these
+  // watchers only ever fire on real user interaction.
+  private watchCascade(): void {
+    // ── 1. Region → Countries ─────────────────────────────────────────────
+    this.bankForm
+      .get('bankRegionID')!
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((regionId: string | null) => {
+        this.resetDownstreamOf('region');
+        if (!regionId) return;
+
+        this.apiService
+          .get(`api/Common/countries/${regionId}`)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (countries: any) => {
+              this.countryOptions.set(countries);
+              if (!this.isViewMode()) {
+                this.bankForm.get('bankCountryID')!.enable();
+              }
+            },
+          });
+      });
+
+    // ── 2. Country → States + Currency ───────────────────────────────────
+    this.bankForm
+      .get('bankCountryID')!
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((countryId: string | null) => {
+        this.resetDownstreamOf('country');
+        if (!countryId) return;
+
+        // States
+        this.apiService
+          .get(`api/Common/states/${countryId}`)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (states: any) => {
+              this.stateOptions.set(states);
+              if (!this.isViewMode()) {
+                this.bankForm.get('stateId')!.enable();
+              }
+            },
+          });
+
+        // Currency (per country)
+        this.apiService
+          .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (currencies: any) => {
+              this.currencyOptions.set(currencies);
+              if (!this.isViewMode()) {
+                this.bankForm.get('accountCurrencyID')!.enable();
+              }
+            },
+          });
+      });
+
+    // ── 3. State → Cities ────────────────────────────────────────────────
+    this.bankForm
+      .get('stateId')!
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((stateId: string | null) => {
+        this.resetDownstreamOf('state');
+        if (!stateId) return;
+
+        this.apiService
+          .get(`api/Common/cities/${stateId}`)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (cities: any) => {
+              this.cityOptions.set(cities);
+              if (!this.isViewMode()) {
+                this.bankForm.get('cityId')!.enable();
+              }
+            },
+          });
+      });
+  }
+
+  // ── Cascade reset helper ──────────────────────────────────────────────────
+  // Resets and disables all controls that live downstream of the given level.
+  private resetDownstreamOf(level: 'region' | 'country' | 'state'): void {
+    const o = { emitEvent: false };
+
+    if (level === 'region') {
+      this.bankForm.get('bankCountryID')!.reset('', o);
+      this.bankForm.get('bankCountryID')!.disable(o);
+      this.countryOptions.set([]);
+    }
+
+    if (level === 'region' || level === 'country') {
+      this.bankForm.get('accountCurrencyID')!.reset('', o);
+      this.bankForm.get('accountCurrencyID')!.disable(o);
+      this.bankForm.get('stateId')!.reset('', o);
+      this.bankForm.get('stateId')!.disable(o);
+      this.currencyOptions.set([]);
+      this.stateOptions.set([]);
+    }
+
+    // City is always reset whenever anything above it changes
+    this.bankForm.get('cityId')!.reset('', o);
+    this.bankForm.get('cityId')!.disable(o);
+    this.cityOptions.set([]);
+  }
+
+  // ── Scroll helper ─────────────────────────────────────────────────────────
   scrollToFormTop(): void {
     let node: HTMLElement | null = this.el.nativeElement as HTMLElement;
     while (node) {
@@ -115,135 +239,278 @@ export class BankManagementComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  getBankLookupData(): void {
-    this.getCountryLookup();
-    this.getCurrencyLookup();
-    this.getFundRegionLookup();
-  }
-
+  // ── API calls ─────────────────────────────────────────────────────────────
   getFundRegionLookup(): void {
     this.apiService
       .get(API_URLS.FUND_REGION_LOOKUP)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response: any) => {
-          console.log('region', response);
-          this.regionOptions.set(response);
-        },
-      });
-  }
-
-  getCountryLookup(): void {
-    this.apiService
-      .get(API_URLS.COUNTRY_LOOKUP)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response: any) => {
-          this.countryOptions.set(response);
-          console.log(response);
-        },
-      });
-  }
-
-  getCurrencyLookup(): void {
-    this.apiService
-      .get(API_URLS.CURRENCY_LOOKUP)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.currencyOptions.set(response);
-        },
-      });
+      .subscribe({ next: (res: any) => this.regionOptions.set(res) });
   }
 
   getBankListData(): void {
     this.apiService
       .get(API_URLS.BANK_LIST_DATA)
       .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ next: (res: any) => this.bankData.set(res) });
+  }
+
+  // ── Reset ─────────────────────────────────────────────────────────────────
+  private resetForm(): void {
+    const o = { emitEvent: false };
+
+    this.bankForm.reset(
+      {
+        bankCode: '',
+        bankName: '',
+        bankAccountNo: '',
+        bankRegionID: '',
+        bankCountryID: '',
+        accountCurrencyID: '',
+        stateId: '',
+        cityId: '',
+        achno: '',
+        swiftNo: '',
+        iban: '',
+        routingNo: '',
+        accountTypeId: '',
+        zipCode: '',
+        paymentMethodId: '',
+        contactPersonName: '',
+        contactPhoneNo: '',
+        branchAddress: '',
+        contactEmailId: '',
+        secondaryContactEmailId: '',
+      },
+      o,
+    );
+
+    this.countryOptions.set([]);
+    this.currencyOptions.set([]);
+    this.stateOptions.set([]);
+    this.cityOptions.set([]);
+
+    this.editingId = null;
+    this.mode.set('add');
+
+    // Re-enable everything for add mode …
+    this.bankForm.enable(o);
+    // … then lock all four cascaded fields
+    this.bankForm.get('bankCountryID')!.disable(o);
+    this.bankForm.get('accountCurrencyID')!.disable(o);
+    this.bankForm.get('stateId')!.disable(o);
+    this.bankForm.get('cityId')!.disable(o);
+  }
+
+  // ── View ──────────────────────────────────────────────────────────────────
+  viewBank(bank: Bank): void {
+    this.mode.set('view');
+    this.editingId = bank.bankMasterId;
+    this.scrollToFormTop();
+
+    const o = { emitEvent: false };
+    const regionId = (bank as any).bankRegionID;
+    const countryId = (bank as any).bankCountryID;
+    const currencyId = (bank as any).accountCurrencyID;
+    const stateId = (bank as any).stateId;
+    const cityId = (bank as any).cityId;
+
+    // Enable all so disabled controls can receive values, then patch silently
+    this.bankForm.enable(o);
+    this.bankForm.patchValue(bank, o);
+
+    if (!regionId) {
+      this.bankForm.disable(o);
+      return;
+    }
+
+    // Step 1: countries
+    this.apiService
+      .get(`api/Common/countries/${regionId}`)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (reponse: any) => {
-          console.log(reponse);
-          this.bankData.set(reponse);
+        next: (countries: any) => {
+          this.countryOptions.set(countries);
+          this.bankForm.get('bankCountryID')!.setValue(countryId ?? '', o);
+
+          if (!countryId) {
+            this.bankForm.disable(o);
+            return;
+          }
+
+          // Step 2a: currencies (parallel with states — both can run together)
+          this.apiService
+            .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (currencies: any) => {
+                this.currencyOptions.set(currencies);
+                this.bankForm.get('accountCurrencyID')!.setValue(currencyId ?? '', o);
+              },
+            });
+
+          // Step 2b: states
+          this.apiService
+            .get(`api/Common/states/${countryId}`)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (states: any) => {
+                this.stateOptions.set(states);
+                this.bankForm.get('stateId')!.setValue(stateId ?? '', o);
+
+                if (!stateId) {
+                  this.bankForm.disable(o);
+                  return;
+                }
+
+                // Step 3: cities
+                this.apiService
+                  .get(`api/Common/cities/${stateId}`)
+                  .pipe(takeUntilDestroyed(this.destroyRef))
+                  .subscribe({
+                    next: (cities: any) => {
+                      this.cityOptions.set(cities);
+                      this.bankForm.get('cityId')!.setValue(cityId ?? '', o);
+                      // All data loaded — lock everything for view mode
+                      this.bankForm.disable(o);
+                    },
+                  });
+              },
+            });
         },
       });
   }
 
-  private resetForm(): void {
-    this.bankForm.reset({
-      bankCode: '',
-      bankName: '',
-      bankAccountNo: '',
-      bankRegion: '',
-      accountCcy: '',
-      achNo: '',
-      swiftNo: '',
-      contactPerson: '',
-      contactNo: '',
-      emailId: '',
-    });
-    this.editingId = null;
-    this.mode.set('add');
-    this.bankForm.enable();
+  // ── Edit ──────────────────────────────────────────────────────────────────
+  editBank(bank: Bank): void {
+    this.mode.set('edit');
+    this.editingId = bank.bankMasterId;
+    this.scrollToFormTop();
+
+    const o = { emitEvent: false };
+    const regionId = (bank as any).bankRegionID;
+    const countryId = (bank as any).bankCountryID;
+    const currencyId = (bank as any).accountCurrencyID;
+    const stateId = (bank as any).stateId;
+    const cityId = (bank as any).cityId;
+
+    // Enable all, patch silently, then lock the four cascaded fields
+    this.bankForm.enable(o);
+    this.bankForm.patchValue(bank, o);
+    this.bankForm.get('bankCountryID')!.disable(o);
+    this.bankForm.get('accountCurrencyID')!.disable(o);
+    this.bankForm.get('stateId')!.disable(o);
+    this.bankForm.get('cityId')!.disable(o);
+
+    this.countryOptions.set([]);
+    this.currencyOptions.set([]);
+    this.stateOptions.set([]);
+    this.cityOptions.set([]);
+
+    if (!regionId) return;
+
+    // Step 1: countries
+    this.apiService
+      .get(`api/Common/countries/${regionId}`)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (countries: any) => {
+          this.countryOptions.set(countries);
+          this.bankForm.get('bankCountryID')!.setValue(countryId ?? '', o);
+          this.bankForm.get('bankCountryID')!.enable(o);
+
+          if (!countryId) return;
+
+          // Step 2a: currencies
+          this.apiService
+            .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (currencies: any) => {
+                this.currencyOptions.set(currencies);
+                this.bankForm.get('accountCurrencyID')!.setValue(currencyId ?? '', o);
+                this.bankForm.get('accountCurrencyID')!.enable(o);
+              },
+            });
+
+          // Step 2b: states
+          this.apiService
+            .get(`api/Common/states/${countryId}`)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (states: any) => {
+                this.stateOptions.set(states);
+                this.bankForm.get('stateId')!.setValue(stateId ?? '', o);
+                this.bankForm.get('stateId')!.enable(o);
+
+                if (!stateId) return;
+
+                // Step 3: cities
+                this.apiService
+                  .get(`api/Common/cities/${stateId}`)
+                  .pipe(takeUntilDestroyed(this.destroyRef))
+                  .subscribe({
+                    next: (cities: any) => {
+                      this.cityOptions.set(cities);
+                      this.bankForm.get('cityId')!.setValue(cityId ?? '', o);
+                      this.bankForm.get('cityId')!.enable(o);
+                    },
+                  });
+              },
+            });
+        },
+      });
   }
 
+  // ── Save ──────────────────────────────────────────────────────────────────
   saveBank(): void {
     if (this.bankForm.invalid) {
       this.bankForm.markAllAsTouched();
       this.toastService.showWarn('Please fill all required fields');
       return;
     }
-    const payload = this.getBankPayload();
     this.apiService
-      .post(API_URLS.BANK_ADD, payload)
+      .post(API_URLS.BANK_ADD, this.getBankPayload())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response: any) => {
-          console.log('add bank response', response);
+        next: () => {
           this.toastService.showSuccess('Bank added successfully');
           this.getBankListData();
+          this.resetForm();
         },
       });
-    this.resetForm();
   }
 
   getBankPayload(): any {
-    const value = this.bankForm.value;
-    let payload: any = {
-      bankCode: value.bankCode,
-      bankName: value.bankName,
-      bankAccountNo: value.bankAccountNo,
-      bankRegionID: value.bankRegionID,
-      bankCountryID: value.bankCountryID,
-      accountCurrencyID: value.accountCurrencyID,
-      achNo: value.achno,
-      swiftNo: value.swiftNo,
-      contactPersonName: value.contactPersonName,
-      contactPhoneNo: value.contactPhoneNo,
-      contactEmailID: value.contactEmailId,
+    const v = this.bankForm.getRawValue(); // getRawValue includes disabled controls
+    const payload: any = {
+      bankCode: v.bankCode,
+      bankName: v.bankName,
+      bankAccountNo: v.bankAccountNo,
+      bankRegionID: v.bankRegionID,
+      bankCountryID: v.bankCountryID,
+      accountCurrencyID: v.accountCurrencyID,
+      stateId: v.stateId,
+      cityId: v.cityId,
+      achNo: v.achno,
+      swiftNo: v.swiftNo,
+      iban: v.iban,
+      routingNo: v.routingNo,
+      accountTypeId: v.accountTypeId,
+      zipCode: v.zipCode,
+      paymentMethodId: v.paymentMethodId,
+      contactPersonName: v.contactPersonName,
+      contactPhoneNo: v.contactPhoneNo,
+      branchAddress: v.branchAddress,
+      contactEmailID: v.contactEmailId,
+      secondaryContactEmailId: v.secondaryContactEmailId,
     };
     if (this.isEditMode() && this.editingId) {
-      payload = { ...payload, bankMasterID: this.editingId };
+      payload.bankMasterID = this.editingId;
     }
     return payload;
   }
 
-  viewBank(bank: Bank): void {
-    this.mode.set('view');
-    this.editingId = bank.bankMasterId;
-    this.bankForm.patchValue(bank);
-    this.bankForm.disable();
-    this.scrollToFormTop(); // ← replaces window.scrollTo
-  }
-
-  editBank(bank: Bank): void {
-    this.mode.set('edit');
-    this.editingId = bank.bankMasterId;
-    this.bankForm.patchValue(bank);
-    this.bankForm.enable();
-    this.scrollToFormTop(); // ← replaces window.scrollTo
-  }
-
+  // ── Delete ────────────────────────────────────────────────────────────────
   async showDeleteDialog(bank: Bank): Promise<void> {
     const result = await this.confirmService.delete(`Bank: ${bank.bankName}`, {
       details: {
@@ -258,10 +525,7 @@ export class BankManagementComponent implements OnInit {
         layout: 'list',
       },
     });
-    console.log('result from delete', result);
-    if (result.confirmed) {
-      this.deleteBank(bank);
-    }
+    if (result.confirmed) this.deleteBank(bank);
   }
 
   deleteBank(bank: any): void {
@@ -271,9 +535,7 @@ export class BankManagementComponent implements OnInit {
       .subscribe({
         complete: () => {
           this.toastService.showSuccess(`Bank: ${bank.bankName} Deleted Successfully`);
-          if (this.editingId === bank.bankMasterId) {
-            this.resetForm();
-          }
+          if (this.editingId === bank.bankMasterId) this.resetForm();
           this.getBankListData();
         },
       });

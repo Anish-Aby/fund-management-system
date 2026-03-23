@@ -53,152 +53,344 @@
       </div>
     </div>
 
-    <!-- Form body -->
-    <div class="px-6 py-5">
-      <div class="grid grid-cols-12 gap-x-2 gap-y-2">
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Code <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="e.g. BNK-001" formControlName="bankCode" />
-        </div>
+    <p-tabs value="0" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-building" style="font-size: 11px"></i>
+            General Info
+          </div>
+        </p-tab>
+        <p-tab value="1">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-map-marker" style="font-size: 11px"></i>
+            Address Info
+          </div>
+        </p-tab>
+      </p-tablist>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Name <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="Full legal bank name" formControlName="bankName" />
-        </div>
+      <p-tabpanels>
+        <!-- ── Tab 1: General Info ────────────────────────────────────── -->
+        <p-tabpanel value="0">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-2">
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Bank Code <span class="text-red-400">*</span>
+                </label>
+                <input fluid pInputText placeholder="e.g. BNK-001" formControlName="bankCode" />
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank A/c No <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="Account number" formControlName="bankAccountNo" />
-        </div>
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Bank Name <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Full legal bank name"
+                  formControlName="bankName"
+                />
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Region <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="regionOptions()"
-            optionLabel="fundRegionName"
-            optionValue="fundRegionId"
-            placeholder="Select region"
-            formControlName="bankRegionID"
-            [filter]="true"
-            resetFilterOnHide="true"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Country <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="countryOptions()"
-            optionLabel="countryName"
-            optionValue="countryMasterId"
-            placeholder="Select region"
-            formControlName="bankCountryID"
-            [filter]="true"
-            resetFilterOnHide="true"
-          />
-        </div>
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Bank A/c No <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Account number"
+                  formControlName="bankAccountNo"
+                />
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Account CCY <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="currencyOptions()"
-            optionLabel="currencyCode"
-            optionValue="currencyMasterId"
-            placeholder="Select currency"
-            formControlName="accountCurrencyID"
-            [filter]="true"
-            resetFilterOnHide="true"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >ACH No <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="ACH routing number" formControlName="achno" />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >SWIFT No <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="SWIFT / BIC code" formControlName="swiftNo" />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Contact Person <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="Full name" formControlName="contactPersonName" />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Contact No <span class="text-red-400">*</span></label
-          >
-          <input
-            fluid
-            pInputText
-            type="tel"
-            placeholder="+1 000 000 0000"
-            formControlName="contactPhoneNo"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Email ID <span class="text-red-400">*</span></label
-          >
-          <input
-            fluid
-            pInputText
-            type="email"
-            placeholder="contact@bank.com"
-            formControlName="contactEmailId"
-          />
-        </div>
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">ACH No</label>
+                <input fluid pInputText placeholder="ACH routing number" formControlName="achno" />
+              </div>
 
-        <div
-          class="col-span-2 p-0 border-t border-slate-100 flex items-center justify-end gap-2 h-full"
-        >
-          @if (isViewMode() || isEditMode()) {
-            <p-button
-              icon="pi pi-times-circle"
-              label="Clear"
-              variant="outlined"
-              severity="secondary"
-              size="small"
-              (onClick)="clearBankSelection()"
-              class="mt-5"
-            />
-          }
-          @if (!isViewMode()) {
-            <p-button
-              icon="pi pi-plus-circle"
-              [label]="isEditMode() ? 'Update' : 'Save'"
-              [severity]="isEditMode() ? 'warn' : 'success'"
-              size="small"
-              (onClick)="saveBank()"
-              [disabled]="bankForm.invalid"
-              class="mt-5"
-            />
-          }
-        </div>
-      </div>
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  SWIFT No <span class="text-red-400">*</span>
+                </label>
+                <input fluid pInputText placeholder="SWIFT / BIC code" formControlName="swiftNo" />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">IBAN</label>
+                <input fluid pInputText placeholder="IBAN" formControlName="iban" />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Routing No (ABA)</label>
+                <input fluid pInputText placeholder="Routing number" formControlName="routingNo" />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Account Type <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="[]"
+                  optionLabel="accountType"
+                  optionValue="accountId"
+                  placeholder="Select account type"
+                  formControlName="accountTypeId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Payment Method <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="[]"
+                  optionLabel="paymentMethod"
+                  optionValue="paymentMethodId"
+                  placeholder="Select payment method"
+                  formControlName="paymentMethodId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <!-- ── Tab 2: Address Info ────────────────────────────────────── -->
+        <p-tabpanel value="1">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-2">
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Branch Address <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Address of the branch"
+                  formControlName="branchAddress"
+                />
+              </div>
+
+              <!-- Region -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Bank Region <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="regionOptions()"
+                  optionLabel="fundRegionName"
+                  optionValue="fundRegionId"
+                  placeholder="Select region"
+                  formControlName="bankRegionID"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <!-- Country — disabled until region is selected -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Bank Country <span class="text-red-400">*</span>
+                  @if (bankForm.get('bankCountryID')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select region first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="countryOptions()"
+                  optionLabel="countryName"
+                  optionValue="countryMasterId"
+                  placeholder="Select country"
+                  formControlName="bankCountryID"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <!-- Account CCY — disabled until country is selected -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Account CCY <span class="text-red-400">*</span>
+                  @if (bankForm.get('accountCurrencyID')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="currencyOptions()"
+                  optionLabel="currencyCode"
+                  optionValue="currencyMasterId"
+                  placeholder="Select currency"
+                  formControlName="accountCurrencyID"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <!-- State — disabled until country is selected -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  State <span class="text-red-400">*</span>
+                  @if (bankForm.get('stateId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="stateOptions()"
+                  optionLabel="stateName"
+                  optionValue="stateId"
+                  placeholder="Select state"
+                  formControlName="stateId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <!-- City — disabled until state is selected -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  City <span class="text-red-400">*</span>
+                  @if (bankForm.get('cityId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select state first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="cityOptions()"
+                  optionLabel="cityName"
+                  optionValue="cityId"
+                  placeholder="Select city"
+                  formControlName="cityId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Zip Code <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="number"
+                  placeholder="eg: 56001012"
+                  formControlName="zipCode"
+                />
+              </div>
+
+              <!-- Contact Person -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Contact Person <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Full name"
+                  formControlName="contactPersonName"
+                />
+              </div>
+
+              <!-- Contact No -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Contact No <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="tel"
+                  placeholder="+1 000 000 0000"
+                  formControlName="contactPhoneNo"
+                />
+              </div>
+
+              <!-- Email ID -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Email ID <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  placeholder="contact@bank.com"
+                  formControlName="contactEmailId"
+                />
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">Email ID 2</label>
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  placeholder="contact@bank.com"
+                  formControlName="secondaryContactEmailId"
+                />
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+
+    <!-- Action buttons -->
+    <div class="py-2 px-3 border-t border-surface-200 flex items-center justify-end gap-2">
+      @if (isViewMode() || isEditMode()) {
+        <p-button
+          icon="pi pi-times-circle"
+          label="Clear"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          (onClick)="clearBankSelection()"
+        />
+      }
+      @if (!isViewMode()) {
+        <p-button
+          icon="pi pi-plus-circle"
+          [label]="isEditMode() ? 'Update' : 'Save'"
+          [severity]="isEditMode() ? 'warn' : 'success'"
+          size="small"
+          (onClick)="saveBank()"
+          [disabled]="bankForm.invalid"
+        />
+      }
     </div>
-
-    <!-- Form footer -->
   </div>
 
   <!-- ══════════════════════════════════════════════════════
@@ -222,7 +414,6 @@
           </span>
         }
       </div>
-
       <div class="flex items-center gap-2">
         <div class="relative">
           <i
@@ -345,29 +536,20 @@
               }}</span>
             </div>
           </td>
-
-          <!-- Account No -->
           <td>
             <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
               bank.bankAccountNo
             }}</span>
           </td>
-
-          <!-- Region -->
           <td>
             <div class="flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
               <span class="text-[13px] text-slate-600">{{ bank.bankRegion }}</span>
             </div>
           </td>
-
           <td>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[13px] text-slate-600">{{ bank.bankCountry }}</span>
-            </div>
+            <span class="text-[13px] text-slate-600">{{ bank.bankCountry }}</span>
           </td>
-
-          <!-- Account CCY -->
           <td>
             <span
               class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono tracking-wide"
@@ -375,13 +557,9 @@
               {{ bank.accountCurrency }}
             </span>
           </td>
-
-          <!-- ACH No -->
           <td>
             <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{ bank.achno }}</span>
           </td>
-
-          <!-- SWIFT No -->
           <td>
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-mono font-semibold tracking-wide"
@@ -389,8 +567,6 @@
               {{ bank.swiftNo }}
             </span>
           </td>
-
-          <!-- Contact Person -->
           <td>
             <div class="flex items-center gap-1.5">
               <div
@@ -401,24 +577,18 @@
               <span class="text-[13px] text-slate-700">{{ bank.contactPersonName }}</span>
             </div>
           </td>
-
-          <!-- Contact No -->
           <td>
             <div class="flex items-center gap-1.5">
               <i class="pi pi-phone text-slate-400" style="font-size: 10px"></i>
               <span class="text-[13px] text-slate-600 tabular-nums">{{ bank.contactPhoneNo }}</span>
             </div>
           </td>
-
-          <!-- Email ID -->
           <td>
             <div class="flex items-center gap-1.5">
               <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
               <span class="text-[13px] text-slate-600">{{ bank.contactEmailId }}</span>
             </div>
           </td>
-
-          <!-- Actions -->
           <td>
             <div class="flex items-center justify-end gap-1">
               <p-button

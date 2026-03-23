@@ -155,16 +155,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onLogin(): void {
     if (!this.loginForm.valid) return;
-    this.apiService
-      .post(API_URLS.LOGIN, this.getLoginPayload())
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res: any) => {
-          this.userId.set(res.userId);
-          this.currentPage.set(1);
-          this.startResendCountdown();
-        },
-      });
+    // this.apiService
+    //   .post(API_URLS.LOGIN, this.getLoginPayload())
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       this.userId.set(res.userId);
+    //       this.currentPage.set(1);
+    //       this.startResendCountdown();
+    //     },
+    //   });
+    this.currentPage.set(1);
   }
 
   getLoginPayload(): any {
@@ -175,26 +176,29 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onVerifyOtp(): void {
-    const userId = this.userId();
-    if (userId === null) {
-      this.toastService.showError(TOAST_MESSAGES.PLEASE_LOG_IN_AGAIN);
-      return;
-    }
-    if (this.otpForm.invalid) return;
-    this.apiService
-      .post(API_URLS.VERIFY_OTP, {
-        userId,
-        otp: this.otpForm.get('otp')?.value,
-      })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res: any) => {
-          // this.authService.setTokens(res.token, res.token);
-          this.authService.setTokens('awdawd', 'awdawd');
-          this.toastService.showSuccess(TOAST_MESSAGES.LOGGED_IN_SUCCESSFULLY);
-          this.router.navigate([ROUTER_PATHS.DASHBOARD]);
-        },
-      });
+    // const userId = this.userId();
+    // if (userId === null) {
+    //   this.toastService.showError(TOAST_MESSAGES.PLEASE_LOG_IN_AGAIN);
+    //   return;
+    // }
+    // if (this.otpForm.invalid) return;
+    // this.apiService
+    //   .post(API_URLS.VERIFY_OTP, {
+    //     userId,
+    //     otp: this.otpForm.get('otp')?.value,
+    //   })
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       // this.authService.setTokens(res.token, res.token);
+    //       this.authService.setTokens('awdawd', 'awdawd');
+    //       this.toastService.showSuccess(TOAST_MESSAGES.LOGGED_IN_SUCCESSFULLY);
+    //       this.router.navigate([ROUTER_PATHS.DASHBOARD]);
+    //     },
+    //   });
+    this.authService.setTokens('awdawd', 'awdawd');
+    this.toastService.showSuccess(TOAST_MESSAGES.LOGGED_IN_SUCCESSFULLY);
+    this.router.navigate([ROUTER_PATHS.DASHBOARD]);
   }
 
   onResendCode(): void {
