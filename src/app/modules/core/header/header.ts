@@ -288,7 +288,7 @@ export class Header {
   onUserSettings() {}
 
   onLogout() {
-    const refreshToken = this.authService.getRefreshToken;
+    const refreshToken = this.authService.getRefreshToken();
     if (!refreshToken) {
       return;
     }

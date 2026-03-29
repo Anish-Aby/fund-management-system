@@ -268,7 +268,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.forgotOtpForm.invalid) return;
     this.forgotOtpLoading.set(true);
     this.apiService
-      .post('api/v1/auth/verify-forgot-otp', {
+      .post(API_URLS.VERIFY_OTP, {
         userId: this.forgotUserId(),
         otp: this.forgotOtpForm.get('otp')!.value,
       })
@@ -288,9 +288,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.newPasswordForm.invalid) return;
     this.newPasswordLoading.set(true);
     this.apiService
-      .post('api/v1/auth/reset-password', {
-        userId: this.forgotUserId(),
+      .post(API_URLS.RESET_PASSWORD, {
+        email: this.forgotEmailValue(),
+        otp: this.forgotOtpForm.get('otp')!.value,
         newPassword: this.newPasswordForm.get('password')!.value,
+        confirmPassword: this.newPasswordForm.get('confirmPassword')!.value,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
