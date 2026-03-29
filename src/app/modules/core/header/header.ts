@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
@@ -12,9 +12,11 @@ import { DialogService } from 'primeng/dynamicdialog';
 
 import { ThemeService } from '../services/theme';
 import { DialogWindowService } from '../services/dialog-window-service';
-import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
+import { API_URLS, DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
 import { AuthService } from '../services/auth-service';
 import { SearchService } from '../../global-search/service/search-service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ApiService } from '../../shared/services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -37,10 +39,13 @@ export class Header {
   notificationItems: MenuItem[] = [];
   notificationCount: number = 3;
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(
-    private router: Router,
-    private dialogWindowService: DialogWindowService,
+    private apiService: ApiService,
     private authService: AuthService,
+    private dialogWindowService: DialogWindowService,
+    private router: Router,
     public themeService: ThemeService,
     public searchService: SearchService,
   ) {}
@@ -283,7 +288,20 @@ export class Header {
   onUserSettings() {}
 
   onLogout() {
-    this.authService.logout();
+    const refreshToken = this.authService.getRefreshToken;
+    if (!refreshToken) {
+      return;
+    }
+    this.apiService
+      .post(API_URLS.LOGOUT, {
+        refreshToken,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        complete: () => {
+          this.authService.logout();
+        },
+      });
   }
 
   onNotificationClick(type: string) {

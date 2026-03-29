@@ -10,6 +10,7 @@ export const LOGIN_PANEL_VISIBLE_DURATION = 4000;
 
 export const API_URLS = {
   LOGIN: 'api/v1/auth/login',
+  LOGOUT: 'api/v1/auth/logout',
   VERIFY_OTP: 'api/v1/auth/verify-otp',
   FORGOT_PASSWORD: 'api/v1/auth/forgot-password',
   RESET_PASSWORD: 'api/v1/auth/reset-password',

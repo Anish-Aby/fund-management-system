@@ -111,14 +111,7 @@ export class BankManagementComponent implements OnInit {
     });
   }
 
-  // ── Cascade watchers ──────────────────────────────────────────────────────
-  //
-  // Chain: Region → Country → (Currency + State) → City
-  //
-  // All programmatic changes use { emitEvent: false } so these
-  // watchers only ever fire on real user interaction.
   private watchCascade(): void {
-    // ── 1. Region → Countries ─────────────────────────────────────────────
     this.bankForm
       .get('bankRegionID')!
       .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
@@ -130,8 +123,8 @@ export class BankManagementComponent implements OnInit {
           .get(`api/Common/countries/${regionId}`)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (countries: any) => {
-              this.countryOptions.set(countries);
+            next: (response: any) => {
+              this.countryOptions.set(response.data);
               if (!this.isViewMode()) {
                 this.bankForm.get('bankCountryID')!.enable();
               }
@@ -152,8 +145,8 @@ export class BankManagementComponent implements OnInit {
           .get(`api/Common/states/${countryId}`)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (states: any) => {
-              this.stateOptions.set(states);
+            next: (response: any) => {
+              this.stateOptions.set(response.data);
               if (!this.isViewMode()) {
                 this.bankForm.get('stateId')!.enable();
               }
@@ -165,8 +158,8 @@ export class BankManagementComponent implements OnInit {
           .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (currencies: any) => {
-              this.currencyOptions.set(currencies);
+            next: (response: any) => {
+              this.currencyOptions.set(response.data);
               if (!this.isViewMode()) {
                 this.bankForm.get('accountCurrencyID')!.enable();
               }
@@ -186,8 +179,8 @@ export class BankManagementComponent implements OnInit {
           .get(`api/Common/cities/${stateId}`)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (cities: any) => {
-              this.cityOptions.set(cities);
+            next: (response: any) => {
+              this.cityOptions.set(response.data);
               if (!this.isViewMode()) {
                 this.bankForm.get('cityId')!.enable();
               }
@@ -244,14 +237,14 @@ export class BankManagementComponent implements OnInit {
     this.apiService
       .get(API_URLS.FUND_REGION_LOOKUP)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: (res: any) => this.regionOptions.set(res) });
+      .subscribe({ next: (response: any) => this.regionOptions.set(response.data) });
   }
 
   getBankListData(): void {
     this.apiService
       .get(API_URLS.BANK_LIST_DATA)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: (res: any) => this.bankData.set(res) });
+      .subscribe({ next: (response: any) => this.bankData.set(response.data) });
   }
 
   // ── Reset ─────────────────────────────────────────────────────────────────
@@ -313,64 +306,50 @@ export class BankManagementComponent implements OnInit {
     const currencyId = (bank as any).accountCurrencyID;
     const stateId = (bank as any).stateId;
     const cityId = (bank as any).cityId;
-
-    // Enable all so disabled controls can receive values, then patch silently
     this.bankForm.enable(o);
     this.bankForm.patchValue(bank, o);
-
     if (!regionId) {
       this.bankForm.disable(o);
       return;
     }
-
-    // Step 1: countries
     this.apiService
       .get(`api/Common/countries/${regionId}`)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (countries: any) => {
-          this.countryOptions.set(countries);
+        next: (response: any) => {
+          this.countryOptions.set(response.data);
           this.bankForm.get('bankCountryID')!.setValue(countryId ?? '', o);
-
           if (!countryId) {
             this.bankForm.disable(o);
             return;
           }
-
-          // Step 2a: currencies (parallel with states — both can run together)
           this.apiService
             .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-              next: (currencies: any) => {
-                this.currencyOptions.set(currencies);
+              next: (response: any) => {
+                this.currencyOptions.set(response.data);
                 this.bankForm.get('accountCurrencyID')!.setValue(currencyId ?? '', o);
               },
             });
-
-          // Step 2b: states
           this.apiService
             .get(`api/Common/states/${countryId}`)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-              next: (states: any) => {
-                this.stateOptions.set(states);
+              next: (response: any) => {
+                this.stateOptions.set(response.data);
                 this.bankForm.get('stateId')!.setValue(stateId ?? '', o);
-
                 if (!stateId) {
                   this.bankForm.disable(o);
                   return;
                 }
-
-                // Step 3: cities
                 this.apiService
                   .get(`api/Common/cities/${stateId}`)
                   .pipe(takeUntilDestroyed(this.destroyRef))
                   .subscribe({
-                    next: (cities: any) => {
-                      this.cityOptions.set(cities);
+                    next: (response: any) => {
+                      this.cityOptions.set(response.data);
                       this.bankForm.get('cityId')!.setValue(cityId ?? '', o);
-                      // All data loaded — lock everything for view mode
                       this.bankForm.disable(o);
                     },
                   });
@@ -413,8 +392,8 @@ export class BankManagementComponent implements OnInit {
       .get(`api/Common/countries/${regionId}`)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (countries: any) => {
-          this.countryOptions.set(countries);
+        next: (response: any) => {
+          this.countryOptions.set(response.data);
           this.bankForm.get('bankCountryID')!.setValue(countryId ?? '', o);
           this.bankForm.get('bankCountryID')!.enable(o);
 
@@ -425,8 +404,8 @@ export class BankManagementComponent implements OnInit {
             .get(`${API_URLS.CURRENCY_LOOKUP}/${countryId}`)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-              next: (currencies: any) => {
-                this.currencyOptions.set(currencies);
+              next: (response: any) => {
+                this.currencyOptions.set(response.data);
                 this.bankForm.get('accountCurrencyID')!.setValue(currencyId ?? '', o);
                 this.bankForm.get('accountCurrencyID')!.enable(o);
               },
@@ -437,8 +416,9 @@ export class BankManagementComponent implements OnInit {
             .get(`api/Common/states/${countryId}`)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-              next: (states: any) => {
-                this.stateOptions.set(states);
+              next: (response: any) => {
+                this.stateOptions.set(response.data);
+                console.log('Setting stateId control value to:', stateId ?? '');
                 this.bankForm.get('stateId')!.setValue(stateId ?? '', o);
                 this.bankForm.get('stateId')!.enable(o);
 
@@ -449,8 +429,8 @@ export class BankManagementComponent implements OnInit {
                   .get(`api/Common/cities/${stateId}`)
                   .pipe(takeUntilDestroyed(this.destroyRef))
                   .subscribe({
-                    next: (cities: any) => {
-                      this.cityOptions.set(cities);
+                    next: (response: any) => {
+                      this.cityOptions.set(response.data);
                       this.bankForm.get('cityId')!.setValue(cityId ?? '', o);
                       this.bankForm.get('cityId')!.enable(o);
                     },

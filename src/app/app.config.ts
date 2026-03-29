@@ -79,7 +79,7 @@ const Noir = definePreset(Aura, {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptors([headerInterceptor, loaderInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([loaderInterceptor, errorInterceptor, headerInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimationsAsync(),
