@@ -11,7 +11,7 @@ import * as moment from 'moment-timezone';
 import { AuthService } from '../../services/auth-service';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
-import { ROUTER_PATHS } from '../../../shared/constants/const';
+import { API_URLS, ROUTER_PATHS } from '../../../shared/constants/const';
 
 let isRefreshing = false;
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
@@ -19,12 +19,14 @@ const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 export const headerInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
   const authReq = attachHeaders(req, authService);
-
   return next(authReq).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      if (
+        error instanceof HttpErrorResponse &&
+        error.status === 401 &&
+        !req.url.includes(API_URLS.REFRESH_TOKEN) // ← skip if this IS the refresh call
+      ) {
         return handle401(req, next, authService, router);
       }
       return throwError(() => error);
@@ -71,11 +73,8 @@ function handle401(
     }),
     catchError((err) => {
       isRefreshing = false;
-      if (err instanceof HttpErrorResponse && err.status === 401) {
-        // Token refresh failed, logout user
-        authService.logout();
-        router.navigate([ROUTER_PATHS.LOGIN]);
-      }
+      authService.logout();
+      router.navigate([ROUTER_PATHS.LOGIN]);
       return throwError(() => err);
     }),
   );

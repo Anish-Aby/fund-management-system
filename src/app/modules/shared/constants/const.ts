@@ -19,6 +19,9 @@ export const API_URLS = {
   CURRENCY_LOOKUP: 'api/common/currencies',
   FUND_REGION_LOOKUP: 'api/common/fund-regions',
   BANK_ADD: 'api/v1/bank/add-update',
+  REFRESH_TOKEN: 'api/v1/auth/refresh-token',
+  ENTITY_LIST_DATA: 'api/v1/Entity',
+  ENTITY_ADD: 'api/v1/Entity/add-update',
 };
 
 export const VALIDATOR_REGEX_PATTERNS = {

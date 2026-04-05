@@ -50,8 +50,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       switch (error.status) {
         case HttpStatusCode.Unauthorized:
           // authService.logout();
-          break;
-
+          return throwError(() => error);
         case HttpStatusCode.Forbidden:
         case HttpStatusCode.NotFound:
         case HttpStatusCode.BadRequest:

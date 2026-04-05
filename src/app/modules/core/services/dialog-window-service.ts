@@ -6,7 +6,7 @@ import { DialogHeader } from '../../shared/components/dialog-header/dialog-heade
 import { DIALOG_COMPONENT_TITLES } from '../../shared/constants/const';
 import { BehaviorSubject, take } from 'rxjs';
 import { RoleAdd } from '../../role/role-add/role-add';
-import { EntityAdd } from '../../entity/entity-add/entity-add';
+import { EntityManagementComponent } from '../../entity/entity-management/entity-management.component';
 import { VendorAdd } from '../../vendor/vendor-add/vendor-add';
 import { InvoiceAdd } from '../../invoice/invoice-add/invoice-add';
 import { ForexPricing } from '../../forex-pricing/forex-pricing';
@@ -108,7 +108,7 @@ export class DialogWindowService {
       case DIALOG_COMPONENT_TITLES.MASTERS.ROLES_MANAGEMENT:
         return this.openSingleInstanceWindow(RoleAdd, componentName, data);
       case DIALOG_COMPONENT_TITLES.MASTERS.ENTITY_MANAGEMENT:
-        return this.openSingleInstanceWindow(EntityAdd, componentName, data);
+        return this.openSingleInstanceWindow(EntityManagementComponent, componentName, data);
       case DIALOG_COMPONENT_TITLES.MASTERS.VENDOR_MANAGEMENT:
         return this.openSingleInstanceWindow(VendorAdd, componentName, data);
       case DIALOG_COMPONENT_TITLES.FILE.ADD_INVOICE:

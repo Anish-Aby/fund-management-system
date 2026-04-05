@@ -1,0 +1,800 @@
+<div class="bg-[#f4f4f5] py-3 px-4 flex flex-col gap-5" [formGroup]="entityForm">
+  <!-- ══════════════════════════════════════════════════════
+       FORM CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Mode header -->
+    <div
+      class="px-6 py-2 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
+      [ngClass]="{
+        'border-l-sky-500': isViewMode(),
+        'border-l-emerald-500': isAddMode(),
+        'border-l-amber-500': isEditMode(),
+      }"
+    >
+      <div
+        class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        [ngClass]="{
+          'bg-sky-100': isViewMode(),
+          'bg-emerald-100': isAddMode(),
+          'bg-amber-100': isEditMode(),
+        }"
+      >
+        <i
+          class="pi text-[13px]"
+          [ngClass]="{
+            'pi-eye text-sky-600': isViewMode(),
+            'pi-plus text-emerald-600': isAddMode(),
+            'pi-pencil text-amber-600': isEditMode(),
+          }"
+        ></i>
+      </div>
+      <div>
+        <h2 class="text-[14px] font-semibold tracking-tight text-slate-800 leading-none mb-1">
+          @if (isViewMode()) {
+            View Entity
+          } @else if (isEditMode()) {
+            Edit Entity
+          } @else {
+            Add New Entity
+          }
+        </h2>
+        <p class="text-[12px] leading-none text-slate-400">
+          @if (isViewMode()) {
+            Read-only view of entity details
+          } @else if (isEditMode()) {
+            Modify existing entity information
+          } @else {
+            Fill in the details to register a new entity
+          }
+        </p>
+      </div>
+    </div>
+
+    <p-tabs value="0" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-building" style="font-size: 11px"></i>
+            General Info
+          </div>
+        </p-tab>
+        <p-tab value="1">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-map-marker" style="font-size: 11px"></i>
+            Address Info
+          </div>
+        </p-tab>
+      </p-tablist>
+
+      <p-tabpanels class="bg-[#f4f4f5]!">
+        <!-- ── Tab 1: General Info ────────────────────────────────────── -->
+        <p-tabpanel value="0">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Entity Code -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Entity Code <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. ENT-001"
+                  formControlName="entityCode"
+                  [ngClass]="isFieldInvalid('entityCode') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('entityCode')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityCode') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Entity Name -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Entity Name <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Legal entity name"
+                  formControlName="entityName"
+                  [ngClass]="isFieldInvalid('entityName') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('entityName')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityName') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Display Name -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  Display Name
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Abbreviated / short name"
+                  formControlName="entityDisplayName"
+                />
+              </div>
+
+              <!-- Tax ID -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Tax ID <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Tax identification number"
+                  formControlName="entityTaxId"
+                  [ngClass]="isFieldInvalid('entityTaxId') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('entityTaxId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityTaxId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Tax Type -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Tax Type <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="taxTypeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select tax type"
+                  formControlName="entityTaxType"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('entityTaxType')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityTaxType') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Tax % -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
+                >
+                  <span>Tax % <span class="text-red-400">*</span></span>
+                  <span class="text-[9px] text-slate-300 font-normal">0 – 100</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="number"
+                  placeholder="e.g. 18"
+                  formControlName="taxPercentage"
+                  [ngClass]="isFieldInvalid('taxPercentage') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('taxPercentage')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('taxPercentage') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Bank A/c No -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Mapped Bank A/c No <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="bankListOptions()"
+                  [group]="true"
+                  placeholder="Select bank"
+                  formControlName="entityBankAccno"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+
+                @if (isFieldInvalid('entityBankAccno')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityBankAccno') }}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <!-- ── Tab 2: Address Info ────────────────────────────────────── -->
+        <p-tabpanel value="1">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Entity Address -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Entity Address <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Street / branch address"
+                  formControlName="street"
+                  [ngClass]="isFieldInvalid('street') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('street')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('street') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Region -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Entity Region <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="regionOptions()"
+                  optionLabel="fundRegionName"
+                  optionValue="fundRegionId"
+                  placeholder="Select region"
+                  formControlName="entityRegionId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('entityRegionId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('entityRegionId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Country (cascade-locked) -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Entity Country <span class="text-red-400">*</span>
+                  @if (entityForm.get('countryId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select region first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="countryOptions()"
+                  optionLabel="countryName"
+                  optionValue="countryMasterId"
+                  placeholder="Select country"
+                  formControlName="countryId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('countryId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('countryId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Base CCY (cascade-locked) -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Entity Base CCY <span class="text-red-400">*</span>
+                  @if (entityForm.get('baseCurrencyId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="currencyOptions()"
+                  optionLabel="currencyCode"
+                  optionValue="currencyMasterId"
+                  placeholder="Select currency"
+                  formControlName="baseCurrencyId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('baseCurrencyId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('baseCurrencyId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- State (free text — maps to payload `state: string`) -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  State <span class="text-red-400">*</span>
+                  @if (entityForm.get('countryId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="stateOptions()"
+                  optionLabel="stateName"
+                  optionValue="countryStateMasterId"
+                  placeholder="Select state"
+                  formControlName="state"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('state')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('state') }}
+                  </span>
+                }
+              </div>
+
+              <!-- City (free text — maps to payload `city: string`) -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  City <span class="text-red-400">*</span>
+                  @if (entityForm.get('state')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select state first
+                    </span>
+                  }
+                </label>
+
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="cityOptions()"
+                  optionLabel="cityName"
+                  optionValue="stateCityMasterId"
+                  placeholder="Select city"
+                  formControlName="city"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('city')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('city') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Zip Code -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Zip Code <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. 560012"
+                  formControlName="zip"
+                  [ngClass]="isFieldInvalid('zip') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('zip')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('zip') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Contact Person -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Contact Person <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Full name"
+                  formControlName="contactPersonName"
+                  [ngClass]="isFieldInvalid('contactPersonName') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('contactPersonName')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactPersonName') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Contact No -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
+                >
+                  <span>Contact No <span class="text-red-400">*</span></span>
+                  <span class="text-[9px] text-slate-300 font-normal">10 digits</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="tel"
+                  placeholder="0000000000"
+                  formControlName="contactPersonPhoneNo"
+                  maxlength="10"
+                  [ngClass]="isFieldInvalid('contactPersonPhoneNo') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('contactPersonPhoneNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactPersonPhoneNo') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Email ID -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Email ID <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  placeholder="contact@entity.com"
+                  formControlName="contactEmailId"
+                  [ngClass]="isFieldInvalid('contactEmailId') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('contactEmailId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactEmailId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Email ID 2 (optional) -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  Email ID 2
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  placeholder="alt@entity.com"
+                  formControlName="emailId2"
+                  [ngClass]="isFieldInvalid('emailId2') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('emailId2')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('emailId2') }}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+
+    <!-- Action buttons -->
+    <div class="py-2 px-3 border-t border-surface-200 flex items-center justify-end gap-2">
+      @if (isViewMode() || isEditMode()) {
+        <p-button
+          icon="pi pi-times-circle"
+          label="Clear"
+          variant="outlined"
+          severity="secondary"
+          size="small"
+          (onClick)="clearEntitySelection()"
+        />
+      }
+      @if (!isViewMode()) {
+        <p-button
+          icon="pi pi-plus-circle"
+          [label]="isEditMode() ? 'Update' : 'Save'"
+          [severity]="isEditMode() ? 'warn' : 'success'"
+          size="small"
+          (onClick)="saveEntity()"
+          [disabled]="entityForm.invalid"
+        />
+      }
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ENTITY LIST CARD
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+  >
+    <!-- Toolbar -->
+    <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
+          <i class="pi pi-list text-slate-500" style="font-size: 9px"></i>
+        </div>
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Entity List</span>
+        @if (entityData().length > 0) {
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+          >
+            {{ entityData().length }}
+          </span>
+        }
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <i
+            class="pi pi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+            style="font-size: 11px"
+          ></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search entities..."
+            class="!pl-8 !h-8 !text-[13px] !rounded-lg !border-slate-200 !w-52"
+            (input)="entityTable.filterGlobal($event.target.value, 'contains')"
+          />
+        </div>
+        <p-button
+          icon="pi pi-file-excel"
+          severity="secondary"
+          variant="outlined"
+          size="small"
+          pTooltip="Export Excel"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-print"
+          severity="secondary"
+          variant="outlined"
+          size="small"
+          pTooltip="Print"
+          tooltipPosition="bottom"
+        />
+        <p-button
+          icon="pi pi-refresh"
+          severity="contrast"
+          variant="outlined"
+          size="small"
+          pTooltip="Refresh"
+          tooltipPosition="bottom"
+          (onClick)="getEntityListData()"
+        />
+      </div>
+    </div>
+
+    <!-- Table -->
+    <p-table
+      #entityTable
+      [value]="entityData()"
+      [(selection)]="selectedEntities"
+      dataKey="entityId"
+      [stripedRows]="true"
+      size="small"
+      [showGridlines]="true"
+      [scrollable]="true"
+      scrollHeight="550px"
+      class="table-dashboard-invoice"
+      [resizableColumns]="true"
+      columnResizeMode="expand"
+      [globalFilterFields]="[
+        'entityCode',
+        'entityName',
+        'entityDisplayName',
+        'entityTaxId',
+        'entityTaxType',
+        'entityBankName',
+        'entityBankAccno',
+        'contactPersonName',
+        'contactEmailId',
+      ]"
+    >
+      <ng-template #header>
+        <tr>
+          <th style="width: 40px"><p-tableHeaderCheckbox /></th>
+          <th pSortableColumn="entityCode" pResizableColumn>
+            <div class="flex items-center gap-1.5">Code <p-sortIcon field="entityCode" /></div>
+          </th>
+          <th pSortableColumn="entityName" pResizableColumn>
+            <div class="flex items-center gap-1.5">
+              Entity Name <p-sortIcon field="entityName" />
+            </div>
+          </th>
+          <th pSortableColumn="entityDisplayName" pResizableColumn>
+            <div class="flex items-center gap-1.5">
+              Display Name <p-sortIcon field="entityDisplayName" />
+            </div>
+          </th>
+          <th pResizableColumn>Tax ID</th>
+          <th pResizableColumn>Tax Type</th>
+          <th pResizableColumn>Tax %</th>
+          <th pResizableColumn>Bank Name</th>
+          <th pResizableColumn>Bank A/c No</th>
+          <th pResizableColumn>Contact Person</th>
+          <th pResizableColumn>Contact No</th>
+          <th pResizableColumn>Email ID</th>
+          <th style="width: 90px">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-entity>
+        <tr>
+          <td><p-tableCheckbox [value]="entity" /></td>
+
+          <!-- Code -->
+          <td>
+            <span
+              class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
+            >
+              {{ entity.entityCode }}
+            </span>
+          </td>
+
+          <!-- Entity Name -->
+          <td>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-building text-indigo-500" style="font-size: 8px"></i>
+              </div>
+              <span class="text-[13px] font-semibold text-slate-800 tracking-tight">{{
+                entity.entityName
+              }}</span>
+            </div>
+          </td>
+
+          <!-- Display Name -->
+          <td>
+            <span class="text-[13px] text-slate-500">{{ entity.entityDisplayName }}</span>
+          </td>
+
+          <!-- Tax ID -->
+          <td>
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
+              entity.entityTaxId
+            }}</span>
+          </td>
+
+          <!-- Tax Type -->
+          <td>
+            <span
+              class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
+            >
+              {{ entity.entityTaxType }}
+            </span>
+          </td>
+
+          <!-- Tax % -->
+          <td>
+            <span class="text-[12px] font-mono text-slate-600 tabular-nums">
+              {{ entity.taxPercentage }}%
+            </span>
+          </td>
+
+          <!-- Bank Name -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <div
+                class="w-5 h-5 rounded-md bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-building-columns text-sky-500" style="font-size: 8px"></i>
+              </div>
+              <span class="text-[13px] text-slate-600">{{ entity.entityBankName }}</span>
+            </div>
+          </td>
+
+          <!-- Bank A/c No -->
+          <td>
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
+              entity.entityBankAccno
+            }}</span>
+          </td>
+
+          <!-- Contact Person -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <div
+                class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="pi pi-user text-slate-400" style="font-size: 8px"></i>
+              </div>
+              <span class="text-[13px] text-slate-700">{{ entity.contactPersonName }}</span>
+            </div>
+          </td>
+
+          <!-- Contact No -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-phone text-slate-400" style="font-size: 10px"></i>
+              <span class="text-[13px] text-slate-600 tabular-nums">{{
+                entity.contactPersonPhoneNo
+              }}</span>
+            </div>
+          </td>
+
+          <!-- Email ID -->
+          <td>
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
+              <span class="text-[13px] text-slate-600">{{ entity.contactEmailId }}</span>
+            </div>
+          </td>
+
+          <!-- Row actions -->
+          <td>
+            <div class="flex items-center justify-end gap-1">
+              <p-button
+                size="small"
+                icon="pi pi-pencil"
+                severity="secondary"
+                variant="outlined"
+                pTooltip="Edit"
+                tooltipPosition="bottom"
+                (onClick)="editEntity(entity)"
+              />
+              <p-button
+                size="small"
+                icon="pi pi-trash"
+                severity="danger"
+                variant="outlined"
+                pTooltip="Delete"
+                tooltipPosition="bottom"
+                (onClick)="showDeleteDialog(entity)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="13">
+            <div class="flex flex-col items-center justify-center py-12 gap-3">
+              <div
+                class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center"
+              >
+                <i class="pi pi-building text-slate-300" style="font-size: 16px"></i>
+              </div>
+              <span class="text-[13px] text-slate-400">No entities found</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

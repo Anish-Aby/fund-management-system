@@ -11,7 +11,7 @@ import { InvoiceSplit } from '../../invoice/invoice-split/invoice-split';
 import { InvoiceReview } from '../../invoice/invoice-review/invoice-review';
 import { CashBalance } from '../../report/cash-balance/cash-balance';
 import { FundCashBalance } from '../../report/fund-cash-balance/fund-cash-balance';
-import { EntityAdd } from '../../entity/entity-add/entity-add';
+import { EntityManagementComponent } from '../../entity/entity-management/entity-management.component';
 import { RoleAdd } from '../../role/role-add/role-add';
 import { UserAdd } from '../../user/user-add/user-add';
 import { TaxReport } from '../../report/tax-report/tax-report';
@@ -49,7 +49,7 @@ export class DialogWindowZ {
     InvoiceReview,
     CashBalance,
     FundCashBalance,
-    EntityAdd,
+    EntityManagementComponent,
     RoleAdd,
     UserAdd,
     TaxReport,
