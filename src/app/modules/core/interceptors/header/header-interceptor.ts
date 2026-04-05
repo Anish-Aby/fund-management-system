@@ -71,8 +71,11 @@ function handle401(
     }),
     catchError((err) => {
       isRefreshing = false;
-      authService.logout();
-      router.navigate([ROUTER_PATHS.LOGIN]);
+      if (err instanceof HttpErrorResponse && err.status === 401) {
+        // Token refresh failed, logout user
+        authService.logout();
+        router.navigate([ROUTER_PATHS.LOGIN]);
+      }
       return throwError(() => err);
     }),
   );

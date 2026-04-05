@@ -1,13 +1,13 @@
-<div class="bg-[#f4f4f5] p-6 flex flex-col gap-5" [formGroup]="bankForm">
+<div class="bg-[#f4f4f5] py-3 px-4 flex flex-col gap-5" [formGroup]="bankForm">
   <!-- ══════════════════════════════════════════════════════
        FORM CARD
   ══════════════════════════════════════════════════════ -->
   <div
-    class="bg-[#f4f4f5] rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
+    class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
   >
     <!-- Mode header -->
     <div
-      class="px-6 py-4 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
+      class="px-6 py-2 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
       [ngClass]="{
         'border-l-sky-500': isViewMode(),
         'border-l-emerald-500': isAddMode(),
@@ -69,18 +69,32 @@
         </p-tab>
       </p-tablist>
 
-      <p-tabpanels>
+      <p-tabpanels class="bg-[#f4f4f5]!">
         <!-- ── Tab 1: General Info ────────────────────────────────────── -->
         <p-tabpanel value="0">
           <div class="px-3">
-            <div class="grid grid-cols-12 gap-x-2 gap-y-2">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Bank Code -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Bank Code <span class="text-red-400">*</span>
                 </label>
-                <input fluid pInputText placeholder="e.g. BNK-001" formControlName="bankCode" />
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. BNK-001"
+                  formControlName="bankCode"
+                  [ngClass]="isFieldInvalid('bankCode') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('bankCode')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankCode') }}
+                  </span>
+                }
               </div>
 
+              <!-- Bank Name -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Bank Name <span class="text-red-400">*</span>
@@ -90,9 +104,17 @@
                   pInputText
                   placeholder="Full legal bank name"
                   formControlName="bankName"
+                  [ngClass]="isFieldInvalid('bankName') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('bankName')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankName') }}
+                  </span>
+                }
               </div>
 
+              <!-- Bank Account No -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Bank A/c No <span class="text-red-400">*</span>
@@ -102,31 +124,88 @@
                   pInputText
                   placeholder="Account number"
                   formControlName="bankAccountNo"
+                  [ngClass]="isFieldInvalid('bankAccountNo') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('bankAccountNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankAccountNo') }}
+                  </span>
+                }
               </div>
 
+              <!-- ACH No (optional — 9 digits if provided) -->
               <div class="col-span-2 flex flex-col gap-1.5">
-                <label class="text-[11px] font-medium text-slate-500">ACH No</label>
-                <input fluid pInputText placeholder="ACH routing number" formControlName="achno" />
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  ACH No
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="9-digit ACH number"
+                  formControlName="achNo"
+                  [ngClass]="isFieldInvalid('achNo') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('achNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('achNo') }}
+                  </span>
+                }
               </div>
 
+              <!-- SWIFT No -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   SWIFT No <span class="text-red-400">*</span>
                 </label>
-                <input fluid pInputText placeholder="SWIFT / BIC code" formControlName="swiftNo" />
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. CHASUS33"
+                  formControlName="swiftNo"
+                  [ngClass]="isFieldInvalid('swiftNo') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('swiftNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('swiftNo') }}
+                  </span>
+                }
               </div>
 
+              <!-- IBAN (optional) -->
               <div class="col-span-2 flex flex-col gap-1.5">
-                <label class="text-[11px] font-medium text-slate-500">IBAN</label>
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  IBAN
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
                 <input fluid pInputText placeholder="IBAN" formControlName="iban" />
               </div>
 
+              <!-- Routing No (optional — 9 digits if provided) -->
               <div class="col-span-2 flex flex-col gap-1.5">
-                <label class="text-[11px] font-medium text-slate-500">Routing No (ABA)</label>
-                <input fluid pInputText placeholder="Routing number" formControlName="routingNo" />
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  Routing No (ABA)
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="9-digit routing number"
+                  formControlName="routingNumber"
+                  [ngClass]="isFieldInvalid('routingNumber') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('routingNumber')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('routingNumber') }}
+                  </span>
+                }
               </div>
 
+              <!-- Account Type -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Account Type <span class="text-red-400">*</span>
@@ -134,16 +213,23 @@
                 <p-select
                   fluid
                   appendTo="body"
-                  [options]="[]"
-                  optionLabel="accountType"
-                  optionValue="accountId"
+                  [options]="accountTypeOptions()"
+                  optionLabel="accountTypeName"
+                  optionValue="accountTypeId"
                   placeholder="Select account type"
-                  formControlName="accountTypeId"
+                  formControlName="accountTypeID"
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('accountTypeID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('accountTypeID') }}
+                  </span>
+                }
               </div>
 
+              <!-- Payment Method -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Payment Method <span class="text-red-400">*</span>
@@ -151,14 +237,20 @@
                 <p-select
                   fluid
                   appendTo="body"
-                  [options]="[]"
-                  optionLabel="paymentMethod"
+                  [options]="paymentMethodOptions()"
+                  optionLabel="paymentMethodName"
                   optionValue="paymentMethodId"
                   placeholder="Select payment method"
-                  formControlName="paymentMethodId"
+                  formControlName="paymentMethodID"
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('paymentMethodID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('paymentMethodID') }}
+                  </span>
+                }
               </div>
             </div>
           </div>
@@ -167,7 +259,8 @@
         <!-- ── Tab 2: Address Info ────────────────────────────────────── -->
         <p-tabpanel value="1">
           <div class="px-3">
-            <div class="grid grid-cols-12 gap-x-2 gap-y-2">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Branch Address -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Branch Address <span class="text-red-400">*</span>
@@ -176,8 +269,15 @@
                   fluid
                   pInputText
                   placeholder="Address of the branch"
-                  formControlName="branchAddress"
+                  formControlName="address"
+                  [ngClass]="isFieldInvalid('address') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('address')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('address') }}
+                  </span>
+                }
               </div>
 
               <!-- Region -->
@@ -196,9 +296,15 @@
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('bankRegionID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankRegionID') }}
+                  </span>
+                }
               </div>
 
-              <!-- Country — disabled until region is selected -->
+              <!-- Country -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   Bank Country <span class="text-red-400">*</span>
@@ -221,9 +327,15 @@
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('bankCountryID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankCountryID') }}
+                  </span>
+                }
               </div>
 
-              <!-- Account CCY — disabled until country is selected -->
+              <!-- Account CCY -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   Account CCY <span class="text-red-400">*</span>
@@ -246,13 +358,19 @@
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('accountCurrencyID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('accountCurrencyID') }}
+                  </span>
+                }
               </div>
 
-              <!-- State — disabled until country is selected -->
+              <!-- State -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   State <span class="text-red-400">*</span>
-                  @if (bankForm.get('stateId')?.disabled && !isViewMode()) {
+                  @if (bankForm.get('countryStateMasterId')?.disabled && !isViewMode()) {
                     <span
                       class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
                     >
@@ -265,19 +383,25 @@
                   appendTo="body"
                   [options]="stateOptions()"
                   optionLabel="stateName"
-                  optionValue="stateId"
+                  optionValue="countryStateMasterId"
                   placeholder="Select state"
-                  formControlName="stateId"
+                  formControlName="countryStateMasterId"
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('countryStateMasterId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('countryStateMasterId') }}
+                  </span>
+                }
               </div>
 
-              <!-- City — disabled until state is selected -->
+              <!-- City -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   City <span class="text-red-400">*</span>
-                  @if (bankForm.get('cityId')?.disabled && !isViewMode()) {
+                  @if (bankForm.get('stateCityMasterId')?.disabled && !isViewMode()) {
                     <span
                       class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
                     >
@@ -290,14 +414,21 @@
                   appendTo="body"
                   [options]="cityOptions()"
                   optionLabel="cityName"
-                  optionValue="cityId"
+                  optionValue="stateCityMasterId"
                   placeholder="Select city"
-                  formControlName="cityId"
+                  formControlName="stateCityMasterId"
                   [filter]="true"
                   resetFilterOnHide="true"
                 />
+                @if (isFieldInvalid('stateCityMasterId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('stateCityMasterId') }}
+                  </span>
+                }
               </div>
 
+              <!-- Zip Code -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Zip Code <span class="text-red-400">*</span>
@@ -305,10 +436,16 @@
                 <input
                   fluid
                   pInputText
-                  type="number"
-                  placeholder="eg: 56001012"
+                  placeholder="e.g. 560012"
                   formControlName="zipCode"
+                  [ngClass]="isFieldInvalid('zipCode') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('zipCode')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('zipCode') }}
+                  </span>
+                }
               </div>
 
               <!-- Contact Person -->
@@ -321,21 +458,39 @@
                   pInputText
                   placeholder="Full name"
                   formControlName="contactPersonName"
+                  [ngClass]="isFieldInvalid('contactPersonName') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('contactPersonName')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactPersonName') }}
+                  </span>
+                }
               </div>
 
-              <!-- Contact No -->
+              <!-- Contact No — 10 digits enforced -->
               <div class="col-span-2 flex flex-col gap-1.5">
-                <label class="text-[11px] font-medium text-slate-500">
-                  Contact No <span class="text-red-400">*</span>
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
+                >
+                  <span>Contact No <span class="text-red-400">*</span></span>
+                  <span class="text-[9px] text-slate-300 font-normal">10 digits</span>
                 </label>
                 <input
                   fluid
                   pInputText
                   type="tel"
-                  placeholder="+1 000 000 0000"
+                  placeholder="0000000000"
                   formControlName="contactPhoneNo"
+                  maxlength="10"
+                  [ngClass]="isFieldInvalid('contactPhoneNo') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('contactPhoneNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactPhoneNo') }}
+                  </span>
+                }
               </div>
 
               <!-- Email ID -->
@@ -348,19 +503,37 @@
                   pInputText
                   type="email"
                   placeholder="contact@bank.com"
-                  formControlName="contactEmailId"
+                  formControlName="contactEmailID"
+                  [ngClass]="isFieldInvalid('contactEmailID') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('contactEmailID')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactEmailID') }}
+                  </span>
+                }
               </div>
 
+              <!-- Email ID 2 (optional) -->
               <div class="col-span-2 flex flex-col gap-1.5">
-                <label class="text-[11px] font-medium text-slate-500">Email ID 2</label>
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  Email ID 2
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
                 <input
                   fluid
                   pInputText
                   type="email"
-                  placeholder="contact@bank.com"
-                  formControlName="secondaryContactEmailId"
+                  placeholder="alt@bank.com"
+                  formControlName="emailId2"
+                  [ngClass]="isFieldInvalid('emailId2') ? 'ng-invalid ng-dirty' : ''"
                 />
+                @if (isFieldInvalid('emailId2')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('emailId2') }}
+                  </span>
+                }
               </div>
             </div>
           </div>
@@ -517,14 +690,14 @@
       <ng-template #body let-bank>
         <tr>
           <td><p-tableCheckbox [value]="bank" /></td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
             >
               {{ bank.bankCode }}
             </span>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <div class="flex items-center gap-2">
               <div
                 class="w-5 h-5 rounded-md bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0"
@@ -536,62 +709,68 @@
               }}</span>
             </div>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
               bank.bankAccountNo
             }}</span>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <div class="flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
               <span class="text-[13px] text-slate-600">{{ bank.bankRegion }}</span>
             </div>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <span class="text-[13px] text-slate-600">{{ bank.bankCountry }}</span>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <span
               class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono tracking-wide"
             >
               {{ bank.accountCurrency }}
             </span>
           </td>
-          <td>
-            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{ bank.achno }}</span>
+          <td (click)="viewBankDetails(bank)">
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{ bank.achNo }}</span>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-mono font-semibold tracking-wide"
             >
               {{ bank.swiftNo }}
             </span>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <div class="flex items-center gap-1.5">
               <div
                 class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
               >
                 <i class="pi pi-user text-slate-400" style="font-size: 8px"></i>
               </div>
-              <span class="text-[13px] text-slate-700">{{ bank.contactPersonName }}</span>
+              <span class="text-[13px] text-slate-700">{{
+                bank.contactPersonName ?? bank.contactPerson
+              }}</span>
             </div>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <div class="flex items-center gap-1.5">
               <i class="pi pi-phone text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600 tabular-nums">{{ bank.contactPhoneNo }}</span>
+              <span class="text-[13px] text-slate-600 tabular-nums">{{
+                bank.contactPhoneNo ?? bank.contactNo
+              }}</span>
             </div>
           </td>
-          <td>
+          <td (click)="viewBankDetails(bank)">
             <div class="flex items-center gap-1.5">
               <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600">{{ bank.contactEmailId }}</span>
+              <span class="text-[13px] text-slate-600">{{
+                bank.contactEmailId ?? bank.emailId
+              }}</span>
             </div>
           </td>
           <td>
             <div class="flex items-center justify-end gap-1">
-              <p-button
+              <!-- <p-button
                 size="small"
                 icon="pi pi-eye"
                 severity="secondary"
@@ -599,7 +778,7 @@
                 pTooltip="View"
                 tooltipPosition="bottom"
                 (onClick)="viewBank(bank)"
-              />
+              /> -->
               <p-button
                 size="small"
                 icon="pi pi-pencil"
@@ -625,7 +804,7 @@
 
       <ng-template #emptymessage>
         <tr>
-          <td colspan="12">
+          <td colspan="13">
             <div class="flex flex-col items-center justify-center py-12 gap-3">
               <div
                 class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center"

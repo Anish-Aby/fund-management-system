@@ -9,12 +9,533 @@
   <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
     <div
       class="cd-dialog cd-card pointer-events-auto w-full bg-white rounded-2xl overflow-hidden flex flex-col"
-      [ngClass]="isEmailMode ? 'max-w-[740px]' : 'max-w-[520px]'"
+      [ngClass]="
+        isViewDetailsMode
+          ? 'max-w-[900px] max-h-4/5'
+          : isEmailMode
+            ? 'max-w-[740px]'
+            : 'max-w-[520px]'
+      "
     >
+      <!-- ╔══════════════════════════════════════════════════════════════════════╗ -->
+      <!-- ║  VIEW DETAILS MODE — Paste this block inside the @if (state) block  ║ -->
+      <!-- ║  alongside the email and generic confirm blocks.                     ║ -->
+      <!-- ║  In the outer [ngClass] add: isViewDetailsMode ? 'max-w-[640px]'    ║ -->
+      <!-- ╚══════════════════════════════════════════════════════════════════════╝ -->
+      @if (isViewDetailsMode) {
+        <!-- ── Hero header ──────────────────────────────────────────────────────── -->
+        <div class="flex-shrink-0 border-b border-slate-100">
+          <!-- Top: avatar + name + controls -->
+          <div class="px-6 pt-5 pb-4 flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <!-- Avatar -->
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold flex-shrink-0 ring-2 ring-white"
+                [ngClass]="avatarBgClass(viewDetails!.avatarColor)"
+              >
+                {{ viewDetails!.avatarText }}
+              </div>
+
+              <!-- Name + subtitle + tags -->
+              <div>
+                <div class="text-[15px] font-semibold text-slate-900 leading-tight tracking-tight">
+                  {{ state!.config.title }}
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
+                  @if (viewDetails!.subtitle) {
+                    <span
+                      class="font-mono text-[10px] text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded-md"
+                    >
+                      {{ viewDetails!.subtitle }}
+                    </span>
+                  }
+                  @for (tag of viewDetails!.tags; track tag.text) {
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium border"
+                      [ngClass]="tagClass(tag.color)"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"
+                      ></span>
+                      {{ tag.text }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Right controls -->
+            <div class="flex items-center gap-2 flex-shrink-0 pt-0.5">
+              <span
+                class="inline-flex items-center gap-1.5 text-[10px] font-medium text-slate-400 border border-slate-200 bg-slate-50 px-2.5 py-1 rounded-lg tracking-wide uppercase"
+              >
+                <svg class="w-2.5 h-2.5" viewBox="0 0 10 10" fill="none">
+                  <circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.4" />
+                  <circle cx="5" cy="5" r="1.2" fill="currentColor" />
+                </svg>
+                View only
+              </span>
+              <button
+                (click)="dismiss()"
+                class="w-7 h-7 rounded-lg border border-slate-200 bg-white text-slate-400 flex items-center justify-center hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+              >
+                <i class="pi pi-times text-[11px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ID strip -->
+          @if (viewDetails!.idStrip?.length) {
+            <div class="flex border-t border-slate-100">
+              @for (cell of viewDetails!.idStrip!; track cell.label; let last = $last) {
+                <div
+                  class="flex-1 px-5 py-2.5 flex flex-col gap-0.5"
+                  [ngClass]="last ? '' : 'border-r border-slate-100'"
+                >
+                  <span
+                    class="font-mono text-[9px] font-medium text-slate-400 uppercase tracking-widest"
+                  >
+                    {{ cell.label }}
+                  </span>
+                  <span class="font-mono text-[11px] font-semibold text-slate-700 leading-tight">
+                    {{ cell.value }}
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- ── Body: left nav + content panel ──────────────────────────────────── -->
+        <div class="flex flex-1 overflow-hidden min-h-0">
+          <!-- Left navigation rail -->
+          <div
+            class="w-44 flex-shrink-0 border-r border-slate-100 bg-slate-50 flex flex-col py-2 gap-0.5"
+          >
+            @for (section of viewDetails!.sections; track section.title; let idx = $index) {
+              <button
+                (click)="activeSection = idx"
+                class="w-full flex items-center gap-2.5 px-4 py-2.5 text-left transition-all duration-150 cursor-pointer border-0 rounded-none relative"
+                [ngClass]="
+                  activeSection === idx
+                    ? 'bg-white text-slate-900 shadow-[inset_2px_0_0_0] ' +
+                      sectionAccentClass(section.iconColor)
+                    : 'text-slate-500 hover:bg-white hover:text-slate-700'
+                "
+              >
+                <!-- Section icon -->
+                <div
+                  class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors"
+                  [ngClass]="
+                    activeSection === idx ? sectionIconBgClass(section.iconColor) : 'bg-slate-200'
+                  "
+                >
+                  <ng-container [ngSwitch]="section.icon">
+                    <svg
+                      *ngSwitchCase="'building'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M2 2a1 1 0 011-1h10a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V2zm2 1v10h8V3H4zm1 2h2v2H5V5zm4 0h2v2H9V5zm-4 4h2v2H5V9zm4 0h2v2H9V9z"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'location'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8 1a5 5 0 00-5 5c0 3.5 5 9 5 9s5-5.5 5-9a5 5 0 00-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'person'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm-5 5a5 5 0 0110 0H3z" />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'shield'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path d="M8 1L2 4v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V4L8 1z" />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'code'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M5.7 5.3L2 8l3.7 2.7-.7 1L1 8l4-3 .7.3zM10.3 5.3l.7-.3 4 3-4 3.7-.7-1L14 8l-3.7-2.7zM9 3l-2 10H8l2-10H9z"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'currency'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8 1a7 7 0 100 14A7 7 0 008 1zM7 5h2a1 1 0 010 2H7a2 2 0 000 4h2a1 1 0 010 2H7A4 4 0 017 5zm1-2v1M8 12v1"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'document'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M3 1a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V5l-4-4H3zm6 0v3a1 1 0 001 1h3"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'settings'"
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8 5a3 3 0 100 6A3 3 0 008 5zM1.5 6.5l1.4-.8A6 6 0 003 4.6l-.8-1.4 1.4-1.4 1.4.8A6 6 0 006.5 2l.5-1.5h2l.5 1.5a6 6 0 001.2.6l1.4-.8 1.4 1.4-.8 1.4a6 6 0 01.6 1.2L14.5 7v2l-1.5.5a6 6 0 01-.6 1.2l.8 1.4-1.4 1.4-1.4-.8a6 6 0 01-1.2.6L9.5 15h-2l-.5-1.5A6 6 0 015.8 13l-1.4.8-1.4-1.4.8-1.4a6 6 0 01-.6-1.2L1.5 9V7z"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchDefault
+                      class="w-3 h-3"
+                      [ngClass]="
+                        activeSection === idx
+                          ? sectionIconColorClass(section.iconColor)
+                          : 'text-slate-400'
+                      "
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <circle cx="8" cy="8" r="6" />
+                    </svg>
+                  </ng-container>
+                </div>
+
+                <span class="text-[12px] font-medium leading-none">{{ section.title }}</span>
+
+                <!-- Field count pill -->
+                <span
+                  class="ml-auto text-[10px] font-medium px-1.5 py-0.5 rounded-full transition-colors"
+                  [ngClass]="
+                    activeSection === idx
+                      ? sectionCountClass(section.iconColor)
+                      : 'bg-slate-200 text-slate-400'
+                  "
+                >
+                  {{ section.fields.length }}
+                </span>
+              </button>
+            }
+
+            <!-- Spacer -->
+            <div class="flex-1"></div>
+
+            <!-- Bottom metadata -->
+            <div class="px-4 py-3 border-t border-slate-100 mt-2">
+              <div class="text-[10px] text-slate-400 font-medium">
+                {{ viewDetails!.sections.length }} sections
+              </div>
+              <div class="text-[10px] text-slate-400 mt-0.5">
+                {{ getTotalFieldCount() }} total fields
+              </div>
+            </div>
+          </div>
+
+          <!-- Content panel -->
+          <div class="flex-1 overflow-y-auto bg-white">
+            @for (section of viewDetails!.sections; track section.title; let idx = $index) {
+              @if (activeSection === idx) {
+                <!-- Panel header -->
+                <div class="px-6 pt-5 pb-4 border-b border-slate-100">
+                  <div class="flex items-center gap-2.5">
+                    <div
+                      class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                      [ngClass]="sectionIconBgClass(section.iconColor)"
+                    >
+                      <ng-container [ngSwitch]="section.icon">
+                        <svg
+                          *ngSwitchCase="'building'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M2 2a1 1 0 011-1h10a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V2zm2 1v10h8V3H4zm1 2h2v2H5V5zm4 0h2v2H9V5zm-4 4h2v2H5V9zm4 0h2v2H9V9z"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'location'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M8 1a5 5 0 00-5 5c0 3.5 5 9 5 9s5-5.5 5-9a5 5 0 00-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'person'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm-5 5a5 5 0 0110 0H3z" />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'shield'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path d="M8 1L2 4v4c0 3.3 2.5 6.4 6 7 3.5-.6 6-3.7 6-7V4L8 1z" />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'code'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M5.7 5.3L2 8l3.7 2.7-.7 1L1 8l4-3 .7.3zM10.3 5.3l.7-.3 4 3-4 3.7-.7-1L14 8l-3.7-2.7zM9 3l-2 10H8l2-10H9z"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'currency'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M8 1a7 7 0 100 14A7 7 0 008 1zM7 5h2a1 1 0 010 2H7a2 2 0 000 4h2a1 1 0 010 2H7A4 4 0 017 5zm1-2v1M8 12v1"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'document'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M3 1a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V5l-4-4H3zm6 0v3a1 1 0 001 1h3"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchCase="'settings'"
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M8 5a3 3 0 100 6A3 3 0 008 5zM1.5 6.5l1.4-.8A6 6 0 003 4.6l-.8-1.4 1.4-1.4 1.4.8A6 6 0 006.5 2l.5-1.5h2l.5 1.5a6 6 0 001.2.6l1.4-.8 1.4 1.4-.8 1.4a6 6 0 01.6 1.2L14.5 7v2l-1.5.5a6 6 0 01-.6 1.2l.8 1.4-1.4 1.4-1.4-.8a6 6 0 01-1.2.6L9.5 15h-2l-.5-1.5A6 6 0 015.8 13l-1.4.8-1.4-1.4.8-1.4a6 6 0 01-.6-1.2L1.5 9V7z"
+                          />
+                        </svg>
+                        <svg
+                          *ngSwitchDefault
+                          class="w-3.5 h-3.5"
+                          [ngClass]="sectionIconColorClass(section.iconColor)"
+                          viewBox="0 0 16 16"
+                          fill="currentColor"
+                        >
+                          <circle cx="8" cy="8" r="6" />
+                        </svg>
+                      </ng-container>
+                    </div>
+                    <div>
+                      <div class="text-[13px] font-semibold text-slate-900">
+                        {{ section.title }}
+                      </div>
+                      <div class="text-[11px] text-slate-400 mt-px">
+                        {{ section.fields.length }}
+                        {{ section.fields.length === 1 ? 'field' : 'fields' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Fields -->
+                <div class="p-5">
+                  <!-- Full-width fields first -->
+                  @for (field of getFullWidthFields(section.fields); track field.label) {
+                    <div class="mb-3 border border-slate-100 rounded-xl overflow-hidden">
+                      <div
+                        class="px-4 py-1.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2"
+                      >
+                        <span
+                          class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest"
+                        >
+                          {{ field.label }}
+                        </span>
+                      </div>
+                      <div class="px-4 py-3">
+                        <span class="text-[13px] font-medium text-slate-800 leading-relaxed">
+                          {{ field.value }}
+                        </span>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- 2-col grid for remaining fields -->
+                  <div class="grid grid-cols-2 gap-3">
+                    @for (field of getNonFullWidthFields(section.fields); track field.label) {
+                      <div
+                        class="group border border-slate-100 rounded-xl p-3.5 bg-white hover:border-slate-200 hover:shadow-sm transition-all duration-150 relative"
+                      >
+                        <!-- Label row -->
+                        <div class="flex items-center justify-between mb-2">
+                          <span
+                            class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest"
+                          >
+                            {{ field.label }}
+                          </span>
+                          @if (field.copyable) {
+                            <button
+                              (click)="copyValue(field.value)"
+                              class="opacity-0 group-hover:opacity-100 transition-opacity w-5 h-5 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer border-0 bg-transparent"
+                            >
+                              <i class="pi pi-copy text-[9px]"></i>
+                            </button>
+                          }
+                        </div>
+
+                        <!-- Value -->
+                        @if (field.personAvatar) {
+                          <div class="flex items-center gap-2">
+                            <div
+                              class="w-6 h-6 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0"
+                            >
+                              <span class="text-[8px] font-semibold text-emerald-700">
+                                {{ getInitials(field.value.toString()) }}
+                              </span>
+                            </div>
+                            <span class="text-[13px] font-medium text-slate-800">{{
+                              field.value
+                            }}</span>
+                          </div>
+                        } @else if (field.badge) {
+                          <span
+                            class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium border"
+                            [ngClass]="fieldBadgeClass(field.badge.color)"
+                          >
+                            <span
+                              class="w-1.5 h-1.5 rounded-full bg-current opacity-70 flex-shrink-0"
+                            ></span>
+                            {{ field.badge.text }}
+                          </span>
+                        } @else if (field.mono) {
+                          <span
+                            class="font-mono text-[12px] font-medium text-slate-700 bg-slate-50 px-2 py-1 rounded-md border border-slate-100 inline-block"
+                          >
+                            {{ field.value }}
+                          </span>
+                        } @else {
+                          <span class="text-[13px] font-medium text-slate-800 leading-snug">
+                            {{ field.value }}
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- ── Footer ────────────────────────────────────────────────────────────── -->
+        <div
+          class="flex-shrink-0 border-t border-slate-100 px-6 py-3 flex items-center justify-between bg-slate-50"
+        >
+          <div class="flex items-center gap-1.5">
+            <span
+              class="font-mono text-[10px] text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded-md"
+              >Esc</span
+            >
+            <span class="text-[11px] text-slate-400">to close</span>
+          </div>
+          <div class="flex items-center gap-2">
+            @if (viewDetails!.showEdit) {
+              <button
+                (click)="onViewDetailsEdit()"
+                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer"
+              >
+                <i class="pi pi-pencil text-[11px] text-slate-500"></i>
+                {{ viewDetails!.editLabel || 'Edit' }}
+              </button>
+            }
+            <button
+              (click)="dismiss()"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-medium bg-slate-900 text-white hover:bg-slate-700 transition-colors cursor-pointer border border-slate-900"
+            >
+              {{ viewDetails!.confirmLabel || 'Close' }}
+            </button>
+          </div>
+        </div>
+      }
+
       <!-- ╔══════════════════════════════════════════════════════════╗ -->
       <!-- ║  EMAIL COMPOSE MODE  (Design 2 — light)                 ║ -->
       <!-- ╚══════════════════════════════════════════════════════════╝ -->
-      @if (isEmailMode) {
+      @else if (isEmailMode) {
         <!-- Accent bar -->
         <div class="h-[3px] w-full flex-shrink-0 bg-rose-500"></div>
 

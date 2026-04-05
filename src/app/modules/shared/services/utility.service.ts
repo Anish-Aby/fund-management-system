@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { BankCascadeIds } from '../../bank-management/models/bank-management.model';
 
 @Injectable({
   providedIn: 'root',
@@ -99,5 +100,46 @@ export class UtilityService {
     const cp = control.get('confirmPassword')?.value;
     if (!cp) return null;
     return pw === cp ? null : { mismatch: true };
+  }
+
+  isFieldInvalid(form: FormGroup, field: string): boolean {
+    const c = form.get(field);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+
+  getFieldError(form: FormGroup, field: string): string {
+    const c = form.get(field);
+    if (!c?.errors) return '';
+    if (c.errors['required']) return 'This field is required';
+    if (c.errors['email']) return 'Please enter a valid email address';
+    if (c.errors['minlength']) return `Minimum ${c.errors['minlength'].requiredLength} characters`;
+    if (c.errors['maxlength']) return `Maximum ${c.errors['maxlength'].requiredLength} characters`;
+    if (c.errors['pattern']) {
+      switch (field) {
+        case 'contactPhoneNo':
+          return 'Must be exactly 10 digits (numbers only)';
+        case 'swiftNo':
+          return 'Invalid SWIFT/BIC format (e.g. CHASUS33 or CHASUS33XXX)';
+        case 'achNo':
+          return 'ACH number must be exactly 9 digits';
+        case 'routingNumber':
+          return 'Routing number must be exactly 9 digits';
+        case 'zipCode':
+          return 'Enter a valid zip/postal code (4–10 characters)';
+        default:
+          return 'Invalid format';
+      }
+    }
+    return 'Invalid value';
+  }
+
+  extractBankCascadeIds(bank: any): BankCascadeIds {
+    return {
+      regionId: bank.bankRegionId ?? null,
+      countryId: bank.bankCountryId ?? null,
+      currencyId: bank.accountCurrencyId ?? null,
+      countryStateMasterId: bank.countryStateMasterId ?? null,
+      stateCityMasterId: bank.stateCityMasterId ?? null,
+    };
   }
 }

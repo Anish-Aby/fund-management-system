@@ -33,6 +33,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ViewDetailsConfig } from '../components/confirm-dialog/confirm-dialog';
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -132,6 +133,10 @@ export interface ConfirmDialogConfig {
 
   // ── Footer ─────────────────────────────────────────────────────
   footerNote?: string;
+
+  // ── View Details mode ──────────────────────────────────────────
+  /** Pass this to switch the dialog into read-only view-details mode */
+  viewDetails?: ViewDetailsConfig;
 }
 
 export interface ConfirmDialogResult {

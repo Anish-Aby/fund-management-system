@@ -21,6 +21,14 @@ export const API_URLS = {
   BANK_ADD: 'api/v1/bank/add-update',
 };
 
+export const VALIDATOR_REGEX_PATTERNS = {
+  PHONE_PATTERN: /^\d{10}$/,
+  SWIFT_PATTERN: /^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/i,
+  ACH_PATTERN: /^\d{9}$/,
+  ROUTING_PATTERN: /^\d{9}$/,
+  ZIP_PATTERN: /^[A-Z0-9\s\-]{4,10}$/i,
+};
+
 export const DIALOG_COMPONENT_TITLES = {
   MASTERS: {
     USER_MANAGEMENT: 'User Management',

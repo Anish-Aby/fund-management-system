@@ -248,40 +248,42 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.forgotLoading.set(true);
     const email = this.forgotEmailForm.get('email')!.value;
     this.forgotEmailValue.set(email);
-    this.apiService
-      .post(API_URLS.FORGOT_PASSWORD, { email })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res: any) => {
-          this.forgotLoading.set(false);
-          this.forgotUserId.set(res.data?.userId ?? null);
-          this.currentPage.set(3);
-          this.startForgotResendCountdown();
-        },
-        error: () => {
-          this.forgotLoading.set(false);
-        },
-      });
+    // this.apiService
+    //   .post(API_URLS.FORGOT_PASSWORD, { email })
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       this.forgotLoading.set(false);
+    //       this.forgotUserId.set(res.data?.userId ?? null);
+    //       this.currentPage.set(3);
+    //       this.startForgotResendCountdown();
+    //     },
+    //     error: () => {
+    //       this.forgotLoading.set(false);
+    //     },
+    //   });
+    this.currentPage.set(3);
   }
 
   onVerifyForgotOtp(): void {
     if (this.forgotOtpForm.invalid) return;
     this.forgotOtpLoading.set(true);
-    this.apiService
-      .post(API_URLS.VERIFY_OTP, {
-        userId: this.forgotUserId(),
-        otp: this.forgotOtpForm.get('otp')!.value,
-      })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.forgotOtpLoading.set(false);
-          this.currentPage.set(4);
-        },
-        error: () => {
-          this.forgotOtpLoading.set(false);
-        },
-      });
+    // this.apiService
+    //   .post(API_URLS.VERIFY_OTP, {
+    //     userId: this.forgotUserId(),
+    //     otp: this.forgotOtpForm.get('otp')!.value,
+    //   })
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: () => {
+    //       this.forgotOtpLoading.set(false);
+    //       this.currentPage.set(4);
+    //     },
+    //     error: () => {
+    //       this.forgotOtpLoading.set(false);
+    //     },
+    //   });
+    this.currentPage.set(4);
   }
 
   onSetNewPassword(): void {

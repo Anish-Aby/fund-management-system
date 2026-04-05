@@ -17,10 +17,171 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmService, ConfirmDialogState } from './../../services/confirm.service';
+import { ToastService } from '../../../core/services/toast';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES — import these wherever you call confirmService.open()
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VIEW DETAILS DIALOG — Types
+// Add these interfaces to your confirm-dialog.component.ts (alongside existing types)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * A tag/badge shown in the hero header strip.
+ */
+export interface ViewDetailTag {
+  text: string;
+  color: 'green' | 'violet' | 'sky' | 'amber' | 'rose' | 'slate' | 'indigo' | 'emerald';
+}
+
+/**
+ * A single field inside a ViewDetailsSection.
+ */
+export interface ViewDetailsField {
+  label: string;
+  value: string | number;
+  /** Render value in monospace font */
+  mono?: boolean;
+  /** Render as a colored chip/badge */
+  badge?: {
+    text: string;
+    color: 'green' | 'violet' | 'sky' | 'amber' | 'rose' | 'slate' | 'indigo' | 'emerald';
+  };
+  /** Icon class suffix (e.g. 'building', 'envelope') — uses a built-in SVG set */
+  icon?:
+    | 'building'
+    | 'location'
+    | 'person'
+    | 'phone'
+    | 'envelope'
+    | 'code'
+    | 'currency'
+    | 'card'
+    | 'link';
+  /** If true, renders as a 2-column person row with avatar initials */
+  personAvatar?: boolean;
+  /** Span the full width in a grid layout */
+  fullWidth?: boolean;
+  /** Show copy-to-clipboard button on hover */
+  copyable?: boolean;
+}
+
+/**
+ * A section group inside the ViewDetails dialog.
+ */
+export interface ViewDetailsSection {
+  title: string;
+  /** Icon type for the section header */
+  icon:
+    | 'building'
+    | 'location'
+    | 'person'
+    | 'shield'
+    | 'code'
+    | 'document'
+    | 'currency'
+    | 'settings';
+  /** Icon color theme */
+  iconColor: 'blue' | 'purple' | 'green' | 'amber' | 'rose' | 'sky' | 'indigo';
+  /** 'grid' = 2-column cards (default), 'full' = single column */
+  layout?: 'grid' | 'full';
+  fields: ViewDetailsField[];
+}
+
+/**
+ * A quick-identifier strip shown below the hero (e.g. SWIFT, Account No).
+ * Maximum 4 items recommended.
+ */
+export interface ViewDetailsIdStrip {
+  label: string;
+  value: string;
+}
+
+/**
+ * The main config for the view-details dialog mode.
+ * Pass as `viewDetails` inside your ConfirmDialogConfig.
+ *
+ * @example
+ * await this.confirmService.open({
+ *   title: 'Global Standard Bank',
+ *   severity: 'info',
+ *   viewDetails: {
+ *     avatarText: 'GS',
+ *     avatarColor: 'sky',
+ *     subtitle: 'BNK-00412',
+ *     tags: [
+ *       { text: 'Active',       color: 'green'  },
+ *       { text: 'USD',          color: 'violet' },
+ *       { text: 'Asia Pacific', color: 'sky'    },
+ *       { text: 'Wire',         color: 'amber'  },
+ *     ],
+ *     idStrip: [
+ *       { label: 'SWIFT',      value: 'GSBKUS33'      },
+ *       { label: 'Account No', value: '4829301-8842'   },
+ *       { label: 'ACH No',     value: '021000021'      },
+ *       { label: 'IBAN',       value: 'US12 0002 1000' },
+ *     ],
+ *     sections: [
+ *       {
+ *         title: 'General',
+ *         icon: 'building',
+ *         iconColor: 'blue',
+ *         fields: [
+ *           { label: 'Bank Code',       value: 'BNK-00412',    mono: true },
+ *           { label: 'Bank Name',       value: 'Global Standard Bank' },
+ *           { label: 'SWIFT / BIC',     value: 'GSBKUS33XXX',  badge: { text: 'GSBKUS33XXX', color: 'green' } },
+ *           { label: 'Account Type',    value: 'Checking',     badge: { text: 'Checking', color: 'sky' } },
+ *           { label: 'Payment Method',  value: 'Wire Transfer', badge: { text: 'Wire Transfer', color: 'amber' } },
+ *         ],
+ *       },
+ *       {
+ *         title: 'Address',
+ *         icon: 'location',
+ *         iconColor: 'purple',
+ *         fields: [
+ *           { label: 'Branch Address', value: '123 Finance Street, Midtown, Singapore', fullWidth: true },
+ *           { label: 'Region',         value: 'Asia Pacific', badge: { text: 'Asia Pacific', color: 'violet' } },
+ *           { label: 'Country',        value: 'Singapore' },
+ *           { label: 'Zip Code',       value: '018960', mono: true },
+ *         ],
+ *       },
+ *       {
+ *         title: 'Contact',
+ *         icon: 'person',
+ *         iconColor: 'green',
+ *         fields: [
+ *           { label: 'Contact Person', value: 'James Whitfield', personAvatar: true },
+ *           { label: 'Phone',          value: '+65 6123 4567' },
+ *           { label: 'Primary Email',  value: 'james.w@gsbank.com', mono: true, copyable: true },
+ *           { label: 'Alt Email',      value: 'ops@gsbank.com',     mono: true, copyable: true },
+ *         ],
+ *       },
+ *     ],
+ *   },
+ * });
+ */
+export interface ViewDetailsConfig {
+  /** 1–2 letter initials for the avatar */
+  avatarText: string;
+  /** Avatar background color theme */
+  avatarColor: 'sky' | 'violet' | 'green' | 'amber' | 'rose' | 'slate' | 'indigo' | 'emerald';
+  /** Small monospace code shown under the title (e.g. "BNK-00412") */
+  subtitle?: string;
+  /** Colored tag pills next to the subtitle */
+  tags?: ViewDetailTag[];
+  /** Up to 4 key identifier cells shown in the strip below the hero */
+  idStrip?: ViewDetailsIdStrip[];
+  /** The data sections */
+  sections: ViewDetailsSection[];
+  /** Callback label for the primary action button (default: 'Close') */
+  confirmLabel?: string;
+  /** Show an Edit button — emits { confirmed: true, action: 'edit' } */
+  showEdit?: boolean;
+  /** Edit button label (default: 'Edit') */
+  editLabel?: string;
+}
 
 /** A single key/value row inside an EntityCardConfig */
 export interface EntityRow {
@@ -149,7 +310,12 @@ export class ConfirmDialog implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private sub!: Subscription;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  activeSection = 0;
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private toastService: ToastService,
+  ) {}
 
   // ── Generic confirm state ─────────────────────────────────────────────────
   state: ConfirmDialogState | null = null;
@@ -172,22 +338,16 @@ export class ConfirmDialog implements OnInit, OnDestroy {
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit(): void {
     this.sub = this.confirmService.state$.subscribe((s) => {
-      // setTimeout(0) defers to a new macrotask — fully outside any active
-      // Angular CD cycle, which prevents NG0100 when the BehaviorSubject
-      // emits synchronously inside a click handler that triggered CD.
-      // queueMicrotask is not enough because Angular can run another CD
-      // pass before the microtask queue is flushed.
-      setTimeout(() => {
-        this.state = s;
-        this.confirmTextInput = '';
-        this.checkboxConfirmed = false;
-        this.loading = false;
-        if (s) {
-          this.buildForm(s);
-          this.initEmailState(s);
-        }
-        this.cdr.detectChanges();
-      }, 0);
+      this.state = s;
+      this.confirmTextInput = '';
+      this.checkboxConfirmed = false;
+      this.loading = false;
+      this.activeSection = 0;
+      if (s) {
+        this.buildForm(s);
+        this.initEmailState(s);
+      }
+      this.cdr.detectChanges();
     });
   }
 
@@ -553,10 +713,6 @@ export class ConfirmDialog implements OnInit, OnDestroy {
     return 'Invalid value';
   }
 
-  copyValue(value: string | number): void {
-    navigator.clipboard?.writeText(String(value)).catch(() => {});
-  }
-
   // ── Actions ───────────────────────────────────────────────────────────────
   onConfirm(): void {
     if (this.state?.config.fields?.length) {
@@ -575,5 +731,153 @@ export class ConfirmDialog implements OnInit, OnDestroy {
   onBackdropClick(): void {
     if (!this.state?.config.confirmText && !this.confirmCheckbox && !this.isEmailMode)
       this.dismiss();
+  }
+
+  // ── 3. Getters ────────────────────────────────────────────────────────────────
+
+  get viewDetails(): ViewDetailsConfig | undefined {
+    return (this.state?.config as any)?.viewDetails;
+  }
+
+  get isViewDetailsMode(): boolean {
+    return !!this.viewDetails;
+  }
+
+  // ── 4. Helper methods — paste all of these into the class ────────────────────
+
+  getTotalFieldCount(): number {
+    return this.viewDetails?.sections.reduce((acc, s) => acc + s.fields.length, 0) ?? 0;
+  }
+
+  getFullWidthFields(fields: ViewDetailsField[]): ViewDetailsField[] {
+    return fields.filter((f) => f.fullWidth);
+  }
+
+  getNonFullWidthFields(fields: ViewDetailsField[]): ViewDetailsField[] {
+    return fields.filter((f) => !f.fullWidth);
+  }
+
+  getInitials(name: string): string {
+    const parts = name.trim().split(' ').filter(Boolean);
+    if (parts.length === 0) return '?';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  copyValue(value: string | number): void {
+    navigator.clipboard
+      ?.writeText(String(value))
+      .then(() => {
+        this.toastService.showSuccess(`Copied to clipboard: ${value}`);
+      })
+      .catch(() => {
+        this.toastService.showError(`Copy failed: ${value}`);
+      });
+  }
+
+  onViewDetailsEdit(): void {
+    this.state?.resolve({ confirmed: true, values: { action: 'edit' } });
+    this.confirmService.clear();
+  }
+
+  // ── Avatar background ─────────────────────────────────────────────────────────
+  avatarBgClass(color: string): string {
+    const map: Record<string, string> = {
+      sky: 'bg-sky-100 text-sky-700',
+      violet: 'bg-violet-100 text-violet-700',
+      green: 'bg-emerald-100 text-emerald-700',
+      emerald: 'bg-emerald-100 text-emerald-700',
+      amber: 'bg-amber-100 text-amber-700',
+      rose: 'bg-rose-100 text-rose-700',
+      slate: 'bg-slate-100 text-slate-600',
+      indigo: 'bg-indigo-100 text-indigo-700',
+    };
+    return map[color] ?? 'bg-slate-100 text-slate-600';
+  }
+
+  // ── Tag pills ─────────────────────────────────────────────────────────────────
+  tagClass(color: string): string {
+    const map: Record<string, string> = {
+      green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      violet: 'bg-violet-50 text-violet-700 border-violet-200',
+      sky: 'bg-sky-50 text-sky-700 border-sky-200',
+      amber: 'bg-amber-50 text-amber-700 border-amber-200',
+      rose: 'bg-rose-50 text-rose-700 border-rose-200',
+      slate: 'bg-slate-100 text-slate-600 border-slate-200',
+      indigo: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    };
+    return map[color] ?? 'bg-slate-100 text-slate-600 border-slate-200';
+  }
+
+  // ── Section nav: left border accent color (shadow-[inset_2px_0_0_0] color) ───
+  sectionAccentClass(color: string): string {
+    const map: Record<string, string> = {
+      blue: 'shadow-sky-500',
+      purple: 'shadow-violet-500',
+      green: 'shadow-emerald-500',
+      amber: 'shadow-amber-500',
+      rose: 'shadow-rose-500',
+      sky: 'shadow-sky-500',
+      indigo: 'shadow-indigo-500',
+    };
+    return map[color] ?? 'shadow-slate-400';
+  }
+
+  // ── Section icon container background ────────────────────────────────────────
+  sectionIconBgClass(color: string): string {
+    const map: Record<string, string> = {
+      blue: 'bg-sky-100',
+      purple: 'bg-violet-100',
+      green: 'bg-emerald-100',
+      amber: 'bg-amber-100',
+      rose: 'bg-rose-100',
+      sky: 'bg-sky-100',
+      indigo: 'bg-indigo-100',
+    };
+    return map[color] ?? 'bg-slate-100';
+  }
+
+  // ── Section icon text/fill color ──────────────────────────────────────────────
+  sectionIconColorClass(color: string): string {
+    const map: Record<string, string> = {
+      blue: 'text-sky-600',
+      purple: 'text-violet-600',
+      green: 'text-emerald-600',
+      amber: 'text-amber-600',
+      rose: 'text-rose-600',
+      sky: 'text-sky-600',
+      indigo: 'text-indigo-600',
+    };
+    return map[color] ?? 'text-slate-500';
+  }
+
+  // ── Field count pill on active nav item ───────────────────────────────────────
+  sectionCountClass(color: string): string {
+    const map: Record<string, string> = {
+      blue: 'bg-sky-100 text-sky-700',
+      purple: 'bg-violet-100 text-violet-700',
+      green: 'bg-emerald-100 text-emerald-700',
+      amber: 'bg-amber-100 text-amber-700',
+      rose: 'bg-rose-100 text-rose-700',
+      sky: 'bg-sky-100 text-sky-700',
+      indigo: 'bg-indigo-100 text-indigo-700',
+    };
+    return map[color] ?? 'bg-slate-100 text-slate-600';
+  }
+
+  // ── Field badge chip ──────────────────────────────────────────────────────────
+  fieldBadgeClass(color: string): string {
+    const map: Record<string, string> = {
+      green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      violet: 'bg-violet-50 text-violet-700 border-violet-200',
+      sky: 'bg-sky-50 text-sky-700 border-sky-200',
+      amber: 'bg-amber-50 text-amber-700 border-amber-200',
+      rose: 'bg-rose-50 text-rose-700 border-rose-200',
+      slate: 'bg-slate-100 text-slate-600 border-slate-200',
+      indigo: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    };
+    return map[color] ?? 'bg-slate-100 text-slate-600 border-slate-200';
   }
 }
