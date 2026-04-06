@@ -22,6 +22,7 @@ export const API_URLS = {
   REFRESH_TOKEN: 'api/v1/auth/refresh-token',
   ENTITY_LIST_DATA: 'api/v1/Entity',
   ENTITY_ADD: 'api/v1/Entity/add-update',
+  TAX_TYPE_LOOKUP: 'api/v1/Entity/taxTypes',
 };
 
 export const VALIDATOR_REGEX_PATTERNS = {

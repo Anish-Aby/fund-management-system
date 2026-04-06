@@ -156,9 +156,9 @@
                 <p-select
                   fluid
                   appendTo="body"
-                  [options]="taxTypeOptions"
-                  optionLabel="label"
-                  optionValue="value"
+                  [options]="taxTypeOptions()"
+                  optionLabel="name"
+                  optionValue="id"
                   placeholder="Select tax type"
                   formControlName="entityTaxType"
                   [filter]="true"
@@ -218,6 +218,27 @@
                     {{ getFieldError('entityBankAccno') }}
                   </span>
                 }
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between gap-1"
+                >
+                  Selected Bank Name
+                  <span class="text-[9px] text-slate-300 font-normal"
+                    >populated after selecting a bank A/c</span
+                  ></label
+                >
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 h-full rounded-xl text-md font-medium border bg-emerald-50 text-emerald-700 border-emerald-200"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
+                  @if (entityForm.get('entityBankAccno')?.value) {
+                    {{ getBankNameByAccNo() }}
+                  } @else {
+                    -
+                  }
+                </span>
               </div>
             </div>
           </div>

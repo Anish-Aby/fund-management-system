@@ -55,15 +55,8 @@ export class EntityManagementComponent implements OnInit {
   stateOptions = signal<any[]>([]);
   cityOptions = signal<any[]>([]);
   bankListOptions = signal<any[]>([]);
-
-  // Static tax type options — swap for an API call if a lookup endpoint exists
-  taxTypeOptions = [
-    { label: 'VAT', value: 'VAT' },
-    { label: 'GST', value: 'GST' },
-    { label: 'Sales Tax', value: 'SalesTax' },
-    { label: 'Income Tax', value: 'IncomeTax' },
-    { label: 'Withholding Tax', value: 'WithholdingTax' },
-  ];
+  taxTypeOptions = signal<any[]>([]);
+  bankListData = signal<any[]>([]);
 
   constructor(
     private fb: FormBuilder,
@@ -78,6 +71,7 @@ export class EntityManagementComponent implements OnInit {
     this.getEntityListData();
     this.getFundRegionLookup();
     this.getBankListData();
+    this.getTaxTypeOptions();
     this.watchCascade();
   }
 
@@ -281,7 +275,6 @@ export class EntityManagementComponent implements OnInit {
         entityTaxId: entity.entityTaxId ?? '',
         entityTaxType: entity.entityTaxType ?? '',
         taxPercentage: entity.taxPercentage ?? '',
-        entityBankName: entity.entityBankName ?? '',
         entityBankAccno: entity.entityBankAccno ?? '',
         street: entity.street ?? '',
         state: entity.state ?? '',
@@ -323,6 +316,13 @@ export class EntityManagementComponent implements OnInit {
       .subscribe({ next: (r: any) => this.regionOptions.set(r.data) });
   }
 
+  getTaxTypeOptions(): void {
+    this.apiService
+      .get(API_URLS.TAX_TYPE_LOOKUP)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ next: (r: any) => this.taxTypeOptions.set(r.data) });
+  }
+
   getEntityListData(): void {
     this.apiService
       .get(API_URLS.ENTITY_LIST_DATA)
@@ -347,9 +347,11 @@ export class EntityManagementComponent implements OnInit {
           const bankData = r.data.map((b: any) => ({
             label: b.bankName,
             value: b.bankId,
-            items: [{ label: b.bankAccountNo, value: b.bankId }],
+            items: [{ label: b.bankAccountNo, value: b.bankMasterId }],
           }));
+          this.bankListData.set(r.data);
           this.bankListOptions.set(bankData);
+          console.log('Bank list loaded:', bankData);
         },
       });
   }
@@ -366,7 +368,6 @@ export class EntityManagementComponent implements OnInit {
         entityTaxId: '',
         entityTaxType: '',
         taxPercentage: '',
-        entityBankName: '',
         entityBankAccno: '',
         street: '',
         entityRegionId: '',
@@ -437,18 +438,18 @@ export class EntityManagementComponent implements OnInit {
       return;
     }
     console.log('Payload ready to be sent to API:', this.getEntityPayload());
-    // this.apiService
-    //   .post(API_URLS.ENTITY_ADD, this.getEntityPayload())
-    //   .pipe(takeUntilDestroyed(this.destroyRef))
-    //   .subscribe({
-    //     next: () => {
-    //       this.toastService.showSuccess(
-    //         this.isEditMode() ? 'Entity updated successfully' : 'Entity saved successfully',
-    //       );
-    //       this.getEntityListData();
-    //       this.resetForm();
-    //     },
-    //   });
+    this.apiService
+      .post(API_URLS.ENTITY_ADD, this.getEntityPayload())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.toastService.showSuccess(
+            this.isEditMode() ? 'Entity updated successfully' : 'Entity saved successfully',
+          );
+          this.getEntityListData();
+          this.resetForm();
+        },
+      });
   }
 
   getEntityPayload(): any {
@@ -457,7 +458,6 @@ export class EntityManagementComponent implements OnInit {
       entityCode: v.entityCode,
       entityName: v.entityName,
       entityDisplayName: v.entityDisplayName,
-      entityBankName: v.entityBankName,
       entityBankAccno: v.entityBankAccno,
       street: v.street,
       city: v.city,
@@ -514,5 +514,18 @@ export class EntityManagementComponent implements OnInit {
 
   clearEntitySelection(): void {
     this.resetForm();
+  }
+
+  getBankNameByAccNo(): string {
+    console.log(
+      'Looking up bank name for account number:',
+      this.entityForm.get('entityBankAccno')!.value,
+    );
+    console.log('Bank list data available for lookup:', this.bankListData());
+    const bank = this.bankListData().filter(
+      (item: any) => item.bankMasterId === this.entityForm.get('entityBankAccno')!.value,
+    )[0];
+    console.log('Bank found for account number:', bank);
+    return bank ? bank.bankName : '';
   }
 }
