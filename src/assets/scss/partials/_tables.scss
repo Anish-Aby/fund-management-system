@@ -171,6 +171,10 @@ p-table {
       color: #374151 !important;
       transition: background 0.12s ease !important;
 
+      &.p-paginator-page-selected {
+        color: #ffffff !important;
+      }
+
       &:hover {
         background: rgba(0, 0, 0, 0.06) !important;
       }

@@ -1,11 +1,7 @@
 <div class="bg-[#f4f4f5] py-3 px-4 flex flex-col gap-5" [formGroup]="entityForm">
-  <!-- ══════════════════════════════════════════════════════
-       FORM CARD
-  ══════════════════════════════════════════════════════ -->
   <div
     class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
   >
-    <!-- Mode header -->
     <div
       class="px-6 py-2 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
       [ngClass]="{
@@ -53,7 +49,7 @@
       </div>
     </div>
 
-    <p-tabs value="0" class="tab-pl-0">
+    <p-tabs [(value)]="activeTabIndex" class="tab-pl-0">
       <p-tablist>
         <p-tab value="0">
           <div class="flex items-center gap-1.5">
@@ -70,11 +66,9 @@
       </p-tablist>
 
       <p-tabpanels class="bg-[#f4f4f5]!">
-        <!-- ── Tab 1: General Info ────────────────────────────────────── -->
         <p-tabpanel value="0">
           <div class="px-3">
             <div class="grid grid-cols-12 gap-x-2 gap-y-3">
-              <!-- Entity Code -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Entity Code <span class="text-red-400">*</span>
@@ -94,7 +88,6 @@
                 }
               </div>
 
-              <!-- Entity Name -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Entity Name <span class="text-red-400">*</span>
@@ -114,7 +107,6 @@
                 }
               </div>
 
-              <!-- Display Name -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
                   Display Name
@@ -128,7 +120,6 @@
                 />
               </div>
 
-              <!-- Tax ID -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Tax ID <span class="text-red-400">*</span>
@@ -148,7 +139,6 @@
                 }
               </div>
 
-              <!-- Tax Type -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Tax Type <span class="text-red-400">*</span>
@@ -172,7 +162,6 @@
                 }
               </div>
 
-              <!-- Tax % -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label
                   class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
@@ -196,12 +185,11 @@
                 }
               </div>
 
-              <!-- Bank A/c No -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Mapped Bank A/c No <span class="text-red-400">*</span>
                 </label>
-                <p-select
+                <p-multiselect
                   fluid
                   appendTo="body"
                   [options]="bankListOptions()"
@@ -209,6 +197,7 @@
                   placeholder="Select bank"
                   formControlName="entityBankAccno"
                   [filter]="true"
+                  display="chip"
                   resetFilterOnHide="true"
                 />
 
@@ -220,35 +209,59 @@
                 }
               </div>
 
-              <div class="col-span-2 flex flex-col gap-1.5">
+              <div class="col-span-4 flex flex-col gap-1.5">
                 <label
                   class="text-[11px] font-medium text-slate-500 flex items-center justify-between gap-1"
                 >
-                  Selected Bank Name
+                  Selected Banks
                   <span class="text-[9px] text-slate-300 font-normal"
-                    >populated after selecting a bank A/c</span
-                  ></label
+                    >auto-populated (Hover on chips for more info)</span
+                  >
+                </label>
+
+                <div
+                  class="min-h-10.5 rounded-lg border border-slate-200 bg-slate-50/60 px-2 py-1.5 flex flex-wrap gap-1 items-center"
                 >
-                <span
-                  class="inline-flex items-center gap-1 px-2 py-0.5 h-full rounded-xl text-md font-medium border bg-emerald-50 text-emerald-700 border-emerald-200"
-                >
-                  <span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
-                  @if (entityForm.get('entityBankAccno')?.value) {
-                    {{ getBankNameByAccNo() }}
+                  @if (getSelectedBankNames().length === 0) {
+                    <span class="text-[11px] text-slate-300 italic select-none px-1">
+                      No bank selected
+                    </span>
                   } @else {
-                    -
+                    @for (bank of getSelectedBankNames().slice(0, 2); track bank.id) {
+                      <span
+                        [pTooltip]="bank.accNo"
+                        tooltipPosition="bottom"
+                        class="inline-flex h-6 items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 leading-none cursor-default"
+                      >
+                        <i
+                          class="pi pi-building-columns text-emerald-400"
+                          style="font-size: 9px"
+                        ></i>
+                        <span>{{ bank.name }}</span>
+                        <span class="text-emerald-400 font-mono text-[10px]">{{ bank.accNo }}</span>
+                      </span>
+                    }
+
+                    @if (getSelectedBankNames().length > 2) {
+                      <span
+                        [pTooltip]="getOverflowTooltip()"
+                        tooltipPosition="bottom"
+                        class="inline-flex h-6 items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-500 border border-slate-200 leading-none cursor-default hover:bg-slate-200 hover:text-slate-700 transition-colors duration-150"
+                      >
+                        <i class="pi pi-plus" style="font-size: 8px"></i>
+                        {{ getSelectedBankNames().length - 2 }} more
+                      </span>
+                    }
                   }
-                </span>
+                </div>
               </div>
             </div>
           </div>
         </p-tabpanel>
 
-        <!-- ── Tab 2: Address Info ────────────────────────────────────── -->
         <p-tabpanel value="1">
           <div class="px-3">
             <div class="grid grid-cols-12 gap-x-2 gap-y-3">
-              <!-- Entity Address -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Entity Address <span class="text-red-400">*</span>
@@ -268,7 +281,6 @@
                 }
               </div>
 
-              <!-- Region -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Entity Region <span class="text-red-400">*</span>
@@ -292,7 +304,6 @@
                 }
               </div>
 
-              <!-- Country (cascade-locked) -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   Entity Country <span class="text-red-400">*</span>
@@ -323,7 +334,6 @@
                 }
               </div>
 
-              <!-- Base CCY (cascade-locked) -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   Entity Base CCY <span class="text-red-400">*</span>
@@ -354,7 +364,6 @@
                 }
               </div>
 
-              <!-- State (free text — maps to payload `state: string`) -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   State <span class="text-red-400">*</span>
@@ -385,7 +394,6 @@
                 }
               </div>
 
-              <!-- City (free text — maps to payload `city: string`) -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
                   City <span class="text-red-400">*</span>
@@ -417,7 +425,6 @@
                 }
               </div>
 
-              <!-- Zip Code -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Zip Code <span class="text-red-400">*</span>
@@ -437,7 +444,6 @@
                 }
               </div>
 
-              <!-- Contact Person -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Contact Person <span class="text-red-400">*</span>
@@ -457,7 +463,6 @@
                 }
               </div>
 
-              <!-- Contact No -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label
                   class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
@@ -482,7 +487,6 @@
                 }
               </div>
 
-              <!-- Email ID -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500">
                   Email ID <span class="text-red-400">*</span>
@@ -503,7 +507,6 @@
                 }
               </div>
 
-              <!-- Email ID 2 (optional) -->
               <div class="col-span-2 flex flex-col gap-1.5">
                 <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
                   Email ID 2
@@ -530,7 +533,6 @@
       </p-tabpanels>
     </p-tabs>
 
-    <!-- Action buttons -->
     <div class="py-2 px-3 border-t border-surface-200 flex items-center justify-end gap-2">
       @if (isViewMode() || isEditMode()) {
         <p-button
@@ -555,26 +557,20 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════
-       ENTITY LIST CARD
-  ══════════════════════════════════════════════════════ -->
   <div
     class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
   >
-    <!-- Toolbar -->
     <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
           <i class="pi pi-list text-slate-500" style="font-size: 9px"></i>
         </div>
         <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Entity List</span>
-        @if (entityData().length > 0) {
-          <span
-            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
-          >
-            {{ entityData().length }}
-          </span>
-        }
+        <span
+          class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+        >
+          {{ totalRecords() }}
+        </span>
       </div>
       <div class="flex items-center gap-2">
         <div class="relative">
@@ -613,12 +609,11 @@
           size="small"
           pTooltip="Refresh"
           tooltipPosition="bottom"
-          (onClick)="getEntityListData()"
+          (onClick)="refreshList()"
         />
       </div>
     </div>
 
-    <!-- Table -->
     <p-table
       #entityTable
       [value]="entityData()"
@@ -628,20 +623,26 @@
       size="small"
       [showGridlines]="true"
       [scrollable]="true"
-      scrollHeight="550px"
+      scrollHeight="500px"
       class="table-dashboard-invoice"
       [resizableColumns]="true"
       columnResizeMode="expand"
+      [lazy]="true"
+      [paginator]="true"
+      [(rows)]="pageSize"
+      [(first)]="first"
+      [totalRecords]="totalRecords()"
+      [rowsPerPageOptions]="pageSizeOptions"
+      paginatorDropdownAppendTo="body"
+      [showCurrentPageReport]="false"
+      (onLazyLoad)="onLazyLoad($event)"
       [globalFilterFields]="[
         'entityCode',
         'entityName',
         'entityDisplayName',
         'entityTaxId',
         'entityTaxType',
-        'entityBankName',
-        'entityBankAccno',
-        'contactPersonName',
-        'contactEmailId',
+        'entityRegion',
       ]"
     >
       <ng-template #header>
@@ -663,8 +664,7 @@
           <th pResizableColumn>Tax ID</th>
           <th pResizableColumn>Tax Type</th>
           <th pResizableColumn>Tax %</th>
-          <th pResizableColumn>Bank Name</th>
-          <th pResizableColumn>Bank A/c No</th>
+          <th pResizableColumn style="min-width: 220px">Banks</th>
           <th pResizableColumn>Contact Person</th>
           <th pResizableColumn>Contact No</th>
           <th pResizableColumn>Email ID</th>
@@ -677,7 +677,7 @@
           <td><p-tableCheckbox [value]="entity" /></td>
 
           <!-- Code -->
-          <td>
+          <td (click)="viewEntityDetails(entity)">
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
             >
@@ -686,33 +686,33 @@
           </td>
 
           <!-- Entity Name -->
-          <td>
+          <td (click)="viewEntityDetails(entity)">
             <div class="flex items-center gap-2">
               <div
                 class="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0"
               >
                 <i class="pi pi-building text-indigo-500" style="font-size: 8px"></i>
               </div>
-              <span class="text-[13px] font-semibold text-slate-800 tracking-tight">{{
-                entity.entityName
-              }}</span>
+              <span class="text-[13px] font-semibold text-slate-800 tracking-tight">
+                {{ entity.entityName }}
+              </span>
             </div>
           </td>
 
           <!-- Display Name -->
-          <td>
+          <td (click)="viewEntityDetails(entity)">
             <span class="text-[13px] text-slate-500">{{ entity.entityDisplayName }}</span>
           </td>
 
           <!-- Tax ID -->
-          <td>
-            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
-              entity.entityTaxId
-            }}</span>
+          <td (click)="viewEntityDetails(entity)">
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">
+              {{ entity.entityTaxId }}
+            </span>
           </td>
 
           <!-- Tax Type -->
-          <td>
+          <td (click)="viewEntityDetails(entity)">
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold"
             >
@@ -721,62 +721,81 @@
           </td>
 
           <!-- Tax % -->
-          <td>
+          <td (click)="viewEntityDetails(entity)">
             <span class="text-[12px] font-mono text-slate-600 tabular-nums">
               {{ entity.taxPercentage }}%
             </span>
           </td>
 
-          <!-- Bank Name -->
-          <td>
-            <div class="flex items-center gap-1.5">
-              <div
-                class="w-5 h-5 rounded-md bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0"
-              >
-                <i class="pi pi-building-columns text-sky-500" style="font-size: 8px"></i>
+          <!-- Banks — first 2 chips + overflow -->
+          <!-- Banks — first 2 chips + overflow -->
+          <td (click)="viewEntityDetails(entity)">
+            @if (!entity.banks || entity.banks.length === 0) {
+              <span class="text-[11px] text-slate-300 italic">No banks</span>
+            } @else {
+              <div class="flex items-center gap-1 flex-wrap">
+                @for (bank of (entity.banks ?? []).slice(0, 2); track bank.bankId) {
+                  <span
+                    [pTooltip]="bank.entityBankAccno"
+                    tooltipPosition="bottom"
+                    class="inline-flex h-6 items-center gap-1 px-1.5 py-0.5 rounded-[4px] bg-sky-50 border border-sky-200 text-sky-700 text-[11px] font-medium leading-none cursor-default max-w-[140px]"
+                  >
+                    <i
+                      class="pi pi-building-columns text-sky-400 flex-shrink-0"
+                      style="font-size: 8px"
+                    ></i>
+                    <span class="truncate">{{ bank.entityBankName }}</span>
+                  </span>
+                }
+                @if ((entity.banks ?? []).length > 2) {
+                  <span
+                    [pTooltip]="getBankOverflowTooltip(entity.banks)"
+                    tooltipPosition="bottom"
+                    class="inline-flex h-6 items-center gap-0.5 px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-semibold leading-none cursor-default hover:bg-slate-200 hover:text-slate-700 transition-colors duration-150"
+                  >
+                    <i class="pi pi-plus text-slate-400" style="font-size: 8px"></i>
+                    {{ (entity.banks ?? []).length - 2 }}
+                  </span>
+                }
               </div>
-              <span class="text-[13px] text-slate-600">{{ entity.entityBankName }}</span>
-            </div>
+            }
           </td>
 
-          <!-- Bank A/c No -->
-          <td>
-            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
-              entity.entityBankAccno
-            }}</span>
-          </td>
-
-          <!-- Contact Person -->
-          <td>
+          <!-- Contact Person — from banks[0] -->
+          <td (click)="viewEntityDetails(entity)">
             <div class="flex items-center gap-1.5">
               <div
                 class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0"
               >
                 <i class="pi pi-user text-slate-400" style="font-size: 8px"></i>
               </div>
-              <span class="text-[13px] text-slate-700">{{ entity.contactPersonName }}</span>
+              <span class="text-[13px] text-slate-700">
+                {{ entity.contactPersonName ?? '—' }}
+              </span>
             </div>
           </td>
 
-          <!-- Contact No -->
-          <td>
+          <!-- Contact No — from banks[0] -->
+          <td (click)="viewEntityDetails(entity)">
             <div class="flex items-center gap-1.5">
               <i class="pi pi-phone text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600 tabular-nums">{{
-                entity.contactPersonPhoneNo
-              }}</span>
+              <span class="text-[13px] text-slate-600 tabular-nums">
+                {{ entity.contactPersonPhoneNo ?? '—' }}
+              </span>
             </div>
           </td>
 
-          <!-- Email ID -->
-          <td>
+          <!-- Email ID — from banks[0] -->
+          <td (click)="viewEntityDetails(entity)">
             <div class="flex items-center gap-1.5">
               <i class="pi pi-envelope text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600">{{ entity.contactEmailId }}</span>
+              <span class="text-[13px] text-slate-600">
+                {{ entity.contactEmailId ?? '—' }}
+              </span>
             </div>
           </td>
 
-          <!-- Row actions -->
+          <!-- Actions -->
           <td>
             <div class="flex items-center justify-end gap-1">
               <p-button
@@ -804,7 +823,7 @@
 
       <ng-template #emptymessage>
         <tr>
-          <td colspan="13">
+          <td colspan="12">
             <div class="flex flex-col items-center justify-center py-12 gap-3">
               <div
                 class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center"
@@ -817,5 +836,53 @@
         </tr>
       </ng-template>
     </p-table>
+
+    <div class="flex items-center justify-between px-4 py-2 border-t border-slate-100 bg-white">
+      <div class="flex items-center gap-3">
+        <span class="relative flex w-2 h-2 flex-shrink-0">
+          <span
+            class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-50 animate-ping"
+          ></span>
+          <span class="relative inline-flex w-2 h-2 rounded-full bg-emerald-500"></span>
+        </span>
+        <span class="text-[11px] text-slate-400">
+          Showing
+          <span class="font-semibold text-slate-700 tabular-nums">{{ paginationStart }}</span>
+          –
+          <span class="font-semibold text-slate-700 tabular-nums">{{ paginationEnd }}</span>
+          <span class="text-slate-300 mx-1">of</span>
+          <span class="font-semibold text-slate-700 tabular-nums">{{ totalRecords() }}</span>
+          entities
+        </span>
+
+        <span class="w-px h-3 bg-slate-200 rounded-full"></span>
+        <span
+          class="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500 tabular-nums"
+        >
+          <i class="pi pi-book text-slate-400" style="font-size: 9px"></i>
+          Page
+          <span class="font-semibold text-slate-700">{{ currentPage }}</span>
+          <span class="text-slate-300">/</span>
+          <span class="font-semibold text-slate-700">{{ totalPages }}</span>
+        </span>
+        @if (selectedEntities.length > 0) {
+          <span
+            class="inline-flex items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-600"
+          >
+            <i class="pi pi-check-square text-indigo-400" style="font-size: 9px"></i>
+            {{ selectedEntities.length }} selected
+          </span>
+        }
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-[11px] text-slate-400">Rows per page</span>
+        <span
+          class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-semibold text-slate-600 tabular-nums"
+        >
+          {{ pageSize }}
+        </span>
+      </div>
+    </div>
   </div>
 </div>
