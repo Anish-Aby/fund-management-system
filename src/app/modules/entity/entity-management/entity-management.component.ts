@@ -497,6 +497,7 @@ export class EntityManagementComponent implements OnInit {
       contactPersonName: v.contactPersonName,
       contactPersonPhoneNo: v.contactPersonPhoneNo,
       contactEmailId: v.contactEmailId,
+      contactEmailId2: v.emailId2,
       baseCurrencyId: v.baseCurrencyId,
       entityRegionId: v.entityRegionId,
       countryStateMasterId: v.state,
@@ -741,7 +742,7 @@ export class EntityManagementComponent implements OnInit {
               },
               {
                 label: 'Secondary Email',
-                value: entity.emailId2 ?? '-',
+                value: entity.contactEmailId2 ?? '-',
                 mono: true,
                 copyable: true,
               },
