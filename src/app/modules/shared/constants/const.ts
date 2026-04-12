@@ -23,6 +23,9 @@ export const API_URLS = {
   ENTITY_LIST_DATA: 'api/v1/Entity',
   ENTITY_ADD: 'api/v1/Entity/add-update',
   TAX_TYPE_LOOKUP: 'api/v1/Entity/taxTypes',
+  ENTITY_LOOKUP: 'api/Common/entities',
+  PORTFOLIO_LIST_DATA: 'api/v1/Funds',
+  PORTFOLIO_ADD: 'api/v1/Funds/add-update',
 };
 
 export const VALIDATOR_REGEX_PATTERNS = {

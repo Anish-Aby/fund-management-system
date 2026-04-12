@@ -342,7 +342,6 @@ export class EntityManagementComponent implements OnInit {
           }));
           this.bankListData.set(r.data);
           this.bankListOptions.set(bankData);
-          console.log('Bank list loaded:', bankData);
         },
       });
   }
@@ -357,7 +356,7 @@ export class EntityManagementComponent implements OnInit {
         entityTaxId: '',
         entityTaxType: '',
         taxPercentage: '',
-        entityBankAccno: [], // ← was '' — multiselect requires an array
+        entityBankAccno: [],
         street: '',
         entityRegionId: '',
         countryId: '',
@@ -411,7 +410,7 @@ export class EntityManagementComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (r: any) => {
-          const detail = r.data ?? r; // handle both { data: {...} } and direct object
+          const detail = r.data ?? r;
           const o = { emitEvent: false };
           this.entityForm.enable(o);
           this.entityForm.get('countryId')!.disable(o);
@@ -434,11 +433,7 @@ export class EntityManagementComponent implements OnInit {
 
   private patchDetailFields(detail: any): void {
     const o = { emitEvent: false };
-
-    // Detail response has banks[] array — extract bankId from each entry
-    // bankListOptions uses bankMasterId as the value, which matches bankId from detail
     const bankIds = Array.isArray(detail.banks) ? detail.banks.map((b: any) => b.bankId) : [];
-
     this.entityForm.patchValue(
       {
         entityCode: detail.entityCode ?? '',
@@ -465,7 +460,6 @@ export class EntityManagementComponent implements OnInit {
       this.toastService.showWarn('Please fill all required fields correctly');
       return;
     }
-    console.log('Payload ready to be sent to API:', this.getEntityPayload());
     this.apiService
       .post(API_URLS.ENTITY_ADD, this.getEntityPayload())
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -590,7 +584,7 @@ export class EntityManagementComponent implements OnInit {
   getBankOverflowTooltip(banks: any[] | null | undefined): string {
     if (!banks || !Array.isArray(banks)) return '';
     return banks
-      .slice(2)
+      .slice(1)
       .map((b: any) => `${b.entityBankName}  •  ${b.entityBankAccno}`)
       .join('\n');
   }
@@ -637,8 +631,6 @@ export class EntityManagementComponent implements OnInit {
 
   async openEntityDetailsDialog(entity: any): Promise<ConfirmDialogResult> {
     const bankNames = entity.banks.map((b: any) => `${b.entityBankName}  •  ${b.entityBankAccno}`);
-    console.log('state options:', this.stateOptions());
-    console.log('city options:', this.cityOptions());
     const entityState =
       this.stateOptions().find((s) => s.countryStateMasterId === entity.countryStateMasterId)
         ?.stateName ?? '';

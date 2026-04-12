@@ -1,4 +1,4 @@
-<div class="bg-[#f4f4f5] p-6 flex flex-col gap-5" [formGroup]="fundForm">
+<div class="bg-[#f4f4f5] py-3 px-4 flex flex-col gap-5" [formGroup]="portfolioForm">
   <!-- ══════════════════════════════════════════════════════
        FORM CARD
   ══════════════════════════════════════════════════════ -->
@@ -7,7 +7,7 @@
   >
     <!-- Mode header -->
     <div
-      class="px-6 py-4 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
+      class="px-6 py-2 border-b border-slate-100 bg-white flex items-center gap-4 border-l-4"
       [ngClass]="{
         'border-l-sky-500': isViewMode(),
         'border-l-emerald-500': isAddMode(),
@@ -34,176 +34,559 @@
       <div>
         <h2 class="text-[14px] font-semibold tracking-tight text-slate-800 leading-none mb-1">
           @if (isViewMode()) {
-            View Fund
+            View Portfolio
           } @else if (isEditMode()) {
-            Edit Fund
+            Edit Portfolio
           } @else {
-            Add New Fund
+            Add New Portfolio
           }
         </h2>
         <p class="text-[12px] leading-none text-slate-400">
           @if (isViewMode()) {
-            Read-only view of fund details
+            Read-only view of portfolio details
           } @else if (isEditMode()) {
-            Modify existing fund information
+            Modify existing portfolio information
           } @else {
-            Fill in the details to register a new fund
+            Fill in the details to register a new portfolio
           }
         </p>
       </div>
     </div>
 
-    <!-- Form body -->
-    <div class="px-6 py-5">
-      <div class="grid grid-cols-12 gap-x-2 gap-y-2 mb-0">
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Fund Code <span class="text-red-400">*</span></label
-          >
-          <input
-            fluid
-            pInputText
-            placeholder="e.g. FND-001"
-            formControlName="fundCode"
-            class="font-mono!"
-          />
-        </div>
+    <p-tabs [(value)]="activeTabIndex" class="tab-pl-0">
+      <p-tablist>
+        <p-tab value="0">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-briefcase" style="font-size: 11px"></i>
+            General Info
+          </div>
+        </p-tab>
+        <p-tab value="1">
+          <div class="flex items-center gap-1.5">
+            <i class="pi pi-map-marker" style="font-size: 11px"></i>
+            Address Info
+          </div>
+        </p-tab>
+      </p-tablist>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Fund Name <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="Full legal fund name" formControlName="fundName" />
-        </div>
+      <p-tabpanels class="bg-[#f4f4f5]!">
+        <!-- ── General Info ──────────────────────────────────────────── -->
+        <p-tabpanel value="0">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Portfolio Code -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Portfolio Code <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. PRT-001"
+                  formControlName="portfolioCode"
+                  [ngClass]="isFieldInvalid('portfolioCode') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('portfolioCode')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('portfolioCode') }}
+                  </span>
+                }
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Fund Region <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="regionOptions"
-            placeholder="Select region"
-            formControlName="fundRegion"
-            [filter]="true"
-          />
-        </div>
+              <!-- Portfolio Name -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Name <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Legal portfolio name"
+                  formControlName="portfolioName"
+                  [ngClass]="isFieldInvalid('portfolioName') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('portfolioName')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('portfolioName') }}
+                  </span>
+                }
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Fund CCY <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="currencyOptions"
-            placeholder="Select currency"
-            formControlName="fundCcy"
-            [filter]="true"
-          />
-        </div>
+              <!-- Display Name -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+                  Display Name
+                  <span class="text-[9px] text-slate-300 font-normal">(optional)</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Abbreviated / short name"
+                  formControlName="portfolioDisplayName"
+                />
+              </div>
 
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Fund Tax ID <span class="text-red-400">*</span></label
-          >
-          <input
-            fluid
-            pInputText
-            placeholder="Tax identification number"
-            formControlName="fundTaxId"
-            class="!font-mono"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Name <span class="text-red-400">*</span></label
-          >
-          <input fluid pInputText placeholder="Primary bank name" formControlName="bankName" />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank Account # <span class="text-red-400">*</span></label
-          >
-          <input
-            fluid
-            pInputText
-            placeholder="Account number"
-            formControlName="bankAccountNumber"
-            class="!font-mono"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500"
-            >Bank CCY <span class="text-red-400">*</span></label
-          >
-          <p-select
-            fluid
-            appendTo="body"
-            [options]="currencyOptions"
-            placeholder="Select currency"
-            formControlName="bankCcy"
-            [filter]="true"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500">List of Vendors</label>
-          <p-multiselect
-            fluid
-            appendTo="body"
-            [options]="vendorOptions"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Select associated vendors"
-            formControlName="vendors"
-            [filter]="true"
-            filterBy="name"
-          />
-        </div>
-        <div class="col-span-2 flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-500">Attached Entity</label>
-          <p-multiselect
-            fluid
-            appendTo="body"
-            [options]="entityOptions"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Select attached entities"
-            formControlName="attachedEntities"
-            [filter]="true"
-            filterBy="name"
-          />
-        </div>
-      </div>
-    </div>
+              <!-- Tax ID -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Tax Id <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Tax identification number"
+                  formControlName="taxId"
+                  [ngClass]="isFieldInvalid('taxId') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('taxId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('taxId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Tax Type -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Tax Type <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="taxTypeOptions()"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Select tax type"
+                  formControlName="taxTypeId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                  [ngClass]="isFieldInvalid('taxTypeId') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('taxTypeId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('taxTypeId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Tax % -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
+                >
+                  <span>Tax % <span class="text-red-400">*</span></span>
+                  <span class="text-[9px] text-slate-300 font-normal">0 – 100</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="number"
+                  placeholder="e.g. 18"
+                  formControlName="taxPercentage"
+                  [ngClass]="isFieldInvalid('taxPercentage') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('taxPercentage')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('taxPercentage') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Bank Name -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Bank Name <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="bankListOptions()"
+                  [group]="true"
+                  placeholder="Select bank"
+                  formControlName="bankId"
+                  [filter]="true"
+                  display="chip"
+                  resetFilterOnHide="true"
+                />
+
+                @if (isFieldInvalid('bankId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('bankId') }}
+                  </span>
+                }
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between gap-1"
+                >
+                  Selected Banks
+                  <span class="text-[9px] text-slate-300 font-normal"
+                    >auto-populated (Hover on chips for more info)</span
+                  >
+                </label>
+
+                <div
+                  class="min-h-10.5 rounded-lg border border-slate-200 bg-slate-50/60 px-2 py-1.5 flex flex-wrap gap-1 items-center"
+                >
+                  @if (getSelectedBankNames().length === 0) {
+                    <span class="text-[11px] text-slate-300 italic select-none px-1">
+                      No bank selected
+                    </span>
+                  } @else {
+                    @for (bank of getSelectedBankNames().slice(0, 2); track bank.id) {
+                      <span
+                        [pTooltip]="bank.accNo"
+                        tooltipPosition="bottom"
+                        class="inline-flex h-6 items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 leading-none cursor-default"
+                      >
+                        <i
+                          class="pi pi-building-columns text-emerald-400"
+                          style="font-size: 9px"
+                        ></i>
+                        <span>{{ bank.name }}</span>
+                        <span class="text-emerald-400 font-mono text-[10px]">{{ bank.accNo }}</span>
+                      </span>
+                    }
+
+                    @if (getSelectedBankNames().length > 2) {
+                      <span
+                        [pTooltip]="getOverflowTooltip()"
+                        tooltipPosition="bottom"
+                        class="inline-flex h-6 items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-500 border border-slate-200 leading-none cursor-default hover:bg-slate-200 hover:text-slate-700 transition-colors duration-150"
+                      >
+                        <i class="pi pi-plus" style="font-size: 8px"></i>
+                        {{ getSelectedBankNames().length - 2 }} more
+                      </span>
+                    }
+                  }
+                </div>
+              </div>
+
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Mapped to Entity <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="entityLookupOptions()"
+                  optionLabel="entityName"
+                  optionValue="entityId"
+                  placeholder="Select entities"
+                  formControlName="mappedEntityIds"
+                  [filter]="true"
+                  display="chip"
+                  resetFilterOnHide="true"
+                  [ngClass]="isFieldInvalid('mappedEntityIds') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('mappedEntityIds')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('mappedEntityIds') }}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <!-- ── Address Info ──────────────────────────────────────────── -->
+        <p-tabpanel value="1">
+          <div class="px-3">
+            <div class="grid grid-cols-12 gap-x-2 gap-y-3">
+              <!-- Portfolio Address -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Portfolio Address <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Street / branch address"
+                  formControlName="street"
+                  [ngClass]="isFieldInvalid('street') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('street')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('street') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Region -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Region <span class="text-red-400">*</span>
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="regionOptions()"
+                  optionLabel="fundRegionName"
+                  optionValue="fundRegionId"
+                  placeholder="Select region"
+                  formControlName="regionId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('regionId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('regionId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Country -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Country <span class="text-red-400">*</span>
+                  @if (portfolioForm.get('countryId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select region first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="countryOptions()"
+                  optionLabel="countryName"
+                  optionValue="countryMasterId"
+                  placeholder="Select country"
+                  formControlName="countryId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('countryId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('countryId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Portfolio CCY -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  Portfolio CCY <span class="text-red-400">*</span>
+                  @if (portfolioForm.get('baseCurrencyId')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="currencyOptions()"
+                  optionLabel="currencyCode"
+                  optionValue="currencyMasterId"
+                  placeholder="Select currency"
+                  formControlName="baseCurrencyId"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('baseCurrencyId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('baseCurrencyId') }}
+                  </span>
+                }
+              </div>
+
+              <!-- State -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  State <span class="text-red-400">*</span>
+                  @if (portfolioForm.get('state')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select country first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="stateOptions()"
+                  optionLabel="stateName"
+                  optionValue="countryStateMasterId"
+                  placeholder="Select state"
+                  formControlName="state"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('state')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('state') }}
+                  </span>
+                }
+              </div>
+
+              <!-- City -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500 flex items-center gap-1.5">
+                  City <span class="text-red-400">*</span>
+                  @if (portfolioForm.get('city')?.disabled && !isViewMode()) {
+                    <span
+                      class="text-[9px] font-semibold uppercase tracking-widest text-slate-300 ml-auto"
+                    >
+                      Select state first
+                    </span>
+                  }
+                </label>
+                <p-select
+                  fluid
+                  appendTo="body"
+                  [options]="cityOptions()"
+                  optionLabel="cityName"
+                  optionValue="stateCityMasterId"
+                  placeholder="Select city"
+                  formControlName="city"
+                  [filter]="true"
+                  resetFilterOnHide="true"
+                />
+                @if (isFieldInvalid('city')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('city') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Zip Code -->
+              <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Zip Code <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="e.g. 560012"
+                  formControlName="zip"
+                  [ngClass]="isFieldInvalid('zip') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('zip')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('zip') }}
+                  </span>
+                }
+              </div>
+
+              <!-- Portfolio Handled By -->
+              <!-- <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Portfolio Handled By <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  placeholder="Full name"
+                  formControlName="handledBy"
+                  [ngClass]="isFieldInvalid('handledBy') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('handledBy')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('handledBy') }}
+                  </span>
+                }
+              </div> -->
+
+              <!-- Contact No -->
+              <!-- <div class="col-span-2 flex flex-col gap-1.5">
+                <label
+                  class="text-[11px] font-medium text-slate-500 flex items-center justify-between"
+                >
+                  <span>Contact No <span class="text-red-400">*</span></span>
+                  <span class="text-[9px] text-slate-300 font-normal">10 digits</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="tel"
+                  placeholder="0000000000"
+                  formControlName="contactNo"
+                  maxlength="10"
+                  [ngClass]="isFieldInvalid('contactNo') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('contactNo')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('contactNo') }}
+                  </span>
+                }
+              </div> -->
+
+              <!-- Email ID -->
+              <!-- <div class="col-span-2 flex flex-col gap-1.5">
+                <label class="text-[11px] font-medium text-slate-500">
+                  Email ID <span class="text-red-400">*</span>
+                </label>
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  placeholder="contact@portfolio.com"
+                  formControlName="emailId"
+                  [ngClass]="isFieldInvalid('emailId') ? 'ng-invalid ng-dirty' : ''"
+                />
+                @if (isFieldInvalid('emailId')) {
+                  <span class="text-[10px] text-rose-500 flex items-center gap-1 leading-none">
+                    <i class="pi pi-exclamation-circle" style="font-size: 9px"></i>
+                    {{ getFieldError('emailId') }}
+                  </span>
+                }
+              </div> -->
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
 
     <!-- Form footer -->
-    <div class="px-6 py-3 border-t border-slate-100 bg-white flex items-center justify-end gap-2">
+    <div class="py-2 px-3 border-t border-surface-200 flex items-center justify-end gap-2">
       @if (isViewMode() || isEditMode()) {
         <p-button
           icon="pi pi-times-circle"
-          label="Clear Selection"
+          label="Clear"
           variant="outlined"
           severity="secondary"
           size="small"
-          (onClick)="clearFundSelection()"
+          (onClick)="clearPortfolioSelection()"
         />
       }
       @if (!isViewMode()) {
         <p-button
           icon="pi pi-plus-circle"
-          [label]="isEditMode() ? 'Update Fund' : 'Add Fund'"
-          severity="contrast"
+          [label]="isEditMode() ? 'Update' : 'Save'"
+          [severity]="isEditMode() ? 'warn' : 'success'"
           size="small"
-          (onClick)="saveFund()"
+          (onClick)="savePortfolio()"
+          [disabled]="portfolioForm.invalid"
         />
       }
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       FUND LIST CARD
+       LIST CARD
   ══════════════════════════════════════════════════════ -->
   <div
     class="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden"
@@ -214,14 +597,12 @@
         <div class="w-4 h-4 rounded bg-slate-100 flex items-center justify-center">
           <i class="pi pi-list text-slate-500" style="font-size: 9px"></i>
         </div>
-        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Fund List</span>
-        @if (fundData().length > 0) {
-          <span
-            class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
-          >
-            {{ fundData().length }}
-          </span>
-        }
+        <span class="text-[12px] font-semibold text-slate-600 tracking-tight">Portfolio List</span>
+        <span
+          class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-bold tabular-nums leading-none"
+        >
+          {{ totalRecords() }}
+        </span>
       </div>
 
       <div class="flex items-center gap-2">
@@ -233,19 +614,11 @@
           <input
             pInputText
             type="text"
-            placeholder="Search funds..."
+            placeholder="Search portfolios..."
             class="!pl-8 !h-8 !text-[13px] !rounded-lg !border-slate-200 !w-52"
-            (input)="fundTable.filterGlobal($event.target.value, 'contains')"
+            (input)="portfolioTable.filterGlobal($event.target.value, 'contains')"
           />
         </div>
-        <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          variant="outlined"
-          size="small"
-          pTooltip="Delete selected"
-          tooltipPosition="bottom"
-        />
         <p-button
           icon="pi pi-file-excel"
           severity="secondary"
@@ -262,24 +635,49 @@
           pTooltip="Print"
           tooltipPosition="bottom"
         />
+        <p-button
+          icon="pi pi-refresh"
+          severity="contrast"
+          variant="outlined"
+          size="small"
+          pTooltip="Refresh"
+          tooltipPosition="bottom"
+          (onClick)="refreshList()"
+        />
       </div>
     </div>
 
     <!-- Table -->
     <p-table
-      #fundTable
-      [value]="fundData()"
-      [(selection)]="selectedFunds"
-      dataKey="id"
+      #portfolioTable
+      [value]="portfolioData()"
+      [(selection)]="selectedPortfolios"
+      dataKey="fundID"
       [stripedRows]="true"
       size="small"
       [showGridlines]="true"
       [scrollable]="true"
-      scrollHeight="550px"
+      scrollHeight="500px"
       class="table-dashboard-invoice"
       [resizableColumns]="true"
       columnResizeMode="expand"
-      [globalFilterFields]="['fundCode', 'fundName', 'fundRegion', 'fundCcy', 'bankName']"
+      [lazy]="true"
+      [paginator]="true"
+      [(rows)]="pageSize"
+      [(first)]="first"
+      [totalRecords]="totalRecords()"
+      [rowsPerPageOptions]="pageSizeOptions"
+      paginatorDropdownAppendTo="body"
+      [showCurrentPageReport]="false"
+      (onLazyLoad)="onLazyLoad($event)"
+      [globalFilterFields]="[
+        'portfolioCode',
+        'portfolioName',
+        'portfolioDisplayName',
+        'taxId',
+        'taxType',
+        'bankName',
+      ]"
     >
       <ng-template #header>
         <tr>
@@ -288,119 +686,139 @@
             <div class="flex items-center gap-1.5">Code <p-sortIcon field="fundCode" /></div>
           </th>
           <th pSortableColumn="fundName" pResizableColumn>
-            <div class="flex items-center gap-1.5">Fund Name <p-sortIcon field="fundName" /></div>
+            <div class="flex items-center gap-1.5">Name <p-sortIcon field="fundName" /></div>
           </th>
-          <th pSortableColumn="fundRegion" pResizableColumn>
-            <div class="flex items-center gap-1.5">Region <p-sortIcon field="fundRegion" /></div>
+          <th pSortableColumn="displayName" pResizableColumn>
+            <div class="flex items-center gap-1.5">
+              Display Name <p-sortIcon field="displayName" />
+            </div>
           </th>
-          <th pSortableColumn="fundCcy" pResizableColumn>
-            <div class="flex items-center gap-1.5">CCY <p-sortIcon field="fundCcy" /></div>
-          </th>
-          <th pSortableColumn="bankName" pResizableColumn>
-            <div class="flex items-center gap-1.5">Bank Name <p-sortIcon field="bankName" /></div>
-          </th>
-          <th pResizableColumn>Bank Account #</th>
-          <th pResizableColumn>Bank CCY</th>
-          <th pResizableColumn>Vendors</th>
+          <th pResizableColumn>Tax ID</th>
+          <th pResizableColumn>Region</th>
+          <th pResizableColumn>Country</th>
+          <th pResizableColumn>State</th>
+          <th pResizableColumn>City</th>
+          <th pResizableColumn style="min-width: 160px">Address</th>
+          <th pResizableColumn>CCY</th>
           <th pResizableColumn>Entities</th>
-          <th style="width: 100px">Actions</th>
+          <th pResizableColumn>Bank</th>
+          <th style="width: 90px">Actions</th>
         </tr>
       </ng-template>
 
-      <ng-template #body let-fund>
+      <ng-template #body let-portfolio>
         <tr>
-          <td><p-tableCheckbox [value]="fund" /></td>
+          <td><p-tableCheckbox [value]="portfolio" /></td>
 
-          <!-- Fund Code -->
-          <td>
+          <!-- Code -->
+          <td (click)="viewPortfolioDetails(portfolio)">
             <span
               class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-mono font-medium"
             >
-              {{ fund.fundCode }}
+              {{ portfolio.fundCode }}
             </span>
           </td>
 
-          <!-- Fund Name -->
-          <td>
+          <!-- Name -->
+          <td (click)="viewPortfolioDetails(portfolio)">
             <div class="flex items-center gap-2">
               <div
                 class="w-5 h-5 rounded-md bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0"
               >
                 <i class="pi pi-briefcase text-sky-500" style="font-size: 8px"></i>
               </div>
-              <span class="text-[13px] font-semibold text-slate-800 tracking-tight">{{
-                fund.fundName
-              }}</span>
+              <span class="text-[13px] font-semibold text-slate-800 tracking-tight">
+                {{ portfolio.fundName }}
+              </span>
             </div>
+          </td>
+
+          <!-- Display Name -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <span class="text-[13px] text-slate-500">{{ portfolio.displayName || '—' }}</span>
+          </td>
+
+          <!-- Tax ID -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <span class="text-[12px] font-mono text-slate-500 tabular-nums">
+              {{ portfolio.fundTaxId || '—' }}
+            </span>
           </td>
 
           <!-- Region -->
-          <td>
-            <div class="flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
-              <span class="text-[13px] text-slate-600">{{ fund.fundRegion }}</span>
-            </div>
+          <td (click)="viewPortfolioDetails(portfolio)">
+            @if (portfolio.fundRegionID) {
+              <span
+                class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-semibold"
+              >
+                {{ portfolio.fundRegionID }}
+              </span>
+            } @else {
+              <span class="text-[11px] text-slate-300 italic">—</span>
+            }
           </td>
 
-          <!-- Fund CCY -->
-          <td>
-            <span
-              class="inline-flex items-center px-2 py-0.5 rounded-md bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold font-mono tracking-wide"
-            >
-              {{ fund.fundCcy }}
-            </span>
+          <!-- Country -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <span class="text-[13px] text-slate-600">{{ portfolio.countryMasterID || '—' }}</span>
           </td>
 
-          <!-- Bank Name -->
-          <td>
-            <div class="flex items-center gap-1.5">
-              <i class="pi pi-building-columns text-slate-400" style="font-size: 10px"></i>
-              <span class="text-[13px] text-slate-600">{{ fund.bankName }}</span>
-            </div>
-          </td>
-
-          <!-- Bank Account # -->
-          <td>
-            <span class="text-[12px] font-mono text-slate-500 tabular-nums">{{
-              fund.bankAccountNumber
+          <!-- State -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <span class="text-[13px] text-slate-600">{{
+              portfolio.countryStateMasterID || '—'
             }}</span>
           </td>
 
-          <!-- Bank CCY -->
-          <td>
+          <!-- City -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <span class="text-[13px] text-slate-600">{{ portfolio.stateCityMasterID || '—' }}</span>
+          </td>
+
+          <!-- Address -->
+          <td (click)="viewPortfolioDetails(portfolio)">
             <span
-              class="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold font-mono tracking-wide"
+              class="text-[12px] text-slate-500 truncate block max-w-[200px]"
+              [pTooltip]="portfolio.portfolioAddress"
+              tooltipPosition="bottom"
             >
-              {{ fund.bankCcy }}
+              {{ portfolio.portfolioAddress || '—' }}
             </span>
           </td>
 
-          <!-- Vendors -->
-          <td>
-            @if (fund.vendors?.length > 0) {
+          <!-- CCY -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            @if (portfolio.fundCcyID) {
               <span
-                class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] font-semibold tabular-nums"
+                class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] bg-teal-50 border border-teal-200 text-teal-700 text-[11px] font-mono font-semibold"
               >
-                {{ fund.vendors.length }} vendor{{ fund.vendors.length > 1 ? 's' : '' }}
+                {{ portfolio.fundCcyID }}
               </span>
             } @else {
-              <span class="text-[12px] text-slate-300">—</span>
+              <span class="text-[11px] text-slate-300 italic">—</span>
             }
           </td>
 
           <!-- Entities -->
-          <td>
-            @if (fund.attachedEntities?.length > 0) {
+          <td (click)="viewPortfolioDetails(portfolio)">
+            @if (portfolio.entityCounts > 0) {
               <span
-                class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-semibold tabular-nums"
+                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[4px] bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] font-semibold"
               >
-                {{ fund.attachedEntities.length }} entit{{
-                  fund.attachedEntities.length > 1 ? 'ies' : 'y'
-                }}
+                <i class="pi pi-building text-indigo-400" style="font-size: 8px"></i>
+                {{ portfolio.entityCounts }}
               </span>
             } @else {
-              <span class="text-[12px] text-slate-300">—</span>
+              <span class="text-[11px] text-slate-300 italic">None</span>
             }
+          </td>
+
+          <!-- Bank -->
+          <td (click)="viewPortfolioDetails(portfolio)">
+            <div class="flex items-center gap-1.5">
+              <i class="pi pi-building-columns text-slate-400" style="font-size: 10px"></i>
+              <span class="text-[13px] text-slate-600">{{ portfolio.fundBankName || '—' }}</span>
+            </div>
           </td>
 
           <!-- Actions -->
@@ -408,21 +826,12 @@
             <div class="flex items-center justify-end gap-1">
               <p-button
                 size="small"
-                icon="pi pi-eye"
-                severity="secondary"
-                variant="outlined"
-                pTooltip="View"
-                tooltipPosition="bottom"
-                (onClick)="viewFund(fund)"
-              />
-              <p-button
-                size="small"
                 icon="pi pi-pencil"
                 severity="secondary"
                 variant="outlined"
                 pTooltip="Edit"
                 tooltipPosition="bottom"
-                (onClick)="editFund(fund)"
+                (onClick)="editPortfolio(portfolio)"
               />
               <p-button
                 size="small"
@@ -431,7 +840,7 @@
                 variant="outlined"
                 pTooltip="Delete"
                 tooltipPosition="bottom"
-                (onClick)="deleteFund(fund)"
+                (onClick)="showDeleteDialog(portfolio)"
               />
             </div>
           </td>
@@ -440,18 +849,68 @@
 
       <ng-template #emptymessage>
         <tr>
-          <td colspan="11">
+          <td colspan="15">
             <div class="flex flex-col items-center justify-center py-12 gap-3">
               <div
                 class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center"
               >
                 <i class="pi pi-briefcase text-slate-300" style="font-size: 16px"></i>
               </div>
-              <span class="text-[13px] text-slate-400">No funds found</span>
+              <span class="text-[13px] text-slate-400">No portfolios found</span>
             </div>
           </td>
         </tr>
       </ng-template>
     </p-table>
+
+    <!-- Pagination footer -->
+    <div class="flex items-center justify-between px-4 py-2 border-t border-slate-100 bg-white">
+      <div class="flex items-center gap-3">
+        <span class="relative flex w-2 h-2 flex-shrink-0">
+          <span
+            class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-50 animate-ping"
+          ></span>
+          <span class="relative inline-flex w-2 h-2 rounded-full bg-emerald-500"></span>
+        </span>
+        <span class="text-[11px] text-slate-400">
+          Showing
+          <span class="font-semibold text-slate-700 tabular-nums">{{ paginationStart }}</span>
+          –
+          <span class="font-semibold text-slate-700 tabular-nums">{{ paginationEnd }}</span>
+          <span class="text-slate-300 mx-1">of</span>
+          <span class="font-semibold text-slate-700 tabular-nums">{{ totalRecords() }}</span>
+          portfolios
+        </span>
+
+        <span class="w-px h-3 bg-slate-200 rounded-full"></span>
+        <span
+          class="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500 tabular-nums"
+        >
+          <i class="pi pi-book text-slate-400" style="font-size: 9px"></i>
+          Page
+          <span class="font-semibold text-slate-700">{{ currentPage }}</span>
+          <span class="text-slate-300">/</span>
+          <span class="font-semibold text-slate-700">{{ totalPages }}</span>
+        </span>
+
+        @if (selectedPortfolios.length > 0) {
+          <span
+            class="inline-flex items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-600"
+          >
+            <i class="pi pi-check-square text-indigo-400" style="font-size: 9px"></i>
+            {{ selectedPortfolios.length }} selected
+          </span>
+        }
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-[11px] text-slate-400">Rows per page</span>
+        <span
+          class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-semibold text-slate-600 tabular-nums"
+        >
+          {{ pageSize }}
+        </span>
+      </div>
+    </div>
   </div>
 </div>

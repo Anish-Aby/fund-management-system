@@ -647,7 +647,7 @@
     >
       <ng-template #header>
         <tr>
-          <th style="width: 40px"><p-tableHeaderCheckbox /></th>
+          <th style="width: 40px" pFrozenColumn><p-tableHeaderCheckbox /></th>
           <th pSortableColumn="entityCode" pResizableColumn>
             <div class="flex items-center gap-1.5">Code <p-sortIcon field="entityCode" /></div>
           </th>
@@ -664,17 +664,17 @@
           <th pResizableColumn>Tax ID</th>
           <th pResizableColumn>Tax Type</th>
           <th pResizableColumn>Tax %</th>
-          <th pResizableColumn style="min-width: 220px">Banks</th>
+          <th pResizableColumn>Banks</th>
           <th pResizableColumn>Contact Person</th>
           <th pResizableColumn>Contact No</th>
           <th pResizableColumn>Email ID</th>
-          <th style="width: 90px">Actions</th>
+          <th pFrozenColumn alignFrozen="right" style="width: 90px">Actions</th>
         </tr>
       </ng-template>
 
       <ng-template #body let-entity>
         <tr>
-          <td><p-tableCheckbox [value]="entity" /></td>
+          <td pFrozenColumn><p-tableCheckbox [value]="entity" /></td>
 
           <!-- Code -->
           <td (click)="viewEntityDetails(entity)">
@@ -734,7 +734,7 @@
               <span class="text-[11px] text-slate-300 italic">No banks</span>
             } @else {
               <div class="flex items-center gap-1 flex-wrap">
-                @for (bank of (entity.banks ?? []).slice(0, 2); track bank.bankId) {
+                @for (bank of (entity.banks ?? []).slice(0, 1); track bank.bankId) {
                   <span
                     [pTooltip]="bank.entityBankAccno"
                     tooltipPosition="bottom"
@@ -747,14 +747,14 @@
                     <span class="truncate">{{ bank.entityBankName }}</span>
                   </span>
                 }
-                @if ((entity.banks ?? []).length > 2) {
+                @if ((entity.banks ?? []).length > 1) {
                   <span
                     [pTooltip]="getBankOverflowTooltip(entity.banks)"
                     tooltipPosition="bottom"
                     class="inline-flex h-6 items-center gap-0.5 px-1.5 py-0.5 rounded-[4px] bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-semibold leading-none cursor-default hover:bg-slate-200 hover:text-slate-700 transition-colors duration-150"
                   >
                     <i class="pi pi-plus text-slate-400" style="font-size: 8px"></i>
-                    {{ (entity.banks ?? []).length - 2 }}
+                    {{ (entity.banks ?? []).length - 1 }}
                   </span>
                 }
               </div>
@@ -796,7 +796,7 @@
           </td>
 
           <!-- Actions -->
-          <td>
+          <td alignFrozen="right" pFrozenColumn>
             <div class="flex items-center justify-end gap-1">
               <p-button
                 size="small"

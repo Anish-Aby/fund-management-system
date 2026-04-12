@@ -21,7 +21,7 @@ import { InvoiceReview } from '../../invoice/invoice-review/invoice-review';
 import { InvoiceList } from '../../invoice/invoice-list/invoice-list';
 import { InvoiceSplit } from '../../invoice/invoice-split/invoice-split';
 import { EmailDialog } from '../../shared/components/email-dialog/email-dialog';
-import { PortfolioManagement } from '../../portfolio-management/portfolio-management';
+import { PortfolioManagementComponent } from '../../portfolio-management/portfolio-management';
 import { BankManagementComponent } from '../../bank-management/bank-management';
 import { AuditTrailComponent } from '../../audit-trail/audit-trail';
 import { ImportFileComponent } from '../../import-file/import-file';
@@ -148,7 +148,7 @@ export class DialogWindowService {
       case DIALOG_COMPONENT_TITLES.OTHERS.EMAIL_DETAILS:
         return this.openSingleInstanceWindow(EmailDialog, componentName, data);
       case DIALOG_COMPONENT_TITLES.MASTERS.PORTFOLIO_MANAGEMENT:
-        return this.openSingleInstanceWindow(PortfolioManagement, componentName, data);
+        return this.openSingleInstanceWindow(PortfolioManagementComponent, componentName, data);
       case DIALOG_COMPONENT_TITLES.MASTERS.BANK_MANAGEMENT:
         return this.openSingleInstanceWindow(BankManagementComponent, componentName, data);
       case DIALOG_COMPONENT_TITLES.SETTINGS.AUDIT_TRAIL:

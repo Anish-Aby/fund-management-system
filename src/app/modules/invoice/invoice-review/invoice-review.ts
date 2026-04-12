@@ -199,7 +199,6 @@ export class InvoiceReview implements OnInit {
     } as any);
     if (result.confirmed) {
       const { to, cc, bcc, subject, body, reason } = result.values;
-      console.log('Sending rejection email', { to, cc, bcc, subject, body, reason });
     }
   }
 
