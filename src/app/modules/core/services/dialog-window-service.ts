@@ -81,10 +81,6 @@ export class DialogWindowService {
 
   constructor(private dialogService: DialogService) {}
 
-  // =============================
-  // 🚀 PUBLIC API
-  // =============================
-
   public restoreFromStorage(): void {
     const raw = sessionStorage.getItem(this.STORAGE_KEY);
     if (!raw) return;
@@ -209,7 +205,7 @@ export class DialogWindowService {
   private async reopenWindow(saved: PersistedWindow): Promise<void> {
     const restoreData = {
       ...(saved.data ?? {}),
-      autoMaximize: false,
+      autoMaximize: true,
       windowId: saved.id,
     };
 
@@ -221,13 +217,9 @@ export class DialogWindowService {
 
     await win.ready;
 
-    // ✅ ALWAYS start minimized (your requirement)
+    // ALWAYS start minimized
     this.minimize(win.id);
   }
-
-  // =============================
-  // 🚀 WINDOW ACTIONS
-  // =============================
 
   public minimize(id: string): void {
     const win = this.windows$.value.find((w) => w.id === id);
@@ -340,10 +332,6 @@ export class DialogWindowService {
     this.persistWindowsDebounced(); // 🔥 important
   }
 
-  // =============================
-  // 🚀 PERSISTENCE (DEBOUNCED)
-  // =============================
-
   private persistWindowsDebounced(): void {
     clearTimeout(this.persistTimer);
     this.persistTimer = setTimeout(() => this.persistWindows(), 120);
@@ -359,10 +347,6 @@ export class DialogWindowService {
     sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(serializable));
   }
 
-  // =============================
-  // 🚀 INTERNALS
-  // =============================
-
   private ensureSingleInstance(componentName: string): boolean {
     const existing = this.windows$.value.find((w) => w.componentName === componentName);
     if (!existing) return false;
@@ -373,7 +357,6 @@ export class DialogWindowService {
   }
 
   private registerWindow(win: AppWindow): void {
-    // 🔥 create readiness promise
     let resolveReady!: () => void;
 
     win.ready = new Promise<void>((res) => {

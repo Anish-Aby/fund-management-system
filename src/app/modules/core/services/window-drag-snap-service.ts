@@ -20,7 +20,7 @@ export class WindowDragSnapService {
   };
 
   private previewEl?: HTMLElement;
-  private readonly WORKSPACE_TOP = 100; // 👈 your header + toolbar height
+  private readonly WORKSPACE_TOP = 100; // header + toolbar height
   private readonly WORKSPACE_BOTTOM_OFFSET = 40; // optional footer/taskbar if any
 
   private readonly SNAP_THRESHOLD = 32;
@@ -29,7 +29,6 @@ export class WindowDragSnapService {
     header.addEventListener('mousedown', (e) => this.startDrag(e, dialog));
   }
 
-  // 🚀 start drag
   private startDrag(e: MouseEvent, dialog: HTMLElement) {
     if ((e.target as HTMLElement).closest('.p-dialog-header-icon')) return;
     e.preventDefault();
@@ -80,7 +79,6 @@ export class WindowDragSnapService {
     this.applySnap(dialog);
   }
 
-  // 🧲 detect snap zone
   private snapType: 'left' | 'right' | 'top' | 'tl' | 'tr' | 'bl' | 'br' | null = null;
 
   private checkSnapPreview(x: number, y: number, dialog: HTMLElement) {
@@ -92,7 +90,6 @@ export class WindowDragSnapService {
     const nearTop = y <= this.WORKSPACE_TOP + this.SNAP_THRESHOLD;
     const nearBottom = y >= vh - this.SNAP_THRESHOLD;
 
-    // 🟢 CORNERS FIRST (highest priority)
     if (nearLeft && nearTop) {
       this.snapType = 'tl';
     } else if (nearRight && nearTop) {
@@ -101,10 +98,7 @@ export class WindowDragSnapService {
       this.snapType = 'bl';
     } else if (nearRight && nearBottom) {
       this.snapType = 'br';
-    }
-
-    // 🟡 EDGES
-    else if (nearLeft) {
+    } else if (nearLeft) {
       this.snapType = 'left';
     } else if (nearRight) {
       this.snapType = 'right';
@@ -125,7 +119,6 @@ export class WindowDragSnapService {
 
     dialog.style.transition = 'all 160ms ease';
 
-    // 🟢 HALF SNAPS
     if (this.snapType === 'left') {
       dialog.style.left = '0px';
       dialog.style.top = `${workTop}px`;
@@ -146,8 +139,6 @@ export class WindowDragSnapService {
       dialog.style.width = `${vw}px`;
       dialog.style.height = `${workHeight}px`;
     }
-
-    // 🔥 QUADRANT SNAPS (NEW)
 
     // top-left
     if (this.snapType === 'tl') {
@@ -239,7 +230,6 @@ export class WindowDragSnapService {
       height = workHeight;
     }
 
-    // 🔥 quadrants
     if (this.snapType === 'tl') {
       width = vw / 2;
       height = workHeight / 2;

@@ -21,7 +21,6 @@ export class WindowResizeService {
     this.addHandles(dialog);
   }
 
-  // ✅ handles
   private addHandles(dialog: HTMLElement) {
     const directions = ['right', 'left', 'top', 'bottom', 'br', 'bl', 'tr', 'tl'];
 
@@ -33,7 +32,6 @@ export class WindowResizeService {
     });
   }
 
-  // ✅ resize start
   private startResize(e: MouseEvent, dialog: HTMLElement, dir: string) {
     e.preventDefault();
     e.stopPropagation();
@@ -49,7 +47,6 @@ export class WindowResizeService {
     this.startLeft = rect.left;
     this.startTop = rect.top;
 
-    // 🚀 performance boost
     dialog.style.willChange = 'width, height, left, top';
 
     const move = (ev: MouseEvent) => this.onResize(ev, dialog);
@@ -57,7 +54,6 @@ export class WindowResizeService {
       this.active = false;
       this.rafPending = false;
 
-      // ✅ restore perf hint
       dialog.style.willChange = 'auto';
 
       window.removeEventListener('mousemove', move);
@@ -68,7 +64,6 @@ export class WindowResizeService {
     window.addEventListener('mouseup', up);
   }
 
-  // ✅ smooth resize
   private onResize(e: MouseEvent, dialog: HTMLElement) {
     if (!this.active) return;
     if (this.rafPending) return;
